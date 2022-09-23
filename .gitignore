@@ -20,3 +20,5 @@ sources/EarthTool-0.0.24/EarthTool.TEX/bin/*
 sources/EarthTool-0.0.24/EarthTool.TEX/obj/*
 sources/EarthTool-0.0.24/EarthTool.WD/bin/*
 sources/EarthTool-0.0.24/EarthTool.WD/obj/*
+sources/generated/*
+sources/ThirdParty/wxWidgets/generated/*
