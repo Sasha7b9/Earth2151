@@ -100,12 +100,26 @@ void Frame::OnFileActivated(wxTreeEvent &event)
 
     wxFileInputStream stream(fileName.GetFullPath());
 
-    wxZlibInputStream zstream(stream);
+    if (!IsValidWDFile(stream))
+    {
+        return;
+    }
 
+    size_t stream_size = stream.GetSize();
 
-    uint8 *data = new uint8[zstream.GetSize()];
+    uint8 *data = new uint8[stream.GetSize()];
 
-    zstream.ReadAll(data, zstream.GetSize());
+    stream.ReadAll(data, stream.GetSize());
+
+    uint dirLn = 0;
+
+    stream_size = stream.GetSize();
+
+    std::memcpy(&dirLn, data + stream.GetSize() - 30000, 4);
+
+    dirLn = dirLn;
+
+    delete []data;
 }
 
 
