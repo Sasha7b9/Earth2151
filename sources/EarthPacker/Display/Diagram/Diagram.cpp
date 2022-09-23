@@ -2,17 +2,16 @@
 #include "defines.h"
 #include "Display/Diagram/Diagram.h"
 #include "Display/Diagram/Canvas.h"
-#include "Utils/Clock.h"
 
 
 Diagram::Pool *Diagram::Pool::self = nullptr;
 
 
-Diagram::Diagram(wxWindow *parent, TypeMeasure::E type) : wxPanel(parent, wxID_ANY)
+Diagram::Diagram(wxWindow *parent, int i) : wxPanel(parent, wxID_ANY), type(i)
 {
     wxBoxSizer *sizer = new wxBoxSizer(wxHORIZONTAL);
 
-    canvas = new Canvas(this, type);
+    canvas = new Canvas(this, i);
 
     sizer->Add(canvas);
 
@@ -32,9 +31,9 @@ Diagram::Pool::Pool(wxWindow *parent) : wxPanel(parent, wxID_ANY)
 {
     wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
 
-    for (int i = 0; i < TypeMeasure::Count; i++)
+    for (int i = 0; i < 5; i++)
     {
-        pool[i] = new Diagram(this, (TypeMeasure::E)i);
+        pool[i] = new Diagram(this, i);
 
         sizer->Add(pool[i]);
     }
@@ -53,7 +52,7 @@ Diagram::Pool *Diagram::Pool::Create(wxWindow *parent)
 
 void Diagram::Pool::SetSizeArea(int width, int height)
 {
-    int dy = height / TypeMeasure::Count;
+    int dy = height / 5;
 
     for (Diagram *diagram : pool)
     {
@@ -64,14 +63,5 @@ void Diagram::Pool::SetSizeArea(int width, int height)
 
 void Diagram::Pool::UpdateArea()
 {
-    Time time = Clock::CurrentTime();
-
-    static int prev = time.sec;
-
-    if (prev != time.sec)
-    {
-        prev = time.sec;
-
-        Refresh();
-    }
+    Refresh();
 }

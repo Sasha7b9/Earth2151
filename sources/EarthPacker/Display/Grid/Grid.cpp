@@ -1,7 +1,6 @@
 // 2022/09/05 10:18:54 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Display/Grid/Grid.h"
-#include "Data/Sensors.h"
 
 
 using namespace std;
@@ -32,12 +31,6 @@ Grid::Grid(wxWindow *parent, const wxSize &size) :
     SetRowLabelSize(0);
 
     SetColLabelValue(0, "ID");
-
-    for (int meas = 0; meas < TypeMeasure::Count; meas++)
-    {
-        SetColLabelValue(meas + 1, wxString(TypeMeasure::GetTitle((TypeMeasure::E)meas)) +
-            wxString("\n") + wxString(TypeMeasure::GetUnits((TypeMeasure::E)meas)));
-    }
 
     SetColSize(0, FromDIP(40));
 

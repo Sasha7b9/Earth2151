@@ -1,16 +1,13 @@
 // 2022/09/05 08:47:32 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Display/Diagram/Canvas.h"
-#include "Data/Sensors.h"
-#include "Utils/Clock.h"
 #include <map>
 
 
 using namespace std;
 
 
-Canvas::Canvas(wxWindow *parent, TypeMeasure::E _type) : wxPanel(parent, wxID_ANY),
-    type(_type)
+Canvas::Canvas(wxWindow *parent, int t) : wxPanel(parent, wxID_ANY), type(t)
 {
     Bind(wxEVT_PAINT, &Canvas::OnPaint, this);
 
@@ -37,7 +34,7 @@ void Canvas::OnPaint(wxPaintEvent &)
 
     memDC.SetPen(wxPen(wxColor(0, 0, 0)));
 
-    static const wxString labels[TypeMeasure::Count] =
+    static const wxString labels[5] =
     {
         "Давление",
         "Освещённость",
@@ -58,46 +55,8 @@ void Canvas::OnPaint(wxPaintEvent &)
 }
 
 
-void Canvas::DrawTimeScale(wxMemoryDC &dc)
+void Canvas::DrawTimeScale(wxMemoryDC &)
 {
-    int dx = 60;
-
-    Time time = Clock::CurrentTime();
-
-    int x = GetClientSize().GetWidth() - time.sec % dx;
-
-    time.sec = 0;
-
-    int y = GetClientSize().GetHeight();
-
-    dc.SetPen(wxPen(wxColor(200, 200, 200)));
-
-    while (x > 0)
-    {
-        dc.DrawLine(x, 0, x, y);
-
-        dc.DrawText(time.ToString().c_str(), { x + 1, y - 15 });
-
-        time.SubMin(1);
-
-        x -= dx;
-    }
-}
-
-
-int Canvas::TimeToX(const Time &time)
-{
-    int width = GetClientSize().GetWidth();
-
-    Time current_time = Clock::CurrentTime();
-
-    Time difference = current_time - time;
-
-    int secs = difference.ToSec();
-
-    int result = width - secs;
-
-    return result;
 }
 
 
@@ -108,98 +67,8 @@ void Canvas::SetSizeArea(int width, int height)
 }
 
 
-void Canvas::DrawAllSensors(wxMemoryDC &dc)
+void Canvas::DrawAllSensors(wxMemoryDC &)
 {
-    const map<uint, Sensor> &pool = Sensor::Pool::GetPool();
-
-    if (pool.empty())
-    {
-        return;
-    }
-
-    float min = 1e20f;
-    float max = -1e20f;
-    float scale = 0.0f;
-
-    for (auto element : pool)
-    {
-        const Sensor &sensor = element.second;
-
-        const DataArray &measures = sensor.GetMeasures(type);
-
-        if (measures.Size() > 1)
-        {
-            int width = GetClientSize().GetWidth();
-            int height = GetClientSize().GetHeight();
-
-            float min_value = measures.Min(width);
-            float max_value = measures.Max(width);
-
-            if (fabsf(min_value - max_value) < 0.0001f)
-            {
-                continue;
-            }
-
-            if (min_value < min)
-            {
-                min = min_value;
-            }
-
-            if (max_value > max)
-            {
-                max = max_value;
-            }
-
-            scale = ((float)height - 20.0f) / (max - min);
-        }
-    }
-
-    for (auto element : pool)
-    {
-        const Sensor &sensor = element.second;
-
-        const DataArray &measures = sensor.GetMeasures(type);
-
-        if (measures.Size() > 1)
-        {
-            DrawSensor(dc, measures, min, max, scale);
-        }
-    }
-}
-
-
-void Canvas::DrawSensor(wxMemoryDC &dc, const DataArray &array, float min, float max, float scale)
-{
-    dc.SetPen(wxPen(wxColor(0, 0, 255)));
-
-    auto point = array.array.end() - 1;
-
-    if (fabsf(min - max) < 0.0001f)
-    {
-        return;
-    }
-
-    int width = GetClientSize().GetWidth();
-    int height = GetClientSize().GetHeight();
-
-    do
-    {
-        int x_end = TimeToX(point->time);
-        int x_start = TimeToX((point - 1)->time);
-
-        int y_end = height - 10 - (int)((point->value - min) * scale);
-        int y_start = height - 10 - (int)(((point - 1)->value - min) * scale);
-
-        dc.DrawLine({ x_start, y_start }, { x_end, y_end });
-
-        point--;
-
-    } while (point > array.array.begin());
-
-    dc.SetPen(wxPen(wxColor(0, 0, 0)));
-
-    DrawTextOnBackground(dc, wxString::Format("%10.2f", max).c_str(), width - 50, 0, 50, 15);
-    DrawTextOnBackground(dc, wxString::Format("%10.2f", min).c_str(), width - 50, height - 15, 50, 15);
 }
 
 
