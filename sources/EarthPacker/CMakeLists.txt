@@ -1,14 +1,16 @@
 # (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 
+cmake_minimum_required(VERSION 3.14)
+
 project (EarthPacker)
 
 set(CMAKE_UNITY_BUILD OFF)
 
 include_directories(.
-                    ../../VS/ThirdParty/wxWidgets/include
-                    ../../generated/ThirdParty/lib/vc_dll/mswud)
+                    ../ThirdParty/wxWidgets/include
+                    ../generated/wxWidgets/lib/vc_dll/mswud)
 
-link_directories(../../generated/ThirdParty/lib/vc_dll)
+link_directories(../generated/wxWidgets/lib/vc_dll)
 
 add_definitions(-DWXUSINGDLL -DGUI)
 
@@ -107,7 +109,7 @@ add_executable( ${PROJECT_NAME}
                 ${UTILS_TEXT}
                 )
 
-target_link_libraries(${PROJECT_NAME} wxbase31ud wxmsw31ud_core Ws2_32)
+target_link_libraries(${PROJECT_NAME} wxbase31ud wxmsw32ud_core Ws2_32)
 
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND copy ..\\..\\ThirdParty\\lib\\vc_dll\\wxbase316ud_vc_custom.dll $(OutputPath) /Y)
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND copy ..\\..\\ThirdParty\\lib\\vc_dll\\wxmsw316ud_core_vc_custom.dll $(OutputPath) /Y)
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND copy ..\\..\\ThirdParty\\lib\\vc_dll\\wxbase326ud_vc_custom.dll $(OutputPath) /Y)
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND copy ..\\..\\ThirdParty\\lib\\vc_dll\\wxmsw326ud_core_vc_custom.dll $(OutputPath) /Y)
