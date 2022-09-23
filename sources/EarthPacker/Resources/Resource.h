@@ -14,6 +14,6 @@ namespace Resources
     class Resource
     {
     public:
-        Resource(std::string &filename, ResourceInfo);
+        Resource(std::string &filename, ResourceInfo, wxMemoryBuffer * = nullptr);
     };
 }
