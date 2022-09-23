@@ -62,15 +62,18 @@ if(WIN32)
     add_compile_options(/wd5045)    # Compiler will insert Spectre mitigation for memory load if /Qspectre switch specified
 endif()
 
-file(GLOB SRC                     *.h *.cpp)
-file(GLOB CONTROLS                Controls/*.*)
+file(GLOB SRC                      *.h *.cpp)
+file(GLOB CONTROLS                 Controls/*.*)
+file(GLOB CONTROLS_NOTEBOOKLEFT    Controls/NotebookLeft/*.*)
 
-source_group(src                  FILES ${SRC})
-source_group(Controls             FILES ${CONTROLS})
+source_group(src                   FILES ${SRC})
+source_group(Controls              FILES ${CONTROLS})
+source_group(Controls/NotebookLeft FILES ${CONTROLS_NOTEBOOKLEFT})
 
 add_executable( ${PROJECT_NAME}
                 ${SRC}
                 ${CONTROLS}
+                ${CONTROLS_NOTEBOOKLEFT}
                 )
 
 target_link_libraries(${PROJECT_NAME} wxbase32ud wxmsw32ud_core Ws2_32)

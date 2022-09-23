@@ -20,7 +20,8 @@ public:
 
 private:
 
-    wxToolBar    *toolBar = nullptr;
+    wxToolBar *toolBar = nullptr;
+    wxNotebook *notebookLeft = nullptr;
 
     void OnViewBrief(wxCommandEvent &);
     void OnViewFull(wxCommandEvent &);

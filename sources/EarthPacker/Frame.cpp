@@ -61,7 +61,10 @@ Frame::Frame(const wxString &title)
 
     wxBoxSizer *sizer = new wxBoxSizer(wxHORIZONTAL);
 
-    sizer->Add(new ControlDir(this));
+    notebookLeft = new wxNotebook(this, wxID_ANY);
+    notebookLeft->AddPage(new ControlDir(notebookLeft), "Directory");
+
+    sizer->Add(notebookLeft);
 
     sizer->Add(new Canvas(this));
 
