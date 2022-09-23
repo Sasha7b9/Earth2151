@@ -41,9 +41,11 @@ std::string ResourceFactory::GetName(wxInputStream &stream)
 {
     int length = GetLength(stream);
 
-    length = length;
+    wxMemoryBuffer nameByte(length);
 
-    return "";
+    stream.Read(nameByte.GetData(), length);
+
+    return std::string((char *)nameByte.GetData());
 }
 
 

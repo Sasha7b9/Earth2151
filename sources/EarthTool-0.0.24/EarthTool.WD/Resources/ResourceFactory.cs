@@ -61,6 +61,10 @@ namespace EarthTool.WD.Resources
       var length = GetLength(stream);
       var nameByte = new byte[length];
       stream.Read(nameByte, 0, length);
+
+      var name_byte = nameByte.ToString();
+      name_byte = name_byte;
+
       var name = Encoding.ASCII.GetString(nameByte);
       return name;
     }
