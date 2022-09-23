@@ -102,15 +102,23 @@ void Frame::OnFileActivated(wxTreeEvent &event)
 
     wxZlibInputStream zstream(stream);
 
+
+    uint8 *data = new uint8[zstream.GetSize()];
+
+    zstream.ReadAll(data, zstream.GetSize());
+}
+
+
+bool Frame::IsValidWDFile(wxFileInputStream &stream)
+{
+    wxZlibInputStream zstream(stream);
+
     uint8 buffer[8];
     static const uint8 template_buffer[8] = { 0xff, 0xa1, 0xd0, '1', 'W', 'D', 0x00, 0x02 };
 
     zstream.Read(buffer, 8);
 
-    if (std::strcmp((char *)buffer, (char *)template_buffer) != 0)
-    {
-        return;
-    }
+    return std::memcmp(buffer, template_buffer, 8) == 0;
 }
 
 
