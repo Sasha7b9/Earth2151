@@ -17,4 +17,5 @@ typedef signed char int8;
 #include <wx/wx.h>
 #include <wx/statline.h>
 #include <wx/grid.h>
+#include <wx/dirctrl.h>
 #pragma warning(pop)

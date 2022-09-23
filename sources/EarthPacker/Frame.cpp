@@ -3,6 +3,7 @@
 #include "Frame.h"
 #include "Display/Grid.h"
 #include "Display/Canvas.h"
+#include "ControlDir.h"
 
 
 Frame *Frame::self = nullptr;
@@ -59,11 +60,9 @@ Frame::Frame(const wxString &title)
 
     Bind(wxEVT_SIZE, &Frame::OnSize, this);
 
-//    CreateFrameToolBar();
-
     wxBoxSizer *sizer = new wxBoxSizer(wxHORIZONTAL);
 
-    sizer->Add(Grid::Create(this, FromDIP(wxSize(360, 400))));
+    sizer->Add(new ControlDir(this));
 
     sizer->Add(new Canvas(this));
 
@@ -71,31 +70,6 @@ Frame::Frame(const wxString &title)
 
     SetClientSize(1024, 600);
     wxWindowBase::SetMinClientSize({ 800, 300 });
-}
-
-
-void Frame::CreateFrameToolBar()
-{
-    toolBar = CreateToolBar();
-
-    AddTool(TOOL_VIEW_BRIEF, _T("Краткий вид"), "TOOL_VIEW_BRIEF");
-    AddTool(TOOL_VIEW_FULL, _T("Полный вид"), "TOOL_VIEW_FULL");
-
-    toolBar->AddSeparator();
-
-    AddTool(MEAS_PRESSURE, _T("Давление"), "MEAS_PRESSURE");
-    AddTool(MEAS_ILLUMINATION, _T("Освещённость"), "MEAS_ILLUMINATION");
-    AddTool(MEAS_VELOCITY, _T("Скорость"), "MEAS_VELOCITY");
-    AddTool(MEAS_TEMPERATURE, _T("Температура"), "MEAS_TEMPERATURE");
-    AddTool(MEAS_HUMIDITY, _T("Влажность"), "MEAS_HUMIDITY");
-
-    Bind(wxEVT_MENU, &Frame::OnMeasurePressure, this, MEAS_PRESSURE);
-    Bind(wxEVT_MENU, &Frame::OnMeasureIllumination, this, MEAS_ILLUMINATION);
-    Bind(wxEVT_MENU, &Frame::OnMeasureHumidity, this, MEAS_HUMIDITY);
-    Bind(wxEVT_MENU, &Frame::OnMeasureVelocity, this, MEAS_VELOCITY);
-    Bind(wxEVT_MENU, &Frame::OnMeasureTemperature, this, MEAS_TEMPERATURE);
-
-    toolBar->Realize();
 }
 
 
@@ -196,13 +170,13 @@ void Frame::OnAbout(wxCommandEvent &WXUNUSED(event))
 
 void Frame::OnSize(wxSizeEvent &event)
 {
-    Canvas::self->SetSizeArea(GetClientRect().width - Grid::self->GetSize().x, GetClientRect().height);
+    Canvas::self->SetSizeArea(GetClientRect().width - ControlDir::self->GetSize().x, GetClientRect().height);
 
-    wxSize size = { Grid::self->GetSize().GetWidth(), GetClientRect().height };
+    wxSize size = { ControlDir::self->GetSize().GetWidth(), GetClientRect().height };
 
-    Grid::self->SetMinClientSize(size);
-    Grid::self->SetClientSize(size);
-    Grid::self->SetSize(size);
+    ControlDir::self->SetMinClientSize(size);
+    ControlDir::self->SetClientSize(size);
+    ControlDir::self->SetSize(size);
 
     event.Skip();
 }

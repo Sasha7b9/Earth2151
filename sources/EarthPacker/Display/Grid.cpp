@@ -6,14 +6,14 @@
 using namespace std;
 
 
-Grid *Grid::self = nullptr;
+Grid *Grid::_self = nullptr;
 
 
 Grid *Grid::Create(wxWindow *parent, const wxSize &size)
 {
-    self = new Grid(parent, size);
+    _self = new Grid(parent, size);
 
-    return self;
+    return _self;
 }
 
 

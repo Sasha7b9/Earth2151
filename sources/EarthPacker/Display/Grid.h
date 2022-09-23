@@ -9,7 +9,7 @@ public:
 
     static Grid *Create(wxWindow *, const wxSize &);
 
-    static Grid *self;
+    static Grid *_self;
 
     void SetMeasure(uint id, uint8 type, float value);
 
