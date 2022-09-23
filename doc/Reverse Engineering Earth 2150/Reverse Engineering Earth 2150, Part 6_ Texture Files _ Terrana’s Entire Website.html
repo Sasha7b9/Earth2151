@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<!-- saved from url=(0068)http://www.ninetailed.net/reverse-engineering-earth-2150-part-6.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Reverse Engineering Earth 2150, Part 6: Texture Files | Terrana’s Entire Website</title>
+<meta name="generator" content="Jekyll v4.2.0">
+<meta property="og:title" content="Reverse Engineering Earth 2150, Part 6: Texture Files">
+<meta name="author" content="Terrana">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="So you know all those things I said I was going to do next? I didn’t. I decided to take a look at texture files instead. I know others have already reverse-engineered this format, so this was purely for my own enjoyment.">
+<meta property="og:description" content="So you know all those things I said I was going to do next? I didn’t. I decided to take a look at texture files instead. I know others have already reverse-engineered this format, so this was purely for my own enjoyment.">
+<link rel="canonical" href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-6.html">
+<meta property="og:url" content="/reverse-engineering-earth-2150-part-6.html">
+<meta property="og:site_name" content="Terrana’s Entire Website">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-06-10T00:00:00+01:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Reverse Engineering Earth 2150, Part 6: Texture Files">
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"Reverse Engineering Earth 2150, Part 6: Texture Files","url":"/reverse-engineering-earth-2150-part-6.html","datePublished":"2021-06-10T00:00:00+01:00","dateModified":"2021-06-10T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"/reverse-engineering-earth-2150-part-6.html"},"author":{"@type":"Person","name":"Terrana"},"description":"So you know all those things I said I was going to do next? I didn’t. I decided to take a look at texture files instead. I know others have already reverse-engineered this format, so this was purely for my own enjoyment.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="./Reverse Engineering Earth 2150, Part 6_ Texture Files _ Terrana’s Entire Website_files/main.css"><link type="application/atom+xml" rel="alternate" href="http://www.ninetailed.net/feed.xml" title="Terrana&#39;s Entire Website"><link rel="me" href="https://sleeping.town/@terrana">
+  <link rel="me" href="https://ninetailed.space/@Terrana">
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="http://www.ninetailed.net/">Terrana's Entire Website</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="http://www.ninetailed.net/about/">About</a><a class="page-link" href="http://www.ninetailed.net/contact/">Contact</a><a class="page-link" href="http://www.ninetailed.net/earth-2150/">Earth 2150</a><span class="header-divider"></span><a class="page-link" href="https://git.ninetailed.net/">Git</a><a class="page-link" href="https://keyoxide.org/7e821f4a413d6d61ee4d62bec8a045f9cf79681e" rel="me">Keyoxide</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        
+
+<h1>Reverse Engineering Earth 2150, Part 6: Texture Files</h1>
+
+
+<content><p>So you know all those things I said I was going to do next? I didn’t. I decided to take a look at texture files instead. I know others have already reverse-engineered this format, so this was purely for my own enjoyment.</p>
+
+<p>Deliberately not looking at anyone else’s work, I started with a clean slate, which meant extracting a TEX file and looking at it in my hex editor. I decided to go with the compass texture because there are several known things about it.</p>
+
+<p><img src="./Reverse Engineering Earth 2150, Part 6_ Texture Files _ Terrana’s Entire Website_files/SShot002.png" alt=""></p>
+
+<p>It’s a nice, simple texture with regular patterns. Measuring it, it appears at first to be 128x128 pixels, but if you look a little closer, you’ll see it’s composed of 2x2 pixel blocks, meaning it’s been scaled up from 64x64 without filtering. These are useful properties.</p>
+
+<p>So I extract <code class="language-plaintext highlighter-rouge">compass.tex</code> from the WD file and up comes the hex editor. I immediately see that the file begins with the string <code class="language-plaintext highlighter-rouge">TEX␀</code>, which is pretty obviously a format identifier and can be safely ignored.</p>
+
+<p>Following on from this, there are what appears to be a few 32-bit integers, which fits with how common they were in the PAR file. 1, 38, 64, 64, 7. Aha. See those 64s in there? I bet those are image dimensions, as I suspected this was a 64x64 image.</p>
+
+<p>After confirming that, I check the file size: 21872 bytes. Quite large for 4096 pixels, so I suspect this may be uncompressed, relying on the deflate compression of the wd files to keep the size down. In fact, that’s 5.34 bytes per pixel overall, including whatever headers are present. A 32-bit RGBA pixel is, of course, 4 bytes; if it were made of these, that would take 16384 bytes, leaving 5488 bytes for metadata. Seems a bit large.</p>
+
+<p>Alternatively, if I assume 5 bytes per pixel, that leaves 1392 bytes for metadata, but I have to wonder what that extra byte would be about.</p>
+
+<p>To settle this conundrum, I go back to the hex editor. I deliberately picked a texture with lots of greyscale elements, so there should be runs of three identical values if it’s just RGB pixel values.</p>
+
+<p>Sure enough, I scroll down a bit to offset <code class="language-plaintext highlighter-rouge">870</code> and see: <code class="language-plaintext highlighter-rouge">07070700 26262600 3F3F3F00</code>. If that doesn’t look like three RGBA pixels, I don’t know what does. The zeroes in the fourth byte of each suggest to me that it’s using a big-endian structure (alpha value last) with 00 being full opacity and FF being full transparency.</p>
+
+<p>I also see a lot of long runs of <code class="language-plaintext highlighter-rouge">00</code> bytes. Either that’s a large black area, or it regards all-zeroes as fully transparent. The compass texture is red, green, white, and transparency, so I’m thinking the former.</p>
+
+<p>I decide to ignore the alpha channel for now, pick byte <code class="language-plaintext highlighter-rouge">1C</code> as a starting point since it’s right after that 7, read off from there as RGB pixels, and render what I’ve got.</p>
+
+<p><img src="./Reverse Engineering Earth 2150, Part 6_ Texture Files _ Terrana’s Entire Website_files/compass1.png" alt=""></p>
+
+<p>Well. That’s promising. It even looks like my starting offset might be right. Not sure what’s going on with the red fading to white; the in-game compass doesn’t do that.</p>
+
+<p>Let’s see what that fourth value does if I read it as greyscale, which should get me an alpha mask…</p>
+
+<p><img src="./Reverse Engineering Earth 2150, Part 6_ Texture Files _ Terrana’s Entire Website_files/compass2.png" alt=""></p>
+
+<p>Yeah, that looks rather like an alpha mask, at least for the four-spoked bit that rotates. So putting it all together as RGBA gives me, yes, the rotatey cross part of the compass. Looks like I was wrong about <code class="language-plaintext highlighter-rouge">00</code> being fully opaque, though. <code class="language-plaintext highlighter-rouge">FF</code> is fully opaque, it’s just masking only the rotatey part of the compass to visibility here. The circular bit must be split out to a separate background file and is just included here because it was easier on the artist.</p>
+
+<p>But at this point, I’ve only read ~80% of the file. I decide to try reading the next 4096 bytes as a 64x64 8-bit greyscale image, and I get this.</p>
+
+<p><img src="./Reverse Engineering Earth 2150, Part 6_ Texture Files _ Terrana’s Entire Website_files/compass3.png" alt=""></p>
+
+<p>Is that… interlaced? There’s something weird going on with this format. I do see the compass shape in there, but it’s all jumbled up. I try a few different ways of rendering things, like reading two pixels per byte, then stumble upon trying it with double the width.</p>
+
+<p><img src="./Reverse Engineering Earth 2150, Part 6_ Texture Files _ Terrana’s Entire Website_files/compass4.png" alt=""></p>
+
+<p>Aha, look at that. There are a series of progressively smaller images, meaning this texture file is <a href="https://en.wikipedia.org/wiki/Mipmap">mipmapped</a>. I need to read these as 32-bit images of successively smaller sizes. Starting with the end of the first image at offset 0x401C, I read a 32x32 image, again discarding the fourth byte, and I get a half-size compass. Nice.</p>
+
+<p>At this point I wonder if that 7 in the header is the number of mipmaps, so I tweak my renderer to put them side by side, halving the size for each of 7 iterations. That gives me this:</p>
+
+<p><img src="./Reverse Engineering Earth 2150, Part 6_ Texture Files _ Terrana’s Entire Website_files/compass5.png" alt=""></p>
+
+<p>And that brings us right up to byte 21872, the end of the file.</p>
+
+<p>So now I’m left with two last mysteries: what do those 1 and 38 numbers mean in the header? An hour after starting, I believe I’ve reached the end of what <code class="language-plaintext highlighter-rouge">compass.tex</code> can teach me alone, so let’s try something more ambitious.</p>
+
+<p>I dump out <code class="language-plaintext highlighter-rouge">LCLUMO3.TEX</code>, the texture file for that unit I used in the screenshot last time, run it through my renderer.</p>
+
+<p><img src="./Reverse Engineering Earth 2150, Part 6_ Texture Files _ Terrana’s Entire Website_files/moon1.png" alt=""></p>
+
+<p>And I get a splattered mess. Lovely. The renderer reports that it got to byte 30763, but the file is 43760 bytes, so I’ve badly misread something. To the hex editor once again!</p>
+
+<p>I see the familiar <code class="language-plaintext highlighter-rouge">40000000 40000000 07000000</code> there, indicating a 64x64 texture with 7 maps, but it’s later in the header, there are extra fields. One of them is <code class="language-plaintext highlighter-rouge">TEX␀</code> again. Does this file contain multiple textures?</p>
+
+<p>It looks like there’s a 16-byte TEX header, then <em>another</em> 16-byte TEX header, then the image data starts. I read that off, check where it finishes, and… sure enough, another 16-byte TEX header, then more image data. I read both off.</p>
+
+<p><img src="./Reverse Engineering Earth 2150, Part 6_ Texture Files _ Terrana’s Entire Website_files/moon2.png" alt=""></p>
+
+<p>That’s the Moon unit, intact and damaged respectively. Nice. So let’s try and figure out these headers.</p>
+
+<p>I read off the four headers I’ve seen so far, one from <code class="language-plaintext highlighter-rouge">compass.tex</code> and the three from <code class="language-plaintext highlighter-rouge">LCUMO3.TEX</code>. I notice that they all begin <code class="language-plaintext highlighter-rouge">TEX␀</code> and then a 1. That leaves 8 bytes that are different between the four.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Header</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">compass.tex</code></td>
+      <td><code class="language-plaintext highlighter-rouge">26 00 00 03  88 88 00 00</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">LUMO3.TEX</code> start</td>
+      <td><code class="language-plaintext highlighter-rouge">02 00 00 43  02 00 00 00</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">LUMO3.TEX</code> 1st image</td>
+      <td><code class="language-plaintext highlighter-rouge">06 00 00 03  88 88 00 00</code></td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">LUMO3.TEX</code> 2nd image</td>
+      <td><code class="language-plaintext highlighter-rouge">06 00 00 03  88 88 00 00</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>First thing I notice is that the actual images have something in the form <code class="language-plaintext highlighter-rouge">?6000003 88880000</code> for theirs. The second is that the very first header in <code class="language-plaintext highlighter-rouge">LUMO3.TEX</code> has the value 2 in its last set of 4 bytes. Image count in file? I need more data points.</p>
+
+<p>So next, I wrap my renderer in a loop that will just dump <em>all</em> of the textures to see which ones work, and spit out a CSV file with their header values for good measure. Seems files with <code class="language-plaintext highlighter-rouge">06000003</code> in the first header field work as expected. Not surprising considering I wrote the renderer to handle one of those. Helpfully, <code class="language-plaintext highlighter-rouge">06020003</code>, <code class="language-plaintext highlighter-rouge">06040003</code>, and <code class="language-plaintext highlighter-rouge">06050003</code> Also work fine. This suggests to me that anything with <code class="language-plaintext highlighter-rouge">06</code> in that first byte is a single-texture file. But what do those other bytes mean?</p>
+
+<p>There’s only one with <code class="language-plaintext highlighter-rouge">06020003</code>, and it appears to contain four frames of animation. Its second word is <code class="language-plaintext highlighter-rouge">88880000</code>, same as the compass, something it share with the following two types as well.</p>
+
+<p>Also only one with <code class="language-plaintext highlighter-rouge">06040003</code>, which is a gradient. The filename is <code class="language-plaintext highlighter-rouge">nefire</code> so I’m thinking it’s used for a fire effect, or possibly the “getting hot” glow things being hit by lasers acquire.</p>
+
+<p>Then there are three with <code class="language-plaintext highlighter-rouge">06050003</code>, which are a lava texture and two energy shield effects. This suggests to me that the <code class="language-plaintext highlighter-rouge">04</code> bit in the second byte means that the texture emits light.</p>
+
+<p>It also seems that <code class="language-plaintext highlighter-rouge">16000003</code> renders correctly, so <code class="language-plaintext highlighter-rouge">x6</code> may be the initial byte that indicates a single image.</p>
+
+<p>With that in mind, I change my script to try to read a multi-image file for all prefixes except those to see what happens. My computer chugs for several minutes on that one and eats up several gigabytes of memory. Considering the entire corpus of uncompressed texture files is 50MB, so… oops. I try again, but this time making sure that the sub-images have that <code class="language-plaintext highlighter-rouge">TEX␀</code> sequence in place as a basic validity check. It spits out the result in a couple of seconds this time.</p>
+
+<p>A lot more stuff is rendering, but some still isn’t. I notice that some things are reporting weird image dimensions, others aren’t finding the <code class="language-plaintext highlighter-rouge">TEX␀</code> header where they expect it. I quickly work out that my logic for working out what’s a single-texture file and what isn’t is incomplete. But I do notice something else: all the single-texture files have <code class="language-plaintext highlighter-rouge">88880000</code> as their second word, all the others have a small integer. That’s pretty easy to check for.</p>
+
+<p>Run it again, and there are still quite a lot of failures. Some are now reporting that they overran their buffers while trying to read in the image data. My rendering library caught that and correctly raised an exception. I was confused, though; the way I wrote it, the buffer should always be exactly the same size as the amount of data read.</p>
+
+<p>I put some extra debug logging into see what was going on there, and found that when it raised that particular error, it was always several mipmaps in and was trying to read to a 0x0 image. That meant the buffer had size 0, and I was calling the <code class="language-plaintext highlighter-rouge">read</code> function with a value of zero - which in Python land means “read the whole rest of the file”. So that explained that, but why was it trying to read too many maps?</p>
+
+<p>I checked how many it was trying to read, and the number was 4 279 272 068. That is an absurdly huge number, pretty close to the largest possible 32-bit integer, which tells me it’s trying to read binary data as an integer. So I check the hexadecimal value: <code class="language-plaintext highlighter-rouge">84 82 10 FF</code>. That’s an RGBA pixel; you can tell by the <code class="language-plaintext highlighter-rouge">FF</code> alpha mask in the last byte indicating full opacity. A dull shade of yellow, by the looks of the numbers.</p>
+
+<p>What this must mean is that not all textures have mipmaps, and those that don’t go straight into the pixel data rather than specifying a value of 1. It must be possible to tell which is which from the earlier headers. The second word is <code class="language-plaintext highlighter-rouge">88 88 00 00</code> when you get here, so that leaves the first one. I write a quick script to read off the first word of every header in every file and whether it’s followed by a sensible mipmap number, which I defined as 0 &lt; sensible &lt; 100.</p>
+
+<p>The script spat out a useful result much right away: only when the first byte is <code class="language-plaintext highlighter-rouge">06</code>, <code class="language-plaintext highlighter-rouge">16</code>, or <code class="language-plaintext highlighter-rouge">26</code> is there a mipmap count. So I change my renderer to only look for a mipmap count when it sees those bytes, and run again.</p>
+
+<p>This time, only one file failed. The error message: <code class="language-plaintext highlighter-rouge">TreeShadows.tex: No magic string in sub header 0 b'\\x02\\x00\\x00\\x00TEX\\x00'</code>. Interesting. That’s offset by 4 bytes from where it’s supposed to be. For some reason, this file has an extra header field. The first word of the header is <code class="language-plaintext highlighter-rouge">20 00 00 C0</code>. I’ve seen files with <code class="language-plaintext highlighter-rouge">20</code> in the first byte render fine, but this <code class="language-plaintext highlighter-rouge">C0</code> in the fourth is new. That must be what indicates there’s an extra field. But what does it mean? And which one is the number of textures?</p>
+
+<p>I check the values of those two fields: 4 and 2. Okay, easy enough. Now I have to count the number of <code class="language-plaintext highlighter-rouge">TEX␀</code> headers in the file. I do this and… 8? Is it really just a case of multiplying them together? Might be categories and textures per category.</p>
+
+<p>Add handling logic for that, run again. Success! I now have a complete texture library for the game.</p>
+
+<p><img src="./Reverse Engineering Earth 2150, Part 6_ Texture Files _ Terrana’s Entire Website_files/grid.png" alt=""></p>
+
+<p>My renderer’s up on my git repo as usual if you’re curious, but like I said, this has already been done by others. Now, you might be thinking that all this is just an excuse to avoid writing that documentation I know I really should, and you’d be right.</p>
+
+<hr>
+
+<h3 id="posts-in-this-series">Posts in this series:</h3>
+
+<ul>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150.html">Reverse Engineering Earth 2150, Part 1: File Structure</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-2.html">Reverse Engineering Earth 2150, Part 2: Data Types</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-3.html">Reverse Engineering Earth 2150, Part 3: Vehicle Data</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-4.html">Reverse Engineering Earth 2150, Part 4: PAR Decompiler</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-5.html">Reverse Engineering Earth 2150, Part 5: PAR Compiler</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-6.html">Reverse Engineering Earth 2150, Part 6: Texture Files</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-7.html">Reverse Engineering Earth 2150, Part 7: Mesh Files</a></li>
+</ul>
+</content>
+
+<div class="tag-list h-card">Tags: <a href="http://www.ninetailed.net/tag/reverse-engineering-earth-2150/">Reverse Engineering Earth 2150</a>, <a href="http://www.ninetailed.net/tag/earth-2150/">Earth 2150</a>, <a href="http://www.ninetailed.net/tag/games/">Games</a>, <a href="http://www.ninetailed.net/tag/gushing-about-tech/">Gushing About Tech</a></div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Terrana's Entire Website</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list"><li class="p-name">Email</li>
+            <li><a class="u-email" href="mailto:terrana@ninetailed.net">terrana@ninetailed.net</a></li><li class="p-name">Keyoxide</li>
+            <li><a class="u-email" href="https://keyoxide.org/7e821f4a413d6d61ee4d62bec8a045f9cf79681e" title="7e821f4a413d6d61ee4d62bec8a045f9cf79681e">7e821f4a413d6...</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://sleeping.town/@terrana"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#mastodon"></use></svg> <span class="username">terrana@sleeping.town</span></a></li><li><a href="http://www.ninetailed.net/feed.xml"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#rss"></use></svg> <span>RSS</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+
+</body></html>

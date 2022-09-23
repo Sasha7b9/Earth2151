@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<!-- saved from url=(0068)http://www.ninetailed.net/reverse-engineering-earth-2150-part-4.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Reverse Engineering Earth 2150, Part 4: PAR Decompiler | Terrana’s Entire Website</title>
+<meta name="generator" content="Jekyll v4.2.0">
+<meta property="og:title" content="Reverse Engineering Earth 2150, Part 4: PAR Decompiler">
+<meta name="author" content="Terrana">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="This is what it’s all been building towards. I now have a script that reads off the contents of a PAR file and dumps all the data to a series of CSV files. You can find it over on my git repo if you’re interested, as I know a few people have been. Special thanks to Alexander O., CYDI-TST, Guardian, __jmp32, Noctis, and Skeltek, variously from the InsideEARTH and United Lunar Dynasty discords, for their help in figuring out the last few details, especially to __jmp32 and Skeltek for showing me where to find the source file so I could get the field names.">
+<meta property="og:description" content="This is what it’s all been building towards. I now have a script that reads off the contents of a PAR file and dumps all the data to a series of CSV files. You can find it over on my git repo if you’re interested, as I know a few people have been. Special thanks to Alexander O., CYDI-TST, Guardian, __jmp32, Noctis, and Skeltek, variously from the InsideEARTH and United Lunar Dynasty discords, for their help in figuring out the last few details, especially to __jmp32 and Skeltek for showing me where to find the source file so I could get the field names.">
+<link rel="canonical" href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-4.html">
+<meta property="og:url" content="/reverse-engineering-earth-2150-part-4.html">
+<meta property="og:site_name" content="Terrana’s Entire Website">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-06-07T00:00:00+01:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Reverse Engineering Earth 2150, Part 4: PAR Decompiler">
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"Reverse Engineering Earth 2150, Part 4: PAR Decompiler","url":"/reverse-engineering-earth-2150-part-4.html","datePublished":"2021-06-07T00:00:00+01:00","dateModified":"2021-06-07T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"/reverse-engineering-earth-2150-part-4.html"},"author":{"@type":"Person","name":"Terrana"},"description":"This is what it’s all been building towards. I now have a script that reads off the contents of a PAR file and dumps all the data to a series of CSV files. You can find it over on my git repo if you’re interested, as I know a few people have been. Special thanks to Alexander O., CYDI-TST, Guardian, __jmp32, Noctis, and Skeltek, variously from the InsideEARTH and United Lunar Dynasty discords, for their help in figuring out the last few details, especially to __jmp32 and Skeltek for showing me where to find the source file so I could get the field names.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="./Reverse Engineering Earth 2150, Part 4_ PAR Decompiler _ Terrana’s Entire Website_files/main.css"><link type="application/atom+xml" rel="alternate" href="http://www.ninetailed.net/feed.xml" title="Terrana&#39;s Entire Website"><link rel="me" href="https://sleeping.town/@terrana">
+  <link rel="me" href="https://ninetailed.space/@Terrana">
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="http://www.ninetailed.net/">Terrana's Entire Website</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="http://www.ninetailed.net/about/">About</a><a class="page-link" href="http://www.ninetailed.net/contact/">Contact</a><a class="page-link" href="http://www.ninetailed.net/earth-2150/">Earth 2150</a><span class="header-divider"></span><a class="page-link" href="https://git.ninetailed.net/">Git</a><a class="page-link" href="https://keyoxide.org/7e821f4a413d6d61ee4d62bec8a045f9cf79681e" rel="me">Keyoxide</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        
+
+<h1>Reverse Engineering Earth 2150, Part 4: PAR Decompiler</h1>
+
+
+<content><p>This is what it’s all been building towards. I now have a script that reads off the contents of a PAR file and dumps all the data to a series of CSV files. You can find it <a href="https://git.ninetailed.net/terrana/earth-2150/src/commit/ecba345e1ba5db73e4c0380532c43dbba4412ac0/par2csv.py">over on my git repo</a> if you’re interested, as I know a few people have been. Special thanks to Alexander O., CYDI-TST, Guardian, __jmp32, Noctis, and Skeltek, variously from the InsideEARTH and United Lunar Dynasty discords, for their help in figuring out the last few details, especially to __jmp32 and Skeltek for showing me where to find the source file so I could get the field names.</p>
+
+<p>The next step after this is writing another script to reverse this process and  and finish the documentation I started in <a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-3.html">part 3</a>, but today I’m going to talk about how the script works.</p>
+
+<p>The essence of it is much the same as my early, hacky script. It reads the 16 byte file header and extracts the number of entity groups, reads each group in turn by the structure I talked about in <a href="http://www.ninetailed.net/reverse-engineering-earth-2150.html">part 1</a>. Then, after all those are done, it reads the number of research definitions, then the definitions themselves. I still don’t know what the entire file header does or what those two trailing integers are for, but it turns out you don’t need them to read the file. Probably going to come back to bite me when I recompile the file, but that’s a problem for future Terrana.</p>
+
+<p>If I were doing this <em>properly</em>, I’d probably stream this stuff from file to file, but since the PAR file is less than a megabyte, I’m just loading the whole thing into memory. Modern computers have gigabytes of the stuff.</p>
+
+<p>What happens next is where I apply all that I’ve learned about PAR files over the last couple of weeks. The entities are categorized based on their type number and their class ID (if they have one), then burped out into an appropriately named CSV file, which has been helpfully pre-populated with the field names in the header. Then it finishes. Whole process takes less than a second.</p>
+
+<p>A couple of types presented a problem for categorization. Type 8, sound packs, has three different structures depending on what kind of sound pack it is, but doesn’t have a class ID. In the end, I split it up based on the entity names: groups where the first entity starts with <code class="language-plaintext highlighter-rouge">TALK_</code> are unit speech packs, ones with <code class="language-plaintext highlighter-rouge">PLAYERTALK_</code> are interface speech files, everything else is a standard sound pack. It’s a hack, but I haven’t worked out how to do it properly yet.</p>
+
+<p>Type 10 is even worse. It’s a jumbled mishmash of parameters of various kinds with a different structure for every. Single. Group. I honestly didn’t even <em>try</em> to deal with those, I just dumped them out to <code class="language-plaintext highlighter-rouge">parameters.csv</code> and hoped they’d go away.</p>
+
+<p>Once I’ve got the compiler working and the documentation done, then I’ll start work on making these actually <em>good</em> pieces of software. Might start over in another language that I can actually compile or just harden these a bit so they handle error conditions.</p>
+
+<hr>
+
+<h3 id="posts-in-this-series">Posts in this series:</h3>
+
+<ul>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150.html">Reverse Engineering Earth 2150, Part 1: File Structure</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-2.html">Reverse Engineering Earth 2150, Part 2: Data Types</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-3.html">Reverse Engineering Earth 2150, Part 3: Vehicle Data</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-4.html">Reverse Engineering Earth 2150, Part 4: PAR Decompiler</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-5.html">Reverse Engineering Earth 2150, Part 5: PAR Compiler</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-6.html">Reverse Engineering Earth 2150, Part 6: Texture Files</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-7.html">Reverse Engineering Earth 2150, Part 7: Mesh Files</a></li>
+</ul>
+</content>
+
+<div class="tag-list h-card">Tags: <a href="http://www.ninetailed.net/tag/reverse-engineering-earth-2150/">Reverse Engineering Earth 2150</a>, <a href="http://www.ninetailed.net/tag/earth-2150/">Earth 2150</a>, <a href="http://www.ninetailed.net/tag/games/">Games</a>, <a href="http://www.ninetailed.net/tag/gushing-about-tech/">Gushing About Tech</a></div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Terrana's Entire Website</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list"><li class="p-name">Email</li>
+            <li><a class="u-email" href="mailto:terrana@ninetailed.net">terrana@ninetailed.net</a></li><li class="p-name">Keyoxide</li>
+            <li><a class="u-email" href="https://keyoxide.org/7e821f4a413d6d61ee4d62bec8a045f9cf79681e" title="7e821f4a413d6d61ee4d62bec8a045f9cf79681e">7e821f4a413d6...</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://sleeping.town/@terrana"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#mastodon"></use></svg> <span class="username">terrana@sleeping.town</span></a></li><li><a href="http://www.ninetailed.net/feed.xml"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#rss"></use></svg> <span>RSS</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+
+</body></html>

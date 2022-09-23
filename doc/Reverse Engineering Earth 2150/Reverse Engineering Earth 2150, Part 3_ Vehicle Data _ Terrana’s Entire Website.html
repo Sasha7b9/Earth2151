@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<!-- saved from url=(0068)http://www.ninetailed.net/reverse-engineering-earth-2150-part-3.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Reverse Engineering Earth 2150, Part 3: Vehicle Data | Terrana’s Entire Website</title>
+<meta name="generator" content="Jekyll v4.2.0">
+<meta property="og:title" content="Reverse Engineering Earth 2150, Part 3: Vehicle Data">
+<meta name="author" content="Terrana">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="After talking to the Earth 2150 community a bit more, I hit the proverbial jackpot. I was able to get hold of the source file the PAR file was compiled from. It has the names of all of the fields, and they match the order of those in the PAR file. That means I have a lot more information than I did last time.">
+<meta property="og:description" content="After talking to the Earth 2150 community a bit more, I hit the proverbial jackpot. I was able to get hold of the source file the PAR file was compiled from. It has the names of all of the fields, and they match the order of those in the PAR file. That means I have a lot more information than I did last time.">
+<link rel="canonical" href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-3.html">
+<meta property="og:url" content="/reverse-engineering-earth-2150-part-3.html">
+<meta property="og:site_name" content="Terrana’s Entire Website">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-06-06T00:00:00+01:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Reverse Engineering Earth 2150, Part 3: Vehicle Data">
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"Reverse Engineering Earth 2150, Part 3: Vehicle Data","url":"/reverse-engineering-earth-2150-part-3.html","datePublished":"2021-06-06T00:00:00+01:00","dateModified":"2021-06-06T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"/reverse-engineering-earth-2150-part-3.html"},"author":{"@type":"Person","name":"Terrana"},"description":"After talking to the Earth 2150 community a bit more, I hit the proverbial jackpot. I was able to get hold of the source file the PAR file was compiled from. It has the names of all of the fields, and they match the order of those in the PAR file. That means I have a lot more information than I did last time.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="./Reverse Engineering Earth 2150, Part 3_ Vehicle Data _ Terrana’s Entire Website_files/main.css"><link type="application/atom+xml" rel="alternate" href="http://www.ninetailed.net/feed.xml" title="Terrana&#39;s Entire Website"><link rel="me" href="https://sleeping.town/@terrana">
+  <link rel="me" href="https://ninetailed.space/@Terrana">
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="http://www.ninetailed.net/">Terrana's Entire Website</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="http://www.ninetailed.net/about/">About</a><a class="page-link" href="http://www.ninetailed.net/contact/">Contact</a><a class="page-link" href="http://www.ninetailed.net/earth-2150/">Earth 2150</a><span class="header-divider"></span><a class="page-link" href="https://git.ninetailed.net/">Git</a><a class="page-link" href="https://keyoxide.org/7e821f4a413d6d61ee4d62bec8a045f9cf79681e" rel="me">Keyoxide</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        
+
+<h1>Reverse Engineering Earth 2150, Part 3: Vehicle Data</h1>
+
+
+<content><p>After talking to the Earth 2150 community a bit more, I hit the proverbial jackpot. I was able to get hold of the <a href="https://github.com/InsideEarth2150/IEO-Updates/blob/6be6cc538c496652b0174949134ae584f9b14790/Parameters/EARTH2150_2.2.xls">source file</a> the PAR file was compiled from. It has the names of all of the fields, and they match the order of those in the PAR file. That means I have a <em>lot</em> more information than I did last time.</p>
+
+<p>So far, I’ve adequately worked out meanings for types 1, 2, 3, 4, 6, and 7. Types 5 and 8 are very complex and has a lot of subtypes that I haven’t started work on yet. Type 9 is some sort of listing, and type 10 seems to be miscellaneous parameters, again still pending some research.</p>
+
+<p>As I suspected, the -1 following each string is meaningless. Best guess, it’s padding to prevent buffer overflows, but I will most likely never know what the designer’s intent was. I won’t be including it in tables, but I’ll maintain its effect on the array index offsets. That means the field number will increment by 2 after each string field.</p>
+
+<p>So, to make use of this information, I’ve rewritten my <a href="https://git.ninetailed.net/terrana/earth-2150/src/commit/82fd737f6f13fb73a2dc37fbae983b5ff570a580/parparse2.py">Python script</a> to make use of this new information and spit out the decoded data for those six types. Maybe don’t try running it yourself; it uses a hard coded file path and is not even remotely error-tolerant.</p>
+
+<p>Nonetheless, here’s what I’ve got, at least as regards type 1.</p>
+
+<h2 id="type-1-vehicles">Type 1: Vehicles</h2>
+<p>There are 5 classes of vehicle:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Class</th>
+      <th>Code</th>
+      <th>Fields</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>MOVEABLE</td>
+      <td>0x0101c000</td>
+      <td>49</td>
+      <td>Base class that covers anything that doesn’t fit any of the below</td>
+    </tr>
+    <tr>
+      <td>SUPPLYTRANSPORTER</td>
+      <td>0x0101c001</td>
+      <td>54</td>
+      <td>Flying ammo transports</td>
+    </tr>
+    <tr>
+      <td>BUILDROBOT</td>
+      <td>0x0101c002</td>
+      <td>81</td>
+      <td>Gruz and Mammoth builders</td>
+    </tr>
+    <tr>
+      <td>MININGROBOT</td>
+      <td>0x0101c004</td>
+      <td>60</td>
+      <td>UCS harvesters</td>
+    </tr>
+    <tr>
+      <td>SAPPERROBOT</td>
+      <td>0x0101c008</td>
+      <td>59</td>
+      <td>Mine layers</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The names are new, but I’d already worked the numbers out, more or less, without the source file.</p>
+
+<h3 id="common-fields">Common fields</h3>
+<p>All Vehicle classes have the following basic fields:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>classID</td>
+      <td>int</td>
+      <td>Explained above</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>mesh</td>
+      <td>string</td>
+      <td>Reference to a type 5 model entity</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>shadowType</td>
+      <td>int</td>
+      <td>Reference to one of several predefined shadow shapes</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>viewParamsIndex</td>
+      <td>int</td>
+      <td>Still don’t know what this is</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>cost</td>
+      <td>int</td>
+      <td>Money cost to build</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>timeOfBuild</td>
+      <td>int</td>
+      <td>Time to build in 1/20s ticks</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>$soundPackID</td>
+      <td>string</td>
+      <td>Reference to a type 8 sound pack containing unit sound effects</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>$smokeID</td>
+      <td>string</td>
+      <td>Reference to a type 5 smoke effect to emit when damaged</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>$killExplosionID</td>
+      <td>string</td>
+      <td>Reference to a type 5 explosion effect to use when destroyed</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>$destructedID</td>
+      <td>string</td>
+      <td>Reference to a type 5 wreckage entity</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>hp</td>
+      <td>int</td>
+      <td>Unit hit points</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>regenerationHP</td>
+      <td>int</td>
+      <td>HP regenerated per tick</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>armour</td>
+      <td>int</td>
+      <td>% kinetic damage reduction</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>calorificCapacity</td>
+      <td>int</td>
+      <td>How much heat can be absorbed from laser weapons before exploding</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>disableResist</td>
+      <td>int</td>
+      <td>Electrical HP; damaged by ion and lightning guns, disabled when 0</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>storeableFlags</td>
+      <td>int</td>
+      <td>Special effects that the unit can have applied, such as cloaking</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>standType</td>
+      <td>int</td>
+      <td>Not completely sure what this is, I think it refers to how closely the unit sticks to the center of the tile it’s in</td>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td>sightRange</td>
+      <td>int</td>
+      <td>How many tiles the unit pushes back the fog of war</td>
+    </tr>
+    <tr>
+      <td>23</td>
+      <td>$talkPackID</td>
+      <td>string</td>
+      <td>Reference to a type 8 sound pack containing unit voice responses</td>
+    </tr>
+    <tr>
+      <td>25</td>
+      <td>$shieldGeneratorID</td>
+      <td>string</td>
+      <td>Reference to a type 7 shield generator class</td>
+    </tr>
+    <tr>
+      <td>27</td>
+      <td>maxShieldUpdate</td>
+      <td>int</td>
+      <td>Maximum shield generator level, -1 for no shield generator</td>
+    </tr>
+    <tr>
+      <td>28</td>
+      <td>slot1Type</td>
+      <td>bitmask</td>
+      <td>Equipment categories that can fit in slot 1</td>
+    </tr>
+    <tr>
+      <td>29</td>
+      <td>slot2Type</td>
+      <td>bitmask</td>
+      <td>Same for slot 2</td>
+    </tr>
+    <tr>
+      <td>30</td>
+      <td>slot3Type</td>
+      <td>bitmask</td>
+      <td>Same for slot 3</td>
+    </tr>
+    <tr>
+      <td>31</td>
+      <td>slot4Type</td>
+      <td>bitmask</td>
+      <td>Same for slot 4</td>
+    </tr>
+    <tr>
+      <td>32</td>
+      <td>soilSpeed</td>
+      <td>int</td>
+      <td>How many ticks it takes the unit to move into a tile with normal terrain</td>
+    </tr>
+    <tr>
+      <td>33</td>
+      <td>roadSpeed</td>
+      <td>int</td>
+      <td>Same but for road tiles, usually faster</td>
+    </tr>
+    <tr>
+      <td>34</td>
+      <td>sandSpeed</td>
+      <td>int</td>
+      <td>Same but for sand, usually slower</td>
+    </tr>
+    <tr>
+      <td>35</td>
+      <td>bankSpeed</td>
+      <td>int</td>
+      <td>Same but for slopes</td>
+    </tr>
+    <tr>
+      <td>36</td>
+      <td>waterSpeed</td>
+      <td>int</td>
+      <td>How many ticks it takes the unit to move into coastal water tiles</td>
+    </tr>
+    <tr>
+      <td>37</td>
+      <td>deepWaterSpeed</td>
+      <td>int</td>
+      <td>Same but for deep water</td>
+    </tr>
+    <tr>
+      <td>38</td>
+      <td>airSpeed</td>
+      <td>int</td>
+      <td>Still not sure about this one. I think it’s vertical speed for aircraft</td>
+    </tr>
+    <tr>
+      <td>39</td>
+      <td>objectType</td>
+      <td>int</td>
+      <td>Reference to a movement category. There’s one for tracks and wheels, one for helicopters, one for ships, and so on</td>
+    </tr>
+    <tr>
+      <td>40</td>
+      <td>$engineSmokeID</td>
+      <td>string</td>
+      <td>Reference to a type 5 smoke effect emitted when moving</td>
+    </tr>
+    <tr>
+      <td>42</td>
+      <td>$dustID</td>
+      <td>string</td>
+      <td>Reference to a type 5 dust effect emitted when moving</td>
+    </tr>
+    <tr>
+      <td>44</td>
+      <td>$billowID</td>
+      <td>string</td>
+      <td>Reference to a type 5 wake effect emitted when moving</td>
+    </tr>
+    <tr>
+      <td>46</td>
+      <td>$standBillowID</td>
+      <td>string</td>
+      <td>Reference to a type 5 ripple effect emitted when <em>not</em> moving</td>
+    </tr>
+    <tr>
+      <td>48</td>
+      <td>$trackID</td>
+      <td>string</td>
+      <td>Reference to a type 5 track effect left on the ground when moving</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>A few of these deserve special note. Field 3 is particularly interesting, as I would probably never have worked out that it was shadow shape just by reading the output. I’m pretty sure these are hard-coded effects inside the engine itself rather than anything defined in the parameters file.</p>
+
+<p>I was utterly wrong about 4. I’m not sure what it actually does, but it’s definitely not factory building assignment.</p>
+
+<p>And finally, 39 is the “movement type” field I was trying to cram into 3 before.</p>
+
+<p>Looking at it, it’s kind of surprising how many of these I got right.</p>
+
+<h3 id="supply-transporters">Supply Transporters</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>50</td>
+      <td>ammoCapacity</td>
+      <td>int</td>
+      <td>How many rounds the transport can carry per trip</td>
+    </tr>
+    <tr>
+      <td>51</td>
+      <td>animSupplyDownStart</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>52</td>
+      <td>animSupplyDownEnd</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>53</td>
+      <td>animSupplyUpStart</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>54</td>
+      <td>animSupplyUpEnd</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Not really all that much extra here. These would have been hard to work out, as they’re all the same across units, and the animation timing stuff would have made no sense at all to me.</p>
+
+<h3 id="builders">Builders</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>50</td>
+      <td>$wallD</td>
+      <td>string</td>
+      <td>Reference to a type 4 building that describes which wall type the unit makes</td>
+    </tr>
+    <tr>
+      <td>52</td>
+      <td>$bridgeID</td>
+      <td>string</td>
+      <td>Same but for bridges</td>
+    </tr>
+    <tr>
+      <td>54</td>
+      <td>tunnelNumber</td>
+      <td>int</td>
+      <td>Not completely sure, but I think it refers to the wall texture tunnels get when dug</td>
+    </tr>
+    <tr>
+      <td>55</td>
+      <td>roadBuildTime</td>
+      <td>int</td>
+      <td>How many ticks it takes to lay down a road</td>
+    </tr>
+    <tr>
+      <td>56</td>
+      <td>flatBuildTime</td>
+      <td>int</td>
+      <td>How many ticks it takes to flatten terrain</td>
+    </tr>
+    <tr>
+      <td>57</td>
+      <td>trenchBuildTime</td>
+      <td>int</td>
+      <td>How many ticks it takes to dig a trench</td>
+    </tr>
+    <tr>
+      <td>58</td>
+      <td>tunnelBuildTime</td>
+      <td>int</td>
+      <td>How many ticks it takes to dig a tunnel</td>
+    </tr>
+    <tr>
+      <td>59</td>
+      <td>buildObjectAnimationAngle</td>
+      <td>int</td>
+      <td>Which direction the unit should face relative to a site to start building there</td>
+    </tr>
+    <tr>
+      <td>60</td>
+      <td>digNormalAnimationAngle</td>
+      <td>int</td>
+      <td>Same for the tunnel digging animation</td>
+    </tr>
+    <tr>
+      <td>61</td>
+      <td>digLowAnimationAngle</td>
+      <td>int</td>
+      <td>Same for the trench digging animation</td>
+    </tr>
+    <tr>
+      <td>62</td>
+      <td>animBuildObjectStartStart</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>63</td>
+      <td>animBuildObjectStartEnd</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>64</td>
+      <td>animBuildObjectWorkStart</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>65</td>
+      <td>animBuildObjectWorkEnd</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>66</td>
+      <td>animBuildObjectEndStart</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>67</td>
+      <td>animBuildObjectEndEnd</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>68</td>
+      <td>animDigNormalStartStart</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>69</td>
+      <td>animDigNormalStartEnd</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>70</td>
+      <td>animDigNormalWorkStart</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>71</td>
+      <td>animDigNormalWorkEnd</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>72</td>
+      <td>animDigNormalEndStart</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>73</td>
+      <td>animDigNormalEndEnd</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>74</td>
+      <td>animDigLowStartStart</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>75</td>
+      <td>animDigLowStartEnd</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>76</td>
+      <td>animDigLowWorkStart</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>77</td>
+      <td>animDigLowWorkEnd</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>78</td>
+      <td>animDigLowEndStart</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>79</td>
+      <td>animDigLowEndEnd</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>80</td>
+      <td>$digSmokeID</td>
+      <td>string</td>
+      <td>Reference to a type 5 smoke entity that is emitted when digging</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The type references were clear enough, but again, I’d never have worked out the animation details.</p>
+
+<h3 id="harvesters">Harvesters</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>50</td>
+      <td>containersCnt</td>
+      <td>int</td>
+      <td>How many containers worth of resources the harvester can carry</td>
+    </tr>
+    <tr>
+      <td>51</td>
+      <td>ticksPerContainer</td>
+      <td>int</td>
+      <td>How many ticks it takes to mine one container</td>
+    </tr>
+    <tr>
+      <td>52</td>
+      <td>putResourceAngle</td>
+      <td>int</td>
+      <td>Direction to face when dropping off at the refinery</td>
+    </tr>
+    <tr>
+      <td>53</td>
+      <td>animHarvestStartStart</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>54</td>
+      <td>animHarvestStartEnd</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>55</td>
+      <td>animHarvestWorkStart</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>56</td>
+      <td>animHarvestWorkEnd</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>57</td>
+      <td>animHarvestEndStart</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>58</td>
+      <td>animHarvestEndEnd</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>59</td>
+      <td>$harvestSmokeID</td>
+      <td>string</td>
+      <td>Reference to a type 5 smoke entity emitted when mining</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="minelayers">Minelayers</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>50</td>
+      <td>minesLookRange</td>
+      <td>int</td>
+      <td>Not entirely sure, but I think this is how far the minelayer will move to automatically sweep mines</td>
+    </tr>
+    <tr>
+      <td>51</td>
+      <td>$mineID</td>
+      <td>string</td>
+      <td>Reference to a type 5 mine entity that’s laid on the ground</td>
+    </tr>
+    <tr>
+      <td>53</td>
+      <td>maxMinesCount</td>
+      <td>int</td>
+      <td>Number of mines carried per reload</td>
+    </tr>
+    <tr>
+      <td>54</td>
+      <td>animDownStart</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>55</td>
+      <td>animDownEnd</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>56</td>
+      <td>animUpStart</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>57</td>
+      <td>animUpEnd</td>
+      <td>int</td>
+      <td>Animation timing information</td>
+    </tr>
+    <tr>
+      <td>58</td>
+      <td>$putMineSmokeID</td>
+      <td>string</td>
+      <td>Reference to a type 5 smoke entity emitted when laying mines</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="wrapping-up">Wrapping up</h3>
+<p>And that’s it. With the exception of fields 4 and 38, that’s every part of type 1 explained. More importantly, I think I have enough information now to run the process in reverse, which means I can compile a new PAR file with modified units in it. Next step will be writing that compiler, I think! But I’m not quite done yet. There are several more entity types to get through, and I’ll probably write those up tomorrow.</p>
+
+<hr>
+
+<h3 id="posts-in-this-series">Posts in this series:</h3>
+
+<ul>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150.html">Reverse Engineering Earth 2150, Part 1: File Structure</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-2.html">Reverse Engineering Earth 2150, Part 2: Data Types</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-3.html">Reverse Engineering Earth 2150, Part 3: Vehicle Data</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-4.html">Reverse Engineering Earth 2150, Part 4: PAR Decompiler</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-5.html">Reverse Engineering Earth 2150, Part 5: PAR Compiler</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-6.html">Reverse Engineering Earth 2150, Part 6: Texture Files</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-7.html">Reverse Engineering Earth 2150, Part 7: Mesh Files</a></li>
+</ul>
+</content>
+
+<div class="tag-list h-card">Tags: <a href="http://www.ninetailed.net/tag/reverse-engineering-earth-2150/">Reverse Engineering Earth 2150</a>, <a href="http://www.ninetailed.net/tag/earth-2150/">Earth 2150</a>, <a href="http://www.ninetailed.net/tag/games/">Games</a>, <a href="http://www.ninetailed.net/tag/gushing-about-tech/">Gushing About Tech</a></div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Terrana's Entire Website</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list"><li class="p-name">Email</li>
+            <li><a class="u-email" href="mailto:terrana@ninetailed.net">terrana@ninetailed.net</a></li><li class="p-name">Keyoxide</li>
+            <li><a class="u-email" href="https://keyoxide.org/7e821f4a413d6d61ee4d62bec8a045f9cf79681e" title="7e821f4a413d6d61ee4d62bec8a045f9cf79681e">7e821f4a413d6...</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://sleeping.town/@terrana"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#mastodon"></use></svg> <span class="username">terrana@sleeping.town</span></a></li><li><a href="http://www.ninetailed.net/feed.xml"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#rss"></use></svg> <span>RSS</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+
+</body></html>

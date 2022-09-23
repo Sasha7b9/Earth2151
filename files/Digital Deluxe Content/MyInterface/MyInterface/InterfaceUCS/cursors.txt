@@ -1,0 +1,259 @@
+// Interface arrow
+cursor 0
+{
+	Center 2,4
+	AnimationType 0
+	FrameTime 4
+}
+// Separator
+cursor 1
+{
+	Center 16,16
+	AnimationType 0
+	FrameTime 4
+}
+// Scroll
+cursor 2
+{
+	Center 16,0
+	AnimationType 0
+	FrameTime 4
+}
+// Rotate
+cursor 3
+{
+	Center 16,16
+	AnimationType 0
+	FrameTime 4
+}
+// Terrain cursor
+cursor 4
+{
+	Center 2,4
+	AnimationType 0
+	FrameTime 4
+}
+// Select
+cursor 5
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+// Escort
+cursor 6
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//Harvest
+cursor 7
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//Get
+cursor 8
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//Put
+cursor 9
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//Move
+cursor 10
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//Repaint
+cursor 11
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//Repair
+cursor 12
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//Take control
+cursor 13
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//Attack 
+cursor 14
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//Super attack
+cursor 15
+{
+	Center 16,16
+	AnimationType 0
+	FrameTime 4
+}
+//Go In
+cursor 16
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//Go out
+cursor 17
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//Build
+cursor 18
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//Dig tunell 
+cursor 19
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//Build bridge
+cursor 20
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//Build wall
+cursor 21
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//flat terrain
+cursor 22
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+// dig trench
+cursor 23
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//Add/Remove to platoon
+cursor 24
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//Stop
+cursor 25
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//User action on object/point
+cursor 26
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//User action on line/area
+cursor 27
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+
+//=========Addons==============
+//Record
+cursor 28
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 2
+}
+
+//Building
+cursor 29
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//Group
+cursor 30
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//Platoon
+cursor 31
+{
+	Center 0,0
+	AnimationType 0
+	FrameTime 4
+}
+//=========Clicks==============
+//Select
+cursor 32
+{
+	Center 16,16
+	AnimationType 0
+	FrameTime 1
+}
+//Move
+cursor 33
+{
+	Center 16,16
+	AnimationType 0
+	FrameTime 1
+}
+//Attack
+cursor 34
+{
+	Center 16,16
+	AnimationType 0
+	FrameTime 1
+}
+//Other
+cursor 35
+{
+	Center 16,16
+	AnimationType 0
+	FrameTime 1
+}
+
+
+

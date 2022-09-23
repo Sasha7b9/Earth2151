@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<!-- saved from url=(0068)http://www.ninetailed.net/reverse-engineering-earth-2150-part-7.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Reverse Engineering Earth 2150, Part 7: Mesh Files | Terrana’s Entire Website</title>
+<meta name="generator" content="Jekyll v4.2.0">
+<meta property="og:title" content="Reverse Engineering Earth 2150, Part 7: Mesh Files">
+<meta name="author" content="Terrana">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Next thing I’m trying to make sense of is the mesh format. This one is going to be difficult.">
+<meta property="og:description" content="Next thing I’m trying to make sense of is the mesh format. This one is going to be difficult.">
+<link rel="canonical" href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-7.html">
+<meta property="og:url" content="/reverse-engineering-earth-2150-part-7.html">
+<meta property="og:site_name" content="Terrana’s Entire Website">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-06-13T00:00:00+01:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Reverse Engineering Earth 2150, Part 7: Mesh Files">
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"Reverse Engineering Earth 2150, Part 7: Mesh Files","url":"/reverse-engineering-earth-2150-part-7.html","datePublished":"2021-06-13T00:00:00+01:00","dateModified":"2021-06-13T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"/reverse-engineering-earth-2150-part-7.html"},"author":{"@type":"Person","name":"Terrana"},"description":"Next thing I’m trying to make sense of is the mesh format. This one is going to be difficult.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="./Reverse Engineering Earth 2150, Part 7_ Mesh Files _ Terrana’s Entire Website_files/main.css"><link type="application/atom+xml" rel="alternate" href="http://www.ninetailed.net/feed.xml" title="Terrana&#39;s Entire Website"><link rel="me" href="https://sleeping.town/@terrana">
+  <link rel="me" href="https://ninetailed.space/@Terrana">
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="http://www.ninetailed.net/">Terrana's Entire Website</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="http://www.ninetailed.net/about/">About</a><a class="page-link" href="http://www.ninetailed.net/contact/">Contact</a><a class="page-link" href="http://www.ninetailed.net/earth-2150/">Earth 2150</a><span class="header-divider"></span><a class="page-link" href="https://git.ninetailed.net/">Git</a><a class="page-link" href="https://keyoxide.org/7e821f4a413d6d61ee4d62bec8a045f9cf79681e" rel="me">Keyoxide</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        
+
+<h1>Reverse Engineering Earth 2150, Part 7: Mesh Files</h1>
+
+
+<content><p>Next thing I’m trying to make sense of is the mesh format. This one is going to be difficult.</p>
+
+<p>Some background to begin with. A 3D model needs to define, at a minimum, a set of polygons defined by three or more coplanar vertices, each of which will have an x, y, and z coordinate. It may also include normal mapping and UV data for each face, though I’m not sure if Earth 2150’s do. I also know that they will have references to texture files embedded in them, as the parameters file didn’t include those, only mesh files.</p>
+
+<p>With that in mind, looking for triplets of values is the order of the day. I also know from other files that there will most likely be an 8-byte magic string at the start of the file to identify the format, followed by some additional headers that may include some sort of type code. The actual values themselves will be 32-bit words. Whether these will be integers or floating point numbers is as yet unknown, but I’d expect floats. I also expect some sort of animation data in here, though not for every model; Earth 2150 is quite an early 3D game so a lot of models are just static. Builders, for example, have animations for building and digging; most tanks don’t other than their rotating turrets, which I believe are handled by placing the turret model on top and just rotating that.</p>
+
+<h2 id="fun-with-strings-and-headers">Fun with strings and headers</h2>
+
+<p>As is becoming my habit, I start with the LC Moon unit’s model. The file begins with the string <code class="language-plaintext highlighter-rouge">MESH</code> and the number 1, which I was pretty much expecting. A quick scroll through shows <code class="language-plaintext highlighter-rouge">Textures\LCUMO3.tex</code> at offset <code class="language-plaintext highlighter-rouge">109C</code> and <code class="language-plaintext highlighter-rouge">Textures\SIDECOLOR.tex</code> at offset <code class="language-plaintext highlighter-rouge">15B4</code>, so I was right about the texture references. I also see something peculiar down at <code class="language-plaintext highlighter-rouge">110D</code>: the characters ! “ # $ % &amp; ‘ ( ) _ and so on all fairly near each other; I don’t think this is an actual string, but rather something with a steadily increasing number.</p>
+
+<p>No other strings present that I can identify, so it’s all binary from here on in.</p>
+
+<p>Past the 8-byte file identifier, the next field is a 32-bit integer that’s either 0 or 1. Possibly a type identifier, if other files are anything to go by.</p>
+
+<p>Following that, from others’ work I know that the first two of the next four bytes are the model’s footprint. These 16 bits represent a 4x4 area, and (at least for buildings) any 1 bits indicate that that square is occupied by the model. Interestingly, units have a value of <code class="language-plaintext highlighter-rouge">00 80</code>, a single square. Maybe multi-tile units were planned at one point?</p>
+
+<p>Next up, there’s a 32-bit block that’s 0 for our friend the Moon, but seems to be made of bitmasked values in other files, though it’s not yet clear what they mean.</p>
+
+<p>The next word is always zero.</p>
+
+<h2 id="what-is-a-model-a-miserable-little-pile-of-triplets-but-enough-talk-have-at-you">What is a model? A miserable little pile of triplets. But enough talk, have at you!</h2>
+<p>Next I find myself looking at a triplet. That’s a string of 12 (or multiples of 12) bytes without much obvious pattern to them. The first one is at offset <code class="language-plaintext highlighter-rouge">18</code>, right after the header fields I mentioned above. The triplet itself is <code class="language-plaintext highlighter-rouge">8B6CE7BD 6F1203BB CDCCCC3D</code>. That doesn’t look like integers, so I’m guessing these are 32-bit floats. One quick conversion later, and that tells me those are the floating point values (-0.11299999803304672, -0.0020000000949949026, 0.10000000149011612), which are a pretty close approximation to (-0.113, -0.002, 0.100) plus rounding errors. Nice, that’s a 3D coordinate not far from the origin.</p>
+
+<p>That’s followed by a long string of zeros; 36 to be exact. Three more triplets? On a hunch, I load up the model for the LC Crusher which has two turrets. That has <em>two</em> non-zero triplets starting at offset <code class="language-plaintext highlighter-rouge">18</code>. These might be turret attachment coordinates. One more data point, the LC Main Base, which has four turrets. That’s a solid 48-byte block of nonzero values. Right, bytes <code class="language-plaintext highlighter-rouge">18</code> through <code class="language-plaintext highlighter-rouge">47</code> are turret attachment points.</p>
+
+<p>This is followed by a 96-byte (mostly) nonzero block starting at offset <code class="language-plaintext highlighter-rouge">48</code>, that’ll be 8 more triplets. These read out as</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(0.348, 0.129, 0.028)
+(0.549, 0.549, 1.000)
+(1.674, 0.000, 0.394)
+(0.658, 0.002, 1.000)
+(0.351, -0.131, 0.028)
+(0.549, 0.549, 1.000)
+(1.674, 0.000, 0.394)
+(0.658, 0.002, 1.000)
+</code></pre></div></div>
+<p>There are two repeats in there; the second, third and fourth coordinates are repeated as the sixth, seventh, and eighth. The Crusher shows a similar pattern with slightly different values. I’m not sure what these mean, but it’s harder to get a sense of what’s going on from vertex coordinates than it is from RGB colour values. I’m going to need a renderer.</p>
+
+<p>Half an hour of learning the basics of Panda3D later, and I’ve got the five unique points here rendering.</p>
+
+<p><img src="./Reverse Engineering Earth 2150, Part 7_ Mesh Files _ Terrana’s Entire Website_files/render1.png" alt="Five irregularly spaced white squares on a grey background"></p>
+
+<p>This… doesn’t look much like anything, even when I rotate it a bit. Obviously these aren’t just simple vertices.</p>
+
+<p>I decide to compare it to some other model files, see what I’ve got here. The Lunar (<code class="language-plaintext highlighter-rouge">LCULU1.msh</code>) only has 48 bytes of floats here, exactly half as many. The LC Main Base (<code class="language-plaintext highlighter-rouge">LCBBF.msh</code>) has 192, twice as many as the Moon. So, what does the Lunar have one of, the Moon have two of, and the Main Base have four of?</p>
+
+<h2 id="let-there-be-light">Let there be light!</h2>
+
+<p>Lights.</p>
+
+<p><img src="./Reverse Engineering Earth 2150, Part 7_ Mesh Files _ Terrana’s Entire Website_files/lights1.png" alt="Building and two hover tanks with lights on"></p>
+
+<p>So what happens if I try zeroing the second block of 12 floats on the Moon’s model and loading it into the game?</p>
+
+<p><img src="./Reverse Engineering Earth 2150, Part 7_ Mesh Files _ Terrana’s Entire Website_files/lights2.png" alt="Moon tank with one light out"></p>
+
+<p>Excuse me, ma’am, but do you know why I pulled you over? One of your lights is out.</p>
+
+<p>All right. Time to systematically break this down and see what each part of this does. Since I can fairly easily change values and see their effects in game, I start copying bits from another model onto our poor, abused Moon and seeing what they change.</p>
+
+<p><img src="./Reverse Engineering Earth 2150, Part 7_ Mesh Files _ Terrana’s Entire Website_files/lights3.png" alt="Moon with one light hovering above it"></p>
+
+<p>First three floats are the coordinates of the light source. Since that’s the only thing that changes between the Moon’s two original lights, this is what I expected.</p>
+
+<p><img src="./Reverse Engineering Earth 2150, Part 7_ Mesh Files _ Terrana’s Entire Website_files/lights4.png" alt="Moon with one white light and one blue light"></p>
+
+<p>Next three seem to be colour, based on how the light is white when I replace these values with those from a UCS unit. I’m guessing these are R G B, since the values 0.55,0.55,1.0 give us the LC’s blue lights. Of course, I couldn’t resist being silly with this. I give you Disco Phobos!</p>
+
+<p><img src="./Reverse Engineering Earth 2150, Part 7_ Mesh Files _ Terrana’s Entire Website_files/discophobos.png" alt="Flying tripod thingy with three lights; one red, one purple, one green"></p>
+
+<p>I think one of the remaining two triplets should logically be which direction the lights are facing. I’m not sure which it is, but my gut feeling is that it’s the fourth one, just looking at the values. So I try tweaking those - if I flip two of the coordinates, the light should point at a right angle to where it was before.</p>
+
+<p><img src="./Reverse Engineering Earth 2150, Part 7_ Mesh Files _ Terrana’s Entire Website_files/lights5.png" alt="Moon again, this time side-on with one light pointing up in the air at a 45° angle"></p>
+
+<p>Not exactly what I thought would happen, but close enough. That just leaves the third triplet. I’ve already found origin coordinates, colour, and direction, so I’m not sure what else there is to define. So I try copying values over from the main base, and…</p>
+
+<p><img src="./Reverse Engineering Earth 2150, Part 7_ Mesh Files _ Terrana’s Entire Website_files/lights6.png" alt="Moon again, same light pointing in a different direction"></p>
+
+<p>Huh. Are all six floats for direction? I was assuming it was a simple set of Euler angles, but there’s something else going on here. I’ll come back to this later.</p>
+
+<p>Moving on, we’ve got a big chunk of zeroes extending from offset <code class="language-plaintext highlighter-rouge">108</code> all the way to offset <code class="language-plaintext highlighter-rouge">178</code>, so 112 bytes of them, or 28 words. Potentially space for another two light definitions. I can’t think of any building or unit with more than four lights on it, but that doesn’t mean there aren’t any, so I write a quick script to check all the mesh files for data in this block.</p>
+
+<p>The only ones that do are the LC mine and its transporter variant. Their lights are a bit unusual; there are no visible light cones, but they do emit a fairly dim glow in all directions.</p>
+
+<p>The data here is <code class="language-plaintext highlighter-rouge">4E 62 80 3F  19 04 76 3F  66 66 06 3F  44 8B 0C 3F  44 8B 0C 3F  00 00 80 3F  00 00 80 3F</code> which is 7 floats. Whatever this is, it’s in a different format to what came before. The values are: 1.003, 0.961, 0.525, 0.555, 0.555, 1.0, 1.0.</p>
+
+<p>The 0.55,0.55,1.0 pattern is familiar, that’s LC blue lights, so the third through sixth floats are likely colour. That points to the first three being point of origin coordinates, as with the others.</p>
+
+<p>Thinking that last float might be intensity, I try bumping it up to 5.0, load up the game, and…</p>
+
+<p><img src="./Reverse Engineering Earth 2150, Part 7_ Mesh Files _ Terrana’s Entire Website_files/lights7.png" alt="Mine building, very brightly lit"></p>
+
+<p>That’s <em>definitely</em> light intensity, yes.</p>
+
+<p>Going back to the earlier light definitions in other files, I’m thinking maybe I misjudged the last six floats. I quickly verify that the float following the colour triple is intensity for those too, which leaves up to five for direction. Probably three if it’s using Euler angles, four if it’s using quaternions, leaving one or two that are something else.</p>
+
+<p>I take another look at the seventh word in the hex editor, and see that I’ve made a mistake interpreting it as a float. It got rounded off to 0 when I did the conversion, but it’s actually <code class="language-plaintext highlighter-rouge">F9 00 00 00</code>, which is an integer, not a float. Specifically, the number 249. That seems a bit off. If it’s an array of signed single bytes, it could also be [-7, 0, 0, 0]. Not sure what that might represent, but it varies considerably from light to light, unit to unit, but always just that first byte.</p>
+
+<p>I initially assume that the next three words will be the light’s Euler angles, but they surprise me. The first one turns out to control the tightness of the beam, with larger numbers focusing the light beam further away.</p>
+
+<p>The next two logically should do something with angle, then, but changing them doesn’t produce any visible effects that I can pick out. Will come back to those, I suppose.</p>
+
+<p>I try playing with a few values for the last one, and quickly determine that it’s also an intensity value. My best guess is that the first intensity value is for the diffuse light emitted by the point source, the second being for the spot cast out on the ground.</p>
+
+<h2 id="further-afield">Further afield</h2>
+
+<p>So, with lights at least partially figured out, there’s a block of zeroes running from offsets <code class="language-plaintext highlighter-rouge">124</code> to <code class="language-plaintext highlighter-rouge">178</code>. None of the game’s mesh files have anything in those 84 bytes, so they remain a total mystery. Padding or unused feature? No real way to know.</p>
+
+<p>From others’ work, I know that the vertex data proper begins at offset <code class="language-plaintext highlighter-rouge">374</code> with three ints before it providing metadata, starting at <code class="language-plaintext highlighter-rouge">368</code>. So, from <code class="language-plaintext highlighter-rouge">178</code> to <code class="language-plaintext highlighter-rouge">368</code>, there’s 496 bytes of additional data.</p>
+
+<p>This section is broken up into at least three sections. From <code class="language-plaintext highlighter-rouge">178</code> to <code class="language-plaintext highlighter-rouge">1B7</code>, there are a few odd single-byte values here and there amid a sea of zero bytes. Then, from <code class="language-plaintext highlighter-rouge">1B7</code> to <code class="language-plaintext highlighter-rouge">1DA</code>, there are a few more odd values amid a load of <code class="language-plaintext highlighter-rouge">FF</code> bytes. Then from <code class="language-plaintext highlighter-rouge">1DA</code> to <code class="language-plaintext highlighter-rouge">368</code>, by far the largest of the sections, there are a few two-byte values scattered through a repeating pattern of <code class="language-plaintext highlighter-rouge">00 80</code>s.</p>
+
+<p>This pattern is broadly consistent across various model files, with the offsets being the same throughout, though the number of bytes that stand out from the background patterns varies from mesh to mesh. Maybe I’m just tired, but this makes no sense to me at all. I’m coming back to this another time.</p>
+
+<hr>
+
+<h3 id="posts-in-this-series">Posts in this series:</h3>
+
+<ul>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150.html">Reverse Engineering Earth 2150, Part 1: File Structure</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-2.html">Reverse Engineering Earth 2150, Part 2: Data Types</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-3.html">Reverse Engineering Earth 2150, Part 3: Vehicle Data</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-4.html">Reverse Engineering Earth 2150, Part 4: PAR Decompiler</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-5.html">Reverse Engineering Earth 2150, Part 5: PAR Compiler</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-6.html">Reverse Engineering Earth 2150, Part 6: Texture Files</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-7.html">Reverse Engineering Earth 2150, Part 7: Mesh Files</a></li>
+</ul>
+</content>
+
+<div class="tag-list h-card">Tags: <a href="http://www.ninetailed.net/tag/reverse-engineering-earth-2150/">Reverse Engineering Earth 2150</a>, <a href="http://www.ninetailed.net/tag/earth-2150/">Earth 2150</a>, <a href="http://www.ninetailed.net/tag/games/">Games</a>, <a href="http://www.ninetailed.net/tag/gushing-about-tech/">Gushing About Tech</a></div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Terrana's Entire Website</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list"><li class="p-name">Email</li>
+            <li><a class="u-email" href="mailto:terrana@ninetailed.net">terrana@ninetailed.net</a></li><li class="p-name">Keyoxide</li>
+            <li><a class="u-email" href="https://keyoxide.org/7e821f4a413d6d61ee4d62bec8a045f9cf79681e" title="7e821f4a413d6d61ee4d62bec8a045f9cf79681e">7e821f4a413d6...</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://sleeping.town/@terrana"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#mastodon"></use></svg> <span class="username">terrana@sleeping.town</span></a></li><li><a href="http://www.ninetailed.net/feed.xml"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#rss"></use></svg> <span>RSS</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+
+</body></html>

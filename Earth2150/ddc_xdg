@@ -1,0 +1,2 @@
+#!/bin/sh
+[[ $(which xdg-open) ]] && xdg-open "./Digital Deluxe Content/" || nautilus "./Digital Deluxe Content/"

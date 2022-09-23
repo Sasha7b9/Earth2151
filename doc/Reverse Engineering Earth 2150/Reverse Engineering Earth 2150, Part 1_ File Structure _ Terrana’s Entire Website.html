@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<!-- saved from url=(0061)http://www.ninetailed.net/reverse-engineering-earth-2150.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Reverse Engineering Earth 2150, Part 1: File Structure | Terrana’s Entire Website</title>
+<meta name="generator" content="Jekyll v4.2.0">
+<meta property="og:title" content="Reverse Engineering Earth 2150, Part 1: File Structure">
+<meta name="author" content="Terrana">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="I’ve been playing an old game called Earth 2150 recently. It’s an RTS from around 2000 or so, and was one of the first full-3D entries in the genre. Over the weekend, I decided that instead of playing it, I’d try to reverse-engineer its data files. I made a surprising amount of progress. This post is extremely technical, particularly the later sections where I’m working out what each thing does, and probably isn’t of much interest to anyone but me, but writing all this down helps me think.">
+<meta property="og:description" content="I’ve been playing an old game called Earth 2150 recently. It’s an RTS from around 2000 or so, and was one of the first full-3D entries in the genre. Over the weekend, I decided that instead of playing it, I’d try to reverse-engineer its data files. I made a surprising amount of progress. This post is extremely technical, particularly the later sections where I’m working out what each thing does, and probably isn’t of much interest to anyone but me, but writing all this down helps me think.">
+<link rel="canonical" href="http://www.ninetailed.net/reverse-engineering-earth-2150.html">
+<meta property="og:url" content="/reverse-engineering-earth-2150.html">
+<meta property="og:site_name" content="Terrana’s Entire Website">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-06-01T00:00:00+01:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Reverse Engineering Earth 2150, Part 1: File Structure">
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"Reverse Engineering Earth 2150, Part 1: File Structure","url":"/reverse-engineering-earth-2150.html","datePublished":"2021-06-01T00:00:00+01:00","dateModified":"2021-06-01T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"/reverse-engineering-earth-2150.html"},"author":{"@type":"Person","name":"Terrana"},"description":"I’ve been playing an old game called Earth 2150 recently. It’s an RTS from around 2000 or so, and was one of the first full-3D entries in the genre. Over the weekend, I decided that instead of playing it, I’d try to reverse-engineer its data files. I made a surprising amount of progress. This post is extremely technical, particularly the later sections where I’m working out what each thing does, and probably isn’t of much interest to anyone but me, but writing all this down helps me think.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="./Reverse Engineering Earth 2150, Part 1_ File Structure _ Terrana’s Entire Website_files/main.css"><link type="application/atom+xml" rel="alternate" href="http://www.ninetailed.net/feed.xml" title="Terrana&#39;s Entire Website"><link rel="me" href="https://sleeping.town/@terrana">
+  <link rel="me" href="https://ninetailed.space/@Terrana">
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="http://www.ninetailed.net/">Terrana's Entire Website</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="http://www.ninetailed.net/about/">About</a><a class="page-link" href="http://www.ninetailed.net/contact/">Contact</a><a class="page-link" href="http://www.ninetailed.net/earth-2150/">Earth 2150</a><span class="header-divider"></span><a class="page-link" href="https://git.ninetailed.net/">Git</a><a class="page-link" href="https://keyoxide.org/7e821f4a413d6d61ee4d62bec8a045f9cf79681e" rel="me">Keyoxide</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        
+
+<h1>Reverse Engineering Earth 2150, Part 1: File Structure</h1>
+
+
+<content><p>I’ve been playing an old game called Earth 2150 recently. It’s an RTS from around 2000 or so, and was one of the first full-3D entries in the genre. Over the weekend, I decided that instead of playing it, I’d try to reverse-engineer its data files. I made a surprising amount of progress. This post is extremely technical, particularly the later sections where I’m working out what each thing does, and probably isn’t of much interest to anyone but me, but writing all this down helps me think.</p>
+
+<p>I decided to start with Parameters.wd, thinking I might be able to break out the unit stats and the research tree from that one.</p>
+
+<h2 id="wd-archives">.wd archives</h2>
+<h3 id="first-steps">First steps</h3>
+<p>The first step was dealing with the compression format. The first thing I do is open it up in a hex editor to see if I can make sense of it. The first two bytes are 789C, which can be a sign of a zlib-compressed file. So the first thing I try is renaming the file from .wd to .gz and feeding it to gunzip. No joy.</p>
+
+<p>So, time to try feeding it straight to zlib. I write a quick and dirty Python script that just reads in the file, passes it to <code class="language-plaintext highlighter-rouge">zlib.decompress</code> and prints out the result. That produces the string <code class="language-plaintext highlighter-rouge">\xff\xa1\xd01WD\x00\x02@\t\xb7\x06!\xb2\xd3\x11\xaa\xfb\x00\xa0\xc9f\x83\xe9</code>. Interesting. That’s much shorter than the data file itself. I see the characters WD in there, so I think this is some sort of file header. But obviously there’s more here than just a single zlib-compressed stream.</p>
+
+<p>Next I go back to the hex editor. On a hunch, I look for more instances of the 789C header, and sure enough, I find five more instances. Is this file just a series of zlib-compressed streams concatenated together? So I change my script. It’ll now search for that header and start a zlib decompress each time it finds it.</p>
+
+<p>To my surprise, there are no false positives. The script cheerfully spits out six files, one for each instance of that two-byte sequence. The first one is that header sequence, of course, but the last one is of particular interest. In the decoded text column of my hex editor, I notice what appears to be four file names in there: <code class="language-plaintext highlighter-rouge">Parameters\EARTH2150.par1</code>, <code class="language-plaintext highlighter-rouge">Parameters\objdef-full.txt</code>, <code class="language-plaintext highlighter-rouge">Parameters\objdef.txt</code>, and <code class="language-plaintext highlighter-rouge">Parameters\updNum.txt</code>. This is exciting, I think I’ve found the index!</p>
+
+<h3 id="reading-the-index">Reading the index</h3>
+<p>About an hour of fooling around with the index file later, I’ve worked out some things about its structure. The first 9 bytes seem to be some sort of header I haven’t worked out how to interpret yet, but after that, the index follows a repeating pattern.</p>
+
+<p>First, there is a single byte. This is an unsigned integer denoting the length of the file name. This is followed by a string of that length providing that name.</p>
+
+<p>Next there are three numbers, encoded as 4-byte little-endian unsigned integers. In order, they are the byte index of the .wd file where the encoded file can be found (no more searching from magic numbers!), the encoded length of the file (so I know how much memory to allocate for feeding it to zlib) and the size of the file in bytes /after/ decompression. That last one’s not important if I’m just dumping it onto disk, but I bet the game loads these into memory and uses that to determine how much to allocate.</p>
+
+<p>But there’s a bit more to the index than this. There’s some extra metadata after the file length, and worse, it’s variable length, so it’s hard to know how far to advance through the index to get the next file. The next byte turned out to be the key to this. Remember I thought the first file was called <code class="language-plaintext highlighter-rouge">Parameters\EARTH2150.par1</code>? It’s not. It’s just <code class="language-plaintext highlighter-rouge">.par</code> and that 1 on the end is actually a 0x31 byte telling me what kind of metadata is about to follow.</p>
+
+<p>Some trial and error later, I find that 0x31 means 20 bytes of metadata follow before the next file declaration starts. The other three in this file are annotated with 0x05, which means no metadata follows and the next file declaration begins immediately. Checking other .wd files, I find several other types, which variously take 16 bytes, a text string with preceding length byte, or, in one case, a string followed by 20 more bytes.</p>
+
+<p>I have no idea what any of this metadata means. The strings seem to hold some kind of internal string ID, possibly used for lookups, but the 16/20 byte chunks are a mystery. Luckily, I don’t need it to decompress the files. I just dump out the decompressed streams to disk with the filenames specified, and I’ve got my data files ready for inspection.</p>
+
+<h2 id="parsing-the-par-file">Parsing the .par file</h2>
+<h3 id="first-steps-1">First steps</h3>
+<p>After quickly scrolling through the .txt files in Parameters.wd, I find that they’re just lists of identifiers. The real meat of what I’m after is in <code class="language-plaintext highlighter-rouge">EARTH2150.par</code>. Unfortunately, this is a binary-encoded file, so more reverse-engineering is going to be needed here.</p>
+
+<p>With my hex editor open once again, I quickly notice a few things. First, the file begins with <code class="language-plaintext highlighter-rouge">0x50415200</code>, which the decoded text column helpfully tells me is the letters <code class="language-plaintext highlighter-rouge">PAR</code> followed by a null byte. Okay, we’ve got a file header denoting what this file is. Can safely ignore that.</p>
+
+<p>Next, there are more ASCII strings littered throughout the file. My first thought is that they’ll be preceded by a length like in the .wd index, but the first byte before each string is 0. It doesn’t take me long to find out that the strings have a 4-byte length before them. In fact, this file is filled with 4-byte little-endian signed integers. I can see quite a few blocks of 0xFFFFFFFF, meaning they’re probably using -1 as a signal value for something in here.</p>
+
+<p>So out comes Python again. I write a quick script to read off the file in 4-byte chunks, and to decode strings when it reaches a few hard-coded indices where I’ve noticed them. Before I even run it, I notice something odd: the second string doesn’t sit on a 4-byte boundary. It’s at 0x8003. The first string is 6 characters long, so it should have offset that index from a multiple of 4 by 2, not 3. Something else is going on here.</p>
+
+<h3 id="the-mystery-of-the-odd-number-of-bytes">The mystery of the odd number of bytes</h3>
+<p>So I go back to the hex editor and look at what comes in between the two strings. I’m seeing lots of 00 and 01s there, which is probably significant. And right before that stream of 0s and 1s starts, there’s an 0x51, or 81 to those who don’t speak hex. Hmm. That’s 1 off from an even multiple of 4, add that to the 2 from the string length and I get 3. This might be an offset. And sure enough, that 81, when read as a 4-byte integer, tells me how many 0s and 1s follow before the pattern of 4-byte integers and strings resumes. I’ve found myself what appears to be an array of 81 boolean values encoded with 1 byte each.</p>
+
+<p>I don’t know how to interpret those booleans yet, so I skip over them for now and start reading off numbers and strings. These don’t mean much to me either yet, but soon enough my program crashes because it’s found another offset string. I check, and yes, there’s another length parameter followed by another 81 booleans. This tells me that I’ve found a repeating unit in the file that begins with a handful of integers, a string, and then a boolean array.</p>
+
+<p>But how do I identify the start of that repeating unit? There’s no obvious magic string to look for. Perhaps one of these values is a length parameter for the whole unit? So I count up the number of strings and integers that come after the boolean array, and… 81. That can’t be a coincidence.</p>
+
+<p>I go back to that array of booleans and pair up each value with a string or integer following the array. First one gets the first array element next to it and so on. The connection is immediately obvious when I do this: strings get a 1, integers get a 0. Aha. I don’t have to hard-code where to look for strings any more. Now I’ve got myself a map that tells me how many fields this entity contains, and whether they’re strings or integers.</p>
+
+<h3 id="reading-whole-entities">Reading whole entities</h3>
+<p>I’ve got a pretty good idea of the structure of an entity in this file now. Based on the field count and what follows for the second entity, I can now tell that after a 16-byte file header, each entity consists of three integers, a string, one more integer, the boolean array, then the variable number of fields specified by that array. I adjust my script to read all that and set it going. It happily reads off three entities but then crashes on the fourth. The boolean array’s length field is wrong, it’s ending up with an odd offset, and is trying to read something as a string that’s not.</p>
+
+<p>The problem here makes itself apparent when I check the boolean array - the first value is 0x31. That’s not a 0 or a 1. So this entity has <em>two</em> integers before the boolean array starts, for whatever reason. Why is that?
+I go back and check the other entities the script has already printed out for me. The integer between the string and the boolean array has always been 0 up to this point. For the entity that crashes, however, it’s 1. I initially think this might be a boolean denoting whether another field follows it, but then I wonder what the point of that would be. No, it makes more sense for this to be the size of an integer array that follows it.</p>
+
+<p>With this assumption in mind, I update the parser script and re-run. Sure enough, it reads off the third entity without much trouble. It keeps on going until it reaches the ninth entity, when it crashes again. For some reason, this entity is missing its three-integer header and goes straight to the string, which is throwing everything off. But why is part of the entity header gone?</p>
+
+<p>Entities, it turns out, come in groups. So far all of the entity groups have had one member, but this one has three. It turns out that those three integers define the entity <em>group</em>, with the third integer being how many entities are in the group. Then, within the group, each entity consists of the string, integer array, boolean array, fields pattern already established. It didn’t take too long to figure this out, since I was getting used to looking for array length declarations when my offsets start getting messed up.</p>
+
+<p>Armed with this knowledge, I update the script again, and it trundles along through 153 entity groups, getting 90% of the way through the file before crashing again. Great, now what?</p>
+
+<h3 id="suddenly-a-completely-new-entity-format">Suddenly, a completely new entity format</h3>
+<p>The file’s format changed abruptly at this point. The entity group headers I was getting used to seeing are suddenly nowhere to be seen. Why did they decide to package two completely different formats into one file? Who knows?</p>
+
+<p>First of all, my parser needs to know that the change in format is coming so it can switch interpretations and not, you know, crash. But that number 153 sounded familiar. Sure enough, I check the file header, and it’s in there, bytes 8-11 of the 16-byte header. Great, I know how many entity groups to expect before secondary format hell breaks out.</p>
+
+<p>But how to interpret this new kind of entity? Out comes the hex editor yet again. I notice a lot of strings down here, and about a third of them start with <code class="language-plaintext highlighter-rouge">RES_</code>. This is the data file for a strategy game, so perhaps I’ve found the research tree? I assume that this string is a name field and that each entity here will have one of them. If I’m wrong, it’ll become apparent soon enough. Starting with that, I notice 8 integers between the end of the last group from the first section and this string, followed by another string, an integer, and a final string before the pattern repeats. Seems clear enough.</p>
+
+<p>I update the script again and start reading it off in that repeating pattern. It only gets three entities in before it crashes. This one has 9 integers before the string, so I check for a 0 that’s become a 1, and yes, we’ve got another integer array in here. Update again, set it going, and it reads off 225 of these new entities, then promptly crashes again. Why crash this time? It hit the end of the file. I’m <em>almost</em> reading this whole thing. I just need to know when to stop now. I look through my output for the number 225, and it’s right there at the very start of this second entity section. So I offset things by one: read the number of entities, then read them as before and one more integer on the end.</p>
+
+<p>And that’s it. I have the whole file’s contents loading now. I have no idea what most of these numbers mean (yet) but I have them.</p>
+
+<h2 id="what-do-all-these-numbers-mean-anyway">What do all these numbers mean anyway?</h2>
+<h3 id="the-research-tree">The research tree</h3>
+<p>It’s time to start interpreting what this stuff means based on my knowledge of the game. I decided to begin with the second section, which I believed to be the research topics, since it was simpler and didn’t have that fancy variable-number-of-fields thing going on. To help me with this, I took a brief detour through a different file. <code class="language-plaintext highlighter-rouge">Language\language.lan</code> contains all the text that appears in the game, and I can use it to look up what things like <code class="language-plaintext highlighter-rouge">RES_LC_SGEN</code> mean — this one is the <code class="language-plaintext highlighter-rouge">Power Shield Generator 1200 PSU</code>. Being able to find the names for things means I can look them up in the game itself and check various things about them.</p>
+
+<p>The first field in each research entity is the integer array. It’s the only variable-length array in here, and all of the entities have either 0, 1, or 2 values. I guess that this means previous research that is a requirement for this one, so I tentatively annotate the array <code class="language-plaintext highlighter-rouge">requirements</code>.</p>
+
+<p>The second field is an integer. It appears to increase by one with each entry, so it might be an ID number. I check this against the values in the <code class="language-plaintext highlighter-rouge">requirements</code> array, and sure enough, each number appearing in one of those arrays has already appeared in <em>this</em> field in a previous entity. Definitely the ID.</p>
+
+<p>The third field is an integer in the range 0-3. This one is reasonably easy to figure out. The game has three playable factions: the UCS, ED, and LC. The name string always starts <code class="language-plaintext highlighter-rouge">RES_UCS_</code>, <code class="language-plaintext highlighter-rouge">RES_ED_</code> and so on, so I can tell which faction each research item is for, and it matches up with this field, where UCS is 1, ED is 2, LC is 3, and a few special ones that no one can normally get are 0, so this field is the <code class="language-plaintext highlighter-rouge">faction</code>.</p>
+
+<p>The fourth and fifth fields are both even multiples of 1000 in all cases. This suggests to me that one of these might be how much in-game money they cost, since that tends to be nice, round numbers. So I pick an early-game research topic and check the numbers. Sure enough, the fourth field is its cost in the single-player campaign, and the fifth is its cost in multiplayer.</p>
+
+<p>The sixth and seventh fields are related to these. They’re both small integers which turn out to be the number of minutes the topic takes to research in the campaign and multiplayer respectively, at default game speed with no bonuses.</p>
+
+<p>The eighth field is obvious enough. This is the name string I’ve been using to look up which research is which in the language file.</p>
+
+<p>The ninth field is a bit harder. This is a string that doesn’t show up in the language files, with values like <code class="language-plaintext highlighter-rouge">CS107</code> and <code class="language-plaintext highlighter-rouge">CS309</code>. I dig through the file and find references to these strings in some of the first-section entities, but of course I haven’t worked out what all of those are yet. But interestingly, only a dozen or so researches have a value for this; most are empty strings. So I check which researches have it, and recall that each of these has a little video that plays when you get them in the campaign. From this, I guess that these are the names of the video files, or at least of the entities referencing them.</p>
+
+<p>The tenth field is a nice, obvious one, an integer that defines which section each appears in on the research field. 0 means the first section, 1 the second, and so on.</p>
+
+<p>The eleventh field is tricky, but easier than the eighth. This is another string, which usually but doesn’t always show up in the language file, so it’s not a display string but is related to one. The translations that do exist seem to be the names of various units in the game, related to the research topic, so I tentatively assume that this is the name of the 3D model it displays in the preview section of the research screen.</p>
+
+<p>And finally, in the twelfth position, an integer. I haven’t had too much trouble up to this point, but this one is stumping me. It has various values, mostly 0, 1, or 2, but some go as high as 29. This doesn’t map up to any game concept I know of, and I haven’t been able to see any correlation with the other fields, so this one remains an unknown for now. My best guess is that it might define some sort of scaling factor for the preview model, but that doesn’t explain the 0 values.</p>
+
+<h3 id="research-entity-summary">Research entity summary</h3>
+<p>So, the research entity has twelve fields, in order:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>requirement</td>
+      <td>integer array</td>
+      <td>which research ids are required before this one can be researched</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>id</td>
+      <td>integer</td>
+      <td>unique identifier that other fields can refer to</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>faction</td>
+      <td>integer</td>
+      <td>which in-game faction gets access to this research</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>campaign_cost</td>
+      <td>integer</td>
+      <td>how much money this costs to research in the single-player campaign</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>skirmish_cost</td>
+      <td>integer</td>
+      <td>how much money this costs to research in skirmish and multiplayer matches</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>campaign_time</td>
+      <td>integer</td>
+      <td>how many minutes this takes to research in the campaign</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>skirmish_time</td>
+      <td>integer</td>
+      <td>how many minutes this takes to research in skirmish matches</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>label</td>
+      <td>string</td>
+      <td>name of the string in the language file to display on the research screen</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>video</td>
+      <td>string</td>
+      <td>name of the video to play on completion</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>tab</td>
+      <td>integer</td>
+      <td>which section tab the topic appears on in the research screen</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>model</td>
+      <td>string</td>
+      <td>which unit model to display in the research screen preview</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>unknown</td>
+      <td>integer</td>
+      <td>has values in range 0-29, purpose unknown</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="grouped-entities">Grouped entities</h3>
+<p>Then we come to the first, much larger and more complex section of the file. I’m not even close to fully interpreting all of the entity types here, but I’ve made a good start.</p>
+
+<h4 id="group-header">Group header</h4>
+<p>As previously established, the entities appear in groups with a three-integer header. The third is the number of entities in the group.</p>
+
+<p>The first integer seems to be another faction identifier. It is, again, always 0, 1, 2, or 3, and these seem to match up with when ‘UCS’, ‘ED’, or ‘LC’ appear in other strings that follow.</p>
+
+<p>The second integer appears to be some sort of type identifier. Within groups with the same type identifier, there seems to be similar structure to the number and types of fields, and I’ve been proceeding on this assumption.</p>
+
+<h4 id="common-parts-of-all-entities">Common parts of all entities</h4>
+<p>Following the group header, the individual entities within the group all have a common structure I’ve already described: a string, an integer array, a boolean array the defines the number and type of the following fields, and then the fields themselves.</p>
+
+<p>I went into the boolean array in some depth above, but the other two fields are much easier to interpret. The string simply appears to be the entity’s name, and appears in other entities that make references to it. The integer array is formatted identically to the <code class="language-plaintext highlighter-rouge">requirement</code> field in research items, and further checking of names against research ids shows that this is the research topics required to unlock this entity.</p>
+
+<p>Finally, we get to the field array, which is completely different depending on the entity type declared in the group header.</p>
+
+<h4 id="entity-type-1-units">Entity type 1: units</h4>
+<p>Based on the names in the language file, I can be reasonably sure that entity type 1 refers to controllable game units. Every tank, aircraft, truck, and bulldozer gets one of these. There are 49 fields that every unit has in common, and a few subtypes have considerably more, up to 81 for builder units. There are a <em>lot</em> of characteristics the game keeps track of, and I’ve been able to make sense of maybe half of the common ones so far.</p>
+
+<p>Field 0 is an integer with large values. I think this denotes some sort of unit subtype the defines whether there are extra fields beyond the basic 49 but am still working on interpreting it.</p>
+
+<p>Field 1 matches the name, and I think it refers to the unit’s in-game model, though it might also be the translation string.</p>
+
+<p>Field 2 is a bit of a mystery. Everything has a value of 6, 7, 11, or 12. Most ground units are 6, except for a few that are 11. Units that fly like helicopters and the LC’s hovertanks are 7. Boats and ships are 12. It seems to relate to how they move, but beyond that I’m not sure.</p>
+
+<p>Field 3 is another unknown. Possible values range from 1 to 25, with ED units starting at 1, UCS units at 21, and LC units at 11, but I’m not sure what they mean. May denote which building can make the unit, but that’s really just a guess based on its proximity to the cost field and the fact that none of the other fields seem to control this.</p>
+
+<p>Field 4 is how much money the unit costs to make.</p>
+
+<p>Field 5 is related, being how much time the unit takes to build, measured in 1/20ths of a second for some reason. This might be the game’s “tick rate”, how often it checks and updates things.</p>
+
+<p>Field 6 is a string that always begins with <code class="language-plaintext highlighter-rouge">SND_</code>, so I’m assuming this references another entity that defines what sounds the unit makes.</p>
+
+<p>Field 7 is an integer with the value -1 (0xFFFFFFFF). Every string field in the field array seems to have a -1 value following it, so I’m going to skip over these for now.</p>
+
+<p>Field 9 is a string starting with <code class="language-plaintext highlighter-rouge">SMOKE_</code>, so I’m guessing it refers to the smoke particles the unit emits when damaged.</p>
+
+<p>Field 11 is a string starting with <code class="language-plaintext highlighter-rouge">EXP_</code>, which I’m guessing is the explosion effect that happens when the unit is destroyed.</p>
+
+<p>Field 13 is a string starting with <code class="language-plaintext highlighter-rouge">NEX</code>. Checking where else these strings appear in other entities, I think this is the wreckage entity that the unit is replaced with after it dies. Maybe <code class="language-plaintext highlighter-rouge">NEX</code> is short for next?</p>
+
+<p>Field 15 is the unit’s maximum HP value. This matches up with the in-game interface’s readout.</p>
+
+<p>Field 16 is the unit’s health regeneration rate. For the most part, only LC units self-repair, and this value’s presence matches up with that. I think it refers to HP gain per 1/20s tick, but I haven’t measured it yet.</p>
+
+<p>Field 17 is the unit’s armour. Usually a multiple of 25, this is the % of physical damage negated when the unit is hit. Energy weapons ignore armour.</p>
+
+<p>Fields 18 and 19 are all multiples of 100, so probably another HP value. I think they might refer to the unit’s electrical systems and heat capacity, as there are weapons that attack both, but they don’t have in-game numeric readouts so it’s hard to be sure.</p>
+
+<p>Field 20 is a bit of a mystery. It’s 1 for all LC units and 0 for everyone else, but that’s all I’ve got. Maybe related to health regeneration?</p>
+
+<p>Field 21 I think defines where the unit can go. Most units are 1, LC hover vehicles that can cross water are 2, and boats are 3. Interestingly, true flying units (including those owned by the LC) all have a value of 1; maybe it defines where they can land?</p>
+
+<p>Field 22 always has a value of 2 or 4. Beyond that, I can’t see any correlation with other fields.</p>
+
+<p>Field 23 is a string starting with <code class="language-plaintext highlighter-rouge">TALK_</code>, which I assume refers to the set of voice lines the unit plays when responding to orders, reporting that it is being attacked and so on.</p>
+
+<p>Field 25 took me a while to work out. It’s a string ending with <code class="language-plaintext highlighter-rouge">GEN</code> and, based on the names of other entities, refers to the type of shield generator this unit can be fitted with.</p>
+
+<p>Field 27 is either -1, 0, 1, or 2, and I think it refers to the level of shield generator the unit can be given. -1 means no shield, 0 is the first generator, 2 is the third and best shield generator.</p>
+
+<p>Field 28 immediately stuck out as a one with a bitmasked value, due to the prevalence of power-of-two values in there. Earth 2150 lets you design your own units, matching up chassis with different pieces of equipment for different purposes, and I suspected that this field defined what you could put on it. So I spent half an hour checking each unit against the kinds of equipment I knew were compatible, and determined that yes, that’s exactly what this is. Each of the twelve least significant bits of this value indicates that a specific category of equipment can go in the unit’s first slot. With this in mind, the meanings of fields 29–31 also became clear, as a unit can have up to four pieces of equipment attached.</p>
+
+<p>Fields 32–37 are still something of a mystery, but I suspect they define how fast a unit can move. The first four are nonzero for ground units, the last two for water units, and all six are nonzero for units that fly or can hover over water. The exact meaning beyond this isn’t clear to me. The numbers seem to be <em>smaller</em> for <em>faster</em> units, so it may refer to how many ticks it takes to move one square, but it doesn’t match up at all with the “speed” stat visible on the unit design screen. It’s not clear why there are multiple values either; it might be for different terrain types, but the difference is never large.</p>
+
+<p>Field 38 is even less clear. Only flying units have a nonzero value for this, so maybe it’s how quickly they can change altitude or what altitude they prefer to fly at.</p>
+
+<p>Field 39 is an unknown. It has values like 1, 8, 16, and 28, so I suspect it’s bitmasked.</p>
+
+<p>Field 40 is another <code class="language-plaintext highlighter-rouge">SMOKE_</code> string. I think this one is the unit’s engine exhaust smoke, as it only seems to show up for units that emit smoke while moving.</p>
+
+<p>Field 42 is a string starting with <code class="language-plaintext highlighter-rouge">DUST_</code>, maybe the dust particles that the unit kicks up when moving.</p>
+
+<p>Fields 44 and 46 are strings that only apply to water units, so I think this maybe the name of the wake effects they make when moving in the water.</p>
+
+<p>And finally, field 48 is a string starting with <code class="language-plaintext highlighter-rouge">TRACK_</code>, so I think it’s the track marks ground units leave behind as they move.</p>
+
+<p>That doesn’t even begin to go into the extra fields some units have, but I think that’s enough work on type 1 for now.</p>
+
+<h4 id="entity-type-2-weapon">Entity type 2: weapon</h4>
+<p>Entity type 2’s names map to vehicle mounted weapons. Interestingly, type 2 does not include non-weapon equipment, which appears to be type 6. Unlike units, these all have the same number of fields: .</p>
+
+<p>Field 0 is probably a subtype code. This is always 258 for weapons, which fits with the number of fields being consistent.</p>
+
+<p>Field 1 is again the same as the entity name, so probably the model name or translation string.</p>
+
+<p>Field 2 is always 10. 10 of what? Why 10? No idea, but that’s what it is. Possibly related to unit field 2.</p>
+
+<p>Field 3 is usually 0 (all LC weapons, and UCS/ED light weapons) or 1 (UCS/ED heavy weapons), with a couple of special weapons being 17 and 28 (the LC and UCS anti-nuke defences). Not clear what this means.</p>
+
+<p>Field 4 is the weapon’s money cost, added on to that of the unit during construction.</p>
+
+<p>Field 5 is the weapon’s build time, likewise added to that of the unit.</p>
+
+<p>Field 6 is the weapon’s firing sound.</p>
+
+<p>Fields 8 and 10 are always empty strings, but may be related to the unit damage effects in type 1 fields 9 and 11.</p>
+
+<p>Field 12 is a <code class="language-plaintext highlighter-rouge">NEX</code> string and may relate to the destroyed unit’s wreckage.</p>
+
+<p>Field 14 is either 2, 3, or 4. It’s not clear what this means.</p>
+
+<p>Field 15 is a bitmasked value, defining which kinds of equipment slot the weapon will fit in. See unit fields 28–31.</p>
+
+<p>Field 16 is a bitmasked value, defining what sub-weapon can be placed on top of this weapon. Yes, you can put small guns on top of big guns in this game. It’s a little bit ridiculous. I’m looking forward to modding this field to create an infinitely recursive stack of lasers.</p>
+
+<p>Field 17 is an integer in the 3–10 range. Purpose unknown.</p>
+
+<p>Field 18 is another unknown. 3 for grenade launchers, 0 for everything else.</p>
+
+<p>Fields 19 and 20 are also unknowns. Some power-of-2 values here, so they may be bitmasked flag fields.</p>
+
+<p>Field 21 appears to concern weapons that arc. Ballistic missiles have a value of 1, grenade launchers 2, 0 otherwise.</p>
+
+<p>Field 22 also concerns these two weapon types, this time with values of 60 and 32 respectively.</p>
+
+<p>Field 23 appears to be how many shots the weapon fires at once, possibly for ammunition accounting.</p>
+
+<p>Field 24 is an entity reference to the projectile the weapon fires.</p>
+
+<p>Field 26 is an unknown. Its value is consistent within weapon classes but otherwise ranges from 3 to 13.</p>
+
+<p>Field 27 is a boolean indicating whether the weapon can target aircraft.</p>
+
+<p>Field 28 is the weapon’s range.</p>
+
+<p>Field 29 is an unknown, but its value is always 0.</p>
+
+<p>Field 30 is always 0, 1, or 2. What it does is not clear, though its value is often increased when weapons are upgraded, and in many (but not all) cases is exactly 1 less than the number of shots fired in field 23.</p>
+
+<p>Field 31 is a number in the 5-30 range, and usually decreases with weapon upgrades. May be the fire rate expressed in ticks between shots.</p>
+
+<p>Field 32 is a boolean, which appears to be 0 for energy weapons and 1 for kinetic weapons. May be used to determine whether an attack is resisted by armour or shields.</p>
+
+<p>Field 33 is an unknown. It’s usually a round number, but is 0 for a lot of weapons. Often decreases with weapon upgrades. Rocket launchers have small values in the 0-4 range, ion cannon has high values, with the mk1 heavy version hitting 200.</p>
+
+<p>Field 34 is the weapon’s ammo capacity.</p>
+
+<p>Field 35 is an unknown entity reference, beginning with <code class="language-plaintext highlighter-rouge">SHT_</code> where present. May be the impact effect for hitscan weapons like the chaingun.</p>
+
+<p>The damage value of the weapon is notably absent from the known fields, and the values don’t fit with any of the unknowns. Possibly this appears in the projectile’s entity so that ammo upgrades can be factored in.</p>
+
+<h4 id="entity-type-4-building">Entity type 4: building</h4>
+<p>Let’s skip ahead to type 4, because no one’s saying I have to do these in numeric order. I can tell from the entity names that these are buildings. These all have the same number of fields: 82.</p>
+
+<p>Field 0 is probably a subtype code. This is always 65793 for buildings.</p>
+
+<p>Field 1 is again the same as the entity name, so probably the model name or translation string.</p>
+
+<p>Field 2 is always 9. Possibly related to unit field 2.</p>
+
+<p>Field 3 has a smattering of values between 6 and 29, but their meaning isn’t at all clear. Possibly related to unit field 3.</p>
+
+<p>Field 4 is the building’s money cost.</p>
+
+<p>Field 5 isn’t completely clear, but based on the pattern of other entities, I think it’s the building’s construction time, possibly again in 1/20s ticks.</p>
+
+<p>Field 6 is a <code class="language-plaintext highlighter-rouge">SND_</code> string, so probably the sound the building makes.</p>
+
+<p>Field 8 is the damage smoke field.</p>
+
+<p>Field 10 is the explosion field.</p>
+
+<p>Field 12 is the <code class="language-plaintext highlighter-rouge">NEX</code> field that I suspect defines wreckage.</p>
+
+<p>Field 14 is the building’s HP.</p>
+
+<p>Field 15 is HP regen, again mostly restricted to the LC.</p>
+
+<p>Field 16 is zero for most buildings, but a small multiple of 25 for defensive structures, likely the building’s armour value.</p>
+
+<p>Field 17 is always a multiple of 1000, so probably heat/electrical health like for units. I suspect heat capacity since buildings are almost impossible to kill with heat-based weapons.</p>
+
+<p>Field 18 is always 500, and is probably electrical HP.</p>
+
+<p>Field 19 mirrors unit field 20. It’s 1 for the LC and 0 for everyone else, with the exception of some special buildings the builder units can’t produce, which are also 1. What this means is anyone’s guess.</p>
+
+<p>Field 20 is always 0. Given that this matches unit field 21’s place in the sequence, and that field’s role in determining where units can move, this may be a declaration that buildings cannot move. It’ll be interesting to see if I can <em>make</em> buildings move by changing this when I develop the ability to repack .wd files.</p>
+
+<p>Field 21 is always 2. Since I don’t know what unit field 22 does either, I can’t begin to guess at its meaning.</p>
+
+<p>Field 22 is a string, but no building has a value for it. Nonetheless, its position in the field sequence mirrors that of the unit voice sets, and since no building talks to you, it may be that.</p>
+
+<p>Field 24 is a string defining which shield generator type the building can take.</p>
+
+<p>Field 26 is presumably the maximum shield generator size, as with units, but since no building is restricted in which shield generators it can take, this is always 2.</p>
+
+<p>Fields 27–31 are the buildings’ equipment slots. Yes, you can stick guns and equipment on buildings too. They use the same bitmask categories as units plus a few others I haven’t determined the meaning of yet.</p>
+
+<p>Field 32 is an unknown. It has values ranging from 0 to 32 and I haven’t been able to spot a clear pattern.</p>
+
+<p>Field 33 concerns defensive structures, though it’s not clear what it does. Medium defence towers have a value of 1, heavy defence bunkers have a value of 2, everything else including light defence towers is 0.</p>
+
+<p>Field 34 is a number defining which tab of the builder unit’s interface the building appears on. Most are split up into P, E, D, and O (1, 2, 3, and 4) for Production, Economic, Defence, and Other. LC buildings aren’t built by builder units, and have a value of -1. (The LC drop their buildings in from orbit.)</p>
+
+<p>Fields 35, 37, 39, and 41 are all strings and mostly empty, except for defensive towers which have references to other entities. I’m guessing this is the default equipment that appears in each slot when the building is first built.</p>
+
+<p>Field 43 is another string, each referencing another building. The UCS structures have values like <code class="language-plaintext highlighter-rouge">COPULA_UCS2</code>, which I think refers to the domes that appear over construction sites before buildings are ready. This is consistent with LC buildings not having a value here, as LC buildings are dropped in already finished.</p>
+
+<p>Field 45 is an unknown. The value is either -1, 24, or 32, with all the 24s being UCS buildings, and all the 32s being ED. Beyond that, no idea.</p>
+
+<p>Fields 46 and 48 are both strings. I’m not sure what they’re for, but all ED buildings have values <code class="language-plaintext highlighter-rouge">EDCBU1</code> and <code class="language-plaintext highlighter-rouge">EDCBU2</code>, and replace ED on the front of those for the other factions. The only exceptions being LC laser walls, and the unbuildable <code class="language-plaintext highlighter-rouge">COPULA</code> structures, which have no values for these. Given that there are some LC campaign missions where you can’t build anything except laser walls, these may be campaign build restrictions, though I won’t know for certain until I reverse engineer the mission files.</p>
+
+<p>Field 50 is the non-controllable unit that carries LC buildings in from orbit. It’s the name of that unit’s entity <code class="language-plaintext highlighter-rouge">LCUBU</code> for the LC, empty for everything else that isn’t dropped in. Interestingly, some LC buildings take 1 builder and some take 3, but this field does <em>not</em> specify this.</p>
+
+<p>Field 52 is another <code class="language-plaintext highlighter-rouge">SMOKE_</code> field. Not every structure has this, and I think it defines the smoke plume it emits when operating, which mines and power plants do, but factories don’t.</p>
+
+<p>Field 54 is how much power the building consumes. If this is zero, the building operates without a power plant in range.</p>
+
+<p>Field 55 is an optional reference to another building. Some buildings have the ability to create “addons” for themselves, like the UCS power plant adding extra small reactors for more power. This field defines what that addon building is.</p>
+
+<p>Field 57 is how many of these addons the building can create.</p>
+
+<p>Field 58 is how much power the building produces. Interestingly, this is a separate field from consumption; I would have expected power plants to simply have negative consumption, but that’s apparently not how the developers did it.</p>
+
+<p>Field 59 is the range power is transmitted. Buildings have to be quite near power plants to work, and this number is how far they can be. Except the LC, who have a power range of 500 and can just stick things anywhere.</p>
+
+<p>Field 60 is only relevant to the UCS power plant and relay. They can build power relays to transmit their power further from the power plant, generally twice as far as other buildings can receive power, and this value determines how far away they can be.</p>
+
+<p>Field 61 is how much energy storage batteries have. Since the LC use solar power, they need batteries to keep their base operating at night.</p>
+
+<p>Field 62 is an unknown. It only appears on refinery buildings that accept incoming resources and turn them into money. It appears to be bitmasked, by the presence of lots of power-of-2 values, but it’s not clear what the individual bits mean.</p>
+
+<p>Field 63 is a number in the 160–330 range that only appears on mines. Might be extraction rate. Naturally, this number is higher for the LC mines than the ED one, because the LC just have to be better than everyone else.</p>
+
+<p>Field 64 is a reference to a unit, specifically a <code class="language-plaintext highlighter-rouge">CONTAINER</code>. I think this is the container that the ED mine produces for transport. Nothing else uses this field.</p>
+
+<p>Field 66 is 50 for refineries, 0 otherwise. I think it’s the rate at which refineries turn collected resources into money, at 50 per 1/20s tick.</p>
+
+<p>Field 67 only applies to transport bases, which are used in the campaign to shuttle resources from mission sites back to your main base, and defines how much the automatic transporter moves each trip.</p>
+
+<p>Field 68 is a reference to the entity that defines that transporter.</p>
+
+<p>Field 70 is a reference to a projectile entity. This is only used for strategic weapons structures that launch a weapon.</p>
+
+<p>Field 72 is the range of that strategic weapon. Generally long enough that the whole map is in range anyway.</p>
+
+<p>Field 73 is a reference to another entity used by those strategic weapons. I think it’s the visual effect they use when firing.</p>
+
+<p>Field 75 is only used by the UCS plasma cannon, and has a value of 4000. I think it’s cost to fire, but I’m not sure.</p>
+
+<p>Field 76 is a string that only appears on in-progress construction buildings — LC buildings being dropped and UCS and ED construction site domes. The string starts <code class="language-plaintext highlighter-rouge">EXP_</code>, so I think this is the explosion effect that happens when the in-progress building is destroyed. They’re much easier to kill than finished buildings.</p>
+
+<p>Field 78 is only nonzero for ED and UCS construction domes, where it is 2 for the ED, and either 5, 9, or 61 for the UCS. Meaning unclear.</p>
+
+<p>Field 79 is only nonzero for UCS construction domes, where it is either 58, 64, or 75. Meaning unclear.</p>
+
+<p>Field 80 is an entity reference to the laser effect used for LC laser walls. Empty for everything else.</p>
+
+<p>Field 82 is only used by the space port structures in the single-player campaign. It matches the faction number, and may refer to which ship construction project they’re working on.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>That’s all I’ve done for now. There are eleven entity types in the file, and I even haven’t found meanings for all of the values in the four I’ve covered here, so I’m a long way off being done with this treasure trove of a file, and that’s not even starting on all the other game files. I started with this one because I knew it’d be tabular data and relatively easy to parse; the others are things like sounds, textures, and 3D models.</p>
+
+<p>Will I ever finish all this? Almost certainly not. But I’m having fun with it and will keep going until it stops being fun.</p>
+
+<hr>
+
+<h3 id="posts-in-this-series">Posts in this series:</h3>
+
+<ul>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150.html">Reverse Engineering Earth 2150, Part 1: File Structure</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-2.html">Reverse Engineering Earth 2150, Part 2: Data Types</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-3.html">Reverse Engineering Earth 2150, Part 3: Vehicle Data</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-4.html">Reverse Engineering Earth 2150, Part 4: PAR Decompiler</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-5.html">Reverse Engineering Earth 2150, Part 5: PAR Compiler</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-6.html">Reverse Engineering Earth 2150, Part 6: Texture Files</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-7.html">Reverse Engineering Earth 2150, Part 7: Mesh Files</a></li>
+</ul>
+</content>
+
+<div class="tag-list h-card">Tags: <a href="http://www.ninetailed.net/tag/reverse-engineering-earth-2150/">Reverse Engineering Earth 2150</a>, <a href="http://www.ninetailed.net/tag/earth-2150/">Earth 2150</a>, <a href="http://www.ninetailed.net/tag/games/">Games</a>, <a href="http://www.ninetailed.net/tag/gushing-about-tech/">Gushing About Tech</a></div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Terrana's Entire Website</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list"><li class="p-name">Email</li>
+            <li><a class="u-email" href="mailto:terrana@ninetailed.net">terrana@ninetailed.net</a></li><li class="p-name">Keyoxide</li>
+            <li><a class="u-email" href="https://keyoxide.org/7e821f4a413d6d61ee4d62bec8a045f9cf79681e" title="7e821f4a413d6d61ee4d62bec8a045f9cf79681e">7e821f4a413d6...</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://sleeping.town/@terrana"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#mastodon"></use></svg> <span class="username">terrana@sleeping.town</span></a></li><li><a href="http://www.ninetailed.net/feed.xml"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#rss"></use></svg> <span>RSS</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+
+</body></html>

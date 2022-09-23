@@ -1,0 +1,22 @@
+files/Digital Deluxe Content/MusicVideo/E2150_MusicVideo_V2.mp4
+Earth2150/Video/intro3.wd1
+Earth2150/WDFiles/Wave22kH.wd
+files/WDPackager/*
+files/Community_Tools/*
+sources/EarthTool-0.0.24/.vs/*
+sources/EarthTool-0.0.24/EarthTool.CLI/bin/*
+sources/EarthTool-0.0.24/EarthTool.CLI/obj/*
+sources/EarthTool-0.0.24/EarthTool.Common/bin/*
+sources/EarthTool-0.0.24/EarthTool.Common/obj/*
+sources/EarthTool-0.0.24/EarthTool.GUI/bin/*
+sources/EarthTool-0.0.24/EarthTool.GUI/obj/*
+sources/EarthTool-0.0.24/EarthTool.MSH.Converters.Collada/bin/*
+sources/EarthTool-0.0.24/EarthTool.MSH.Converters.Collada/obj/*
+sources/EarthTool-0.0.24/EarthTool.MSH.Converters.Wavefront/bin/*
+sources/EarthTool-0.0.24/EarthTool.MSH.Converters.Wavefront/obj/*
+sources/EarthTool-0.0.24/EarthTool.MSH/bin/*
+sources/EarthTool-0.0.24/EarthTool.MSH/obj/*
+sources/EarthTool-0.0.24/EarthTool.TEX/bin/*
+sources/EarthTool-0.0.24/EarthTool.TEX/obj/*
+sources/EarthTool-0.0.24/EarthTool.WD/bin/*
+sources/EarthTool-0.0.24/EarthTool.WD/obj/*

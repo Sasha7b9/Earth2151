@@ -1,0 +1,113 @@
+"installscript"
+{
+	"registry"
+	{
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\Topware\\Earth 2150"
+		{
+			"string"
+			{
+				"NotStartAutorun"		"0"
+			}
+		}
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\Topware\\Earth 2150\\BaseGame"
+		{
+			"string"
+			{
+				"version"		"2.8.7.1"
+			}
+		}
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\Topware\\Earth 2150\\BaseGame\\FileSystem"
+		{
+			"string"
+			{
+				"datapath"		"%INSTALLDIR%/>"
+				"outputdir"		"%INSTALLDIR%"
+			}
+		}
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\Topware\\Earth 2150\\BaseGame\\Graphics\\Enumeration"
+		{
+			"dword"
+			{
+				"Glide"		"1"
+				"OpenGL"		"1"
+				"Direct3D"		"1"
+				"Hardware"		"1"
+				"Software"		"0"
+			}
+		}
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\Topware\\Earth 2150\\BaseGame\\Graphics\\Setup"
+		{
+			"dword"
+			{
+				"AllowWindowedScreen"		"1"
+				"ButtonTestAl"		"0"
+			}
+		}
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\Topware\\Earth 2150\\BaseGame\\Network\\EarthNet"
+		{
+			"string"
+			{
+				"AddressIP"		"\"EarthNet\"\"netserver.earth2150.com"
+			}
+		}
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\Topware\\Earth 2150\\BaseGame\\Network\\Enumeration"
+		{
+			"dword"
+			{
+				"DPLobby"		"1"
+				"EarthNet"		"1"
+			}
+		}
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\Topware\\Earth 2150\\BaseGame\\Sound\\Setup"
+		{
+			"dword"
+			{
+				"AllowHardware"		"1"
+			}
+		}
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\Topware\\Earth 2150"
+		{
+			"string"
+			{
+				"german"
+				{
+					"language"		"GERMAN"
+				}
+				"english"
+				{
+					"language"		"ENGLISH"
+				}
+				"french"
+				{
+					"language"		"FRENCH"
+				}
+				"polish"
+				{
+					"language"		"POLISH"
+				}
+				"russian"
+				{
+					"language"		"RUSSIAN"
+				}
+			}
+		}
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\Topware\\Earth 2150\\BaseGame\\Interface"
+		{
+			"string"
+			{
+				"polish"
+				{
+					"Charset"		"238"
+				}
+				"russian"
+				{
+					"Charset"		"204"
+				}
+			}
+		}
+	}
+}
+"kvsignatures"
+{
+	"installscript"		"7feef667910f098dc38fea3ef0360db8b00c97f508770b9dfb1f80ee1e42f3d29a1967f26234f91171963eb45a4ac4243042bfe6dc668a8618a8e4f25754e783c0e54f8e4e6aa172d4c69c106730e20a24c7143a8950cd8d8a6bc8e0966a2a7827fee32f7f996e76bdfa09f90e1f79fc209c4bfa608d43ce19189149888a914d"
+}

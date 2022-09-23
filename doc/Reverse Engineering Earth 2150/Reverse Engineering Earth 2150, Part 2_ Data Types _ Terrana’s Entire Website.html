@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<!-- saved from url=(0068)http://www.ninetailed.net/reverse-engineering-earth-2150-part-2.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Reverse Engineering Earth 2150, Part 2: Data Types | Terrana’s Entire Website</title>
+<meta name="generator" content="Jekyll v4.2.0">
+<meta property="og:title" content="Reverse Engineering Earth 2150, Part 2: Data Types">
+<meta name="author" content="Terrana">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Since writing my last entry on reverse engineering Earth 2150, I’ve been in touch with the small community that still plays the game online. They don’t have any deep insights into the PAR file format, but they were able to point me at the SDK documentation. That doesn’t describe the format, but it does list various attributes that objects have for use in AI scripts, so I’ve got a bit more information to go on.">
+<meta property="og:description" content="Since writing my last entry on reverse engineering Earth 2150, I’ve been in touch with the small community that still plays the game online. They don’t have any deep insights into the PAR file format, but they were able to point me at the SDK documentation. That doesn’t describe the format, but it does list various attributes that objects have for use in AI scripts, so I’ve got a bit more information to go on.">
+<link rel="canonical" href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-2.html">
+<meta property="og:url" content="/reverse-engineering-earth-2150-part-2.html">
+<meta property="og:site_name" content="Terrana’s Entire Website">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-06-05T00:00:00+01:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Reverse Engineering Earth 2150, Part 2: Data Types">
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"Reverse Engineering Earth 2150, Part 2: Data Types","url":"/reverse-engineering-earth-2150-part-2.html","datePublished":"2021-06-05T00:00:00+01:00","dateModified":"2021-06-05T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"/reverse-engineering-earth-2150-part-2.html"},"author":{"@type":"Person","name":"Terrana"},"description":"Since writing my last entry on reverse engineering Earth 2150, I’ve been in touch with the small community that still plays the game online. They don’t have any deep insights into the PAR file format, but they were able to point me at the SDK documentation. That doesn’t describe the format, but it does list various attributes that objects have for use in AI scripts, so I’ve got a bit more information to go on.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="./Reverse Engineering Earth 2150, Part 2_ Data Types _ Terrana’s Entire Website_files/main.css"><link type="application/atom+xml" rel="alternate" href="http://www.ninetailed.net/feed.xml" title="Terrana&#39;s Entire Website"><link rel="me" href="https://sleeping.town/@terrana">
+  <link rel="me" href="https://ninetailed.space/@Terrana">
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="http://www.ninetailed.net/">Terrana's Entire Website</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="http://www.ninetailed.net/about/">About</a><a class="page-link" href="http://www.ninetailed.net/contact/">Contact</a><a class="page-link" href="http://www.ninetailed.net/earth-2150/">Earth 2150</a><span class="header-divider"></span><a class="page-link" href="https://git.ninetailed.net/">Git</a><a class="page-link" href="https://keyoxide.org/7e821f4a413d6d61ee4d62bec8a045f9cf79681e" rel="me">Keyoxide</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        
+
+<h1>Reverse Engineering Earth 2150, Part 2: Data Types</h1>
+
+
+<content><p>Since writing my last entry on reverse engineering Earth 2150, I’ve been in touch with the small community that still plays the game online. They don’t have any deep insights into the PAR file format, but they were able to point me at the <a href="https://wiki.insideearth.info/wiki/E2150_-_SDK">SDK documentation</a>. That doesn’t describe the format, but it does list various attributes that objects have for use in AI scripts, so I’ve got a bit more information to go on.</p>
+
+<h2 id="revisiting-types">Revisiting types</h2>
+<h3 id="type-1-units">Type 1: Units</h3>
+<p>Fields 18 and 19 can be identified using the SDK document. It specifies the existence of the functions <code class="language-plaintext highlighter-rouge">GetMaxElectronics()</code> and <code class="language-plaintext highlighter-rouge">getMaxTemperature()</code> in that order, so from this I assume that field 18 is electronic health and 19 is temperature capacity.</p>
+
+<p>There are also functions for electronic, temperature, ammo, and shield regeneration. I suspects some of these these map up to fields 20–22, but the connection’s still a little unclear.</p>
+
+<h3 id="type-4-buildings">Type 4: Buildings</h3>
+<p>I thought field 63 was harvest rate, but the nice folks on the InsideEARTH discord suggested that it might be ticks per container produced, since the LC actually mine <em>slower</em> than everyone else. I’ll have to dig into how much is in a container.</p>
+
+<h2 id="new-type-interpretations">New type interpretations</h2>
+<h3 id="type-3-projectiles">Type 3: Projectiles</h3>
+<p>Projectiles have 36 fields and a subtype code of 66561.</p>
+
+<p>Field 1 is, as before, a string, but it doesn’t match up with the entity name like before. These also have no entries in the language file, so I now believe field 1 for all the types I’ve looked at so far are model names.</p>
+
+<p>Fields 2 and 3 are always zero, so I’m not sure what their purpose is. These fields have been cost and build time for other types, so these zeroes may be that for the unbuildable projectiles.</p>
+
+<p>Field 4 is only nonzero for bombs and ballistic rockets. It’s always a multiple of 500 for rockets, and of 10 for bombs. As these are strategic weapons and strategic weapons cost money to operate, I think this is the money cost per shot on reload. Nukes are <em>expensive</em> at 5000 a shot, so I think this matches up with that mysterious 4000 in the building fields being the plasma cannon’s cost to fire.</p>
+
+<p>Field 5 is, again, always zero, so again no idea what this means.</p>
+
+<p>Field 6 is a string beginning with <code class="language-plaintext highlighter-rouge">SND_</code> where present, so can be assumed to mean what sound the projectile makes while in flight. This is followed, as in previous types, with the customary -1 in the next field.</p>
+
+<p>Field 8 is another string, beginning with <code class="language-plaintext highlighter-rouge">SMOKE_</code>, so it can reasonably be assumed to be the smoke trail rockets leave behind.</p>
+
+<p>Fields 10 and 12 are always empty strings, so at best I can guess about meanings, but for other types smoke has been followed by death explosion and wreckage references.</p>
+
+<p>Fields 14 through 20 are all always zero, so no clue what’s going on there.</p>
+
+<p>Field 21 varies from 1 all the way up to 32, and is the same within projectile upgrade groups. Not sure what this refers to yet.</p>
+
+<p>Field 22 is 0 for most things, but increases from 1 through 4 for rockets as they’re upgraded. I think this defines the rocket’s tracking ability. It’s probably an enum value referencing one of four tracking behaviours in the game engine, but it might also indicate maximum turn rate.</p>
+
+<p>Field 23 is our old friend, the is-kinetic boolean. 1 for kinetic shots, 0 for energy weapons.</p>
+
+<p>Field 24 is a string. Only ballistic missiles have this, and their values are something like <code class="language-plaintext highlighter-rouge">PA_MIS_HR#</code>. This is a reference to an entity in a type 5 group, together with <code class="language-plaintext highlighter-rouge">CONTAINER</code>. This may refer to some kind of non-orderable unit that the missile uses to track its way across the world.</p>
+
+<p>Field 26 is either 0 or 1, 1 for heavy rockets and 0 for everything else. Something specific to heavy rockets that I’m not aware of?</p>
+
+<p>Field 27 covers a range of values from a low as 7 for ballistic missiles up as high as 120 for UCS plasma bolts. For sonic cannon shockwaves, it’s a big fat 0. No idea what this represents.</p>
+
+<p>Field 28 is 0 for most weapons except lasers and lightning cannons. At a guess, I’d say this is the light level emitted by the projectile.</p>
+
+<p>Field 29 is an odd one. It’s mostly 0 or small numbers, increasing by 1 for some upgrades. But for ballistic missiles, it goes all the way up to 45 at the top end. Area of effect?</p>
+
+<p>Field 30 is 0 for most things and 1 for ballistic missiles and strategic plasma cannons. Might indicate that the weapon has to be manually fired?</p>
+
+<p>Field 31 is 1 for most things, but larger numbers for bombs and strategic weapons. Another candidate for area of effect? If so, what is field 29?</p>
+
+<p>Field 32 is in the 2-5 range. Most things are 2, a few things are higher. Plasma bombs increase with upgrades but conventional bombs do not.</p>
+
+<p>Field 33 is the damage the projectile does. This can get silly big for some of the strategic weapons.</p>
+
+<p>Field 34 is an <code class="language-plaintext highlighter-rouge">EXP_</code> string, probably the impact effect.</p>
+
+<h2 id="type-6-equipment">Type 6: equipment</h2>
+<p>Type 6 can have between 19 and 43 fields depending on the subtype:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Code</th>
+      <th>Type</th>
+      <th>Fields</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>514</td>
+      <td>Repairer</td>
+      <td>44</td>
+    </tr>
+    <tr>
+      <td>1026</td>
+      <td>Carrier</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <td>2050</td>
+      <td>Banner</td>
+      <td>25</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Solar Cell</td>
+      <td>19</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Do you notice what I did about those type codes? They’re all exactly 2 more than a power of 2. What I’ve been calling a “type code” is actually a bitmasked field! It seems to determine which kinds of fields an object has. Having a value of 2 in there (the 2nd least significant digit) seems to indicate a base set of 19 fields that all equipment has. With the 512, 1024, and 2048 bits adding on 25, 4, and 6 extra fields respectively.</p>
+
+<p>Let’s look back at the weapons, which are closely related to the equipment here. These have a code of 258 - again, 2 more than a power of 2 - and have 36 fields. Want to bet that the first 19 will be repeated here?</p>
+
+<h3 id="the-19-common-fields">The 19 common fields</h3>
+<p>We’ve seen a lot of these before.</p>
+
+<p>Field 0 is the type code, which we now know is a bitmask.</p>
+
+<p>Field 1 is the model name.</p>
+
+<p>Field 2 is always 10, same as with the weapons.</p>
+
+<p>Field 3 was a mystery with the weapons, and so too here. Most things are, again, 0 or 1, except for repairers which are 2, and solar panels which get to be 11 for some reason. But we’ve got some new patterns here. It’s not a strict LC/non-LC split. Most of the LC’s junk is 1, except banners which are 0. But carriers are 1, as are ED radars and <em>one</em> of the ED’s two banners. UCS? Still all 0s. Still don’t know what any of this means, but more data is good, right?</p>
+
+<p>Fields 4 and 5, build cost and time, as before.</p>
+
+<p>Field 6 is sounds again.</p>
+
+<p>Fields 8, 10, and 12 are all empty strings, but we know what this trio means from other unit types: damage smoke, death explosion, and wreckage model.</p>
+
+<p>Field 14 was another unknown for weapons, and there are still no hard answers to be had, but we’ve got some new patterns to look at here. Almost all 2s and 3s for equipment, but for the LC detector and regenerator, it bumps up from 2 to 3 when upgrading from m1 to m2. Solar panels get a 0, the only one we’ve seen for this field.</p>
+
+<p>Field 15 is a lot of powers of 2, so we can assume it’s a bitmasked field - the slot types it can go in, as for weapons.</p>
+
+<p>Field 16 is always 0, which is consistent with it being the subweapon slot; no non-weapon equipment has a sub slot.</p>
+
+<p>Field 17 is 3 for everything except the solar cell, which is 0. Still no idea what it means.</p>
+
+<p>And finally, field 18 is a mixture of 0s and 3s without much clear pattern.</p>
+
+<p>That all looks very similar to the weapon fields, doesn’t it? I want to take a step back before getting into the extension fields.</p>
+
+<h2 id="more-on-type-codes-and-common-fields">More on type codes and common fields</h2>
+<p>I definitely feel I’m onto something big here. It’s now clear these are bitmasked values defining sets of fields an entity can have.</p>
+
+<p>So let’s look at what all the types I’ve looked at so far have in common. The first 14 fields go: type code, model, unknown, unknown, cost, build time, sound, -1, smoke, -1, explosion, -1, wreckage, -1.</p>
+
+<p>On top of those 14 universal fields, we’ve got a variable number of extra ones based on entity subtypes. With this in mind, I tweaked my script yet again to spit out the type codes in a few formats.</p>
+
+<p>The first thing I learned is that only object types 1–7 have integers in field 0. It’s something different for types 8–10. But within those first seven types, let’s see what we’ve got:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Code (hex)</th>
+      <th>Code (binary)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>0101c000</td>
+      <td>00000001 00000001 11000000 00000000</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0101c001</td>
+      <td>00000001 00000001 11000000 00000001</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0101c002</td>
+      <td>00000001 00000001 11000000 00000010</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0101c004</td>
+      <td>00000001 00000001 11000000 00000100</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0101c008</td>
+      <td>00000001 00000001 11000000 00001000</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>02010000</td>
+      <td>00000010 00000001 00000000 00000000</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>01040100</td>
+      <td>00000001 00000100 00000001 00000000</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>01010100</td>
+      <td>00000001 00000001 00000001 00000000</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>01020000</td>
+      <td>00000001 00000010 00000000 00000000</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>01080000</td>
+      <td>00000001 00001000 00000000 00000000</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>02100000</td>
+      <td>00000010 00010000 00000000 00000000</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>04000100</td>
+      <td>00000100 00000000 00000001 00000000</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>01020100</td>
+      <td>00000001 00000010 00000001 00000000</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>01010200</td>
+      <td>00000001 00000001 00000010 00000000</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>01020200</td>
+      <td>00000001 00000010 00000010 00000000</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>01040200</td>
+      <td>00000001 00000100 00000010 00000000</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>01040400</td>
+      <td>00000001 00000100 00000100 00000000</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>01010800</td>
+      <td>00000001 00000001 00001000 00000000</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>01040800</td>
+      <td>00000001 00000100 00001000 00000000</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>01020201</td>
+      <td>00000001 00000010 00000010 00000001</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>01040201</td>
+      <td>00000001 00000100 00000010 00000001</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>01010401</td>
+      <td>00000001 00000001 00000100 00000001</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>01041001</td>
+      <td>00000001 00000100 00010000 00000001</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>01010402</td>
+      <td>00000001 00000001 00000100 00000010</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>01041002</td>
+      <td>00000001 00000100 00010000 00000010</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>01010404</td>
+      <td>00000001 00000001 00000100 00000100</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>02000000</td>
+      <td>00000010 00000000 00000000 00000000</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>02020000</td>
+      <td>00000010 00000010 00000000 00000000</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>02040000</td>
+      <td>00000010 00000100 00000000 00000000</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>02080000</td>
+      <td>00000010 00001000 00000000 00000000</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>64000000</td>
+      <td>01100100 00000000 00000000 00000000</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>c8000000</td>
+      <td>11001000 00000000 00000000 00000000</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>90010000</td>
+      <td>10010000 00000001 00000000 00000000</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>There are a few definite patterns in there. I’m not convinced that 7 follows the same scheme as 1–6. And there’s a <em>lot</em> going on with type 5. To make it easier to read, I’ll restrict this table to types 1, 3, and 4, to examine what these types have in common.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Code (hex)</th>
+      <th>Code (binary)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>0101c000</td>
+      <td>00000001 00000001 11000000 00000000</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0101c001</td>
+      <td>00000001 00000001 11000000 00000001</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0101c002</td>
+      <td>00000001 00000001 11000000 00000010</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0101c004</td>
+      <td>00000001 00000001 11000000 00000100</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0101c008</td>
+      <td>00000001 00000001 11000000 00001000</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>01040100</td>
+      <td>00000001 00000100 00000001 00000000</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>01010100</td>
+      <td>00000001 00000001 00000001 00000000</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Much better. Based on the common fields between units (1) and buildings (4), I can surmise that the 1 bit in the 1st byte and the 1 bit in the 2nd byte, which they both share, add the various HP values and the equipment slots. Interestingly, projectiles also have 01 in the first byte. Perhaps that string of zero fields is their HP values? At this point, it occurs to me that I’m using the base Earth 2150 files - the standalone expansion, The Moon Project, added antimissile systems. Will be interesting to see if rockets have nonzero HP in that. From this, it would follow that 01 in the second byte adds the equipment slots, which projectiles don’t have.</p>
+
+<p>After that, we’ve got c0 in the third byte for all units - that’ll probably be speed and movement values plus all those random things I couldn’t identify. 01 for buildings, which would seem to be all the economic values, but… projectiles <em>also</em> have 01 in the third byte, and they’ve got a different set of fields. Clearly there is more to this than I thought.</p>
+
+<p>And then there’s the 4th byte, which just has a different bit for each set of extensions on various specialized unit types.</p>
+
+<p>So everything with these fits my idea, <em>except</em> what’s going on with byte 3 for projectiles. If I was completely correct, I’d expect at least the last few fields in projectiles and buildings to follow the same pattern, but you just have to look at the field types to see that isn’t true: the last projectile field is a string (not counting its trailing -1, still don’t know what those are for), the last building field is an integer.  Perhaps fields 2 and 3 also play a role? Or maybe each byte’s meaning depends on the value of the one before; is this a four-level type hierarchy?</p>
+
+<p>Every time I think I’ve figured something out with this file, it poses more questions.</p>
+
+<hr>
+
+<h3 id="posts-in-this-series">Posts in this series:</h3>
+
+<ul>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150.html">Reverse Engineering Earth 2150, Part 1: File Structure</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-2.html">Reverse Engineering Earth 2150, Part 2: Data Types</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-3.html">Reverse Engineering Earth 2150, Part 3: Vehicle Data</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-4.html">Reverse Engineering Earth 2150, Part 4: PAR Decompiler</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-5.html">Reverse Engineering Earth 2150, Part 5: PAR Compiler</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-6.html">Reverse Engineering Earth 2150, Part 6: Texture Files</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-7.html">Reverse Engineering Earth 2150, Part 7: Mesh Files</a></li>
+</ul>
+</content>
+
+<div class="tag-list h-card">Tags: <a href="http://www.ninetailed.net/tag/reverse-engineering-earth-2150/">Reverse Engineering Earth 2150</a>, <a href="http://www.ninetailed.net/tag/earth-2150/">Earth 2150</a>, <a href="http://www.ninetailed.net/tag/games/">Games</a>, <a href="http://www.ninetailed.net/tag/gushing-about-tech/">Gushing About Tech</a></div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Terrana's Entire Website</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list"><li class="p-name">Email</li>
+            <li><a class="u-email" href="mailto:terrana@ninetailed.net">terrana@ninetailed.net</a></li><li class="p-name">Keyoxide</li>
+            <li><a class="u-email" href="https://keyoxide.org/7e821f4a413d6d61ee4d62bec8a045f9cf79681e" title="7e821f4a413d6d61ee4d62bec8a045f9cf79681e">7e821f4a413d6...</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://sleeping.town/@terrana"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#mastodon"></use></svg> <span class="username">terrana@sleeping.town</span></a></li><li><a href="http://www.ninetailed.net/feed.xml"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#rss"></use></svg> <span>RSS</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+
+</body></html>

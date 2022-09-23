@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<!-- saved from url=(0068)http://www.ninetailed.net/reverse-engineering-earth-2150-part-5.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Reverse Engineering Earth 2150, Part 5: PAR Compiler | Terrana’s Entire Website</title>
+<meta name="generator" content="Jekyll v4.2.0">
+<meta property="og:title" content="Reverse Engineering Earth 2150, Part 5: PAR Compiler">
+<meta name="author" content="Terrana">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="As of this evening, I now have a working PAR file compiler as well as a decompiler. Source files in the usual place.">
+<meta property="og:description" content="As of this evening, I now have a working PAR file compiler as well as a decompiler. Source files in the usual place.">
+<link rel="canonical" href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-5.html">
+<meta property="og:url" content="/reverse-engineering-earth-2150-part-5.html">
+<meta property="og:site_name" content="Terrana’s Entire Website">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-06-08T00:00:00+01:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Reverse Engineering Earth 2150, Part 5: PAR Compiler">
+<script type="application/ld+json">
+{"@type":"BlogPosting","headline":"Reverse Engineering Earth 2150, Part 5: PAR Compiler","url":"/reverse-engineering-earth-2150-part-5.html","datePublished":"2021-06-08T00:00:00+01:00","dateModified":"2021-06-08T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"/reverse-engineering-earth-2150-part-5.html"},"author":{"@type":"Person","name":"Terrana"},"description":"As of this evening, I now have a working PAR file compiler as well as a decompiler. Source files in the usual place.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="./Reverse Engineering Earth 2150, Part 5_ PAR Compiler _ Terrana’s Entire Website_files/main.css"><link type="application/atom+xml" rel="alternate" href="http://www.ninetailed.net/feed.xml" title="Terrana&#39;s Entire Website"><link rel="me" href="https://sleeping.town/@terrana">
+  <link rel="me" href="https://ninetailed.space/@Terrana">
+</head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="http://www.ninetailed.net/">Terrana's Entire Website</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger">
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="http://www.ninetailed.net/about/">About</a><a class="page-link" href="http://www.ninetailed.net/contact/">Contact</a><a class="page-link" href="http://www.ninetailed.net/earth-2150/">Earth 2150</a><span class="header-divider"></span><a class="page-link" href="https://git.ninetailed.net/">Git</a><a class="page-link" href="https://keyoxide.org/7e821f4a413d6d61ee4d62bec8a045f9cf79681e" rel="me">Keyoxide</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        
+
+<h1>Reverse Engineering Earth 2150, Part 5: PAR Compiler</h1>
+
+
+<content><p>As of this evening, I now have a working PAR file compiler as well as a decompiler. Source files in the <a href="https://git.ninetailed.net/terrana/earth-2150">usual place</a>.</p>
+
+<p>Most of the work up to this point has been learning about the file structure. The same knowledge that lets me decompile the file will let me recompile it from the generated sources, so I was able to turn out the first prototype compiler in an evening.</p>
+
+<p>That’s not to say it was plain sailing. Oh, no, computers never make things that easy.</p>
+
+<p>In principle, the compiler should produce a file that is bit-for-bit identical to the original one that was decompiled. Mine doesn’t <em>quite</em> do that because of the whole <code class="language-plaintext highlighter-rouge">parameters.csv</code> debacle I mentioned in <a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-4.html">part 4</a>, so some of the compiled entities will be slightly out of order. But it will produce a PAR file that is the same <em>size</em> as the original, and it turns out the game doesn’t care about the exact order of the entities anyway.</p>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>As I’m sure you can imagine, I wasn’t terribly happy when the first version I produced was several kilobytes too small. This is a 331kB file, so a few k is going to be noticeable, and missing data is bad. I ran it back through the decompiler and all the entities I expected to be there were there, so it had to be something within the entity structure that was missing.</p>
+
+<p>So out comes the hex editor once again. I open the original and my recompiled PAR file side-by-side in compare mode and ask it to find me the first difference. That turned out to be in the very first entity. You may <a href="http://www.ninetailed.net/reverse-engineering-earth-2150.html">recall</a> that the entity structure includes, as its fourth element, the number of fields that entity has. You may further recall that builders have 81 fields. Well, the first entity was a builder, and it was only reporting that it had 67 fields. That’s 14 missing.</p>
+
+<p>All the strings I expected seemed to be there, but as I checked them, I noticed something missing. Most strings in the original PAR file had an <code class="language-plaintext highlighter-rouge">FFFFFFFF</code> field after them, but I’d forgotten to add them back in after stripping them out of the CSVs. With that in mind, I recalled that only the mesh name in field 1 lacked this “padding”, so I had the compiler add it back in for every string after field 1 and re-ran it.</p>
+
+<p>But of course it wasn’t going to be that simple. The compiled PAR file was now several hundred bytes too large. That meant that I’d added padding to a few dozen strings that shouldn’t have them. I got fifteen minutes into coding exceptions for when it should be added when I realized I was doing this the hard way, by trial and error.</p>
+
+<p>Part of my decompiler necessarily has to classify entity types and put them in their own files. That means, in turn, that every CSV file contains entities with the same field structure. Well, except <code class="language-plaintext highlighter-rouge">parameters.csv</code>, which is a mixed bag. So, as part of its operation, I had it check which strings had a padding field after them, and make a note of their numeric index in the field list, then show me all those lists together at the end.</p>
+
+<p>Looking again at which fields had this padding and which did not, I noticed a pattern. Most (but not all) of the ones that didn’t were mesh names. Meshes are stored elsewhere and don’t have entries in the PAR file. So, what if…</p>
+
+<p>Turns out that <code class="language-plaintext highlighter-rouge">FFFFFFFF</code> field isn’t padding at all. It’s a marker to indicate that the string before it is a reference to another entity. The game probably uses this internally to drop in pointers or entity references into their structures after loading.</p>
+
+<p>That meaning isn’t actually important, though. I just need to know which fields in which classes of entity get a marker field after them, and I have those lists now. I just have to load the appropriate list in with each CSV file and pass it to my PAR writer, which I then had add the markers in the right places.</p>
+
+<p>Compiled once more, and…</p>
+
+<h2 id="results">Results!</h2>
+
+<p><img src="./Reverse Engineering Earth 2150, Part 5_ PAR Compiler _ Terrana’s Entire Website_files/filesizes.png" alt="Two Windows file properties boxes side by side. They both show a filename of EARTH2150.par, different locations, and sizes of 338,182 bytes."></p>
+
+<p>…I think that’s a success.</p>
+
+<p>I decided my next step was to load it into the game and see if everything still worked. I initially thought I’d need to pack it back into a .wd file, but after talking about my plans on the discord groups I mentioned last time, it was pointed out to me that the game will happily read the file if I just stick it in as <code class="language-plaintext highlighter-rouge">Parameters\EARTH2150.wd</code> in the game directory.</p>
+
+<p>So I did, loaded up, started a new game, nothing crashed. So far, so good.</p>
+
+<p>Time to try changing something. I went into <code class="language-plaintext highlighter-rouge">vehicles.csv</code> and changed the LC’s basic vehicle, the Lunar, to use a different vehicle’s model and have 555 health instead of its usual 240. Nice, easy number to look for.</p>
+
+<p>Recompile, load up again, open the vehicle designer screen, and…</p>
+
+<p><img src="./Reverse Engineering Earth 2150, Part 5_ PAR Compiler _ Terrana’s Entire Website_files/lunarm1.png" alt="Cropped screenshot of the vehicle designer screen. &quot;HP: 555&quot; is visible in the stat block on the right."></p>
+
+<h2 id="next-steps">Next Steps</h2>
+
+<p>So, I now have what I originally set out for: the ability to modify units in game. There are two things I’d like to do now: finish my documentation so that others can write their own tools if desired, or at least understand mine; and fix some limitations these basic scripts have.</p>
+
+<p>And oh, they have limitations. <code class="language-plaintext highlighter-rouge">parameters.csv</code> is still a mess and I really need to properly separate out its contents. Entity types are hard-coded to the structures I painstakingly worked out, but I suspect it may be possible to mod in other structures that my scripts just can’t handle. Bit-masked fields show up as 2048 and 8192 and such instead of anything useful. And there’s one particular set of entities that uses 32-bit floating point values instead of integers, and they just show up as nonsense in the CSV.</p>
+
+<p>But hey, considering I only started this project ten days ago, I think I’ve done very well.</p>
+
+<hr>
+
+<h3 id="posts-in-this-series">Posts in this series:</h3>
+
+<ul>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150.html">Reverse Engineering Earth 2150, Part 1: File Structure</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-2.html">Reverse Engineering Earth 2150, Part 2: Data Types</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-3.html">Reverse Engineering Earth 2150, Part 3: Vehicle Data</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-4.html">Reverse Engineering Earth 2150, Part 4: PAR Decompiler</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-5.html">Reverse Engineering Earth 2150, Part 5: PAR Compiler</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-6.html">Reverse Engineering Earth 2150, Part 6: Texture Files</a></li>
+  <li><a href="http://www.ninetailed.net/reverse-engineering-earth-2150-part-7.html">Reverse Engineering Earth 2150, Part 7: Mesh Files</a></li>
+</ul>
+</content>
+
+<div class="tag-list h-card">Tags: <a href="http://www.ninetailed.net/tag/reverse-engineering-earth-2150/">Reverse Engineering Earth 2150</a>, <a href="http://www.ninetailed.net/tag/earth-2150/">Earth 2150</a>, <a href="http://www.ninetailed.net/tag/games/">Games</a>, <a href="http://www.ninetailed.net/tag/gushing-about-tech/">Gushing About Tech</a></div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Terrana's Entire Website</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list"><li class="p-name">Email</li>
+            <li><a class="u-email" href="mailto:terrana@ninetailed.net">terrana@ninetailed.net</a></li><li class="p-name">Keyoxide</li>
+            <li><a class="u-email" href="https://keyoxide.org/7e821f4a413d6d61ee4d62bec8a045f9cf79681e" title="7e821f4a413d6d61ee4d62bec8a045f9cf79681e">7e821f4a413d6...</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://sleeping.town/@terrana"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#mastodon"></use></svg> <span class="username">terrana@sleeping.town</span></a></li><li><a href="http://www.ninetailed.net/feed.xml"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#rss"></use></svg> <span>RSS</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p></p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+
+</body></html>

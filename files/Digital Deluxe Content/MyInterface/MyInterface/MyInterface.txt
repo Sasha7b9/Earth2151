@@ -1,0 +1,80 @@
+MyInterface - Das Toolkit zum Herstellen von Oberflächen für The Moon Project.
+Version 1.1
+
+Inhalt
+1. Installation und Software-Anforderungen
+2. Toolkit-Dateien
+3. Erste Schritte zum Erstellen eines Interface
+4. Benutzen des Tools 'MyInterface.exe'
+5. Fehlersuche
+
+
+1. Installation
+
+Sie sollten die Dateien 'MyInterface' und die 'Tools'-Vezeichnisse in das Hauptverzeichnis von The Moon Project kopieren. Die Batch-Datei produziert Dateien mit der Endung 'wd', die Ihr neues Interface enthalten. Diese Dateien sollten Sie in das Verzeichnis 'WDFiles' kopieren.
+
+Wenn Sie Ihr eigenes Interface kreieren wollen, müssen Sie zunächst BMP-Dateien editieren. Diese BMP-Dateien können Sie ganz einfach editieren, indem Sie die Standardanwendung 'Zeichnen' benutzen. Einige der Intefaces enthalten jedoch auch TGA-Dateien. Um diese zu editieren, benötigen Sie ein Zeichenprogamm wie 'Paint Shop Pro'.
+
+
+2. Toolkit-Dateien
+
+Dieses Toolkit enthält die folgenden Verzeichnisse und Dateien:
+Tools - Das Verzeichnis mit den Tools, die Sie benötigen, um ein Interface zu erstellen:
+    AddFileInfo.exe, InterfaceMap.exe, MyInterface.exe, Pic2Tex.exe, 
+    WDCreator.exe
+MyInterface - ein Verzeichnis mit sechs Standard-Interfaces. Eines davon sollten Sie als Grundlage für Ihr individuelles Interface verwenden. Sie befinden sich in den folgenden Vezeichnissen:
+    InterfaceED, InterfaceEDSolid, InterfaceUCS, InterfaceUCSSolid, 
+    InterfaceLC, InterfaceLCSolid
+Jedes dieser Verzeichnisse enthält die folgenden Dateien:
+#compass.tga - Bitmap von einem Kompaß - der linke Teil des Bitmaps enthält den unteren, statischen Teil des Kompasses, und der rechte Teil den oberen, sich bewegenden Teil.
+#Cursors.tga - Bitmap mit Interface-Zeigern. Jede Cursor hat dabei die Maße 64x64 und besteht aus vier Animationsrahmen, die in folgende Reihenfolge angezeigt werden: Oben links, oben rechts, unten links, unten rechts.
+cursors.txt - Die Definitionsdatei für #Cursors.tga. Die Cursordefinition hat folgendes Format:
+    (alles nach // ist erklärender Kommentar)
+    cursor n //n - Anzahl der Cursors (Die Cursors werden von links nach rechts und von oben nach unten numeriert)
+    {
+        Center x, y //x, y - Koordinaten (vom Anfang des Cursors) des Mittelpunkts des Cursors
+        AnimationType n //n = 0 - Die Zeiger werden im Zyklus 0123 abgebildet
+                        //n = 1 - Die Zeiger werden im Zyklus 012321 abgebildet
+        FrameTime n     //n - zeigt an, mit welcher Frequenz ein Cursor dargestellt wird (Anzahl der Frames)
+    }
+    An dieser Datei sollten Sie nur dann Änderungen vornehmen, wenn Sie auch an der Datei
+    in #cursors.tga wichtige Änderungen vornehmen.
+Dial32.bmp - Das erste Bitmap enthält viele Items für das Interface. Wenn  Sie herausfinden wollen, wo sich ein bestimmtes Item befindet, können Sie dazu das Tool 'MyInterface' benutzen.
+Dial32@.bmp - eine Bitmap-Datei mit den Farbschlüsseln für die Items in dial32.bmp.
+    Diese Datei darf nicht verändert werden!
+Dial64.bmp - identisch mit Dial32.bmp.
+Dial64@.bmp - identisch mit Dial32@.bmp.
+Dialogs.txt - Eine Datei mit Definitionen für Interface-Items. Diese Datei darf nicht verändert werden!
+MAKE_INTERFACE.bat - Die Batch-Datei zum Erstellen eines Interfaces. Sie können sie direkt starten oder aus dem Programm 'MyInterface' heraus. Die Batch-Datei erstellt dann die Datei 'InterfaceSOME_ID.wd' und verknüpft sie mit Ihrem Interface. In dieser Datei gibt es zwei Zeilen, die verändert werden können:
+    SET INTERFACE_NAME="Mein tolles Interface" ("Mein tolles Interface" ist der Name Ihres Interfaces, wie er im Optionsdialog angezeigt wird)
+    SET INTERFACE_ID=JS (JS wird an alle Interface-Dateien angehängt und dient als Identifizierungszeichen. Es darf keine Leerstellen, Schrägstriche ö.ä. enthalten).
+    Sie können auch diese beiden Werte aus dem Programm 'MyInterface' verändern.
+Die Verzeichnisse *Solid enthalten ebenfalls die Dateien #dialt32.tga und Dialt32@.bmp
+
+
+3.Erste Schritte zum Erstellen eines Interface
+- Wählen Sie das Basisinterface aus, das Ihnen als Grundlage dienen soll. Sie können das entsprechende Verzeichnis benutzen oder zuvor von diesem Verzeichnis eine Kopie erstellen.
+- Verändern Sie (wenn Sie möchten) die Datei #compass.tga. Das ist ganz einfach.
+- Verändern Sie (wenn Sie möchten) die Datei #cursors.tga und falls nötig auch die Cursordefinitionen in der Datei Cursors.txt.
+- Benutzen Sie das Programm 'MyInterface' um, herauszufinden, wie die Items aufgebaut sind und wo sie sich befinden. Beachten Sie dabei, daß einige Items keinen Platz auf dem Bitmap benötigen. 
+Modifizieren Sie die Dateien Dial32.bmp, Dial64.bmp sowie #dialt32.tga, falls vorhanden.
+- Starten Sie die Batch-Datei direkt oder aus 'MyInterface', um eine Datei mit der Erweiterung 'wd' zu erstellen, kopieren Sie diese in das Verzeichnis 'WDFiles', starten Sie The Moon Project und wählen Sie Ihr neues Interface aus, um zu sehen, wie es wirkt. Öffnen Sie verschiedene Dialoge, damit Sie alle Interface-Items einmal sehen können.
+
+
+4. Benutzen des Tools 'MyInterface.exe'
+Das Tool 'MyInterface.exe' zeigt an, wo sich die einzelnen Interface-Items auf den Bitmaps befinden. Benutzen Sie zunächst die Option 'Verzeichnis auswählen' aus dem Menü, um in das Verzeichnis mit Ihrem neu erstellten Interface zu gelangen.
+Die Registrierkarte 'Items' enthält alle Interface-Items. Wenn Sie ein Item aus der ersten Liste auswählen, zeigt die zweite Liste den Status des Items an. Wählen Sie 'Status' aus, um die Elemente des Items für den betreffenden Status anzuzeigen. Auf der rechten Seite des Fensters befindet sich der Name des Bitmaps, die Position des Elements auf diesem Bitmap (Links oben bis echts unten) und die Vorderansicht des Items, falls verfügbar. Das Element wird im unteren Abschnitt angezeigt. Sie können den darüberliegenden Button dazu benutzen, das Bild zu vergrößern.
+Die Registrierkarte 'Schriftarten' zeigt die Schriftarten für das Interface an. Sie können die Farbe dieser Schriftarten verändern. 
+Wenn Sie Änderungen vorgenommen haben, benutzen Sie die Option 'Änderung an den Schriftarten speichern', um die Datei 'dialogs.txt' zu aktualisieren. Diese Option wird nicht automatisch abgefragt.
+Die Farben der Schriftarten an den Seiten sollten Sie nicht verändern (Nummer 11 bis 26).
+Benutzen Sie die Option 'Aktualisieren', um die Dateien aus dem ausgewählten Verzeichnis erneut einzulesen.
+Benutzen Sie die Optin 'Interface erstellen', um die Batch-Datei 'MAKE_INTERFACE.bat' zu starten, die Ihr neues Interface erstellt und mit der Erweiterung 'wd' versieht.
+
+
+5. Fehlersuche
+Denken Sie daran, daß die Ordner 'MyInterface' und 'Tools' im gleichen Verzeichnis sein sollten.
+Ändern Sie anderenfalls die Variable TOOLS_PATH in de Batch-Datei.
+Leider sind unsere Tools nicht sehr fehlerbeständig. Wenn Sie also in den Dateien *@.bmp, dialogs.txt, cursors.txt oder MAKE_INTERFACE.bat ungültige Änderungen vornehmen, kann es sein, daß das Programm ohne vorherige Fehlermeldung beendet wird oder sogar abstürzt.
+Wenn Sie in den oben genannten Dateien Fehler machen, kann es sein, daß The Moon Project abstürzt oder das Programm hängenbleibt, nachdem Sie Ihr Interface ausgewählt haben. Erstellen Sie das Interface in diesem Fall noch einmal - versuchen Sie, die Änderungen wiederherzustellen oder benutzen Sie Dateien aus Ihren Basisinterfaces. Machen Sie schließlich Tests mit einem neuen Spieler. Denken Sie immer daran, das neue Interface mit dem provisorischen Test-Spieler zu testen.
+
+Es besteht auch die Möglichkeit, daß durch einige Patches neue Items zu den Interfaces hinzukommen. In diesem Fall erstellt das Toolkit ungültige Interfaces, durch die The Moon Project schlechter läuft oder sogar abstürzt. Wir werden für diesen Fall eine neue, aktualisierte Version der Basis-Interfaces veröffentlichen.

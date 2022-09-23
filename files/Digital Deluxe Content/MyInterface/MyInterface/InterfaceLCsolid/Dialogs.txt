@@ -1,0 +1,2067 @@
+Fonts 
+{
+//nr    size    Italic        shadow offset
+//  font  | weight|  font color  |   |  shadow color
+//    |   |   |   |      |       |   |     | 	 
+//Raised
+0: Arial, 10, 700, 0, 0x90CCC0B8, 1,  1, 0xD0000000
+//Sunken
+1: Arial, 10, 700, 0, 0xC0000000, 1,  1, 0xA0CCC0B8
+//Edit normal / tooltip / button normal
+2: Arial, 10, 700, 0, 0xB0000000
+//Edit focus
+3: Arial, 10, 700, 0, 0xC0000000
+//Console
+4: Arial, 10, 400, 0, 0xFFFFB0B0, 1,  1, 0xff000000
+//Subtitles in video
+5: Arial, 10, 400, 0, 0xFFFFFFFF, 1,  1, 0xFF000000
+//Big font
+6: Arial, 14, 700, 0, 0x90CCC0B8, 1,  1, 0xD0000000
+
+//Side color fonts (don't change)
+11: Arial, 10, 400, 0, 0xff2ad3d7, 1, 1, 0xFF000000
+12: Arial, 10, 400, 0, 0xff0b10d9, 1, 1, 0xFF000000
+13: Arial, 10, 400, 0, 0xff19d90a, 1, 1, 0xFF000000
+14: Arial, 10, 400, 0, 0xffd9110a, 1, 1, 0xFF000000
+15: Arial, 10, 400, 0, 0xff0a6cd9, 1, 1, 0xFF000000
+16: Arial, 10, 400, 0, 0xffd9d42b, 1, 1, 0xFF000000
+17: Arial, 10, 400, 0, 0xff2d00b3, 1, 1, 0xFF000000
+18: Arial, 10, 400, 0, 0xffd90abd, 1, 1, 0xFF000000
+19: Arial, 10, 400, 0, 0xffd9d9d9, 1, 1, 0xFF000000
+20: Arial, 10, 400, 0, 0xff6d6d6d, 1, 1, 0xFF000000
+21: Arial, 10, 400, 0, 0xff1b1b1b, 1, 1, 0xFF000000
+22: Arial, 10, 400, 0, 0xff007c7e, 1, 1, 0xFF000000
+23: Arial, 10, 400, 0, 0xff6cb5d9, 1, 1, 0xFF000000
+24: Arial, 10, 400, 0, 0xff9ed9ae, 1, 1, 0xFF000000
+25: Arial, 10, 400, 0, 0xffd9b2d9, 1, 1, 0xFF000000
+26: Arial, 10, 400, 0, 0xffd98985, 1, 1, 0xFF000000
+
+//FW_NORMAL           400
+//FW_BOLD             700
+}
+
+Item:0 Dialog window 
+{
+Moving 10,0,19,36,51,64,75,84,91,96,99,100
+State:0x00 Standard dialog (moving in)
+	{
+	Sound moveInLC
+	1: 123
+	2: 49
+	3: 50
+	4: 73
+	5: 74
+	6: 81
+	7: 82
+	8: 83
+	9: 84
+	}
+State: 0x01 Standard dialog (moving out)
+	{
+	Sound moveOutLC
+	1: 123
+	2: 49
+	3: 50
+	4: 73
+	5: 74
+	6: 81
+	7: 82
+	8: 83
+	9: 84
+	}
+}
+Item:1 Menu
+{
+ConstY	  1
+NoBorderY 1
+Font	  2
+State:0x30 Single standard
+	{
+	1: 1
+	4: 2
+	5: 6
+	}
+State:0x34 Single with checkbox unchecked
+	{
+	Identity	0x30
+	4: 4
+	}
+State:0x3C Single with checkbox checked
+	{
+	Identity	0x30
+	4: 3
+	}
+State:0x38 Single with submenu
+	{
+	Identity	0x30
+	5: 5
+	}
+State:0x32 Single standard (selected)
+	{
+	Font 3
+	1: 25
+	4: 26
+	5: 30
+	}
+State:0x36 Single with checkbox unchecked (selected) 
+	{
+	Identity	0x32
+	4: 28
+	}
+State:0x3E Single with checkbox unchecked (selected)
+	{
+	Identity	0x32
+	4: 27
+	}
+State:0x3A Single with submenu (selected)
+	{
+	Identity	0x32
+	5: 29
+	}
+
+//-----Srodkowy item menu bez ramek dolnych i gornych
+State:0x00 Inside standard
+	{
+	1: 7
+	4: 8
+	5: 12
+	}
+State:0x04 Inside with checkbox unchecked
+	{
+	Identity	0x00
+	4:10
+	}
+State:0x0C Inside with checkbox checked
+	{
+	Identity	0x00
+	4:9
+	}
+State:0x08 Inside with submenu
+	{
+	Identity	0x00
+	5:11
+	}
+State:0x02 Inside standard (selected)
+	{
+	Font 3
+	1: 31
+	4: 32
+	5: 36
+	}
+State:0x06 Inside with checkbox unchecked (selected) 
+	{
+	Identity	0x02
+	4:34
+	}
+State:0x0E Inside with checkbox checked (selected)
+	{
+	Identity	0x02
+	4:33
+	}
+State:0x0A Inside with submenu (selected)
+	{
+	Identity	0x02
+	5:35
+	}
+//-----Gorne domkniecie menu
+State:0x10 Upper standard
+	{
+	1: 13
+	4: 14
+	5: 18
+	}
+State:0x14 Upper with checkbox unchecked
+	{
+	Identity	0x10
+	4:16
+	}
+State:0x1C Upper with checkbox checked
+	{
+	Identity	0x10
+	4:15
+	}
+State:0x18 Upper with submenu
+	{
+	Identity	0x10
+	5:17
+	}
+State:0x12 Upper standard (selected)
+	{
+	Font 3
+	1: 37
+	4: 38
+	5: 42
+	}
+State:0x16 Upper with checkbox unchecked (selected) 
+	{
+	Identity	0x12
+	4:40
+	}
+State:0x1E Upper with checkbox checked (selected)
+	{
+	Identity	0x12
+	4:39
+	}
+State:0x1A Upper with submenu (selected)
+	{
+	Identity	0x12
+	5:41
+	}
+//----- Dolne domkniecie menu
+State:0x20 Lower standard
+	{
+	1: 19
+	4: 20
+	5: 24
+	}
+State:0x24 Lower with checkbox unchecked
+	{
+	Identity	0x20
+	4:22
+	}
+State:0x2C Lower with checkox checked
+	{
+	Identity	0x20
+	4:20
+	}
+State:0x28 Lower with submenu
+	{
+	Identity	0x20
+	5:23
+	}
+State:0x22 Lower standard (selected)
+	{
+	Font 3
+	1: 43
+	4: 44
+	5: 48
+	}
+State:0x26 Lower with checkbox unchecked (selected)
+	{
+	Identity	0x22
+	4:46
+	}
+State:0x2E Lower with checkbox checked (selected)
+	{
+	Identity	0x22
+	4:45
+	}
+State:0x2A Lower with submenu (selected)
+	{
+	Identity	0x22
+	5:47
+	}
+}
+
+Item:2 Static
+{
+NoBorderX	 1
+NoBorderY	 1
+NoBackground 1
+Font	  	 0
+State: 0x00 Standard
+	{
+	}
+State: 0x02 Standard
+	{
+	}
+State: 0x04 Standard
+	{
+	}
+State: 0x08 Standard
+	{
+	}
+State: 0x0C Standard
+	{
+	}
+}
+
+Item:3 Button
+{
+ConstX    0
+ConstY	  1
+NoBorderY 1
+Font	  0
+State:0x00 Normal (NOT PRESSED, not selected)
+	{
+
+	1: 58
+	4: 57
+	5: 59
+	}
+State:0x08 Normal (PRESSED, not selected)
+	{
+	Font 1
+
+	1: 61
+	4: 60 
+	5: 62
+	}
+State:0x04 Normal (pressed, SELECTED)
+	{
+        Sound ButtonLC
+	Font 1
+	1: 61
+	4: 60 
+	5: 62
+	}
+State:0x0C Normal (NOT PRESSED, SELECTED)
+	{
+        Sound ButtonLC
+	1: 58
+	4: 57
+	5: 59
+	}
+}
+
+Item:4 Check box
+{
+ConstX  1
+ConstY	1
+NoBorderX 1
+NoBorderY 1
+Uses 2
+State:0x00 Normal (not selected)
+	{
+	1:63
+	}
+State:0x08 Normal (checked)
+	{
+	1:64
+	}
+State:0x04 Normal (not selected)
+	{
+        Sound CheckLC
+	Identity 	0
+	}
+State:0x0C Normal (checked)
+	{
+  Sound CheckLC
+	Identity 	8
+	}
+State:0x01 Normal (not selected) gray
+	{
+	1:228
+	}
+State:0x09 Normal (checked) gray
+	{
+//	Sound 		Click2UCS
+	1:229
+	}
+}
+Item:5 Radio button
+{
+ConstX  1
+ConstY	1
+NoBorderX 1
+NoBorderY 1
+Uses 2
+State:0x00 Normal (not selected)
+	{
+	1: 65
+	}
+State:0x08 Normal (checked)
+	{
+	1:66
+	}
+State:0x04 Normal (not selected)
+	{
+  Sound CheckLC
+	Identity 0
+	}
+State:0x0C Normal (checked)
+	{
+  Sound CheckLC
+	Identity 8
+	}
+State:0x01 Normal (not selected) gray
+	{
+	1:230
+	}
+State:0x09 Normal (checked) gray
+	{
+//	Sound Click1UCS
+	1:231
+	}
+}
+
+Item:6 Edit box
+{
+Font 2
+Selection 22
+Uses 13,10,12,22
+State:0x00 Normal (not selected)
+	{
+	1: 103
+	2: 55
+	3: 56
+	4: 79
+	5: 80
+	6: 93
+	7: 94
+	8: 95
+	9: 96
+	}
+State:0x01 Normal (selected)
+	{
+	Identity 	0x00
+	}
+State:0x02 Normal (selected)
+	{
+	Font 3
+	Identity 	0x00
+	1: 208
+	}
+}
+
+Item:7 Group box
+{
+NoTopBorder 1
+//NoBackground 1
+Uses 2,48,64,65
+State:0x00 Normal (not selected)
+	{
+	1: 232
+	3: 54
+	4: 77
+	5: 78
+	8: 91
+	9: 92
+	}
+}
+
+Item:8 Tab edges
+{
+Uses 9
+State:0x00 Normal (not selected)
+	{
+	1: 219
+	2: 51
+	3: 52
+	4: 75
+	5: 76
+	6: 85
+	7: 86
+	8: 87
+	9: 88
+	}
+State:0x01 Normal (selected)
+	{
+	Identity 	0x00
+	}
+}
+
+Item:9 Tab
+{
+ConstY	  1
+NoBorderY 1
+Font 0
+State:0x00 Normal (not selected)
+	{
+	1: 105
+	3: 144
+	4: 104
+	5: 106
+	8: 143
+	9: 145
+	}
+State:0x01 Normal (pressed)
+	{
+  Sound CheckLC
+	Font 1
+	1: 108
+	3: 147
+	4: 107 
+	5: 109
+	8: 146
+	9: 148
+	}
+}
+
+Item:10 Vertical scrollbar - bar
+{
+ConstX    1
+NoBorderX 1
+Uses     11
+State:0x00 Normal (not selected)
+	{
+	1: 124
+	2: 71
+	3: 70
+	}
+State:0x01 Normal (pressed)
+	{
+	Identity 0x00
+	}
+State:0x02 Normal (pressed)
+	{
+	Identity 0x00
+	}
+}
+
+Item:11 Vertical scrollbar - button
+{
+ConstX  1
+ConstY	1
+NoBorderX    1
+NoBorderY    1
+NoBackground 1
+State:0x00 Normal (not selected)
+	{
+	1: 69	
+	}
+State:0x01 Normal (pressed)
+	{
+	}
+State:0x02 Normal (pressed)
+	{
+	1: 72
+	}
+}
+
+Item:12 Scrollbar - corner
+{
+ConstX    1
+ConstY	  1
+NoBorderX 1
+NoBorderY 1
+State:0x00 Normal (not selected)
+	{
+	1: 102
+	}
+State:0x01 Normal (not selected)
+	{
+	1: 102
+	}
+}
+
+Item:13 Horizontal scrollbar - bar
+{
+ConstY	  1
+NoBorderY 1
+Uses	  14
+State:0x00 Normal (not selected)
+	{
+	1: 113
+	4: 67
+	5: 68
+	}
+State:0x01 Normal (pressed)
+	{
+	Identity 0x00
+	}
+State:0x02 Normal (pressed)
+	{
+	Identity 0x00
+	}
+}
+
+Item:14 Horizontal scrollbar - button
+{
+ConstX  1
+ConstY	1
+NoBorderX	 1
+NoBorderY	 1
+NoBackground 1
+State:0x00 Normal (not selected)
+	{
+	1: 69	
+	}
+State:0x01 Normal (pressed)
+	{
+	}
+State:0x02 Normal (pressed)
+	{
+	1: 72
+	}
+}
+
+Item:15 Slider - bar
+{
+ConstY	  1
+NoBorderY 1
+Uses	  16
+State:0x00 Normal (not selected)
+	{
+	1: 110
+	4: 97
+	5: 98
+	}
+State:0x01 Normal (pressed)
+	{
+	Identity 0x00
+	}
+State:0x02 Normal (pressed)
+	{
+	Identity 0x00
+	}
+}
+
+Item:16 Slider - scroll button
+{
+ConstX  1
+ConstY	1
+NoBorderX 1
+NoBorderY 1
+State:0x00 Normal (not selected)
+	{
+	1: 99
+	}
+State:0x01 Normal (pressed)
+	{
+	Identity 0x00
+	}
+State:0x02 Normal (pressed)
+	{
+	1: 99
+	}
+}
+
+Item:17 Progresbar - bar
+{
+ConstY	  1
+NoBorderY 1
+Uses	 18
+State:0x00 Normal (not selected)
+	{
+	1: 112
+	4: 100
+	5: 101
+	}
+}
+
+Item:18 Progresbar - single box
+{
+ConstY	1
+NoBorderX 1
+NoBorderY 1
+State:0x00 Normal (not selected)
+	{
+	1: 111
+	}
+}
+
+Item:19 Tooltip
+{
+Font 2
+State:0x00 Normal (not selected)
+	{
+	1: 122
+	2: 118
+	3: 119
+	4: 120
+	5: 121
+	6: 114
+	7: 115
+	8: 116
+	9: 117
+	}
+}
+
+Item:20 Animated button
+{
+Light 0xFF505050, 0xFFA0A0A0, 1,0,1
+NoBackground 0
+State:0x00 Normal (not pressed)
+	{
+	1: 133
+	2: 125
+	3: 126
+	4: 127
+	5: 128
+	6: 129
+	7: 130
+	8: 131
+	9: 132
+	}
+State:0x04 Normal (pressed)
+	{
+  Sound ButtonLC
+	Light 0xFF707070, 0xFFFFFFFF, 1,0,1
+	1: 142
+	2: 134
+	3: 135
+	4: 136
+	5: 137
+	6: 138
+	7: 139
+	8: 140
+	9: 141
+	}
+//JS
+State:0x08 Normal (PRESSED, not selected)
+	{
+	Identity	0x04
+	}
+//JS
+State:0x0C Normal (NOT PRESSED, SELECTED)
+	{
+  Sound ButtonLC
+	Identity	0x04
+	}
+}
+
+Item:21 Tab dialog
+{
+NoBorderX	1
+NoBorderY	1
+NoBackground 1
+State: 0x00 Standard
+	{
+	//1: 123
+	}
+}
+Item:22 List selection
+{
+NoBorderX	1
+NoBorderY	1
+NoBackground 	1
+State: 0x00 Standard
+	{
+	1: 149
+	Font 3
+	}
+State: 0x01 Empty
+	{
+	Font 2
+	}
+State: 0x100
+	{
+	1: 149
+	Font 11
+	}
+State: 0x101
+	{
+	Font 11
+	}
+State: 0x200
+	{
+	1: 149
+	Font 12
+	}
+State: 0x201
+	{
+	Font 12
+	}
+State: 0x300
+	{
+	1: 149
+	Font 13
+	}
+State: 0x301
+	{
+	Font 13
+	}
+State: 0x400
+	{
+	1: 149
+	Font 14
+	}
+State: 0x401
+	{
+	Font 14
+	}
+State: 0x500
+	{
+	1: 149
+	Font 15
+	}
+State: 0x501
+	{
+	Font 15
+	}
+State: 0x600
+	{
+	1: 149
+	Font 16
+	}
+State: 0x601
+	{
+	Font 16
+	}
+State: 0x700
+	{
+	1: 149
+	Font 17
+	}
+State: 0x701
+	{
+	Font 17
+	}
+State: 0x800
+	{
+	1: 149
+	Font 18
+	}
+State: 0x801
+	{
+	Font 18
+	}
+State: 0x900
+	{
+	1: 149
+	Font 19
+	}
+State: 0x901
+	{
+	Font 19
+	}
+State: 0xA00
+	{
+	1: 149
+	Font 20
+	}
+State: 0xA01
+	{
+	Font 20
+	}
+State: 0xB00
+	{
+	1: 149
+	Font 21
+	}
+State: 0xB01
+	{
+	Font 21
+	}
+State: 0xC00
+	{
+	1: 149
+	Font 22
+	}
+State: 0xC01
+	{
+	Font 22
+	}
+State: 0xD00
+	{
+	1: 149
+	Font 23
+	}
+State: 0xD01
+	{
+	Font 23
+	}
+State: 0xE00
+	{
+	1: 149
+	Font 24
+	}
+State: 0xE01
+	{
+	Font 24
+	}
+State: 0xF00
+	{
+	1: 149
+	Font 25
+	}
+State: 0xF01
+	{
+	Font 25
+	}
+State: 0x1000
+	{
+	1: 149
+	Font 26
+	}
+State: 0x1001
+	{
+	Font 26
+	}
+}
+
+Item:23 Bar ("taskbar")
+{
+ConstY		1
+NoBorderY	1
+State: 0x00 Standard
+	{
+	1: 150
+	4: 169
+	5: 170
+	}
+}
+
+Item:24 Bar display ("taskbar")
+{
+ConstY		1
+NoBorderY	1
+Font 		2
+State:0x00 Normal (not selected)
+	{
+	1: 161
+	4: 160
+	5: 162
+	}
+}
+
+Item:25 Next land button
+{
+ConstX		1
+ConstY		1
+NoBorderY	1
+NoBorderX	1
+State: 0x00 Normal
+	{
+	1: 171
+	}
+State: 0x04 Pressed
+	{
+  Sound ButtonLC
+	1: 172
+	}
+}
+
+Item:26 Ground/Tunnels button
+{
+ConstX		1
+ConstY		1
+NoBorderY	1
+NoBorderX	1
+State:0x00 Normal (not selected)
+	{
+	1: 157
+	}
+State:0x0C Normal (not selected)
+	{
+  Sound ButtonLC
+	1: 157
+	}
+State:0x04 Normal (pressed)
+	{
+  Sound ButtonLC
+	1: 158
+	}
+State:0x08 Normal (pressed)
+	{
+	1: 158
+	}
+}
+
+Item:27 Map ON/OFF button
+{
+ConstX		1
+ConstY		1
+NoBorderY	1
+NoBorderX	1
+State:0x00 Normal (not selected)
+	{
+	1: 163
+	}
+State:0x0C Normal (not selected)
+	{
+  Sound ButtonLC
+	1: 163
+	}
+State:0x04 Normal (pressed)
+	{
+  Sound ButtonLC
+	1: 164
+	}
+State:0x08 Normal (pressed)
+	{
+	1: 164
+	}
+}
+
+Item:28 Panel ON/OFF button
+{
+ConstX		1
+ConstY		1
+NoBorderY	1
+NoBorderX	1
+State:0x00 Normal (not selected)
+	{
+	1: 165
+	}
+State:0x0C Normal (not selected)
+	{
+  Sound ButtonLC
+	1: 165
+	}
+State:0x04 Normal (pressed)
+	{
+  Sound ButtonLC
+	1: 166
+	}
+State:0x08 Normal (pressed)
+	{
+	1: 166
+	}
+}
+
+Item:29 Split camera ON/OFF button
+{
+ConstX		1
+ConstY		1
+NoBorderY	1
+NoBorderX	1
+State:0x00 Normal (not selected)
+	{
+	1: 167
+	}
+State:0x0C Normal (not selected)
+	{
+  Sound ButtonLC
+	1: 167
+	}
+State:0x04 Normal (pressed)
+	{
+  Sound ButtonLC
+	1: 168
+	}
+State:0x08 Normal (pressed)
+	{
+	1: 168
+	}
+}
+
+Item:30 Change cameras (horizontal) button
+{
+ConstX		1
+ConstY		1
+NoBorderX	1
+NoBorderY	1
+State: 0x00 Normal
+	{
+	1: 173
+	}
+State: 0x04 Pressed
+	{
+  Sound ButtonLC
+	1: 174
+	}
+}
+
+Item:31 Change cameras (vertical) button
+{
+ConstX		1
+ConstY		1
+NoBorderX	1
+NoBorderY	1
+State: 0x00 Normal
+	{
+	1: 175
+	}
+State: 0x04 Pressed
+	{
+  Sound ButtonLC
+	1: 176
+	}
+}
+Item:32 Camera horizontal bar
+{
+ConstY		1
+NoBorderY	1
+NoBorderX	1
+State: 0x00 Standard
+	{
+	1: 207
+	}
+}
+
+Item:33 Camera vertical bar
+{
+ConstX		1
+NoBorderY	1
+NoBorderX	1
+State: 0x00 Standard
+	{
+	1: 206
+	}
+}
+
+Item:34 Camera bars connection
+{
+ConstX		1
+ConstY		1
+NoBorderX	1
+NoBorderY	1
+State: 0x00 Standard
+	{
+	1: 177
+	}
+}
+
+Item:35 Dialog for map and not transparent elements
+{
+Moving 5,0,36,64,84,96,100
+State:0x00 moving in
+	{
+	Sound MoveInLC
+	1: 123
+	2: 49
+	3: 50
+	4: 73
+	5: 74
+	6: 81
+	7: 82
+	8: 83
+	9: 84
+	}
+State: 0x01 moving out
+	{
+	Sound moveOutLC
+	1: 123
+	2: 49
+	3: 50
+	4: 73
+	5: 74
+	6: 81
+	7: 82
+	8: 83
+	9: 84
+	}
+}
+
+
+Item:36 Camera tab button
+{
+ConstY	1
+NoBorderY	1
+Font 0
+State:0x00 Normal (not selected)
+	{
+	1: 151
+	4: 151
+	5: 153
+	}
+State:0x08 Normal (not selected)
+	{
+	1: 151
+	4: 151
+	5: 153
+	}
+State:0x04 Normal (pressed)
+	{
+  Sound ButtonLC
+	1: 154
+	4: 154 
+	5: 156
+	}
+State:0x0C Normal (pressed)
+	{
+  Sound ButtonLC
+	1: 154
+	4: 154 
+	5: 156	
+	}
+}
+
+
+Item:37 Record button
+{
+ConstX		1
+ConstY		1
+NoBorderX	1
+NoBorderY	1
+State:0x00 Normal (NOT PRESSED, not selected)
+	{
+	1: 182
+	}
+State:0x08 Normal (PRESSED, not selected)
+	{
+	1: 186
+	}
+State:0x04 Normal (pressed, SELECTED)
+	{
+  Sound ButtonLC
+	1: 186
+	}
+State:0x0C Normal (NOT PRESSED, SELECTED)
+	{
+  Sound ButtonLC
+	1: 182
+	}
+}
+Item:38 Stop button
+{
+ConstX		1
+ConstY		1
+NoBorderX	1
+NoBorderY	1
+State:0x00 Normal (NOT PRESSED, not selected)
+	{
+	1: 183
+	}
+State:0x08 Normal (PRESSED, not selected)
+	{
+	1: 187
+	}
+State:0x04 Normal (pressed, SELECTED)
+	{
+  Sound ButtonLC
+	1: 187
+	}
+State:0x0C Normal (NOT PRESSED, SELECTED)
+	{
+  Sound ButtonLC
+	1: 183
+	}
+}
+
+Item:39 Quick record button
+{
+ConstX		1
+ConstY		1
+NoBorderX	1
+NoBorderY	1
+State:0x00 Normal (NOT PRESSED, not selected)
+	{
+	1: 184
+	}
+State:0x08 Normal (PRESSED, not selected)
+	{
+	1: 188
+	}
+State:0x04 Normal (pressed, SELECTED)
+	{
+  Sound ButtonLC
+	1: 188
+	}
+State:0x0C Normal (NOT PRESSED, SELECTED)
+	{
+  Sound ButtonLC
+	1: 184
+	}
+}
+
+Item:40 Repeat button
+{
+ConstX		1
+ConstY		1
+NoBorderX	1
+NoBorderY	1
+State:0x00 Normal (NOT PRESSED, not selected)
+	{
+	1: 185
+	}
+State:0x08 Normal (PRESSED, not selected)
+	{
+	1: 189
+	}
+State:0x04 Normal (pressed, SELECTED)
+	{
+  Sound ButtonLC
+	1: 189
+	}
+State:0x0C Normal (NOT PRESSED, SELECTED)
+	{
+  Sound ButtonLC
+	1: 185
+	}
+}
+
+Item:41 Right arrow
+{
+ConstY		0
+ConstX		1
+NoBorderX	1
+State:0x00 Normal (NOT PRESSED, not selected)
+	{
+	1: 191
+	2: 190
+	3: 192
+	}
+State:0x01 Normal (NOT PRESSED, not selected) GRAY
+	{
+	1: 221
+	2: 220
+	3: 222
+	}
+State:0x08 Normal (PRESSED, not selected)
+	{
+	1: 194
+	2: 193
+	3: 195
+	}
+State:0x04 Normal (pressed, SELECTED)
+	{
+  Sound ButtonLC
+	1: 194
+	2: 193
+	3: 195
+	}
+State:0x0C Normal (NOT PRESSED, SELECTED)
+	{
+  Sound ButtonLC
+	1: 191
+	2: 190
+	3: 192
+	}
+}
+
+Item:42 Left arrow
+{
+ConstY		0
+ConstX		1
+NoBorderX	1
+State:0x00 Normal (NOT PRESSED, not selected)
+	{
+	1: 196
+	2: 190
+	3: 192
+	}
+State:0x01 Normal (NOT PRESSED, not selected) GRAY
+	{
+	1: 226
+	2: 220
+	3: 222
+	}
+State:0x08 Normal (PRESSED, not selected)
+	{
+	1: 197
+	2: 193
+	3: 195
+	}
+State:0x04 Normal (pressed, SELECTED)
+	{
+  Sound ButtonLC
+	1: 197
+	2: 193
+	3: 195
+	}
+State:0x0C Normal (NOT PRESSED, SELECTED)
+	{
+  Sound ButtonLC
+	1: 196
+	2: 190
+	3: 192
+	}
+}
+
+Item:43 Down arrow
+{
+ConstY		1
+ConstX		0
+NoBorderY	1
+State:0x00 Normal (NOT PRESSED, not selected)
+	{
+	1: 199
+	4: 198
+	5: 200
+	}
+State:0x01 Normal (NOT PRESSED, not selected) GRAY
+	{
+	1: 224
+	4: 223
+	5: 225
+	}
+State:0x08 Normal (PRESSED, not selected)
+	{
+	1: 202
+	4: 201
+	5: 203
+	}
+State:0x04 Normal (pressed, SELECTED)
+	{
+  Sound ButtonLC
+	1: 202
+	4: 201
+	5: 203
+	}
+State:0x0C Normal (NOT PRESSED, SELECTED)
+	{
+  Sound ButtonLC
+	1: 199
+	4: 198
+	5: 200
+	}
+}
+
+Item:44 Up arrow
+{
+ConstY		1
+ConstX		0
+NoBorderY	1
+State:0x00 Normal (NOT PRESSED, not selected)
+	{
+	1: 204
+	4: 198
+	5: 200
+	}
+State:0x01 Normal (NOT PRESSED, not selected) GRAY
+	{
+	1: 227
+	4: 223
+	5: 225
+	}
+State:0x08 Normal (PRESSED, not selected)
+	{
+	1: 205
+	4: 201
+	5: 203
+	}
+State:0x04 Normal (pressed, SELECTED)
+	{
+  Sound ButtonLC
+	1: 205
+	4: 201
+	5: 203
+	}
+State:0x0C Normal (NOT PRESSED, SELECTED)
+	{
+  Sound ButtonLC
+	1: 204
+	4: 198
+	5: 200
+	}
+}
+Item:45 Delete button
+{
+ConstX		1
+ConstY		1
+NoBorderX	1
+NoBorderY	1
+State:0x00 Normal (NOT PRESSED, not selected)
+	{
+	1: 212
+	}
+State:0x08 Normal (PRESSED, not selected)
+	{
+	1: 213
+	}
+State:0x04 Normal (pressed, SELECTED)
+	{
+  Sound ButtonLC
+	1: 213
+	}
+State:0x0C Normal (NOT PRESSED, SELECTED)
+	{
+  Sound ButtonLC
+	1: 212
+	}
+}
+Item:46 Save button
+{
+ConstX		1
+ConstY		1
+NoBorderX	1
+NoBorderY	1
+State:0x00 Normal (NOT PRESSED, not selected)
+	{
+	1: 210
+	}
+State:0x08 Normal (PRESSED, not selected)
+	{
+	1: 211
+	}
+State:0x04 Normal (pressed, SELECTED)
+	{
+  Sound ButtonLC
+	1: 211
+	}
+State:0x0C Normal (NOT PRESSED, SELECTED)
+	{
+  Sound ButtonLC
+	1: 210
+	}
+}
+
+Item:47 Combo button
+{
+StretchX	1
+StretchY    	1
+NoBorderX	1
+NoBorderY	1
+NoBackground	1
+State:0x00 Normal (NOT PRESSED, not selected)
+	{
+	1: 199
+	4: 198
+	5: 200
+	}
+State:0x01 Normal (NOT PRESSED, not selected)
+	{
+	}
+State:0x04 Normal (pressed, SELECTED)
+	{
+  Sound ButtonLC
+	1: 202
+	4: 201
+	5: 203
+	}
+State:0x08 Normal (PRESSED, not selected)
+	{
+  Sound ButtonLC
+	1: 202
+	4: 201
+	5: 203
+	}
+State:0x0C Normal (NOT PRESSED, SELECTED)
+	{
+	1: 199
+	4: 198
+	5: 200
+	}
+}
+
+Item:48 Group box top line
+{
+ConstY 1
+NoBorderX 1
+NoBorderY 1
+State:0x00 Normal (not selected)
+	{
+	1: 53
+	}
+}
+
+Item:49 Colored edit field
+{
+NoBorderX	 1
+NoBorderY	 1
+NoBackground 1
+State: 0x00 Standard
+	{
+	1:149
+	}
+}
+
+Item:50 Colored static selection
+{
+NoBorderX	1
+NoBorderY	1
+NoBackground 	1
+Selection 49
+Uses 13,10,12
+Font 4
+State: 0x00 Input/Output Line Normal Selection
+	{
+	}
+State: 0x02 Input/Output Line Normal
+	{
+	}
+State: 0x100
+	{
+  Font 11
+	}
+State: 0x102
+	{
+  }
+State: 0x200
+	{
+  Font 12
+	}
+State: 0x202
+	{
+	}
+State: 0x300
+	{
+  Font 13
+	}
+State: 0x302
+	{
+	}
+State: 0x400
+	{
+  Font 14
+	}
+State: 0x402
+	{
+	}
+State: 0x500
+	{
+  Font 15
+	}
+State: 0x502
+	{
+  }
+State: 0x600
+	{
+  Font 16
+	}
+State: 0x602
+	{
+	}
+State: 0x700
+	{
+  Font 17
+	}
+State: 0x702
+	{
+	}
+State: 0x800
+	{
+  Font 18
+	}
+State: 0x802
+	{
+	}
+State: 0x900
+	{
+  Font 19
+	}
+State: 0x902
+	{
+	}
+State: 0xA00
+	{
+  Font 20
+	}
+State: 0xA02
+	{
+	}
+State: 0xB00
+	{
+  Font 21
+	}
+State: 0xB02
+	{
+	}
+State: 0xC00
+	{
+  Font 22
+	}
+State: 0xC02
+	{
+	}
+State: 0xD00
+	{
+  Font 23
+	}
+State: 0xD02
+	{
+	}
+State: 0xE00
+	{
+  Font 24
+	}
+State: 0xE02
+	{
+	}
+State: 0xF00
+	{
+  Font 25
+	}
+State: 0xF02
+	{
+	}
+State: 0x1000
+	{
+  Font 26
+	}
+State: 0x1002
+	{
+	}
+}
+Item:51 Video subtitle static
+{
+NoBorderX	 1
+NoBorderY	 1
+NoBackground 	 1
+Font	  	 5
+State: 0x00 Standard
+	{
+	}
+State: 0x02 Standard
+	{
+	}
+State: 0x04 Standard
+	{
+	}
+State: 0x08 Standard
+	{
+	}
+State: 0x0C Standard
+	{
+	}
+}
+
+Item:52 Animated button text
+{
+NoBorderX	 1
+NoBorderY	 1
+NoBackground 1
+Font	  	 2
+State: 0x00 Standard
+	{
+	}
+State: 0x02 Standard
+	{
+	}
+State: 0x04 Standard
+	{
+	}
+State: 0x08 Standard
+	{
+	}
+State: 0x0C Standard
+	{
+	}
+}
+
+Item:53 Play button
+{
+ConstX		1
+ConstY		1
+NoBorderX	1
+State:0x00 Normal (NOT PRESSED, not selected)
+	{
+	1: 191
+	2: 190
+	3: 192
+	}
+State:0x08 Normal (PRESSED, not selected)
+	{
+	1: 194
+	2: 193
+	3: 195
+	}
+State:0x04 Normal (pressed, SELECTED)
+	{
+  Sound ButtonLC
+	1: 194
+	2: 193
+	3: 195
+	}
+State:0x0C Normal (NOT PRESSED, SELECTED)
+	{
+  Sound ButtonLC
+	1: 191
+	2: 190
+	3: 192
+	}
+}
+
+Item:54 Combo box
+{
+Font 2
+Selection 22
+Uses 13,10,12,22,6,47
+State:0x00 Normal (not selected)
+	{
+	1: 103
+	2: 55
+	3: 56
+	4: 79
+	5: 80
+	6: 93
+	7: 94
+	8: 95
+	9: 96
+	}
+State:0x01 Normal (selected)
+	{
+	Identity 	0x00
+	}
+State:0x02 Normal (selected)
+	{
+	Font 3
+	Identity 	0x00
+	1: 208
+	}
+}
+
+Item:55 Back play button
+{
+ConstX		1
+ConstY		1
+NoBorderX	1
+State:0x00 Normal (NOT PRESSED, not selected)
+	{
+	1: 196
+	2: 190
+	3: 192
+	}
+State:0x08 Normal (PRESSED, not selected)
+	{
+	1: 197
+	2: 193
+	3: 195
+	}
+State:0x04 Normal (pressed, SELECTED)
+	{
+  Sound ButtonLC
+	1: 197
+	2: 193
+	3: 195
+	}
+State:0x0C Normal (NOT PRESSED, SELECTED)
+	{
+  Sound ButtonLC
+	1: 196
+	2: 190
+	3: 192
+	}
+}
+
+
+Item:56 Static for edit box
+{
+NoBorderX	1
+NoBorderY	1
+NoBackground 	1
+Font	  	2
+State: 0x00 Standard
+	{
+	}
+State: 0x02 Standard
+	{
+	}
+State: 0x04 Standard
+	{
+	}
+State: 0x08 Standard
+	{
+	}
+State: 0x0C Standard
+	{
+	}
+}
+Item:57 Research button
+{
+ConstX		1
+ConstY		1
+NoBorderY	1
+NoBorderX	1
+State:0x00 Normal (not selected)
+	{
+	1: 217
+	}
+State:0x0C Normal (not selected)
+	{
+  Sound ButtonLC
+  Identity 0x00
+	}
+State:0x04 Normal (pressed)
+	{
+  Sound ButtonLC
+	1: 218
+	}
+State:0x08 Normal (pressed)
+	{
+  Identity 0x04
+	}
+}
+Item:58 Constructor button
+{
+ConstX		1
+ConstY		1
+NoBorderY	1
+NoBorderX	1
+State:0x00 Normal (not selected)
+	{
+	1: 152
+	}
+State:0x0C Normal (not selected)
+	{
+  Sound ButtonLC
+	Identity 0x00
+	}
+State:0x04 Normal (pressed)
+	{
+  Sound ButtonLC
+	1: 155
+	}
+State:0x08 Normal (pressed)
+	{
+  Identity 0x04
+	}
+}
+Item:59 Mission goals button
+{
+ConstX		1
+ConstY		1
+NoBorderY	1
+State:0x00 Normal (not selected)
+	{
+	1: 167
+	4: 151
+	5: 153
+	}
+State:0x0C Normal (not selected)
+	{
+  Sound ButtonLC
+	Identity 0x00
+	}
+State:0x04 Normal (pressed)
+	{
+  Sound ButtonLC
+	1: 168
+	4: 154 
+	5: 156	
+	}
+State:0x08 Normal (pressed)
+	{
+  Identity 0x04
+	}
+}
+Item:60 Goal states (in mission goals dialog)
+{
+ConstX		1
+ConstY		1
+NoBorderY	1
+NoBorderX	1
+State:0x00 Not resolved
+	{
+	1: 214
+	}
+State:0x100 Accomplished
+	{
+	1: 215
+	}
+State:0x200 Failed
+	{
+	1: 216
+	}
+}
+Item:61 Static for big font
+{
+NoBorderX	1
+NoBorderY	1
+NoBackground 	1
+Font	  	6
+State: 0x00 Standard
+	{
+	}
+State: 0x02 Standard
+	{
+	}
+State: 0x04 Standard
+	{
+	}
+State: 0x08 Standard
+	{
+	}
+State: 0x0C Standard
+	{
+	}
+}
+
+Item:62 Item for earth mesh
+{
+Light 0xFF202020,0xFF909090, 0,3,0
+NoBackground 1
+NoBorderX 1
+NoBorderY 1
+Color 0x00000000
+State:0x00 Normal (not pressed)
+	{
+	}
+State:0x04 Normal (pressed)
+	{
+  Sound ButtonLC
+	}
+//JS
+State:0x08 Normal (PRESSED, not selected)
+	{
+	Identity	0x04
+	}
+//JS
+State:0x0C Normal (NOT PRESSED, SELECTED)
+	{
+  Sound ButtonLC
+	Identity	0x04
+	}
+}
+Item:63 Static for map
+{
+NoBorderX	 1
+NoBorderY	 1
+NoBackground 1
+Font	  	 0
+Uses 13,10,12,22
+State: 0x00 Standard
+	{
+	}
+State: 0x02 Standard
+	{
+	}
+State: 0x04 Standard
+	{
+	}
+State: 0x08 Standard
+	{
+	}
+State: 0x0C Standard
+	{
+	}
+}
+Item:64 Corner for group box
+{
+NoBorderX 1
+NoBorderY 1
+ConstX    1
+ConstY    1
+State:0x00 Normal (not selected)
+	{
+	1: 89
+	}
+}
+Item:65 Corner for group box
+{
+NoBorderX 1
+NoBorderY 1
+ConstX    1
+ConstY    1
+State:0x00 Normal (not selected)
+	{
+	1: 90
+	}
+}
+Item:66 Horizontal line for research tree
+{
+ConstY		1
+NoBorderY	1
+NoBorderX	1
+State: 0x00 Standard
+	{
+	1: 55
+	}
+}
+
+Item:67 Vertical line for research tree
+{
+ConstX		1
+NoBorderY	1
+NoBorderX	1
+State: 0x00 Standard
+	{
+	1: 79
+	}
+}
+
+Item:68 Shield Progresbar - background
+{
+ConstY	  1
+NoBorderX 1
+NoBorderY 1
+Uses	 70
+State:0x00 Normal (not selected)
+	{
+	1: 233
+	}
+}
+Item:69 HP Progresbar - background
+{
+ConstY	  1
+NoBorderX 1
+NoBorderY 1
+Uses	 71
+State:0x00 Normal (not selected)
+	{
+	1: 233
+	}
+}
+Item:70 Shield Progresbar Box
+{
+ConstY	1
+NoBorderX 1
+NoBorderY 1
+State:0x00 Normal (not selected)
+	{
+	1: 234
+	}
+}
+Item:71 HP Progresbar Box
+{
+ConstY	1
+NoBorderX 1
+NoBorderY 1
+State:0x00 Normal (not selected)
+	{
+	1: 235
+	}
+}

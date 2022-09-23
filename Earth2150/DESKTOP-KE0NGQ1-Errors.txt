@@ -1,0 +1,62 @@
+******************************************************************
+D:\Steam\steamapps\common\Earth 2150 EftbP\Earth2150.exe
+Mon Nov 01 18:03:28 2021
+Tue Nov 02 09:30:49 2021
+------------------------------------------------------------------
+Unhandled Exception
+  Code: c0000005
+  Description: EXCEPTION_ACCESS_VIOLATION
+Exception address: 0x0063b511
+Registers: EAX = 0x00000001 EBX = 0x00000094 ECX = 0x00000094 EDX = 0x00006028
+Registers: ESI = 0x00000000 EDI = 0x00000000 EBP = 0x0019d490 ESP = 0x0019d484
+Registers: EIP = 0x0063b511 CS  = 0x00000023 SS  = 0x0000002b Flg = 0x00210202
+Registers: DS =  0x0000002b ES  = 0x0000002b FS  = 0x00000053 GS  = 0x0000002b
+
+Call stack:
+------------------------------------------------------------------
+Module: D:\Steam\steamapps\common\Earth 2150 EftbP\Earth2150.exe
+  module not accessible
+    address: 0x0063B511
+  module not accessible
+    address: 0x006350D4
+  module not accessible
+    address: 0x004FDA3E
+  module not accessible
+    address: 0x004F8392
+  module not accessible
+    address: 0x00484DF6
+  module not accessible
+    address: 0x006560E5
+  module not accessible
+    address: 0x0062B003
+  module not accessible
+    address: 0x0062E268
+  module not accessible
+    address: 0x0062DC55
+  module not accessible
+    address: 0x0062A530
+  module not accessible
+    address: 0x0066847D
+  module not accessible
+    address: 0x00657AA2
+  module not accessible
+    address: 0x0066F0D8
+  module not accessible
+    address: 0x0066ED43
+  module not accessible
+    address: 0x00657ED2
+  module not accessible
+    address: 0x0040A9FF
+  module not accessible
+    address: 0x00409F49
+  module not accessible
+    address: 0x00720C83
+Module: C:\Windows\System32\KERNEL32.DLL
+  module not accessible
+    address: 0x765DFA29
+Module: C:\Windows\SYSTEM32\ntdll.dll
+  module not accessible
+    address: 0x778E7A7E
+  module not accessible
+    address: 0x778E7A4E
+------------------------------------------------------------------

@@ -1,0 +1,108 @@
+"installscript"
+{
+	"registry"
+	{
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\Topware\\Earth 2150"
+		{
+			"string"
+			{
+				"NotStartAutorun"		"0"
+			}
+		}
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\Topware\\Earth 2150\\BaseGame"
+		{
+			"string"
+			{
+				"version"		"2.8.7.1"
+			}
+		}
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\Topware\\Earth 2150\\BaseGame\\FileSystem"
+		{
+			"string"
+			{
+				"datapath"		"%INSTALLDIR%/>"
+				"outputdir"		"%INSTALLDIR%"
+			}
+		}
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\Topware\\Earth 2150\\BaseGame\\Graphics\\Enumeration"
+		{
+			"dword"
+			{
+			}
+		}
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\Topware\\Earth 2150\\BaseGame\\Graphics\\Setup"
+		{
+			"dword"
+			{
+				"AllowWindowedScreen"		"1"
+				"ButtonTestAl"		"0"
+			}
+		}
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\Topware\\Earth 2150\\BaseGame\\Network\\EarthNet"
+		{
+			"string"
+			{
+				"AddressIP"		"\"EarthNet\"\"netserver.earth2150.com"
+			}
+		}
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\Topware\\Earth 2150\\BaseGame\\Network\\Enumeration"
+		{
+			"dword"
+			{
+				"DPLobby"		"1"
+				"EarthNet"		"1"
+			}
+		}
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\Topware\\Earth 2150\\BaseGame\\Sound\\Setup"
+		{
+			"dword"
+			{
+				"AllowHardware"		"1"
+			}
+		}
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\Topware\\Earth 2150"
+		{
+			"string"
+			{
+				"german"
+				{
+					"language"		"GERMAN"
+				}
+				"english"
+				{
+					"language"		"ENGLISH"
+				}
+				"french"
+				{
+					"language"		"FRENCH"
+				}
+				"polish"
+				{
+					"language"		"POLISH"
+				}
+				"russian"
+				{
+					"language"		"RUSSIAN"
+				}
+			}
+		}
+		"HKEY_LOCAL_MACHINE\\SOFTWARE\\Topware\\Earth 2150\\BaseGame\\Interface"
+		{
+			"string"
+			{
+				"polish"
+				{
+					"Charset"		"238"
+				}
+				"russian"
+				{
+					"Charset"		"204"
+				}
+			}
+		}
+	}
+}
+"kvsignatures"
+{
+	"installscript"		"3ec7cce81e49232ea7e2dba1825e71e4002f7b1649d358b3701f3f2369dd2cca462b0fc9ce71196b723fa520147088099213bd5a104364995f34d263801b9794e62c6e2ad6199b40bb86ec32c70aaa3adf156fd3501deab9f23ff4aead386087cea5b9d370f12fd6cd2fda4cd3ca4be142af52c026a47cbc99fb5dadc3b620d4"
+}

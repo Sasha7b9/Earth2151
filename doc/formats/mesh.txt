@@ -1,0 +1,56 @@
+EDBBTC.msh
+
+     0 :     0 : Заголовок (8 байт)
+                 4d 45 53 48 01 00 00 00
+     8 :     8 : Тип (4 байта)
+                 00 00 00 00
+    12 :     c : Template (2 bytes)
+    14 :     e : ? (10 bytes)
+    24 :    18 : MountPoints
+    72 :    48 : Lights
+   312 :   138 : ? (64 bytes)
+   376 :   178 : ? (488)
+   864 :   360 : UnknownVal1 (2 bytes)
+   866 :   362 : UnknownVal2 (2 bytes)
+   868 :   364 : UnknownVal3 (2 bytes)
+   870 :   366 : UnknownVal4 (2 bytes)
+   872 :   368 : UnknownVal5 (4 bytes)
+   876 :   36c : Parts
+522572 : 7f94c :
+
+
+NEMAR.msh
+
+     0 :     0 : Заголовок (8 байт)
+                 4d 45 53 48 01 00 00 00
+     8 :     8 : Тип (4 байта)
+                 00 00 00 00
+    12 :     c : Template (2 bytes)
+    14 :     e : ? (10 bytes)
+    24 :    18 : MountPoints
+    72 :    48 : Lights
+   312 :   138 : ? (64 bytes)
+   376 :   178 : ? (488)
+   864 :   360 : UnknownVal1 (2 bytes)
+   866 :   362 : UnknownVal2 (2 bytes)
+   868 :   364 : UnknownVal3 (2 bytes)
+   870 :   366 : UnknownVal4 (2 bytes)
+   872 :   368 : UnknownVal5 (4 bytes)
+   876 :   36c : Parts (599 bytes)
+                  ModelPart
+                   Vertices (488 bytes)
+                    vertices (4 bytes)      12
+                    blocks(4 bytes)         3
+                    GetVertices() (160 bytes)
+                    GetVertices() (160 bytes)
+                    GetVertices() (160 bytes)
+  1364 :       :   SkipParent (1 byte)      0
+  1365 :       :   UnknownFlag (1 byte)     0
+  1366 :       :   ? (2 bytes)
+  1368 :       :   Texture (22 bytes)
+  1390 :       :   Faces (52 bytes)
+  1442 :       :   Animations (12 bytes)
+  1454 :       :   ? (4 bytes)
+  1458 :       :   Offset (12 bytes)
+  1470 :       :   ? (5 bytes)
+  1475 :   5c3 :
