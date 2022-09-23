@@ -69,6 +69,8 @@ void Canvas::SetSizeArea(int width, int height)
 {
     SetMinClientSize({ width, height } );
     SetClientSize({ width, height });
+
+    Refresh();
 }
 
 
