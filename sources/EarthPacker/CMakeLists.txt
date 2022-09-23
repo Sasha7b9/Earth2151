@@ -109,7 +109,7 @@ add_executable( ${PROJECT_NAME}
                 ${UTILS_TEXT}
                 )
 
-target_link_libraries(${PROJECT_NAME} wxbase31ud wxmsw32ud_core Ws2_32)
+target_link_libraries(${PROJECT_NAME} wxbase32ud wxmsw32ud_core Ws2_32)
 
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND copy ..\\..\\ThirdParty\\lib\\vc_dll\\wxbase326ud_vc_custom.dll $(OutputPath) /Y)
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND copy ..\\..\\ThirdParty\\lib\\vc_dll\\wxmsw326ud_core_vc_custom.dll $(OutputPath) /Y)
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND copy ..\\wxWidgets\\lib\\vc_dll\\wxbase32ud_vc.dll $(OutputPath) /Y)
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD COMMAND copy ..\\wxWidgets\\lib\\vc_dll\\wxmsw32ud_core_vc.dll $(OutputPath) /Y)
