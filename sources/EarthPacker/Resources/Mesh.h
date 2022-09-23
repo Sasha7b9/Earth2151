@@ -8,7 +8,7 @@ namespace Resources
     class Mesh : public Resource
     {
     public:
-        Mesh(std::string &filename, ResourceInfo, wxMemoryBuffer *);
+        Mesh(std::string &filename, ResourceInfo, std::vector<uint8> *);
     private:
     };
 }

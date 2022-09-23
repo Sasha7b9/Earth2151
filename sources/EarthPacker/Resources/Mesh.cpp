@@ -6,7 +6,7 @@
 using namespace Resources;
 
 
-Mesh::Mesh(std::string &filename, ResourceInfo info, wxMemoryBuffer *data) : Resource(filename, info, data)
+Mesh::Mesh(std::string &filename, ResourceInfo info, std::vector<uint8> *data) : Resource(filename, info, data)
 {
 
 }

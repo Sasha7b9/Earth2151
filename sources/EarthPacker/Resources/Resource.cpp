@@ -6,7 +6,7 @@
 using namespace Resources;
 
 
-Resource::Resource(std::string &, ResourceInfo, wxMemoryBuffer *)
+Resource::Resource(std::string &, ResourceInfo, std::vector<uint8> *)
 {
 
 }

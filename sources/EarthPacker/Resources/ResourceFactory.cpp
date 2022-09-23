@@ -16,6 +16,8 @@ namespace Resources
         static int GetLength(wxInputStream &);
 
         static ResourceInfo GetResourceInfo(wxInputStream &);
+
+        static std::vector<uint8> GetBytes(wxInputStream &, int);
     }
 }
 
@@ -33,7 +35,9 @@ Resource ResourceFactory::Create(wxInputStream &stream)
     case 0:
         return Resource(name, GetResourceInfo(stream));
     case 49:    // mesh
-        return new Mesh(name, GetResourceInfo(stream), GetBytes(stream, 20));
+        ResourceInfo info = GetResourceInfo(stream);
+        std::vector<uint8> data = GetBytes(stream, 20);
+        return Mesh(name, info, &data);
     }
 
     return Resource(name, GetResourceInfo(stream));
@@ -80,9 +84,25 @@ int ResourceFactory::GetLength(wxInputStream &stream)
 }
 
 
-ResourceInfo ResourceFactory::GetResourceInfo(wxInputStream &)
+ResourceInfo ResourceFactory::GetResourceInfo(wxInputStream &stream)
 {
     ResourceInfo result{0, 0, 0};
+
+    stream.Read(&result.offset, 4);
+
+    stream.Read(&result.length, 4);
+
+    stream.Read(&result.decompressedLength, 4);
+
+    return result;
+}
+
+
+std::vector<uint8> ResourceFactory::GetBytes(wxInputStream &stream, int length)
+{
+    std::vector<uint8> result(length);
+
+    stream.Read(result.data(), length);
 
     return result;
 }

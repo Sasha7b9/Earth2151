@@ -6,14 +6,14 @@ namespace Resources
 {
     struct ResourceInfo
     {
-        uint i1;
-        uint i2;
-        uint i3;
+        uint offset;
+        uint length;
+        uint decompressedLength;
     };
 
     class Resource
     {
     public:
-        Resource(std::string &filename, ResourceInfo, wxMemoryBuffer * = nullptr);
+        Resource(std::string &filename, ResourceInfo, std::vector<uint8> * = nullptr);
     };
 }
