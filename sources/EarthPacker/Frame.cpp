@@ -2,7 +2,6 @@
 #include "defines.h"
 #include "Frame.h"
 #include "Controls/Canvas.h"
-#include "Controls/ControlDir.h"
 
 
 Frame *Frame::self = nullptr;
@@ -63,7 +62,7 @@ Frame::Frame(const wxString &title)
 
     notebookLeft = new wxNotebook(this, wxID_ANY);
 
-    ControlDir *cntrlDir = new ControlDir(notebookLeft);
+    cntrlDir = new ControlDir(notebookLeft);
 
     Bind(wxEVT_DIRCTRL_FILEACTIVATED, &Frame::OnFileActivated, this);
 
@@ -90,9 +89,14 @@ void Frame::AddTool(int id, const wxString &label, pchar nameResource, pchar nam
 }
 
 
-void Frame::OnFileActivated(wxTreeEvent &)
+void Frame::OnFileActivated(wxTreeEvent &event)
 {
+    wxFileName fileName(cntrlDir->GetPath(event.GetItem()));
 
+    if (fileName.GetExt() != "wd")
+    {
+        return;
+    }
 }
 
 

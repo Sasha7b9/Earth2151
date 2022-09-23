@@ -1,7 +1,6 @@
 // 2022/04/29 13:56:55 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
-
-class DiagramPool;
+#include "Controls/ControlDir.h"
 
 
 class Frame : public wxFrame
@@ -22,6 +21,7 @@ private:
 
     wxToolBar *toolBar = nullptr;
     wxNotebook *notebookLeft = nullptr;
+    ControlDir *cntrlDir = nullptr;
 
     void OnViewBrief(wxCommandEvent &);
     void OnViewFull(wxCommandEvent &);
