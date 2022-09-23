@@ -63,14 +63,14 @@ if(WIN32)
 endif()
 
 file(GLOB SRC                     *.h *.cpp)
-file(GLOB DISPLAY                 Display/*.*)
+file(GLOB CONTROLS                Controls/*.*)
 
-source_group(src                     FILES ${SRC})
-source_group(Display                 FILES ${DISPLAY})
+source_group(src                  FILES ${SRC})
+source_group(Controls             FILES ${CONTROLS})
 
 add_executable( ${PROJECT_NAME}
                 ${SRC}
-                ${DISPLAY}
+                ${CONTROLS}
                 )
 
 target_link_libraries(${PROJECT_NAME} wxbase32ud wxmsw32ud_core Ws2_32)
