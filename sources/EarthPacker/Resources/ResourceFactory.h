@@ -5,9 +5,8 @@
 
 namespace Resources
 {
-    class ResourceFactory
+    namespace ResourceFactory
     {
-    public:
-        static Resource Create(wxInputStream &);
+        Resource Create(wxInputStream &);
     };
 }

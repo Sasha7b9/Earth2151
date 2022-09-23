@@ -140,6 +140,8 @@ void Frame::OnFileActivated(wxTreeEvent &event)
     dir_stream.CopyTo(dir.GetData(), size_dir_stream);
 
     auto dirdesc = new Resources::Directory(dir);
+
+    dirdesc = dirdesc;
 }
 
 
