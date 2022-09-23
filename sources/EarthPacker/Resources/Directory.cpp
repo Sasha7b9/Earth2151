@@ -10,6 +10,8 @@ using namespace Resources;
 Directory::Directory(wxMemoryBuffer &directoryData)
 {
     wxMemoryInputStream stream((uint8 *)directoryData.GetData() + 10, directoryData.GetBufSize() - 10);
+
+    ReadFileDescriptors(stream);
 }
 
 
