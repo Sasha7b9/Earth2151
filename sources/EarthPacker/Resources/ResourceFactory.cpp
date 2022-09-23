@@ -41,9 +41,11 @@ std::string ResourceFactory::GetName(wxInputStream &stream)
 {
     int length = GetLength(stream);
 
-    wxMemoryBuffer nameByte(length);
+    wxMemoryBuffer nameByte(length + 1);
 
     stream.Read(nameByte.GetData(), length);
+
+    ((uint8 *)nameByte.GetData())[length] = 0;
 
     return std::string((char *)nameByte.GetData());
 }
@@ -59,7 +61,6 @@ int ResourceFactory::GetLength(wxInputStream &stream)
         wxFileOffset current = stream.TellI();
 
         wxMemoryBuffer idxBuffer(3);
-        stream.SeekI(0);
         stream.Read(idxBuffer.GetData(), 3);
 
         if (!(idxBuffer[0] == 68 && idxBuffer[1] == 0))
