@@ -4,9 +4,6 @@
 #include <map>
 
 
-using namespace std;
-
-
 Canvas *Canvas::self = nullptr;
 
 

@@ -97,6 +97,20 @@ void Frame::OnFileActivated(wxTreeEvent &event)
     {
         return;
     }
+
+    wxFileInputStream stream(fileName.GetFullPath());
+
+    wxZlibInputStream zstream(stream);
+
+    uint8 buffer[8];
+    static const uint8 template_buffer[8] = { 0xff, 0xa1, 0xd0, '1', 'W', 'D', 0x00, 0x02 };
+
+    zstream.Read(buffer, 8);
+
+    if (std::strcmp((char *)buffer, (char *)template_buffer) != 0)
+    {
+        return;
+    }
 }
 
 

@@ -20,4 +20,6 @@ typedef signed char int8;
 #include <wx/dirctrl.h>
 #include <wx/notebook.h>
 #include <wx/filename.h>
+#include <wx/wfstream.h>
+#include <wx/zstream.h>
 #pragma warning(pop)
