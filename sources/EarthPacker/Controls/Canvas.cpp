@@ -39,15 +39,6 @@ void Canvas::OnPaint(wxPaintEvent &)
 
     memDC.SetPen(wxPen(wxColor(0, 0, 0)));
 
-    static const wxString labels[5] =
-    {
-        "Давление",
-        "Освещённость",
-        "Температура",
-        "Влажность",
-        "Скорость"
-    };
-
     memDC.DrawText("Тестовая строка", 1, 0);
 
     memDC.SelectObject(wxNullBitmap);
