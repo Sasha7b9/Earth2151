@@ -34,10 +34,44 @@ Resource ResourceFactory::Create(wxInputStream &stream)
     {
     case 0:
         return Resource(name, GetResourceInfo(stream));
+
+    case 1:     // generic data
+        return Resource(name, GetResourceInfo(stream));
+
+    case 3:     //player
+        return Resource(name, GetResourceInfo(stream));
+
+    case 5:     //text
+        return Resource(name, GetResourceInfo(stream));
+
+    case 9:     //interface?
+        return Interface(name, GetResourceInfo(stream), GetName(stream));
+
+    case 17:    //dialog
+        return Resource(name, GetResourceInfo(stream));
+
+    case 25:    //interface?
+        return Resource(name, GetResourceInfo(stream));
+
+    case 33:
+        return Mesh(name, GetResourceInfo(stream), GetBytes(stream, 16));
+
+    case 43:    //level?
+        return Level(name, GetResourceInfo(stream), GetName(stream), GetBytes(stream, 16));
+
     case 49:    // mesh
         ResourceInfo info = GetResourceInfo(stream);
         std::vector<uint8> data = GetBytes(stream, 20);
         return Mesh(name, info, &data);
+
+    case 57:
+        return Terrain(name, GetResourceInfo(stream), GetName(stream), GetBytes(stream, 20));
+
+    case 59:    //level
+        return Level(name, GetResourceInfo(stream), GetName(stream), GetBytes(stream, 20));
+
+    case 255:   //group
+        return Group(name, (0, 0, 0), GetBytes(stream, 3));
     }
 
     return Resource(name, GetResourceInfo(stream));
