@@ -64,19 +64,13 @@ endif()
 
 file(GLOB SRC                     *.h *.cpp)
 file(GLOB DISPLAY                 Display/*.*)
-file(GLOB DISPLAY_DIAGRAM         Display/Diagram/*.*)
-file(GLOB DISPLAY_GRID            Display/Grid/*.*)
 
 source_group(src                     FILES ${SRC})
 source_group(Display                 FILES ${DISPLAY})
-source_group(Display/Diagram         FILES ${DISPLAY_DIAGRAM})
-source_group(Display/Grid            FILES ${DISPLAY_GRID})
 
 add_executable( ${PROJECT_NAME}
                 ${SRC}
                 ${DISPLAY}
-                ${DISPLAY_DIAGRAM}
-                ${DISPLAY_GRID}
                 )
 
 target_link_libraries(${PROJECT_NAME} wxbase32ud wxmsw32ud_core Ws2_32)

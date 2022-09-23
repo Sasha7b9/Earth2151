@@ -1,14 +1,19 @@
 // 2022/09/05 08:47:32 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
-#include "Display/Diagram/Canvas.h"
+#include "Display/Canvas.h"
 #include <map>
 
 
 using namespace std;
 
 
-Canvas::Canvas(wxWindow *parent, int t) : wxPanel(parent, wxID_ANY), type(t)
+Canvas *Canvas::self = nullptr;
+
+
+Canvas::Canvas(wxWindow *parent) : wxPanel(parent, wxID_ANY)
 {
+    self = this;
+
     Bind(wxEVT_PAINT, &Canvas::OnPaint, this);
 
     SetMinClientSize({ 100, 100 });
@@ -43,7 +48,7 @@ void Canvas::OnPaint(wxPaintEvent &)
         "Скорость"
     };
 
-    memDC.DrawText(labels[type], 1, 0);
+    memDC.DrawText("Тестовая строка", 1, 0);
 
     memDC.SelectObject(wxNullBitmap);
 

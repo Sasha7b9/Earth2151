@@ -2,8 +2,6 @@
 #include "defines.h"
 #include "Application.h"
 #include "Frame.h"
-#include "Display/Diagram/Diagram.h"
-
 
 using namespace std;
 
@@ -16,7 +14,7 @@ void Application::Init()
 
 void Application::Update()
 {
-    Diagram::Pool::self->UpdateArea();
+
 }
 
 

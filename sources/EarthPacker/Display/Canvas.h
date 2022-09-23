@@ -11,7 +11,9 @@ class Canvas : public wxPanel
 {
 public:
 
-    Canvas(wxWindow *parent, int);
+    Canvas(wxWindow *parent);
+
+    static Canvas *self;
 
     void SetSizeArea(int, int);
 
@@ -25,6 +27,4 @@ private:
     void DrawTimeScale(wxMemoryDC &);
 
     void DrawTextOnBackground(wxMemoryDC &, pchar, int x, int y, int width, int height);
-
-    int type;
 };

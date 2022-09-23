@@ -1,9 +1,8 @@
 // 2022/04/29 13:56:48 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Frame.h"
-#include "Display/Diagram/Diagram.h"
-#include "Display/Grid/Grid.h"
-#include "Display/Diagram/Canvas.h"
+#include "Display/Grid.h"
+#include "Display/Canvas.h"
 
 
 Frame *Frame::self = nullptr;
@@ -66,7 +65,7 @@ Frame::Frame(const wxString &title)
 
     sizer->Add(Grid::Create(this, FromDIP(wxSize(360, 400))));
 
-    sizer->Add(Diagram::Pool::Create(this));
+    sizer->Add(new Canvas(this));
 
     SetSizer(sizer);
 
@@ -197,7 +196,7 @@ void Frame::OnAbout(wxCommandEvent &WXUNUSED(event))
 
 void Frame::OnSize(wxSizeEvent &event)
 {
-    Diagram::Pool::self->SetSizeArea(GetClientRect().width - Grid::self->GetSize().x, GetClientRect().height);
+    Canvas::self->SetSizeArea(GetClientRect().width - Grid::self->GetSize().x, GetClientRect().height);
 
     wxSize size = { Grid::self->GetSize().GetWidth(), GetClientRect().height };
 
