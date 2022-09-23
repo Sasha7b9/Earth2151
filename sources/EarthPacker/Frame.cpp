@@ -105,19 +105,17 @@ void Frame::OnFileActivated(wxTreeEvent &event)
         return;
     }
 
-    size_t stream_size = stream.GetSize();
-
     uint8 *data = new uint8[stream.GetSize()];
 
     stream.ReadAll(data, stream.GetSize());
 
     uint dirLn = 0;
 
-    stream_size = stream.GetSize();
+//    std::memcpy(&dirLn, data + stream.GetSize() - 4, 4);
 
-    std::memcpy(&dirLn, data + stream.GetSize() - 30000, 4);
+    stream.SeekI(stream.GetSize() - 4);
 
-    dirLn = dirLn;
+    stream.Read(&dirLn, 4);
 
     delete []data;
 }
