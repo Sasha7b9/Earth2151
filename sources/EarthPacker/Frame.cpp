@@ -2,6 +2,7 @@
 #include "defines.h"
 #include "Frame.h"
 #include "Controls/Canvas.h"
+#include "Resources/Directory.h"
 
 
 Frame *Frame::self = nullptr;
@@ -121,9 +122,24 @@ void Frame::OnFileActivated(wxTreeEvent &event)
 
     stream.Read(dirData.GetData(), dirLn);
 
+
+
+
     wxMemoryInputStream dirDataStream(dirData.GetData(), dirData.GetBufSize());
 
     wxZlibInputStream zstream(dirDataStream);
+
+    wxMemoryOutputStream dir_stream;
+
+    zstream.Read(dir_stream);
+
+    size_t size_dir_stream = dir_stream.GetSize();
+
+    wxMemoryBuffer dir(size_dir_stream);
+
+    dir_stream.CopyTo(dir.GetData(), size_dir_stream);
+
+    auto dirdesc = new Resources::Directory(dir);
 }
 
 

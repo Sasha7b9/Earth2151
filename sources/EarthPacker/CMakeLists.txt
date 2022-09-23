@@ -64,16 +64,16 @@ endif()
 
 file(GLOB SRC                      *.h *.cpp)
 file(GLOB CONTROLS                 Controls/*.*)
-file(GLOB CONTROLS_NOTEBOOKLEFT    Controls/NotebookLeft/*.*)
+file(GLOB RESOURCES                Resources/*.*)
 
 source_group(src                   FILES ${SRC})
 source_group(Controls              FILES ${CONTROLS})
-source_group(Controls/NotebookLeft FILES ${CONTROLS_NOTEBOOKLEFT})
+source_group(Resources             FILES ${RESOURCES})
 
 add_executable( ${PROJECT_NAME}
                 ${SRC}
                 ${CONTROLS}
-                ${CONTROLS_NOTEBOOKLEFT}
+                ${RESOURCES}
                 )
 
 target_link_libraries(${PROJECT_NAME} wxbase32ud wxmsw32ud_core Ws2_32)
