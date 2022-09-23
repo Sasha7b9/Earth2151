@@ -32,6 +32,8 @@ private:
     void OnMeasureVelocity(wxCommandEvent &);
     void OnMeasureTemperature(wxCommandEvent &);
 
+    void OnFileActivated(wxTreeEvent &);
+
     void AddTool(int id, const wxString &label, pchar nameResource, pchar nameResourceDisabled = nullptr);
 
     void OnClose();

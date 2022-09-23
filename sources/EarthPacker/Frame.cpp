@@ -62,7 +62,12 @@ Frame::Frame(const wxString &title)
     wxBoxSizer *sizer = new wxBoxSizer(wxHORIZONTAL);
 
     notebookLeft = new wxNotebook(this, wxID_ANY);
-    notebookLeft->AddPage(new ControlDir(notebookLeft), "Directory");
+
+    ControlDir *cntrlDir = new ControlDir(notebookLeft);
+
+    Bind(wxEVT_DIRCTRL_FILEACTIVATED, &Frame::OnFileActivated, this);
+
+    notebookLeft->AddPage(cntrlDir, "Directory");
 
     sizer->Add(notebookLeft);
 
@@ -82,6 +87,12 @@ void Frame::AddTool(int id, const wxString &label, pchar nameResource, pchar nam
     wxBitmap bitmapDisabled(nameResourceDisabled ? wxBitmap(nameResourceDisabled, wxBITMAP_TYPE_BMP_RESOURCE) : bitmap);
 
     toolBar->AddTool(id, label, bitmap, bitmapDisabled, wxITEM_NORMAL, label, label);
+}
+
+
+void Frame::OnFileActivated(wxTreeEvent &)
+{
+
 }
 
 
