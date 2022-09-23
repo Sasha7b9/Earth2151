@@ -6,7 +6,8 @@
 using namespace Resources;
 
 
-Resource::Resource(std::string &, ResourceInfo, std::vector<uint8> *)
+Resource::Resource(std::string &filename, ResourceInfo _info, std::vector<uint8> *_unknown_data) :
+    file_name(filename), info(_info), unknown_data(*_unknown_data)
 {
 
 }
