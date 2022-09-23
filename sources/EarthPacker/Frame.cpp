@@ -105,19 +105,25 @@ void Frame::OnFileActivated(wxTreeEvent &event)
         return;
     }
 
-    uint8 *data = new uint8[stream.GetSize()];
+    wxMemoryBuffer data(stream.GetSize());
 
-    stream.ReadAll(data, stream.GetSize());
+    stream.ReadAll(data.GetData(), stream.GetSize());
 
     uint dirLn = 0;
-
-//    std::memcpy(&dirLn, data + stream.GetSize() - 4, 4);
 
     stream.SeekI(stream.GetSize() - 4);
 
     stream.Read(&dirLn, 4);
 
-    delete []data;
+    wxMemoryBuffer dirData(dirLn);
+
+    stream.SeekI(stream.GetSize() - dirLn);
+
+    stream.Read(dirData.GetData(), dirLn);
+
+    wxMemoryInputStream dirDataStream(dirData.GetData(), dirData.GetBufSize());
+
+    wxZlibInputStream zstream(dirDataStream);
 }
 
 
