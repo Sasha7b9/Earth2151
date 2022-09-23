@@ -2,7 +2,7 @@
 #include "defines.h"
 #include "Frame.h"
 #include "Controls/Canvas.h"
-#include "ControlDir.h"
+#include "Controls/ControlDir.h"
 
 
 Frame *Frame::self = nullptr;
