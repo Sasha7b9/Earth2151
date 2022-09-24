@@ -15,7 +15,7 @@ namespace Resources
     {
     public:
         Resource(std::string &filename, ResourceInfo, std::vector<uint8> * = nullptr);
-    private:
+
         std::string file_name;
         ResourceInfo info;
         std::vector<uint8> unknown_data;

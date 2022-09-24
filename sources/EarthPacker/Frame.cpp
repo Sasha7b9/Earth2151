@@ -130,7 +130,12 @@ void Frame::OnFileActivated(wxTreeEvent &event)
 
     for each (auto desc in dirdesc->resources)
     {
+        wxMemoryBuffer data = file.ReadBytes(desc.info.offset, desc.info.length);
 
+        if (data.GetDataLen())
+        {
+
+        }
     }
 }
 
