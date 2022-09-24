@@ -21,6 +21,12 @@ namespace Models
         MountPoints *mount_points = nullptr;
         Lights *lights = nullptr;
 
+        uint16 unknown_val1 = 0;
+        uint16 unknown_val2 = 0;
+        uint16 unknown_val3 = 0;
+        uint16 unknown_val4 = 0;
+        uint16 unknown_val5 = 0;
+
         void CheckHeader(FileInputStream &);
     };
 }

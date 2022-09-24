@@ -20,6 +20,22 @@ Models::Model::Model(const wxString &path) : file_path(path)
     mount_points = new MountPoints(stream);
 
     lights = new Lights(stream);
+
+    stream.ReadBytes(64);
+    stream.ReadBytes(488);
+
+    unknown_val1 = stream.Read2Bytes();
+    unknown_val2 = stream.Read2Bytes();
+    unknown_val3 = stream.Read2Bytes();
+    unknown_val4 = stream.Read2Bytes();
+    unknown_val5 = stream.Read2Bytes();
+
+    if (type != 0)
+    {
+        LOG_ERROR("Not supported mesh format");
+    }
+
+
 }
 
 
