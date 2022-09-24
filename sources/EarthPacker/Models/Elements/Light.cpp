@@ -3,7 +3,7 @@
 #include "Models/Elements/Light.h"
 
 
-MLight::MLight(FileInputStream &stream) : Vector(stream)
+Light::Light(FileInputStream &stream) : Vector(stream)
 {
     float r = stream.ReadFloat() * 255;
     float g = stream.ReadFloat() * 255;
@@ -12,4 +12,9 @@ MLight::MLight(FileInputStream &stream) : Vector(stream)
     color.Set((uint8)r, (uint8)g, (uint8)b);
 
     length = stream.ReadFloat();
+    direction = stream.ReadFloat();
+    width = stream.ReadFloat();
+    u3 = stream.ReadFloat();
+    tilt = stream.ReadFloat();
+    ambience = stream.ReadFloat();
 }

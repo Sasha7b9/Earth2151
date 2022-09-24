@@ -4,12 +4,17 @@
 #include "Utils/FileInputStream.h"
 
 
-class MLight : public Vector
+class Light : public Vector
 {
 public:
-    MLight(FileInputStream &);
+    Light(FileInputStream &);
 
     wxColour color;
 
     float length;
-}
+    float direction;
+    float width;
+    float u3;
+    float tilt;
+    float ambience;
+};

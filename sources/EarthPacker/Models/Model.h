@@ -4,6 +4,7 @@
 #include "Utils/FileInputStream.h"
 #include "Models/Elements/ModelTemplate.h"
 #include "Models/Collections/MountPoints.h"
+#include "Models/Collections/Lights.h"
 
 
 namespace Models
@@ -18,6 +19,7 @@ namespace Models
         int type;
         ModelTemplate *model_template = nullptr;
         MountPoints *mount_points = nullptr;
+        Lights *lights = nullptr;
 
         void CheckHeader(FileInputStream &);
     };

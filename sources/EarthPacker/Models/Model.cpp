@@ -19,7 +19,7 @@ Models::Model::Model(const wxString &path) : file_path(path)
 
     mount_points = new MountPoints(stream);
 
-    mount_points = mount_points;
+    lights = new Lights(stream);
 }
 
 
