@@ -122,11 +122,11 @@ void Frame::OnFileActivated(wxTreeEvent &event)
 
     size_t size_dir_stream = dir_stream.GetSize();
 
-    wxMemoryBuffer dir(size_dir_stream);
+    wxMemoryBuffer _dir(size_dir_stream);
 
-    dir_stream.CopyTo(dir.GetData(), size_dir_stream);
+    dir_stream.CopyTo(_dir.GetData(), size_dir_stream);
 
-    auto dirdesc = new Resources::Directory(dir);
+    auto dirdesc = new Resources::Directory(_dir);
 
     for each (auto desc in dirdesc->resources)
     {
@@ -139,7 +139,18 @@ void Frame::OnFileActivated(wxTreeEvent &event)
 
         if (data.GetBufSize())
         {
-            std::string file_name = desc.file_name;
+            wxFileName path_resource(fileName.GetPath() + wxFileName::GetPathSeparator() + desc.file_name);
+
+            wxString directory = path_resource.GetPath();
+
+            if (!wxDir::Exists(directory))
+            {
+                wxDir::Make(directory);
+            }
+
+            wxFile file_resource;
+
+            file_resource.Create(path_resource.GetFullPath());
         }
     }
 }

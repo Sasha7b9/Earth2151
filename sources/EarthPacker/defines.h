@@ -23,4 +23,5 @@ typedef signed char int8;
 #include <wx/wfstream.h>
 #include <wx/zstream.h>
 #include <wx/mstream.h>
+#include <wx/dir.h>
 #pragma warning(pop)
