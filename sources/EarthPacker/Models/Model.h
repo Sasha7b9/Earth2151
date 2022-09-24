@@ -28,5 +28,7 @@ namespace Models
         uint16 unknown_val5 = 0;
 
         void CheckHeader(FileInputStream &);
+
+        void GetParts(FileInputStream &, std::list<ModelPart> &);
     };
 }

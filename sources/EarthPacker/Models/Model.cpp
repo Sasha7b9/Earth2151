@@ -35,7 +35,7 @@ Models::Model::Model(const wxString &path) : file_path(path)
         LOG_ERROR("Not supported mesh format");
     }
 
-
+    GetParts(stream, parts);
 }
 
 
@@ -48,5 +48,16 @@ void Models::Model::CheckHeader(FileInputStream &stream)
     if (std::memcmp(span.GetData(), template_buffer, 8) != 0)
     {
         LOG_ERROR("Not mesh format");
+    }
+}
+
+
+void Models::Model::GetParts(FileInputStream &stream, std::list<ModelPart> &_parts)
+{
+    _parts.clear();
+
+    while (!stream.Eof())
+    {
+        _parts.push_back(ModelPart(stream));
     }
 }
