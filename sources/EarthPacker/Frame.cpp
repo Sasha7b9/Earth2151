@@ -7,7 +7,7 @@
 #include "Utils/Zlib.h"
 #include "Packer/Resources/TranslatableResource.h"
 #include "Packer/Resources/PackMesh.h"
-#include "Resource/Mesh/Mesh.h"
+#include "Resource/Mesh/Model.h"
 
 
 Frame *Frame::self = nullptr;
@@ -101,7 +101,7 @@ void Frame::OnFileActivated(wxTreeEvent &event)
 
     if (fileName.GetExt() == "msh")
     {
-        new Resource::RMesh(fileName.GetFullPath());
+        new Resource::Model(fileName.GetFullPath());
 
         return;
     }

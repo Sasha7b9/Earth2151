@@ -4,10 +4,10 @@
 
 namespace Resource
 {
-    class RMesh
+    class Model
     {
     public:
-        RMesh(const wxString &path);
+        Model(const wxString &path);
     private:
     };
 }

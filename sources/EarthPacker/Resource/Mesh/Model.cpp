@@ -3,7 +3,7 @@
 #include "Resource/Mesh/Model.h"
 
 
-Resource::RMesh::RMesh(const wxString &path)
+Resource::Model::Model(const wxString &path)
 {
 
 }
