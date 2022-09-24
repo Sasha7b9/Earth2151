@@ -4,10 +4,7 @@
 #include "Packer/Resources/ResourceFactory.h"
 
 
-using namespace Packer;
-
-
-Directory::Directory(wxMemoryBuffer &directoryData)
+Packer::Directory::Directory(wxMemoryBuffer &directoryData)
 {
     wxMemoryInputStream stream((uint8 *)directoryData.GetData() + 10, directoryData.GetBufSize() - 10);
 
@@ -15,7 +12,7 @@ Directory::Directory(wxMemoryBuffer &directoryData)
 }
 
 
-void Directory::ReadFileDescriptors(wxMemoryInputStream &stream)
+void Packer::Directory::ReadFileDescriptors(wxMemoryInputStream &stream)
 {
     while (!stream.Eof())
     {

@@ -3,10 +3,7 @@
 #include "Packer/Resources/Group.h"
 
 
-using namespace Packer;
-
-
-Group::Group(std::string &filename, ResourceInfo info, std::vector<uint8> *data) :
+Packer::Group::Group(std::string &filename, ResourceInfo info, std::vector<uint8> *data) :
     Resource(filename, info, data)
 {
 

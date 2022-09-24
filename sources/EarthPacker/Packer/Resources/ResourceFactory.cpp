@@ -8,9 +8,6 @@
 #include "Packer/Resources/PackMesh.h"
 
 
-using namespace Packer;
-
-
 namespace Packer
 {
     namespace ResourceFactory
@@ -26,7 +23,7 @@ namespace Packer
 }
 
 
-Resource ResourceFactory::Create(wxInputStream &stream)
+Packer::Resource Packer::ResourceFactory::Create(wxInputStream &stream)
 {
     auto name = GetName(stream);
 
@@ -110,7 +107,7 @@ Resource ResourceFactory::Create(wxInputStream &stream)
 }
 
 
-std::string ResourceFactory::GetName(wxInputStream &stream)
+std::string Packer::ResourceFactory::GetName(wxInputStream &stream)
 {
     int length = GetLength(stream);
 
@@ -124,7 +121,7 @@ std::string ResourceFactory::GetName(wxInputStream &stream)
 }
 
 
-int ResourceFactory::GetLength(wxInputStream &stream)
+int Packer::ResourceFactory::GetLength(wxInputStream &stream)
 {
     uint8 length = 0;
     stream.Read(&length, 1);
@@ -150,7 +147,7 @@ int ResourceFactory::GetLength(wxInputStream &stream)
 }
 
 
-ResourceInfo ResourceFactory::GetResourceInfo(wxInputStream &stream)
+Packer::ResourceInfo Packer::ResourceFactory::GetResourceInfo(wxInputStream &stream)
 {
     ResourceInfo result{0, 0, 0};
 
@@ -164,7 +161,7 @@ ResourceInfo ResourceFactory::GetResourceInfo(wxInputStream &stream)
 }
 
 
-std::vector<uint8> ResourceFactory::GetBytes(wxInputStream &stream, int length)
+std::vector<uint8> Packer::ResourceFactory::GetBytes(wxInputStream &stream, int length)
 {
     std::vector<uint8> result(length);
 
