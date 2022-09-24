@@ -5,6 +5,7 @@
 #include "Resources/Directory.h"
 #include "Utils/FileInputStream.h"
 #include "Utils/Zlib.h"
+#include "Resources/TranslatableResource.h"
 
 
 Frame *Frame::self = nullptr;
@@ -167,6 +168,15 @@ void Frame::OnFileActivated(wxTreeEvent &event)
                 {
                     file_unknown.Write(&desc.unknown_data[i], 1);
                 }
+            }
+
+            if (typeid(desc) == typeid(Resources::TranslatableResource))
+            {
+                wxFile file_trans;
+
+                file_trans.Create(fileName.GetPath() + wxFileName::GetPathSeparator() + desc.file_name + ".translationId", true);
+
+                file_trans.Write(((Resources::TranslatableResource *)&desc)->translationID);
             }
         }
     }

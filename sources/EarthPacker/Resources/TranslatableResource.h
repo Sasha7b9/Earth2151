@@ -9,7 +9,6 @@ namespace Resources
     {
     public:
         TranslatableResource(std::string &filename, ResourceInfo, std::string translationID, std::vector<uint8> * = nullptr);
-    private:
         std::string translationID;
     };
 }
