@@ -3,10 +3,7 @@
 #include "Packer/Resources/PackMesh.h"
 
 
-using namespace Packer;
-
-
-Mesh::Mesh(std::string &filename, ResourceInfo info, std::vector<uint8> *data) : Resource(filename, info, data)
+Packer::Mesh::Mesh(std::string &filename, ResourceInfo info, std::vector<uint8> *data) : Resource(filename, info, data)
 {
 
 }

@@ -3,11 +3,8 @@
 #include "Resource/Mesh/Mesh.h"
 
 
-namespace Resource
+Resource::Mesh::Mesh(const wxString &path)
 {
-    Mesh::Mesh(const wxString &path)
-    {
 
-    }
 }
 
