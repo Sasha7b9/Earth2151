@@ -2,6 +2,8 @@
 #include "defines.h"
 #include "Resources/ResourceFactory.h"
 #include "Resources/Mesh.h"
+#include "Resources/Interface.h"
+#include "Resources/Level.h"
 
 
 using namespace Resources;
@@ -45,7 +47,11 @@ Resource ResourceFactory::Create(wxInputStream &stream)
         return Resource(name, GetResourceInfo(stream));
 
     case 9:     //interface?
-        return Interface(name, GetResourceInfo(stream), GetName(stream));
+        {
+            ResourceInfo info = GetResourceInfo(stream);
+            auto name_resouce = GetName(stream);
+            return Interface(name, info, name_resouce);
+        }
 
     case 17:    //dialog
         return Resource(name, GetResourceInfo(stream));
@@ -54,15 +60,21 @@ Resource ResourceFactory::Create(wxInputStream &stream)
         return Resource(name, GetResourceInfo(stream));
 
     case 33:
-        return Mesh(name, GetResourceInfo(stream), GetBytes(stream, 16));
+        {
+            ResourceInfo info = GetResourceInfo(stream);
+            std::vector<uint8> data = GetBytes(stream, 16);
+            return Mesh(name, info, &data);
+        }
 
     case 43:    //level?
         return Level(name, GetResourceInfo(stream), GetName(stream), GetBytes(stream, 16));
 
     case 49:    // mesh
-        ResourceInfo info = GetResourceInfo(stream);
-        std::vector<uint8> data = GetBytes(stream, 20);
-        return Mesh(name, info, &data);
+        {
+            ResourceInfo info = GetResourceInfo(stream);
+            std::vector<uint8> data = GetBytes(stream, 20);
+            return Mesh(name, info, &data);
+        }
 
     case 57:
         return Terrain(name, GetResourceInfo(stream), GetName(stream), GetBytes(stream, 20));

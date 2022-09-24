@@ -3,3 +3,11 @@
 #include "Resources/Interface.h"
 
 
+using namespace Resources;
+
+
+Interface::Interface(std::string &filename, ResourceInfo info, std::string &translationID) :
+    TranslatableResource(filename, info, translationID)
+{
+
+}
