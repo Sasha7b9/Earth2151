@@ -14,6 +14,7 @@ typedef signed char int8;
 #include "Log.h"
 
 #pragma warning(push, 0)
+#include <list>
 #include <wx/wx.h>
 #include <wx/statline.h>
 #include <wx/grid.h>
