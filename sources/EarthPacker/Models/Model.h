@@ -16,7 +16,7 @@ namespace Models
         Model(const wxString &path);
     private:
         std::string file_path;
-        std::list<ModelPart> parts;
+        std::list<ModelPart *> parts;
         int type;
         ModelTemplate *model_template = nullptr;
         MountPoints *mount_points = nullptr;
@@ -32,8 +32,8 @@ namespace Models
 
         void CheckHeader(FileInputStream &);
 
-        void GetParts(FileInputStream &, std::list<ModelPart> &);
+        void GetParts(FileInputStream &, std::list<ModelPart *> &);
 
-        PartNode *GetPartsTree(std::list<ModelPart> &);
+        PartNode *GetPartsTree(std::list<ModelPart *> &);
     };
 }

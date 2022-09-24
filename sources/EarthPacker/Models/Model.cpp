@@ -40,7 +40,7 @@ Models::Model::Model(const wxString &path) : file_path(path)
     partsTree = GetPartsTree(parts);
 }
 
-PartNode *Models::Model::GetPartsTree(std::list<ModelPart> &_parts)
+PartNode *Models::Model::GetPartsTree(std::list<ModelPart *> &)
 {
     return nullptr;
 }
@@ -59,12 +59,12 @@ void Models::Model::CheckHeader(FileInputStream &stream)
 }
 
 
-void Models::Model::GetParts(FileInputStream &stream, std::list<ModelPart> &_parts)
+void Models::Model::GetParts(FileInputStream &stream, std::list<ModelPart *> &_parts)
 {
     _parts.clear();
 
     while (!stream.Eof())
     {
-        _parts.push_back(ModelPart(stream));
+        _parts.push_back(new ModelPart(stream));
     }
 }
