@@ -10,6 +10,9 @@ struct PositionOffsetFrames : public std::list<Vector>
 };
 
 
+struct RotationFrames : public std::list<
+
+
 class Animations
 {
 public:
