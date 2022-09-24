@@ -1,16 +1,16 @@
 // 2022/09/23 20:33:20 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
-#include "Resources/ResourceFactory.h"
-#include "Resources/Interface.h"
-#include "Resources/Level.h"
-#include "Resources/Terrain.h"
-#include "Resources/Group.h"
+#include "Packer/Resources/ResourceFactory.h"
+#include "Packer/Resources/Interface.h"
+#include "Packer/Resources/Level.h"
+#include "Packer/Resources/Terrain.h"
+#include "Packer/Resources/Group.h"
 
 
-using namespace Resources;
+using namespace Packer;
 
 
-namespace Resources
+namespace Packer
 {
     namespace ResourceFactory
     {

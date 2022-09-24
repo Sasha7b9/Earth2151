@@ -1,9 +1,9 @@
 // 2022/09/24 09:06:01 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
-#include "Resources/TranslatableResource.h"
+#include "Packer/Resources/TranslatableResource.h"
 
 
-namespace Resources
+namespace Packer
 {
     class Terrain : public TranslatableResource
     {

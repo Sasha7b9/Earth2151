@@ -2,10 +2,10 @@
 #include "defines.h"
 #include "Frame.h"
 #include "Controls/Canvas.h"
-#include "Resources/Directory.h"
+#include "Packer/Resources/Directory.h"
 #include "Utils/FileInputStream.h"
 #include "Utils/Zlib.h"
-#include "Resources/TranslatableResource.h"
+#include "Packer/Resources/TranslatableResource.h"
 
 
 Frame *Frame::self = nullptr;
@@ -128,7 +128,7 @@ void Frame::OnFileActivated(wxTreeEvent &event)
 
     dir_stream.CopyTo(_dir.GetData(), size_dir_stream);
 
-    auto dirdesc = new Resources::Directory(_dir);
+    auto dirdesc = new Packer::Directory(_dir);
 
     for each (auto desc in dirdesc->resources)
     {
@@ -170,13 +170,13 @@ void Frame::OnFileActivated(wxTreeEvent &event)
                 }
             }
 
-            if (typeid(desc) == typeid(Resources::TranslatableResource))
+            if (typeid(desc) == typeid(Packer::TranslatableResource))
             {
                 wxFile file_trans;
 
                 file_trans.Create(fileName.GetPath() + wxFileName::GetPathSeparator() + desc.file_name + ".translationId", true);
 
-                file_trans.Write(((Resources::TranslatableResource *)&desc)->translationID);
+                file_trans.Write(((Packer::TranslatableResource *)&desc)->translationID);
             }
         }
     }

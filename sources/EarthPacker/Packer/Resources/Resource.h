@@ -2,7 +2,7 @@
 #pragma once
 
 
-namespace Resources
+namespace Packer
 {
     struct ResourceInfo
     {

@@ -1,9 +1,9 @@
 // 2022/09/23 22:21:29 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
-#include "Resources/TranslatableResource.h"
+#include "Packer/Resources/TranslatableResource.h"
 
 
-namespace Resources
+namespace Packer
 {
     class Interface : public TranslatableResource
     {

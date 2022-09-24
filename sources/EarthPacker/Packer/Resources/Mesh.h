@@ -1,9 +1,9 @@
 // 2022/09/23 21:52:11 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
-#include "Resources/Resource.h"
+#include "Packer/Resources/Resource.h"
 
 
-namespace Resources
+namespace Packer
 {
     class Mesh : public Resource
     {
