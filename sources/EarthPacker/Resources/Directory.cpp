@@ -19,6 +19,6 @@ void Directory::ReadFileDescriptors(wxMemoryInputStream &stream)
 {
     while (!stream.Eof())
     {
-        resources.push_back(ResourceFactory::Create(stream));
+        resources.emplace_back(ResourceFactory::Create(stream));
     }
 }

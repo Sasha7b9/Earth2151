@@ -10,6 +10,6 @@ ControlDir::ControlDir(wxWindow *parent) : wxGenericDirCtrl(parent)
 {
     self = this;
 
-    SetMinClientSize({ 200, 100 });
+    wxWindowBase::SetMinClientSize({ 200, 100 });
     SetClientSize({ 200, 100 });
 }
