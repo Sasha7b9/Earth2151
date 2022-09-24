@@ -18,6 +18,8 @@ Models::Model::Model(const wxString &path) : file_path(path)
     stream.ReadBytes(10);
 
     mount_points = new MountPoints(stream);
+
+    mount_points = mount_points;
 }
 
 

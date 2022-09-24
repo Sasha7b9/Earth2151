@@ -18,8 +18,6 @@ namespace EarthTool.MSH.Models.Collections
     public MountPoints(Stream stream)
     {
       AddRange(Enumerable.Range(0, NUMBER_OF_MOUNTPOINTS).Select(_ => new Vector(stream)));
-
-      var _length = Count;
     }
 
     public override string ToString()
