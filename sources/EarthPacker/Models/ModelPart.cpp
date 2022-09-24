@@ -9,6 +9,9 @@ Models::ModelPart::ModelPart(FileInputStream &stream)
     skipParent = stream.ReadByte();
     unknownFlag = stream.ReadByte();
     stream.Read2Bytes();
+
+    auto pos = stream.TellI();
+
     texture.Create(stream);
     faces.Create(stream);
     animations.Create(stream);
