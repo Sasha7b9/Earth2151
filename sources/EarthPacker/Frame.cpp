@@ -156,6 +156,18 @@ void Frame::OnFileActivated(wxTreeEvent &event)
             data = (desc.info.decompressedLength == desc.info.length) ? data : Zlib::Decompress(data);
 
             file_resource.Write(data.GetData(), data.GetBufSize());
+
+            if (desc.unknown_data.size())
+            {
+                wxFile file_unknown;
+
+                file_unknown.Create(fileName.GetPath() + wxFileName::GetPathSeparator() + desc.file_name + ".unknownData", true);
+
+                for (uint i = 0; i < desc.unknown_data.size(); i++)
+                {
+                    file_unknown.Write(&desc.unknown_data[i], 1);
+                }
+            }
         }
     }
 }
