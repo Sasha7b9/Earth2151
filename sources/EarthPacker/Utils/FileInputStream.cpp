@@ -51,6 +51,12 @@ uint FileInputStream::ReadUINT()
 }
 
 
+int FileInputStream::ReadINT()
+{
+    return (int)ReadUINT();
+}
+
+
 float FileInputStream::ReadFloat()
 {
     float result = 0.0f;
