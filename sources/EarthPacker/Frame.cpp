@@ -3,6 +3,7 @@
 #include "Frame.h"
 #include "Controls/Canvas.h"
 #include "Resources/Directory.h"
+#include "Utils/FileInputStream.h"
 
 
 Frame *Frame::self = nullptr;
@@ -99,28 +100,28 @@ void Frame::OnFileActivated(wxTreeEvent &event)
         return;
     }
 
-    wxFileInputStream stream(fileName.GetFullPath());
+    FileInputStream file(fileName.GetFullPath());
 
-    if (!IsValidWDFile(stream))
+    if (!IsValidWDFile(file))
     {
         return;
     }
 
-    wxMemoryBuffer data(stream.GetSize());
+    wxMemoryBuffer data(file.GetSize());
 
-    stream.ReadAll(data.GetData(), stream.GetSize());
+    file.ReadAll(data.GetData(), file.GetSize());
 
     uint dirLn = 0;
 
-    stream.SeekI(stream.GetSize() - 4);
+    file.SeekI(file.GetSize() - 4);
 
-    stream.Read(&dirLn, 4);
+    file.Read(&dirLn, 4);
 
     wxMemoryBuffer dirData(dirLn);
 
-    stream.SeekI(stream.GetSize() - dirLn);
+    file.SeekI(file.GetSize() - dirLn);
 
-    stream.Read(dirData.GetData(), dirLn);
+    file.Read(dirData.GetData(), dirLn);
 
 
 
@@ -141,7 +142,10 @@ void Frame::OnFileActivated(wxTreeEvent &event)
 
     auto dirdesc = new Resources::Directory(dir);
 
-    dirdesc = dirdesc;
+    for each (auto desc in dirdesc->resources)
+    {
+
+    }
 }
 
 

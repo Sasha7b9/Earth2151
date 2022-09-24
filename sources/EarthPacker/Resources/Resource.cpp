@@ -7,7 +7,10 @@ using namespace Resources;
 
 
 Resource::Resource(std::string &filename, ResourceInfo _info, std::vector<uint8> *_unknown_data) :
-    file_name(filename), info(_info), unknown_data(*_unknown_data)
+    file_name(filename), info(_info)
 {
-
+    if (_unknown_data)
+    {
+        unknown_data = *_unknown_data;
+    }
 }
