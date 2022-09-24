@@ -109,13 +109,7 @@ void Frame::OnFileActivated(wxTreeEvent &event)
 
     uint dirLn = file.ReadUINT(file.GetSize() - 4);
 
-    wxMemoryBuffer dirData(dirLn);
-
-    file.SeekI(file.GetSize() - dirLn);
-
-    file.Read(dirData.GetData(), dirLn);
-
-
+    wxMemoryBuffer dirData = file.ReadBytes(file.GetSize() - dirLn, dirLn);
 
 
     wxMemoryInputStream dirDataStream(dirData.GetData(), dirData.GetBufSize());
