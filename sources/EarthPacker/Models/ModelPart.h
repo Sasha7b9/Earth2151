@@ -2,7 +2,7 @@
 #pragma onc
 
 
-namespace Resource
+namespace Models
 {
 
 }

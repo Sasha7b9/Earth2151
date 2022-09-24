@@ -2,7 +2,7 @@
 #pragma once
 
 
-namespace Resource
+namespace Models
 {
     class Model
     {

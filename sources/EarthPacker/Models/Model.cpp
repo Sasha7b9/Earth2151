@@ -3,7 +3,7 @@
 #include "Models/Model.h"
 
 
-Resource::Model::Model(const wxString &path)
+Models::Model::Model(const wxString &path)
 {
 
 }
