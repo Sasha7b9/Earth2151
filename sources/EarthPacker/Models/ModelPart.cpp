@@ -10,4 +10,5 @@ Models::ModelPart::ModelPart(FileInputStream &stream)
     unknownFlag = stream.ReadByte();
     stream.Read2Bytes();
     texture.Create(stream);
+    faces.Create(stream);
 }

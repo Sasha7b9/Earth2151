@@ -3,6 +3,7 @@
 #include "Utils/FileInputStream.h"
 #include "Models/Collections/Vertices.h"
 #include "Models/Elements/TextureInfo.h"
+#include "Models/Collections/Faces.h"
 
 
 namespace Models
@@ -16,5 +17,6 @@ namespace Models
         int skipParent;
         int unknownFlag;
         TextureInfo texture;
+        Faces faces;
     };
 }
