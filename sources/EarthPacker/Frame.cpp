@@ -6,6 +6,7 @@
 #include "Utils/FileInputStream.h"
 #include "Utils/Zlib.h"
 #include "Packer/Resources/TranslatableResource.h"
+#include "Resource/Mesh/Mesh.h"
 
 
 Frame *Frame::self = nullptr;
@@ -96,6 +97,13 @@ void Frame::AddTool(int id, const wxString &label, pchar nameResource, pchar nam
 void Frame::OnFileActivated(wxTreeEvent &event)
 {
     wxFileName fileName(cntrlDir->GetPath(event.GetItem()));
+
+    if (fileName.GetExt() == "msh")
+    {
+        new Resource::Mesh(fileName.GetFullPath());
+
+        return;
+    }
 
     if (fileName.GetExt() != "wd")
     {
