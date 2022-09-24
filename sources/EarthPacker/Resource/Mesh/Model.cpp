@@ -7,4 +7,3 @@ Resource::Model::Model(const wxString &path)
 {
 
 }
-
