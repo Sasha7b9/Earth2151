@@ -11,6 +11,8 @@ Models::Model::Model(const wxString &path) : file_path(path)
     CheckHeader(stream);
 
     type = stream.ReadUINT();
+
+    model_template = new ModelTemplate(stream);
 }
 
 

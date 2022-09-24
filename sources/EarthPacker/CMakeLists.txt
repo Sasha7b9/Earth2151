@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.14)
 
 project (EarthPacker)
 
-set(CMAKE_UNITY_BUILD ON)
+set(CMAKE_UNITY_BUILD OFF)
 
 include_directories(.
                     ../ThirdParty/wxWidgets/include

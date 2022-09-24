@@ -2,6 +2,7 @@
 #pragma once
 #include "Models/ModelPart.h"
 #include "Utils/FileInputStream.h"
+#include "Models/Elements/ModelTemplate.h"
 
 
 namespace Models
@@ -14,6 +15,7 @@ namespace Models
         std::string file_path;
         std::list<ModelPart> parts;
         int type;
+        ModelTemplate *model_template = nullptr;
 
         void CheckHeader(FileInputStream &);
     };
