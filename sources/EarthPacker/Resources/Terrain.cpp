@@ -4,3 +4,10 @@
 
 
 using namespace Resources;
+
+
+Terrain::Terrain(std::string &filename, ResourceInfo info, std::string &translationID, std::vector<uint8> *data) :
+    TranslatableResource(filename, info, translationID, data)
+{
+
+}

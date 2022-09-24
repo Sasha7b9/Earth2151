@@ -4,6 +4,8 @@
 #include "Resources/Mesh.h"
 #include "Resources/Interface.h"
 #include "Resources/Level.h"
+#include "Resources/Terrain.h"
+#include "Resources/Group.h"
 
 
 using namespace Resources;
@@ -62,28 +64,46 @@ Resource ResourceFactory::Create(wxInputStream &stream)
     case 33:
         {
             ResourceInfo info = GetResourceInfo(stream);
-            std::vector<uint8> data = GetBytes(stream, 16);
+            auto data = GetBytes(stream, 16);
             return Mesh(name, info, &data);
         }
 
     case 43:    //level?
-        return Level(name, GetResourceInfo(stream), GetName(stream), GetBytes(stream, 16));
+        {
+            ResourceInfo info = GetResourceInfo(stream);
+            auto name_resource = GetName(stream);
+            auto data = GetBytes(stream, 16);
+            return Level(name, info, name_resource, &data);
+        }
 
     case 49:    // mesh
         {
             ResourceInfo info = GetResourceInfo(stream);
-            std::vector<uint8> data = GetBytes(stream, 20);
+            auto data = GetBytes(stream, 20);
             return Mesh(name, info, &data);
         }
 
     case 57:
-        return Terrain(name, GetResourceInfo(stream), GetName(stream), GetBytes(stream, 20));
+        {
+            ResourceInfo info = GetResourceInfo(stream);
+            auto name_resource = GetName(stream);
+            auto data = GetBytes(stream, 20);
+            return Terrain(name, info, name_resource, &data);
+        }
 
     case 59:    //level
-        return Level(name, GetResourceInfo(stream), GetName(stream), GetBytes(stream, 20));
+        {
+            ResourceInfo info = GetResourceInfo(stream);
+            auto name_resource = GetName(stream);
+            auto data = GetBytes(stream, 20);
+            return Level(name, info, name_resource, &data);
+        }
 
     case 255:   //group
-        return Group(name, (0, 0, 0), GetBytes(stream, 3));
+        {
+            auto data = GetBytes(stream, 3);
+            return Group(name, ResourceInfo(), &data);
+        }
     }
 
     return Resource(name, GetResourceInfo(stream));

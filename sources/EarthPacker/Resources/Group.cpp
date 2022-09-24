@@ -4,3 +4,10 @@
 
 
 using namespace Resources;
+
+
+Group::Group(std::string &filename, ResourceInfo info, std::vector<uint8> *data) :
+    Resource(filename, info, data)
+{
+
+}

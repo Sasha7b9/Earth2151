@@ -6,9 +6,9 @@ namespace Resources
 {
     struct ResourceInfo
     {
-        uint offset;
-        uint length;
-        uint decompressedLength;
+        uint offset = 0;
+        uint length = 0;
+        uint decompressedLength = 0;
     };
 
     class Resource

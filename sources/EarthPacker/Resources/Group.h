@@ -8,6 +8,7 @@ namespace Resources
     class Group : public Resource
     {
     public:
+        Group(std::string &filename, ResourceInfo, std::vector<uint8> *data);
     };
 }
 
