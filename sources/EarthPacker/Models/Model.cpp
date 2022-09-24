@@ -13,6 +13,8 @@ Models::Model::Model(const wxString &path) : file_path(path)
     type = stream.ReadUINT();
 
     model_template = new ModelTemplate(stream);
+
+    stream.ReadBytes(10);
 }
 
 

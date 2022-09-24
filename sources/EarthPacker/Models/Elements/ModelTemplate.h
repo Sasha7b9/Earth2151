@@ -9,11 +9,11 @@ namespace Models
     class ModelTemplate
     {
     public:
-        ModelTemplate(wxFileInputStream &);
+        ModelTemplate(FileInputStream &);
     private:
         static const int ROWS = 4;
         static const int COLUMNS = 4;
 
-        Matrix4x4<bool> matrix;
+        bool matrix[ROWS][COLUMNS];
     };
 }

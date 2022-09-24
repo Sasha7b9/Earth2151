@@ -51,6 +51,16 @@ uint FileInputStream::ReadUINT()
 }
 
 
+uint16 FileInputStream::Read2Bytes()
+{
+    uint16 result = 0;
+
+    wxFileInputStream::Read(&result, 2);
+
+    return result;
+}
+
+
 uint FileInputStream::ReadUINT(int offset)
 {
     uint result = 0;

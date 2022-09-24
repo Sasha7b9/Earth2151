@@ -10,6 +10,7 @@ public:
     wxMemoryBuffer ReadAll();
     wxMemoryBuffer ReadBytes(int num_bytes);
     wxMemoryBuffer ReadBytes(int offset, int num_bytes);
+    uint16 Read2Bytes();
     uint ReadUINT();
     uint ReadUINT(int offset);
 private:
