@@ -6,6 +6,7 @@
 #include "Utils/FileInputStream.h"
 #include "Utils/Zlib.h"
 #include "Packer/Resources/TranslatableResource.h"
+#include "Packer/Resources/PackMesh.h"
 #include "Resource/Mesh/Mesh.h"
 
 
