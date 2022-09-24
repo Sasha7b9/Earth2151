@@ -130,11 +130,16 @@ void Frame::OnFileActivated(wxTreeEvent &event)
 
     for each (auto desc in dirdesc->resources)
     {
+        if (desc.file_name.empty())
+        {
+            continue;
+        }
+
         wxMemoryBuffer data = file.ReadBytes(desc.info.offset, desc.info.length);
 
-        if (data.GetDataLen())
+        if (data.GetBufSize())
         {
-
+            std::string file_name = desc.file_name;
         }
     }
 }
