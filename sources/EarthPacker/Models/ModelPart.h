@@ -4,6 +4,7 @@
 #include "Models/Collections/Vertices.h"
 #include "Models/Elements/TextureInfo.h"
 #include "Models/Collections/Faces.h"
+#include "Models/Collections/Animations.h"
 
 
 namespace Models
@@ -18,5 +19,9 @@ namespace Models
         int unknownFlag;
         TextureInfo texture;
         Faces faces;
+        Animations animations;
+        int unknownValue;
+        Vector offset;
+        uint8 unknown_bytes[5];
     };
 }

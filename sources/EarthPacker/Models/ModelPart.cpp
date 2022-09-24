@@ -11,4 +11,8 @@ Models::ModelPart::ModelPart(FileInputStream &stream)
     stream.Read2Bytes();
     texture.Create(stream);
     faces.Create(stream);
+    animations.Create(stream);
+    unknownValue = stream.ReadINT();
+    offset.Create(stream);
+    stream.Read(unknown_bytes, 5);
 }

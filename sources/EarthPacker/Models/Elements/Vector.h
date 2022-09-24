@@ -10,7 +10,9 @@ public:
     float y = 0.0f;
     float z = 0.0f;
 
-    Vector(float _x, float _y, float _z) : x(_x), y(_y), z(_z) {}
+    Vector(float _x = 0.0f, float _y = 0.0f, float _z = 0.0f) : x(_x), y(_y), z(_z) {}
 
     Vector(FileInputStream &);
+
+    void Create(FileInputStream &);
 };

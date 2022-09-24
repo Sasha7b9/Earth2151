@@ -8,6 +8,7 @@ set(CMAKE_UNITY_BUILD OFF)
 
 include_directories(.
                     ../ThirdParty/wxWidgets/include
+                    ../ThirdParty
                     ../generated/wxWidgets/lib/vc_dll/mswud)
 
 link_directories(../generated/wxWidgets/lib/vc_dll)
@@ -50,6 +51,7 @@ if(WIN32)
     endif()
 
     add_compile_options(/wd4365)    # 'action' : conversion from 'type_1' to 'type_2', signed/unsigned mismatch
+    add_compile_options(/wd4464)
     add_compile_options(/wd4514)    # 'function' : unreferenced inline function has been removed
     add_compile_options(/wd4625)    # 'derived class' : copy constructor was implicitly defined as deleted because a base class copy constructor is inaccessible or deleted
     add_compile_options(/wd4626)    # 'derived class' : assignment operator was implicitly defined as deleted because a base class assignment operator is inaccessible or deleted

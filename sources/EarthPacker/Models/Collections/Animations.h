@@ -2,6 +2,7 @@
 #pragma once
 #include "Utils/FileInputStream.h"
 #include "Models/Elements/Vector.h"
+#include "Models/Elements/RotationFrame.h"
 
 
 struct PositionOffsetFrames : public std::list<Vector>
@@ -10,11 +11,18 @@ struct PositionOffsetFrames : public std::list<Vector>
 };
 
 
-struct RotationFrames : public std::list<
+struct RotationFrames : public std::list<RotationFrame>
+{
+    void Create(FileInputStream &);
+};
 
 
 class Animations
 {
 public:
     void Create(FileInputStream &);
+
+    PositionOffsetFrames unknownAnimationData;
+    PositionOffsetFrames movementFrames;
+    RotationFrames       rotationFrames;
 };

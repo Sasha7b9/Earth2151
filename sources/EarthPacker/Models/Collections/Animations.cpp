@@ -14,7 +14,20 @@ void PositionOffsetFrames::Create(FileInputStream &stream)
 }
 
 
+void RotationFrames::Create(FileInputStream &stream)
+{
+    int length = stream.ReadINT();
+
+    for (int i = 0; i < length; i++)
+    {
+        push_back(RotationFrame(stream));
+    }
+}
+
+
 void Animations::Create(FileInputStream &stream)
 {
-
+    unknownAnimationData.Create(stream);
+    movementFrames.Create(stream);
+    rotationFrames.Create(stream);
 }

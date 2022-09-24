@@ -5,6 +5,12 @@
 
 Vector::Vector(FileInputStream &stream)
 {
+    Create(stream);
+}
+
+
+void Vector::Create(FileInputStream &stream)
+{
     x = stream.ReadFloat();
 
     y = -stream.ReadFloat();
