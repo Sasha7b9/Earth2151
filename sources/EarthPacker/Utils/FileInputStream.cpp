@@ -31,6 +31,16 @@ wxMemoryBuffer FileInputStream::ReadBytes(int offset, int num_bytes)
 }
 
 
+wxMemoryBuffer FileInputStream::ReadBytes(int num_bytes)
+{
+    wxMemoryBuffer result(num_bytes);
+
+    wxFileInputStream::Read(result.GetData(), num_bytes);
+
+    return result;
+}
+
+
 uint FileInputStream::ReadUINT(int offset)
 {
     uint result = 0;

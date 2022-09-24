@@ -12,5 +12,7 @@ namespace Models
     private:
         std::string file_path;
         std::list<ModelPart> parts;
+
+        void CheckHeader(FileInputStream &);
     };
 }
