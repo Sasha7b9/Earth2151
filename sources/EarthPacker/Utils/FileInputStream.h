@@ -8,8 +8,9 @@ public:
     FileInputStream(const wxString &file_path);
 
     wxMemoryBuffer ReadAll();
-    wxMemoryBuffer ReadBytes(int offset, int num_bytes);
     wxMemoryBuffer ReadBytes(int num_bytes);
+    wxMemoryBuffer ReadBytes(int offset, int num_bytes);
+    uint ReadUINT();
     uint ReadUINT(int offset);
 private:
 };

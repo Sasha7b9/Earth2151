@@ -5,6 +5,7 @@
 #include "Packer/Resources/Level.h"
 #include "Packer/Resources/Terrain.h"
 #include "Packer/Resources/Group.h"
+#include "Packer/Resources/Mesh.h"
 
 
 namespace Packer
@@ -61,7 +62,7 @@ Packer::Resource Packer::ResourceFactory::Create(wxInputStream &stream)
         {
             ResourceInfo info = GetResourceInfo(stream);
             auto data = GetBytes(stream, 16);
-            return Packer::PMesh(name, info, &data);
+            return Packer::Mesh(name, info, &data);
         }
 
     case 43:    //level?
@@ -76,7 +77,7 @@ Packer::Resource Packer::ResourceFactory::Create(wxInputStream &stream)
         {
             ResourceInfo info = GetResourceInfo(stream);
             auto data = GetBytes(stream, 20);
-            return Packer::PMesh(name, info, &data);
+            return Packer::Mesh(name, info, &data);
         }
 
     case 57:

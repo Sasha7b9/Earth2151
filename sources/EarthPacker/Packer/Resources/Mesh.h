@@ -5,10 +5,10 @@
 
 namespace Packer
 {
-    class PMesh : public Resource
+    class Mesh : public Resource
     {
     public:
-        PMesh(std::string &filename, ResourceInfo, std::vector<uint8> *);
+        Mesh(std::string &filename, ResourceInfo, std::vector<uint8> *);
     private:
     };
 }

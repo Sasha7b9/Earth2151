@@ -9,6 +9,8 @@ Models::Model::Model(const wxString &path) : file_path(path)
     FileInputStream stream(path);
 
     CheckHeader(stream);
+
+    type = stream.ReadUINT();
 }
 
 
