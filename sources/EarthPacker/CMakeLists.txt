@@ -64,27 +64,24 @@ endif()
 
 file(GLOB SRC                      *.h *.cpp)
 file(GLOB CONTROLS                 Controls/*.*)
+file(GLOB MODELS                   Models/*.*)
 file(GLOB PACKER                   Packer/*.*)
 file(GLOB PACKER_RESOURCES         Packer/Resources/*.*)
-file(GLOB RESOURCE                 Resource/*.*)
-file(GLOB RESOURCE_MESH            Resource/Mesh/*.*)
 file(GLOB UTILS                    Utils/*.*)
 
 source_group(src                   FILES ${SRC})
 source_group(Controls              FILES ${CONTROLS})
+source_group(Models                FILES ${MODELS})
 source_group(Packer                FILES ${PACKER})
 source_group(Packer/Resources      FILES ${PACKER_RESOURCES})
-source_group(Resource              FILES ${RESOURCE})
-source_group(Resource/Mesh         FILES ${RESOURCE_MESH})
 source_group(Utils                 FILES ${UTILS})
 
 add_executable( ${PROJECT_NAME}
                 ${SRC}
                 ${CONTROLS}
+                ${MODELS}
                 ${PACKER}
                 ${PACKER_RESOURCES}
-                ${RESOURCE}
-                ${RESOURCE_MESH}
                 ${UTILS}
                 )
 

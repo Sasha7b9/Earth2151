@@ -7,7 +7,7 @@
 #include "Utils/Zlib.h"
 #include "Packer/Resources/TranslatableResource.h"
 #include "Packer/Resources/Mesh.h"
-#include "Resource/Mesh/Model.h"
+#include "Models/Model.h"
 
 
 Frame *Frame::self = nullptr;
