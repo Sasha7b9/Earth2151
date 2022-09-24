@@ -30,9 +30,7 @@ namespace EarthTool.MSH.Models.Elements
       {
         for (var row = ROWS - 1; row > -1; row--)
         {
-          var bit = data[col * 4 + row];
-
-          Matrix[row, COLUMNS - 1 - col] = bit;
+          Matrix[row, COLUMNS - 1 - col] = data[col * 4 + row];
         }
       }
     }

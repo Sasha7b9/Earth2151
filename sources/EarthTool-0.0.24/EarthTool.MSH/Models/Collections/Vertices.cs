@@ -18,13 +18,7 @@ namespace EarthTool.MSH.Models.Collections
       var vertices = BitConverter.ToInt32(stream.ReadBytes(4));
       var blocks = BitConverter.ToInt32(stream.ReadBytes(4));
 
-      byte[] bytes = stream.ReadBytes(VERTICES_BLOCK_LENGTH);
-
-      var v = Enumerable.Range(0, blocks).SelectMany(_ => GetVertices(bytes));
-
-      var v1 = v.Take(vertices);
-
-      AddRange(v1);
+      AddRange(Enumerable.Range(0, blocks).SelectMany(_ => GetVertices(stream.ReadBytes(VERTICES_BLOCK_LENGTH))).Take(vertices));
     }
 
     private IEnumerable<Vertex> GetVertices(byte[] vertexData)

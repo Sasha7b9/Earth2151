@@ -59,9 +59,6 @@ namespace EarthTool.MSH.Models
       SkipParent = stream.ReadByte();
       UnknownFlag = stream.ReadByte();
       stream.ReadBytes(2); // empty
-
-      var pos = stream.Position;
-
       Texture = new TextureInfo(stream);
       Faces = new Faces(stream);
       Animations = new Animations(stream);
