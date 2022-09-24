@@ -50,7 +50,7 @@ PartNode *Models::Model::GetPartsTree()
     {
         if (part == *parts.begin())
         {
-            break;
+            continue;
         }
 
         int skip = part->skipParent;
@@ -84,8 +84,11 @@ void Models::Model::GetParts(FileInputStream &stream, std::list<ModelPart *> &_p
 {
     _parts.clear();
 
-    while (!stream.Eof())
+    while (stream.TellI() < stream.GetSize())
     {
+        size_t size = stream.GetSize();
+        size_t pos = stream.TellI();
+
         _parts.push_back(new ModelPart(stream));
     }
 }
