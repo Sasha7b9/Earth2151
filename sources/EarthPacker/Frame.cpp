@@ -4,6 +4,7 @@
 #include "Controls/Canvas.h"
 #include "Resources/Directory.h"
 #include "Utils/FileInputStream.h"
+#include "Utils/Zlib.h"
 
 
 Frame *Frame::self = nullptr;
@@ -150,7 +151,11 @@ void Frame::OnFileActivated(wxTreeEvent &event)
 
             wxFile file_resource;
 
-            file_resource.Create(path_resource.GetFullPath());
+            file_resource.Create(path_resource.GetFullPath(), true);
+
+            data = (desc.info.decompressedLength == desc.info.length) ? data : Zlib::Decompress(data);
+
+            file_resource.Write(data.GetData(), data.GetBufSize());
         }
     }
 }
