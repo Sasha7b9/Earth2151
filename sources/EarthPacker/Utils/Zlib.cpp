@@ -9,15 +9,13 @@ wxMemoryBuffer Zlib::Decompress(const wxMemoryBuffer &buffer)
 
     wxZlibInputStream zstream(stream);
 
-    wxMemoryBuffer result(1);
+    wxMemoryOutputStream ostream;
 
-    while (!zstream.Eof())
-    {
-        uint8 byte = 0;
-        zstream.Read(&byte, 1);
+    zstream.Read(ostream);
 
-        result.AppendByte((char)byte);
-    }
+    wxMemoryBuffer result(ostream.GetLength());
+
+    ostream.CopyTo(result.GetData(), ostream.GetLength());
 
     return result;
 }
