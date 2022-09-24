@@ -3,3 +3,7 @@
 #include "Utils/Zlib.h"
 
 
+wxMemoryBuffer Zlib::Decompress(const wxMemoryBuffer &buffer)
+{
+    wxMemoryInputStream stream(buffer.GetData(), buffer.GetBufSize());
+}
