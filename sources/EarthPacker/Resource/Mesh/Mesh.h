@@ -4,10 +4,10 @@
 
 namespace Resource
 {
-    class Mesh
+    class RMesh
     {
     public:
-        Mesh(const wxString &path);
+        RMesh(const wxString &path);
     private:
     };
 }

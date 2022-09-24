@@ -3,7 +3,7 @@
 #include "Resource/Mesh/Mesh.h"
 
 
-Resource::Mesh::Mesh(const wxString &path)
+Resource::RMesh::RMesh(const wxString &path)
 {
 
 }

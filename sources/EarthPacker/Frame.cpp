@@ -101,7 +101,7 @@ void Frame::OnFileActivated(wxTreeEvent &event)
 
     if (fileName.GetExt() == "msh")
     {
-        new Resource::Mesh(fileName.GetFullPath());
+        new Resource::RMesh(fileName.GetFullPath());
 
         return;
     }
