@@ -65,7 +65,7 @@ Resource ResourceFactory::Create(wxInputStream &stream)
         {
             ResourceInfo info = GetResourceInfo(stream);
             auto data = GetBytes(stream, 16);
-            return Packer::Mesh(name, info, &data);
+            return Packer::PMesh(name, info, &data);
         }
 
     case 43:    //level?
@@ -80,7 +80,7 @@ Resource ResourceFactory::Create(wxInputStream &stream)
         {
             ResourceInfo info = GetResourceInfo(stream);
             auto data = GetBytes(stream, 20);
-            return Mesh(name, info, &data);
+            return Packer::PMesh(name, info, &data);
         }
 
     case 57:
