@@ -13,7 +13,7 @@ namespace Models
     {
     public:
         class ModelPart(FileInputStream &);
-    private:
+
         Vertices vertices;
         int skipParent;
         int unknownFlag;

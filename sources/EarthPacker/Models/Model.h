@@ -34,6 +34,6 @@ namespace Models
 
         void GetParts(FileInputStream &, std::list<ModelPart *> &);
 
-        PartNode *GetPartsTree(std::list<ModelPart *> &);
+        PartNode *GetPartsTree();
     };
 }

@@ -37,12 +37,33 @@ Models::Model::Model(const wxString &path) : file_path(path)
 
     GetParts(stream, parts);
 
-    partsTree = GetPartsTree(parts);
+    partsTree = GetPartsTree();
 }
 
-PartNode *Models::Model::GetPartsTree(std::list<ModelPart *> &)
+PartNode *Models::Model::GetPartsTree()
 {
-    return nullptr;
+    int currentID = 0;
+    PartNode * const root = new PartNode(currentID, *parts.begin());
+    PartNode *lastNode = root;
+
+    for each (auto part in parts)
+    {
+        if (part == *parts.begin())
+        {
+            break;
+        }
+
+        int skip = part->skipParent;
+        PartNode *parent = lastNode;
+
+        for (int i = 0; i < skip; i++)
+        {
+            parent = parent->parent;
+        }
+        lastNode = new PartNode(++currentID, part, parent);
+    }
+
+    return root;
 }
 
 
