@@ -5,7 +5,6 @@
 #include "Packer/Resources/Level.h"
 #include "Packer/Resources/Terrain.h"
 #include "Packer/Resources/Group.h"
-#include "Packer/Resources/PackMesh.h"
 
 
 namespace Packer
