@@ -5,6 +5,7 @@
 #include "Models/Elements/ModelTemplate.h"
 #include "Models/Collections/MountPoints.h"
 #include "Models/Collections/Lights.h"
+#include "Models/PartNode.h"
 
 
 namespace Models
@@ -27,8 +28,12 @@ namespace Models
         uint16 unknown_val4 = 0;
         uint   unknown_val5 = 0;
 
+        PartNode *partsTree = nullptr;
+
         void CheckHeader(FileInputStream &);
 
         void GetParts(FileInputStream &, std::list<ModelPart> &);
+
+        PartNode *GetPartsTree(std::list<ModelPart> &);
     };
 }

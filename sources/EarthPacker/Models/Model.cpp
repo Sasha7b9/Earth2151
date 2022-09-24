@@ -36,6 +36,13 @@ Models::Model::Model(const wxString &path) : file_path(path)
     }
 
     GetParts(stream, parts);
+
+    partsTree = GetPartsTree(parts);
+}
+
+PartNode *Models::Model::GetPartsTree(std::list<ModelPart> &_parts)
+{
+    return nullptr;
 }
 
 
