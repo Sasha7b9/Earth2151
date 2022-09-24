@@ -2,6 +2,7 @@
 #include "defines.h"
 #include "Models/Model.h"
 #include "Utils/FileInputStream.h"
+#include "Models/Collections/MountPoints.h"
 
 
 Models::Model::Model(const wxString &path) : file_path(path)
@@ -15,6 +16,8 @@ Models::Model::Model(const wxString &path) : file_path(path)
     model_template = new ModelTemplate(stream);
 
     stream.ReadBytes(10);
+
+    mount_points = new MountPoints(stream);
 }
 
 

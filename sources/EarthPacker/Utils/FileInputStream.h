@@ -13,5 +13,6 @@ public:
     uint16 Read2Bytes();
     uint ReadUINT();
     uint ReadUINT(int offset);
+    float ReadFloat();
 private:
 };

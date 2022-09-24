@@ -2,3 +2,12 @@
 #include "defines.h"
 #include "Models/Elements/Vector.h"
 
+
+Vector::Vector(FileInputStream &stream)
+{
+    x = stream.ReadFloat();
+
+    y = -stream.ReadFloat();
+
+    z = stream.ReadFloat();
+}

@@ -3,6 +3,7 @@
 #include "Models/ModelPart.h"
 #include "Utils/FileInputStream.h"
 #include "Models/Elements/ModelTemplate.h"
+#include "Models/Collections/MountPoints.h"
 
 
 namespace Models
@@ -16,6 +17,7 @@ namespace Models
         std::list<ModelPart> parts;
         int type;
         ModelTemplate *model_template = nullptr;
+        MountPoints *mount_points = nullptr;
 
         void CheckHeader(FileInputStream &);
     };

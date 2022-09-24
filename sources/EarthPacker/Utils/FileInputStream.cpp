@@ -51,6 +51,18 @@ uint FileInputStream::ReadUINT()
 }
 
 
+float FileInputStream::ReadFloat()
+{
+    float result = 0.0f;
+
+    uint bytes = ReadUINT();
+
+    std::memcpy(&result, &bytes, 4);
+
+    return result;
+}
+
+
 uint16 FileInputStream::Read2Bytes()
 {
     uint16 result = 0;
