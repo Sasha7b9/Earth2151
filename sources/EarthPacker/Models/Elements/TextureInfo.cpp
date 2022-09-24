@@ -9,7 +9,7 @@ void TextureInfo::Create(FileInputStream &stream)
 
     wxMemoryBuffer buffer = stream.ReadBytes(fileNameLenght);
 
-    buffer.AppendByte(0);
+    ((char *)buffer.GetData())[buffer.GetBufSize()] = 0;
 
     file_name = (char *)buffer.GetData();
 

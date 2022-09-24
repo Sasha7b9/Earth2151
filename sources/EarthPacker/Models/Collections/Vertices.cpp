@@ -5,7 +5,7 @@
 
 void Vertices::Create(FileInputStream &stream)
 {
-//    int vertices = (int)stream.ReadUINT();
+    int vertices = (int)stream.ReadUINT();
     int blocks = (int)stream.ReadUINT();
 
     for (int i = 0; i < blocks; i++)
@@ -17,6 +17,8 @@ void Vertices::Create(FileInputStream &stream)
 
 void Vertices::GetVertices(const wxMemoryBuffer &buffer)
 {
+    uint8 *data = (uint8 *)buffer.GetData();
+
     for (int i = 0; i < VERTICES_IN_BLOCK; i++)
     {
         int idx = i * FIELD_SIZE;
