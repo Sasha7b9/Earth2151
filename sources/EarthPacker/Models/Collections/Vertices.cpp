@@ -3,4 +3,45 @@
 #include "Models/Collections/Vertices.h"
 
 
+void Vertices::Create(FileInputStream &stream)
+{
+//    int vertices = (int)stream.ReadUINT();
+    int blocks = (int)stream.ReadUINT();
 
+    for (int i = 0; i < blocks; i++)
+    {
+        GetVertices(stream.ReadBytes(VERTICES_BLOCK_LENGTH));
+    }
+}
+
+
+void Vertices::GetVertices(const wxMemoryBuffer &buffer)
+{
+    for (int i = 0; i < VERTICES_IN_BLOCK; i++)
+    {
+        int idx = i * FIELD_SIZE;
+
+        float x = TakeFloat((uint8 *)buffer.GetData() + idx + 0x00);
+        float y = -TakeFloat((uint8 *)buffer.GetData() + idx + 0x10);
+        float z = TakeFloat((uint8 *)buffer.GetData() + idx + 0x20);
+
+        float normalX = TakeFloat((uint8 *)buffer.GetData() + idx + 0x30);
+        float normalY = -TakeFloat((uint8 *)buffer.GetData() + idx + 0x40);
+        float normalZ = TakeFloat((uint8 *)buffer.GetData() + idx + 0x50);
+
+        float u = TakeFloat((uint8 *)buffer.GetData() + idx + 0x60);
+        float v = 1 - TakeFloat((uint8 *)buffer.GetData() + idx + 0x70);
+
+        push_back(Vertex(Vector(x, y, z), Vector(normalX, normalY, normalZ), u, v));
+    }
+}
+
+
+float Vertices::TakeFloat(void *buffer)
+{
+    float result = 0.0f;
+
+    std::memcpy(&result, buffer, 4);
+
+    return result;
+}

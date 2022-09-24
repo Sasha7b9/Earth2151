@@ -25,7 +25,7 @@ namespace Models
         uint16 unknown_val2 = 0;
         uint16 unknown_val3 = 0;
         uint16 unknown_val4 = 0;
-        uint16 unknown_val5 = 0;
+        uint   unknown_val5 = 0;
 
         void CheckHeader(FileInputStream &);
 

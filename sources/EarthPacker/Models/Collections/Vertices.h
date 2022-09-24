@@ -6,5 +6,11 @@
 class Vertices : public std::list<Vertex>
 {
 public:
+    void Create(FileInputStream &);
 private:
+    static const int VERTICES_BLOCK_LENGTH = 160;
+    static const int VERTICES_IN_BLOCK = 4;
+    static const int FIELD_SIZE = 4;
+    void GetVertices(const wxMemoryBuffer &);
+    float TakeFloat(void *);
 };

@@ -28,7 +28,7 @@ Models::Model::Model(const wxString &path) : file_path(path)
     unknown_val2 = stream.Read2Bytes();
     unknown_val3 = stream.Read2Bytes();
     unknown_val4 = stream.Read2Bytes();
-    unknown_val5 = stream.Read2Bytes();
+    unknown_val5 = stream.ReadUINT();
 
     if (type != 0)
     {

@@ -63,6 +63,12 @@ float FileInputStream::ReadFloat()
 }
 
 
+uint8 FileInputStream::ReadByte()
+{
+    return (uint8)GetC();
+}
+
+
 uint16 FileInputStream::Read2Bytes()
 {
     uint16 result = 0;

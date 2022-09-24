@@ -5,5 +5,9 @@
 
 Models::ModelPart::ModelPart(FileInputStream &stream)
 {
-
+    vertices.Create(stream);
+    skipParent = stream.ReadByte();
+    unknownFlag = stream.ReadByte();
+    stream.Read2Bytes();
+    texture.Create(stream);
 }

@@ -6,6 +6,7 @@
 class Vertex
 {
 public:
+
     Vertex(const Vector &position, const Vector &normal, float u, float v);
 
     Vector position;
