@@ -107,9 +107,7 @@ void Frame::OnFileActivated(wxTreeEvent &event)
         return;
     }
 
-    wxMemoryBuffer data(file.GetSize());
-
-    file.ReadAll(data.GetData(), file.GetSize());
+    wxMemoryBuffer data = file.ReadAll();
 
     uint dirLn = 0;
 

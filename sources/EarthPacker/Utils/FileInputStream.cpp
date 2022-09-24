@@ -7,3 +7,13 @@ FileInputStream::FileInputStream(const wxString &file_path) : wxFileInputStream(
 {
 
 }
+
+
+wxMemoryBuffer FileInputStream::ReadAll()
+{
+    wxMemoryBuffer result(GetSize());
+
+    wxFileInputStream::ReadAll(result.GetData(), GetSize());
+
+    return result;
+}

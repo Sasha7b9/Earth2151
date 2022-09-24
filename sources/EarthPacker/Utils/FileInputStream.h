@@ -6,5 +6,7 @@ class FileInputStream : public wxFileInputStream
 {
 public:
     FileInputStream(const wxString &file_path);
+
+    wxMemoryBuffer ReadAll();
 private:
 };
