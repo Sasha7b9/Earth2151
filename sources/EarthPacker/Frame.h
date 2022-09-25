@@ -2,6 +2,7 @@
 #pragma once
 #include "Controls/ControlDir.h"
 #include "Controls/NotebookLeft/NotebookLeft.h"
+#include "Controls/NotebookRight/NotebookRight.h"
 
 
 class Frame : public wxFrame
@@ -20,10 +21,10 @@ public:
 
 private:
 
-    wxToolBar    *toolBar = nullptr;
-    NotebookLeft *nbLeft = nullptr;
-    Notebook     *nbRight = nullptr;
-    ControlDir   *cntrlDir = nullptr;
+    wxToolBar     *toolBar = nullptr;
+    NotebookLeft  *nbLeft = nullptr;
+    NotebookRight *nbRight = nullptr;
+    ControlDir    *cntrlDir = nullptr;
 
     void OnViewBrief(wxCommandEvent &);
     void OnViewFull(wxCommandEvent &);

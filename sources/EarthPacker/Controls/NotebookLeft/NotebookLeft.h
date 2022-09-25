@@ -7,5 +7,4 @@ class NotebookLeft : public Notebook
 {
 public:
     NotebookLeft(wxWindow *);
-private:
 };
