@@ -82,6 +82,8 @@ Frame::Frame(const wxString &title)
 
     SetClientSize(1024, 600);
     wxWindowBase::SetMinClientSize({ 800, 300 });
+
+    Maximize();
 }
 
 
