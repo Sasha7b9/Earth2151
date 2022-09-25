@@ -66,7 +66,7 @@ Frame::Frame(const wxString &title)
 
     wxBoxSizer *sizer = new wxBoxSizer(wxHORIZONTAL);
 
-    nbLeft = new wxNotebook(this, wxID_ANY);
+    nbLeft = new Notebook(this);
 
     cntrlDir = new ControlDir(nbLeft);
 

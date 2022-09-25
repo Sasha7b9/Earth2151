@@ -5,5 +5,6 @@
 class Notebook : public wxNotebook
 {
 public:
+    Notebook(wxWindow *);
 private:
 };

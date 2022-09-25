@@ -21,8 +21,8 @@ public:
 private:
 
     wxToolBar  *toolBar = nullptr;
-    wxNotebook *nbLeft = nullptr;
-    wxNotebook *nbRight = nullptr;
+    Notebook   *nbLeft = nullptr;
+    Notebook   *nbRight = nullptr;
     ControlDir *cntrlDir = nullptr;
 
     void OnViewBrief(wxCommandEvent &);
