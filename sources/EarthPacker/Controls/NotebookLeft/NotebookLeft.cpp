@@ -2,3 +2,8 @@
 #include "defines.h"
 #include "Controls/NotebookLeft/NotebookLeft.h"
 
+
+NotebookLeft::NotebookLeft(wxWindow *parent) : Notebook(parent)
+{
+
+}
