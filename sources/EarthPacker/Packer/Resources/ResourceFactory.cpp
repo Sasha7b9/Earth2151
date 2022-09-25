@@ -18,90 +18,91 @@ namespace Packer
         static ResourceInfo GetResourceInfo(wxInputStream &);
 
         static std::vector<uint8> GetBytes(wxInputStream &, int);
-
-        Resource ResourceFactory::Create(wxInputStream &stream)
-        {
-            auto name = GetName(stream);
-
-            uint8 type = 0;
-
-            stream.Read(&type, 1);
-
-            switch (type)
-            {
-            case 0:
-                return Resource(name, GetResourceInfo(stream));
-
-            case 1:     // generic data
-                return Resource(name, GetResourceInfo(stream));
-
-            case 3:     //player
-                return Resource(name, GetResourceInfo(stream));
-
-            case 5:     //text
-                return Resource(name, GetResourceInfo(stream));
-
-            case 9:     //interface?
-            {
-                ResourceInfo info = GetResourceInfo(stream);
-                auto name_resouce = GetName(stream);
-                return Interface(name, info, name_resouce);
-            }
-
-            case 17:    //dialog
-                return Resource(name, GetResourceInfo(stream));
-
-            case 25:    //interface?
-                return Resource(name, GetResourceInfo(stream));
-
-            case 33:
-            {
-                ResourceInfo info = GetResourceInfo(stream);
-                auto data = GetBytes(stream, 16);
-                return Mesh(name, info, &data);
-            }
-
-            case 43:    //level?
-            {
-                ResourceInfo info = GetResourceInfo(stream);
-                auto name_resource = GetName(stream);
-                auto data = GetBytes(stream, 16);
-                return Level(name, info, name_resource, &data);
-            }
-
-            case 49:    // mesh
-            {
-                ResourceInfo info = GetResourceInfo(stream);
-                auto data = GetBytes(stream, 20);
-                return Mesh(name, info, &data);
-            }
-
-            case 57:
-            {
-                ResourceInfo info = GetResourceInfo(stream);
-                auto name_resource = GetName(stream);
-                auto data = GetBytes(stream, 20);
-                return Terrain(name, info, name_resource, &data);
-            }
-
-            case 59:    //level
-            {
-                ResourceInfo info = GetResourceInfo(stream);
-                auto name_resource = GetName(stream);
-                auto data = GetBytes(stream, 20);
-                return Level(name, info, name_resource, &data);
-            }
-
-            case 255:   //group
-            {
-                auto data = GetBytes(stream, 3);
-                return Group(name, ResourceInfo(), &data);
-            }
-            }
-
-            return Resource(name, GetResourceInfo(stream));
-        }
     }
+}
+
+
+Packer::Resource Packer::ResourceFactory::Create(wxInputStream &stream)
+{
+    auto name = GetName(stream);
+
+    uint8 type = 0;
+
+    stream.Read(&type, 1);
+
+    switch (type)
+    {
+    case 0:
+        return Resource(name, GetResourceInfo(stream));
+
+    case 1:     // generic data
+        return Resource(name, GetResourceInfo(stream));
+
+    case 3:     //player
+        return Resource(name, GetResourceInfo(stream));
+
+    case 5:     //text
+        return Resource(name, GetResourceInfo(stream));
+
+    case 9:     //interface?
+    {
+        ResourceInfo info = GetResourceInfo(stream);
+        auto name_resouce = GetName(stream);
+        return Interface(name, info, name_resouce);
+    }
+
+    case 17:    //dialog
+        return Resource(name, GetResourceInfo(stream));
+
+    case 25:    //interface?
+        return Resource(name, GetResourceInfo(stream));
+
+    case 33:
+    {
+        ResourceInfo info = GetResourceInfo(stream);
+        auto data = GetBytes(stream, 16);
+        return Mesh(name, info, &data);
+    }
+
+    case 43:    //level?
+    {
+        ResourceInfo info = GetResourceInfo(stream);
+        auto name_resource = GetName(stream);
+        auto data = GetBytes(stream, 16);
+        return Level(name, info, name_resource, &data);
+    }
+
+    case 49:    // mesh
+    {
+        ResourceInfo info = GetResourceInfo(stream);
+        auto data = GetBytes(stream, 20);
+        return Mesh(name, info, &data);
+    }
+
+    case 57:
+    {
+        ResourceInfo info = GetResourceInfo(stream);
+        auto name_resource = GetName(stream);
+        auto data = GetBytes(stream, 20);
+        return Terrain(name, info, name_resource, &data);
+    }
+
+    case 59:    //level
+    {
+        ResourceInfo info = GetResourceInfo(stream);
+        auto name_resource = GetName(stream);
+        auto data = GetBytes(stream, 20);
+        return Level(name, info, name_resource, &data);
+    }
+
+    case 255:   //group
+    {
+        auto data = GetBytes(stream, 3);
+        return Group(name, ResourceInfo(), &data);
+    }
+    }
+
+    return Resource(name, GetResourceInfo(stream));
 }
 
 
