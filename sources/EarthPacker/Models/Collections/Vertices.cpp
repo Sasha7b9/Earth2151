@@ -23,16 +23,16 @@ void Vertices::GetVertices(const wxMemoryBuffer &buffer)
     {
         int idx = i * FIELD_SIZE;
 
-        float x = TakeFloat((uint8 *)buffer.GetData() + idx + 0x00);
-        float y = -TakeFloat((uint8 *)buffer.GetData() + idx + 0x10);
-        float z = TakeFloat((uint8 *)buffer.GetData() + idx + 0x20);
+        float x = TakeFloat(data + idx + 0x00);
+        float y = -TakeFloat(data + idx + 0x10);
+        float z = TakeFloat(data + idx + 0x20);
 
-        float normalX = TakeFloat((uint8 *)buffer.GetData() + idx + 0x30);
-        float normalY = -TakeFloat((uint8 *)buffer.GetData() + idx + 0x40);
-        float normalZ = TakeFloat((uint8 *)buffer.GetData() + idx + 0x50);
+        float normalX = TakeFloat(data + idx + 0x30);
+        float normalY = -TakeFloat(data + idx + 0x40);
+        float normalZ = TakeFloat(data + idx + 0x50);
 
-        float u = TakeFloat((uint8 *)buffer.GetData() + idx + 0x60);
-        float v = 1 - TakeFloat((uint8 *)buffer.GetData() + idx + 0x70);
+        float u = TakeFloat(data + idx + 0x60);
+        float v = 1 - TakeFloat(data + idx + 0x70);
 
         push_back(Vertex(Vector(x, y, z), Vector(normalX, normalY, normalZ), u, v));
     }
