@@ -1,6 +1,7 @@
 // 2022/04/29 13:56:55 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
 #include "Controls/ControlDir.h"
+#include "Controls/Notebook.h"
 
 
 class Frame : public wxFrame
@@ -19,9 +20,9 @@ public:
 
 private:
 
-    wxToolBar *toolBar = nullptr;
-    wxNotebook *notebookLeft = nullptr;
-    wxNotebook *notebookRight = nullptr;
+    wxToolBar  *toolBar = nullptr;
+    wxNotebook *nbLeft = nullptr;
+    wxNotebook *nbRight = nullptr;
     ControlDir *cntrlDir = nullptr;
 
     void OnViewBrief(wxCommandEvent &);

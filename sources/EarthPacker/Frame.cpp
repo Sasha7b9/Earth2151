@@ -66,15 +66,15 @@ Frame::Frame(const wxString &title)
 
     wxBoxSizer *sizer = new wxBoxSizer(wxHORIZONTAL);
 
-    notebookLeft = new wxNotebook(this, wxID_ANY);
+    nbLeft = new wxNotebook(this, wxID_ANY);
 
-    cntrlDir = new ControlDir(notebookLeft);
+    cntrlDir = new ControlDir(nbLeft);
 
     Bind(wxEVT_DIRCTRL_FILEACTIVATED, &Frame::OnFileActivated, this);
 
-    notebookLeft->AddPage(cntrlDir, "Directory");
+    nbLeft->AddPage(cntrlDir, "Directory");
 
-    sizer->Add(notebookLeft);
+    sizer->Add(nbLeft);
 
     sizer->Add(new Canvas(this));
 
@@ -83,7 +83,7 @@ Frame::Frame(const wxString &title)
     SetClientSize(1024, 600);
     wxWindowBase::SetMinClientSize({ 800, 300 });
 
-    Maximize();
+    wxTopLevelWindowMSW::Maximize();
 }
 
 
@@ -191,6 +191,8 @@ void Frame::OnFileActivated(wxTreeEvent &event)
             }
         }
     }
+
+    delete dirdesc;
 }
 
 
