@@ -12,4 +12,6 @@ ControlDir::ControlDir(wxWindow *parent) : wxGenericDirCtrl(parent)
 
     wxWindowBase::SetMinClientSize({ 200, 100 });
     SetClientSize({ 200, 100 });
+
+    ExpandPath("C:/Temp");
 }
