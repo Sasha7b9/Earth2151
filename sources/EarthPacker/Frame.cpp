@@ -67,6 +67,7 @@ Frame::Frame(const wxString &title)
 
     cntrlDir = new ControlDir(nbLeft);
 
+    Bind(wxEVT_DIRCTRL_SELECTIONCHANGED, &Frame::OnFileSelected, this);
     Bind(wxEVT_DIRCTRL_FILEACTIVATED, &Frame::OnFileActivated, this);
 
     nbLeft->AddPage(cntrlDir, "Directory");
@@ -91,6 +92,12 @@ void Frame::AddTool(int id, const wxString &label, pchar nameResource, pchar nam
     wxBitmap bitmapDisabled(nameResourceDisabled ? wxBitmap(nameResourceDisabled, wxBITMAP_TYPE_BMP_RESOURCE) : bitmap);
 
     toolBar->AddTool(id, label, bitmap, bitmapDisabled, wxITEM_NORMAL, label, label);
+}
+
+
+void Frame::OnFileSelected(wxTreeEvent &event)
+{
+    cntrlDir->GetPath(event.GetItem());
 }
 
 

@@ -27,6 +27,7 @@ private:
     ControlDir    *cntrlDir = nullptr;
 
     void OnFileActivated(wxTreeEvent &);
+    void OnFileSelected(wxTreeEvent &);
 
     void AddTool(int id, const wxString &label, pchar nameResource, pchar nameResourceDisabled = nullptr);
 
