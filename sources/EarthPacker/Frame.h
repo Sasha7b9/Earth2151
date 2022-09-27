@@ -32,6 +32,4 @@ private:
     void AddTool(int id, const wxString &label, pchar nameResource, pchar nameResourceDisabled = nullptr);
 
     void OnClose();
-
-    bool IsValidWDFile(wxFileInputStream &);
 };

@@ -3,6 +3,7 @@
 #include "Models/Model.h"
 #include "Utils/FileInputStream.h"
 #include "Models/Collections/MountPoints.h"
+#include "Packer/Resources/Mesh.h"
 
 
 Models::Model::Model(const wxString &path) : file_path(path)
