@@ -45,7 +45,7 @@ if(WIN32)
             if(${cxx_flag_var} MATCHES ${MSVC_LIB_REPLACE})
                 string(REPLACE ${MSVC_LIB_REPLACE} ${MSVC_LIB_USE} ${cxx_flag_var} "${${cxx_flag_var}}")
                 set(${cxx_flag_var} ${${cxx_flag_var}} CACHE STRING
-                "Flags used by the CXX compiler during ${cfg_upper} builds." FORCE)
+                "Flags used by the CXX compiler durin ${cfg_upper} builds." FORCE)
             endif()
         endforeach()
     endif()
