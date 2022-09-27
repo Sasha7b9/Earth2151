@@ -59,9 +59,6 @@ Frame::Frame(const wxString &title)
     Bind(wxEVT_MENU, &Frame::OnQuit, this, wxID_EXIT);
     Bind(wxEVT_CLOSE_WINDOW, &Frame::OnCloseWindow, this);
 
-    Bind(wxEVT_MENU, &Frame::OnViewBrief, this, TOOL_VIEW_BRIEF);
-    Bind(wxEVT_MENU, &Frame::OnViewFull, this, TOOL_VIEW_FULL);
-
     Bind(wxEVT_SIZE, &Frame::OnSize, this);
 
     wxBoxSizer *sizer = new wxBoxSizer(wxHORIZONTAL);
@@ -206,48 +203,6 @@ bool Frame::IsValidWDFile(wxFileInputStream &stream)
     zstream.Read(buffer, 8);
 
     return std::memcmp(buffer, template_buffer, 8) == 0;
-}
-
-
-void Frame::OnViewBrief(wxCommandEvent &)
-{
-
-}
-
-
-void Frame::OnViewFull(wxCommandEvent &)
-{
-
-}
-
-
-void Frame::OnMeasurePressure(wxCommandEvent &)
-{
-
-}
-
-
-void Frame::OnMeasureIllumination(wxCommandEvent &)
-{
-
-}
-
-
-void Frame::OnMeasureHumidity(wxCommandEvent &)
-{
-
-}
-
-
-void Frame::OnMeasureVelocity(wxCommandEvent &)
-{
-
-}
-
-
-void Frame::OnMeasureTemperature(wxCommandEvent &)
-{
-
 }
 
 
