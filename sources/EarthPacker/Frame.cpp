@@ -3,7 +3,6 @@
 #include "Frame.h"
 #include "Controls/Canvas.h"
 #include "Utils/FileInputStream.h"
-#include "Packer/Packer.h"
 
 
 Frame *Frame::self = nullptr;
@@ -61,13 +60,6 @@ Frame::Frame(const wxString &title)
 
     nbLeft = new NotebookLeft(this);
 
-    cntrlDir = new ControlDir(nbLeft);
-
-    Bind(wxEVT_DIRCTRL_SELECTIONCHANGED, &Frame::OnFileSelected, this);
-    Bind(wxEVT_DIRCTRL_FILEACTIVATED, &Frame::OnFileActivated, this);
-
-    nbLeft->AddPage(cntrlDir, "Directory");
-
     sizer->Add(nbLeft);
 
     sizer->Add(new Canvas(this));
@@ -88,18 +80,6 @@ void Frame::AddTool(int id, const wxString &label, pchar nameResource, pchar nam
     wxBitmap bitmapDisabled(nameResourceDisabled ? wxBitmap(nameResourceDisabled, wxBITMAP_TYPE_BMP_RESOURCE) : bitmap);
 
     toolBar->AddTool(id, label, bitmap, bitmapDisabled, wxITEM_NORMAL, label, label);
-}
-
-
-void Frame::OnFileSelected(wxTreeEvent &event)
-{
-    cntrlDir->GetPath(event.GetItem());
-}
-
-
-void Frame::OnFileActivated(wxTreeEvent &event)
-{
-    Packer::ProcessFile(cntrlDir->GetPath(event.GetItem()));
 }
 
 
