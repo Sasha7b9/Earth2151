@@ -2,13 +2,13 @@
 #pragma once
 
 
-class ControlDir : public wxGenericDirCtrl
+class PageDirectory : public wxGenericDirCtrl
 {
 public:
 
-    ControlDir(wxWindow *);
+    PageDirectory(wxWindow *);
 
-    static ControlDir *self;
+    static PageDirectory *self;
 
 private:
 };

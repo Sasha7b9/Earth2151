@@ -10,7 +10,7 @@ public:
     NotebookLeft(wxWindow *);
 
 private:
-    ControlDir *cntrlDir = nullptr;
+    PageDirectory *pageDirectory = nullptr;
 
     void OnFileActivated(wxTreeEvent &);
     void OnFileSelected(wxTreeEvent &);

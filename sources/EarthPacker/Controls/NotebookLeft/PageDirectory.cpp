@@ -3,10 +3,10 @@
 #include "Controls/NotebookLeft/PageDirectory.h"
 
 
-ControlDir *ControlDir::self = nullptr;
+PageDirectory *PageDirectory::self = nullptr;
 
 
-ControlDir::ControlDir(wxWindow *parent) : wxGenericDirCtrl(parent)
+PageDirectory::PageDirectory(wxWindow *parent) : wxGenericDirCtrl(parent)
 {
     self = this;
 

@@ -6,9 +6,9 @@
 
 NotebookLeft::NotebookLeft(wxWindow *parent) : Notebook(parent)
 {
-    cntrlDir = new ControlDir(this);
+    pageDirectory = new PageDirectory(this);
 
-    AddPage(cntrlDir, "Directory");
+    AddPage(pageDirectory, "Directory");
 
     Bind(wxEVT_DIRCTRL_SELECTIONCHANGED, &NotebookLeft::OnFileSelected, this);
     Bind(wxEVT_DIRCTRL_FILEACTIVATED, &NotebookLeft::OnFileActivated, this);
@@ -17,11 +17,11 @@ NotebookLeft::NotebookLeft(wxWindow *parent) : Notebook(parent)
 
 void NotebookLeft::OnFileSelected(wxTreeEvent &event)
 {
-    cntrlDir->GetPath(event.GetItem());
+    pageDirectory->GetPath(event.GetItem());
 }
 
 
 void NotebookLeft::OnFileActivated(wxTreeEvent &event)
 {
-    Packer::ProcessFile(cntrlDir->GetPath(event.GetItem()));
+    Packer::ProcessFile(pageDirectory->GetPath(event.GetItem()));
 }

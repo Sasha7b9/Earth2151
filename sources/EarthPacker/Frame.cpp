@@ -128,13 +128,13 @@ void Frame::OnAbout(wxCommandEvent &WXUNUSED(event))
 
 void Frame::OnSize(wxSizeEvent &event)
 {
-    Canvas::self->SetSizeArea(GetClientRect().width - ControlDir::self->GetSize().x, GetClientRect().height);
+    Canvas::self->SetSizeArea(GetClientRect().width - PageDirectory::self->GetSize().x, GetClientRect().height);
 
-    wxSize size = { ControlDir::self->GetSize().GetWidth(), GetClientRect().height };
+    wxSize size = { PageDirectory::self->GetSize().GetWidth(), GetClientRect().height };
 
-    ControlDir::self->SetMinClientSize(size);
-    ControlDir::self->SetClientSize(size);
-    ControlDir::self->SetSize(size);
+    PageDirectory::self->SetMinClientSize(size);
+    PageDirectory::self->SetClientSize(size);
+    PageDirectory::self->SetSize(size);
 
     event.Skip();
 }
