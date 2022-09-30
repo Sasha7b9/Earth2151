@@ -10,7 +10,6 @@ public:
     NotebookLeft(wxWindow *);
 
 private:
-    PageDirectory *pageDirectory = nullptr;
 
     void OnFileActivated(wxTreeEvent &);
     void OnFileSelected(wxTreeEvent &);
