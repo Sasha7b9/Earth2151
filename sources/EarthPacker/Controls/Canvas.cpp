@@ -22,11 +22,7 @@ void Canvas::OnPaint(wxPaintEvent &)
 {
     BeginScene(*wxWHITE_BRUSH, wxPen(wxColor(0, 0, 0)));
 
-    memDC->DrawRectangle(GetClientRect());
-
-    memDC->SetPen(wxPen(wxColor(0, 0, 0)));
-
-    memDC->DrawText("Тестовая строка", 1, 0);
+    DrawText(1, 0, "Тестовая строка");
 
     EndScene();
 }
@@ -39,8 +35,17 @@ void Canvas::BeginScene(const wxBrush &brush, const wxPen &pen)
 
     memDC->SelectObject(*bitmap);
 
-    memDC->SetBrush(brush);
-    memDC->SetPen(pen);
+    SetBrush(brush);
+
+    SetPen(pen);
+
+    memDC->GradientFillLinear(GetClientRect(), brush.GetColour(), brush.GetColour());
+}
+
+
+void Canvas::DrawText(int x, int y, const wxString &text)
+{
+    memDC->DrawText(text, x, y);
 }
 
 
@@ -59,7 +64,13 @@ void Canvas::EndScene()
 
 void Canvas::SetBrush(const wxBrush &brush)
 {
+    memDC->SetBrush(brush);
+}
 
+
+void Canvas::SetPen(const wxPen &pen)
+{
+    memDC->SetPen(pen);
 }
 
 

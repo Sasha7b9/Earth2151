@@ -21,6 +21,10 @@ protected:
 
     void SetBrush(const wxBrush &);
 
+    void SetPen(const wxPen &);
+
+    void DrawText(int, int, const wxString &);
+
     void EndScene();
 
 private:
