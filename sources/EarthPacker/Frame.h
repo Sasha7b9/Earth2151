@@ -22,7 +22,6 @@ public:
 private:
 
     wxToolBar     *toolBar = nullptr;
-    NotebookLeft  *nbLeft = nullptr;
     NotebookRight *nbRight = nullptr;
 
     void AddTool(int id, const wxString &label, pchar nameResource, pchar nameResourceDisabled = nullptr);

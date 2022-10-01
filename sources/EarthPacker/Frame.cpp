@@ -58,9 +58,7 @@ Frame::Frame(const wxString &title)
 
     wxBoxSizer *sizer = new wxBoxSizer(wxHORIZONTAL);
 
-    nbLeft = new NotebookLeft(this);
-
-    sizer->Add(nbLeft);
+    sizer->Add(new NotebookLeft(this));
 
     sizer->Add(new Canvas(this));
 
