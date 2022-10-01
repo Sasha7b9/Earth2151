@@ -1,6 +1,6 @@
 // 2022/09/23 13:48:54 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
-#include "Controls/NotebookLeft/PageDirectory.h"
+#include "Controls/Notebook/NotebookLeft/PageDirectory.h"
 #include "Packer/Packer.h"
 
 

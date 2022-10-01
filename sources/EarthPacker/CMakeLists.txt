@@ -66,8 +66,9 @@ endif()
 
 file(GLOB SRC                       *.h *.cpp)
 file(GLOB CONTROLS                  Controls/*.*)
-file(GLOB CONTROLS_NB_LEFT          Controls/NotebookLeft/*.*)
-file(GLOB CONTROLS_NB_RIGHT         Controls/NotebookRight/*.*)
+file(GLOB CONTROLS_NB               Controls/Notebook/*.*)
+file(GLOB CONTROLS_NB_LEFT          Controls/Notebook/NotebookLeft/*.*)
+file(GLOB CONTROLS_NB_RIGHT         Controls/Notebook/NotebookRight/*.*)
 file(GLOB MODELS                    Models/*.*)
 file(GLOB MODELS_COLLECTIONS        Models/Collections/*.*)
 file(GLOB MODELS_ELEMENTS           Models/Elements/*.*)
@@ -75,20 +76,22 @@ file(GLOB PACKER                    Packer/*.*)
 file(GLOB PACKER_RESOURCES          Packer/Resources/*.*)
 file(GLOB UTILS                     Utils/*.*)
 
-source_group(src                    FILES ${SRC})
-source_group(Controls               FILES ${CONTROLS})
-source_group(Controls/NotebookLeft  FILES ${CONTROLS_NB_LEFT})
-source_group(Controls/NotebookRight FILES ${CONTROLS_NB_RIGHT})
-source_group(Models                 FILES ${MODELS})
-source_group(Models/Collections     FILES ${MODELS_COLLECTIONS})
-source_group(Models/Elements        FILES ${MODELS_ELEMENTS})
-source_group(Packer                 FILES ${PACKER})
-source_group(Packer/Resources       FILES ${PACKER_RESOURCES})
-source_group(Utils                  FILES ${UTILS})
+source_group(src                             FILES ${SRC})
+source_group(Controls                        FILES ${CONTROLS})
+source_group(Controls/Notebook               FILES ${CONTROLS_NB})
+source_group(Controls/Notebook/NotebookLeft  FILES ${CONTROLS_NB_LEFT})
+source_group(Controls/Notebook/NotebookRight FILES ${CONTROLS_NB_RIGHT})
+source_group(Models                          FILES ${MODELS})
+source_group(Models/Collections              FILES ${MODELS_COLLECTIONS})
+source_group(Models/Elements                 FILES ${MODELS_ELEMENTS})
+source_group(Packer                          FILES ${PACKER})
+source_group(Packer/Resources                FILES ${PACKER_RESOURCES})
+source_group(Utils                           FILES ${UTILS})
 
 add_executable( ${PROJECT_NAME}
                 ${SRC}
                 ${CONTROLS}
+                ${CONTROLS_NB}
                 ${CONTROLS_NB_LEFT}
                 ${CONTROLS_NB_RIGHT}
                 ${MODELS}

@@ -2,10 +2,10 @@
 #include "defines.h"
 #include "Frame.h"
 #include "Utils/FileInputStream.h"
-#include "Controls/NotebookLeft/NotebookLeft.h"
-#include "Controls/NotebookRight/NotebookRight.h"
+#include "Controls/Notebook/NotebookLeft/NotebookLeft.h"
+#include "Controls/Notebook/NotebookRight/NotebookRight.h"
 #include "Controls/Canvas.h"
-#include "Controls/NotebookLeft/PageDirectory.h"
+#include "Controls/Notebook/NotebookLeft/PageDirectory.h"
 
 
 Frame *Frame::self = nullptr;
