@@ -1,8 +1,5 @@
 // 2022/04/29 13:56:55 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
-#include "Controls/NotebookLeft/PageDirectory.h"
-#include "Controls/NotebookLeft/NotebookLeft.h"
-#include "Controls/NotebookRight/NotebookRight.h"
 
 
 class Frame : public wxFrame
@@ -22,7 +19,6 @@ public:
 private:
 
     wxToolBar     *toolBar = nullptr;
-    NotebookRight *nbRight = nullptr;
 
     void AddTool(int id, const wxString &label, pchar nameResource, pchar nameResourceDisabled = nullptr);
 

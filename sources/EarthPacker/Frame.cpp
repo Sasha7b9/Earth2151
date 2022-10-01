@@ -1,8 +1,11 @@
 // 2022/04/29 13:56:48 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Frame.h"
-#include "Controls/Canvas.h"
 #include "Utils/FileInputStream.h"
+#include "Controls/NotebookLeft/NotebookLeft.h"
+#include "Controls/NotebookRight/NotebookRight.h"
+#include "Controls/Canvas.h"
+#include "Controls/NotebookLeft/PageDirectory.h"
 
 
 Frame *Frame::self = nullptr;
@@ -60,7 +63,7 @@ Frame::Frame(const wxString &title)
 
     sizer->Add(new NotebookLeft(this));
 
-    sizer->Add(new Canvas(this));
+    sizer->Add(new NotebookRight(this));
 
     SetSizer(sizer);
 
