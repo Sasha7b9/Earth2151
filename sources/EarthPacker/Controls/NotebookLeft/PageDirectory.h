@@ -11,4 +11,7 @@ public:
     static PageDirectory *self;
 
 private:
+
+    void OnFileActivated(wxTreeEvent &);
+    void OnFileSelected(wxTreeEvent &);
 };
