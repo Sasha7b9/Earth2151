@@ -10,3 +10,9 @@ PageInfo::PageInfo(wxWindow *parent) : Canvas(parent)
 {
     self = this;
 }
+
+
+void PageInfo::OnPaintEvent(wxPaintEvent &)
+{
+//    SetBrush(*wxWHITE_BRUSH);
+}

@@ -11,4 +11,5 @@ public:
     static PageInfo *self;
 
 private:
+    void OnPaintEvent(wxPaintEvent &);
 };

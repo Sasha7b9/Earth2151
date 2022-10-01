@@ -15,7 +15,18 @@ public:
 
     static Canvas *self;
 
+protected:
+
+    void BeginScene(const wxBrush &, const wxPen &);
+
+    void SetBrush(const wxBrush &);
+
+    void EndScene();
+
 private:
+
+    wxBitmap *bitmap;
+    wxMemoryDC *memDC;
 
     void OnPaint(wxPaintEvent &);
 

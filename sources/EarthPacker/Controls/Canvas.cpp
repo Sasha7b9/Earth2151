@@ -20,27 +20,46 @@ Canvas::Canvas(wxWindow *parent) : wxPanel(parent, wxID_ANY)
 
 void Canvas::OnPaint(wxPaintEvent &)
 {
-    wxBitmap bitmap(GetClientSize());
-    wxMemoryDC memDC;
+    BeginScene(*wxWHITE_BRUSH, wxPen(wxColor(0, 0, 0)));
 
-    memDC.SelectObject(bitmap);
+    memDC->DrawRectangle(GetClientRect());
 
-    memDC.SetBrush(*wxWHITE_BRUSH);
-    memDC.SetPen(wxPen(wxColor(0, 0, 0)));
+    memDC->SetPen(wxPen(wxColor(0, 0, 0)));
 
-    memDC.DrawRectangle(GetClientRect());
+    memDC->DrawText("Тестовая строка", 1, 0);
 
-    memDC.SetPen(wxPen(wxColor(0, 0, 0)));
-
-    memDC.DrawText("Тестовая строка", 1, 0);
-
-    memDC.SelectObject(wxNullBitmap);
+    memDC->SelectObject(wxNullBitmap);
 
     wxPaintDC dc(this);
 
-    dc.DrawBitmap(bitmap, 0, 0);
+    dc.DrawBitmap(*bitmap, 0, 0);
 
-    Update();
+    delete memDC;
+    delete bitmap;
+}
+
+
+void Canvas::BeginScene(const wxBrush &brush, const wxPen &pen)
+{
+    bitmap = new wxBitmap(GetClientSize());
+    memDC = new wxMemoryDC();
+
+    memDC->SelectObject(*bitmap);
+
+    memDC->SetBrush(brush);
+    memDC->SetPen(pen);
+}
+
+
+void Canvas::EndScene()
+{
+
+}
+
+
+void Canvas::SetBrush(const wxBrush &brush)
+{
+
 }
 
 
