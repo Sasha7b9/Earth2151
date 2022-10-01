@@ -7,3 +7,16 @@ Notebook::Notebook(wxWindow *parent) : wxNotebook(parent, wxID_ANY)
 {
 
 }
+
+
+void Notebook::SetSizeRaw(const wxSize &size)
+{
+    int numpages = GetPageCount();
+
+    for (int i = 0; i < numpages; i++)
+    {
+        GetPage(i)->SetMinSize(size);
+        GetPage(i)->SetMaxSize(size);
+        GetPage(i)->SetSize(size);
+    }
+}

@@ -129,13 +129,9 @@ void Frame::OnAbout(wxCommandEvent &WXUNUSED(event))
 
 void Frame::OnSize(wxSizeEvent &event)
 {
-    Canvas::self->SetSizeArea(GetClientRect().width - PageDirectory::self->GetSize().x, GetClientRect().height);
+    NotebookRight::self->SetSizeRaw({ GetClientRect().width - NotebookLeft::self->GetSize().x, GetClientRect().height });
 
-    wxSize size = { PageDirectory::self->GetSize().GetWidth(), GetClientRect().height };
-
-    PageDirectory::self->SetMinClientSize(size);
-    PageDirectory::self->SetClientSize(size);
-    PageDirectory::self->SetSize(size);
+    NotebookLeft::self->SetSizeRaw({ PageDirectory::self->GetSize().GetWidth(), GetClientRect().height });
 
     event.Skip();
 }

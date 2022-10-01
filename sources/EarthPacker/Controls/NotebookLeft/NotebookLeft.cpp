@@ -4,7 +4,12 @@
 #include "Controls/NotebookLeft/PageDirectory.h"
 
 
+NotebookLeft *NotebookLeft::self = nullptr;
+
+
 NotebookLeft::NotebookLeft(wxWindow *parent) : Notebook(parent)
 {
+    self = this;
+
     AddPage(new PageDirectory(this), "Directory");
 }

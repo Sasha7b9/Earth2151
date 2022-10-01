@@ -4,7 +4,12 @@
 #include "Controls/Canvas.h"
 
 
+NotebookRight *NotebookRight::self = nullptr;
+
+
 NotebookRight::NotebookRight(wxWindow *parent) : Notebook(parent)
 {
+    self = this;
+
     AddPage(new Canvas(this), "Info");
 }

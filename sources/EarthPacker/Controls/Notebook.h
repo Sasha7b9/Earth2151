@@ -6,5 +6,7 @@ class Notebook : public wxNotebook
 {
 public:
     Notebook(wxWindow *);
+
+    void SetSizeRaw(const wxSize &);
 private:
 };

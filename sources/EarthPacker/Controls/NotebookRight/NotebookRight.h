@@ -7,4 +7,6 @@ class NotebookRight : public Notebook
 {
 public:
     NotebookRight(wxWindow *);
+
+    static NotebookRight *self;
 };
