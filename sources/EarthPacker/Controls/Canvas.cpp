@@ -28,14 +28,7 @@ void Canvas::OnPaint(wxPaintEvent &)
 
     memDC->DrawText("Тестовая строка", 1, 0);
 
-    memDC->SelectObject(wxNullBitmap);
-
-    wxPaintDC dc(this);
-
-    dc.DrawBitmap(*bitmap, 0, 0);
-
-    delete memDC;
-    delete bitmap;
+    EndScene();
 }
 
 
@@ -53,7 +46,14 @@ void Canvas::BeginScene(const wxBrush &brush, const wxPen &pen)
 
 void Canvas::EndScene()
 {
+    memDC->SelectObject(wxNullBitmap);
 
+    wxPaintDC dc(this);
+
+    dc.DrawBitmap(*bitmap, 0, 0);
+
+    delete memDC;
+    delete bitmap;
 }
 
 
