@@ -15,16 +15,9 @@ public:
 
     static Canvas *self;
 
-    void SetSizeArea(int, int);
-
 private:
 
     void OnPaint(wxPaintEvent &);
-
-    // Нарисовать измерения со всех датчиков
-    void DrawAllSensors(wxMemoryDC &);
-
-    void DrawTimeScale(wxMemoryDC &);
 
     void DrawTextOnBackground(wxMemoryDC &, pchar, int x, int y, int width, int height);
 };

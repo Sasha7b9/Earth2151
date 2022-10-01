@@ -18,5 +18,6 @@ void Notebook::SetSizeRaw(const wxSize &size)
         GetPage(i)->SetMinSize(size);
         GetPage(i)->SetMaxSize(size);
         GetPage(i)->SetSize(size);
+        GetPage(i)->Refresh();
     }
 }

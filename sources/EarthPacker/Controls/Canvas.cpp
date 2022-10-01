@@ -30,10 +30,6 @@ void Canvas::OnPaint(wxPaintEvent &)
 
     memDC.DrawRectangle(GetClientRect());
 
-    DrawTimeScale(memDC);
-
-    DrawAllSensors(memDC);
-
     memDC.SetPen(wxPen(wxColor(0, 0, 0)));
 
     memDC.DrawText("Тестовая строка", 1, 0);
@@ -45,25 +41,6 @@ void Canvas::OnPaint(wxPaintEvent &)
     dc.DrawBitmap(bitmap, 0, 0);
 
     Update();
-}
-
-
-void Canvas::DrawTimeScale(wxMemoryDC &)
-{
-}
-
-
-void Canvas::SetSizeArea(int width, int height)
-{
-    SetMinClientSize({ width, height } );
-    SetClientSize({ width, height });
-
-    Refresh();
-}
-
-
-void Canvas::DrawAllSensors(wxMemoryDC &)
-{
 }
 
 
