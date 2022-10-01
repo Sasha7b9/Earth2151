@@ -9,10 +9,16 @@ PageInfo *PageInfo::self = nullptr;
 PageInfo::PageInfo(wxWindow *parent) : Canvas(parent)
 {
     self = this;
+
+    Bind(wxEVT_PAINT, &PageInfo::OnPaintEvent, this);
 }
 
 
 void PageInfo::OnPaintEvent(wxPaintEvent &)
 {
-//    SetBrush(*wxWHITE_BRUSH);
+    BeginScene(*wxWHITE_BRUSH, wxPen(wxColor(0, 0, 0)));
+
+    DrawText(1, 0, "Тестовая строка");
+
+    EndScene();
 }

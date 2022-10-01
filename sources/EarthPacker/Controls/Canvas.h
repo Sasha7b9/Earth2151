@@ -31,8 +31,4 @@ private:
 
     wxBitmap *bitmap;
     wxMemoryDC *memDC;
-
-    void OnPaint(wxPaintEvent &);
-
-    void DrawTextOnBackground(wxMemoryDC &, pchar, int x, int y, int width, int height);
 };

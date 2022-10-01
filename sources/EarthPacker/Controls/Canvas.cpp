@@ -12,19 +12,6 @@ Canvas::Canvas(wxWindow *parent) : wxPanel(parent, wxID_ANY)
     self = this;
 
     Bind(wxEVT_PAINT, &Canvas::OnPaint, this);
-
-    SetMinClientSize({ 100, 100 });
-    SetClientSize(100, 100);
-}
-
-
-void Canvas::OnPaint(wxPaintEvent &)
-{
-    BeginScene(*wxWHITE_BRUSH, wxPen(wxColor(0, 0, 0)));
-
-    DrawText(1, 0, "Тестовая строка");
-
-    EndScene();
 }
 
 
@@ -71,11 +58,4 @@ void Canvas::SetBrush(const wxBrush &brush)
 void Canvas::SetPen(const wxPen &pen)
 {
     memDC->SetPen(pen);
-}
-
-
-void Canvas::DrawTextOnBackground(wxMemoryDC &dc, pchar text, int x, int y, int width, int height)
-{
-    dc.DrawRectangle({ x, y }, { width, height });
-    dc.DrawText(text, { x + 1, y + 1 });
 }
