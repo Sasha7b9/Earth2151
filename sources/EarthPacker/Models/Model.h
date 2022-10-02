@@ -13,7 +13,7 @@ namespace Models
     class Model
     {
     public:
-        Model(const wxString &path);
+        Model(const wxFileName &file_name);
     private:
         std::list<ModelPart *> parts;
         int type;

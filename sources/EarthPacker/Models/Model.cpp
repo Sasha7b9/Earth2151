@@ -6,9 +6,9 @@
 #include "Packer/Resources/Mesh.h"
 
 
-Models::Model::Model(const wxString &path)
+Models::Model::Model(const wxFileName &file_name)
 {
-    FileInputStream stream(path);
+    FileInputStream stream(file_name.GetFullPath());
 
     CheckHeader(stream);
 

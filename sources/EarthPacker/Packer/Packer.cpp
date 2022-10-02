@@ -10,6 +10,8 @@
 namespace Packer
 {
     static bool IsValidWDFile(wxFileInputStream &);
+
+    static void CreateModel(const wxFileName &);
 }
 
 
@@ -19,7 +21,7 @@ void Packer::ProcessFile(const wxString &path)
 
     if (fileName.GetExt() == "msh")
     {
-        new Models::Model(fileName.GetFullPath());
+        CreateModel(fileName);
 
         return;
     }
@@ -106,6 +108,12 @@ void Packer::ProcessFile(const wxString &path)
 
         delete dirdesc;
     }
+}
+
+
+void Packer::CreateModel(const wxFileName &file_name)
+{
+    new Models::Model(file_name);
 }
 
 
