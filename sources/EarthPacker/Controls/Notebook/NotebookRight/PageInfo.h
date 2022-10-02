@@ -19,5 +19,7 @@ private:
 
     void OnPaintEvent(wxPaintEvent &);
 
+    void OnSizeEvent(wxSizeEvent &);
+
     void DrawDescription();
 };
