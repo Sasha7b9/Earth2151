@@ -68,7 +68,7 @@ bool Packer::UnpackFile(const wxFileName &file_name)
 
     dir_stream.CopyTo(_dir.GetData(), size_dir_stream);
 
-    auto dirdesc = new Packer::Directory(_dir);
+    Directory *dirdesc = new Packer::Directory(_dir);
 
     for each (auto desc in dirdesc->resources)
     {
@@ -164,7 +164,59 @@ void Packer::GetDescriptionFile(const wxString &path, DescriptionFile &descripti
 
 void Packer::GetDescriptionFileWD(const wxFileName &file_name, DescriptionFile &description)
 {
+    FileInputStream file(file_name.GetFullPath());
 
+    if (!IsValidWDFile(file))
+    {
+        description.AppendLine("Is not valid WD file");
+
+        return;
+    }
+
+    uint dir_len = file.ReadUINT(file.GetSize() - 4);
+
+    description.AppendLine(wxString::Format("dir_len = %d", dir_len));
+
+    wxMemoryBuffer dir_data = file.ReadBytes(file.GetSize() - dir_len, dir_len);
+
+    wxMemoryInputStream dirDataStream(dir_data.GetData(), dir_data.GetBufSize());
+
+    wxZlibInputStream zstream(dirDataStream);
+
+    wxMemoryOutputStream dir_stream;
+
+    zstream.Read(dir_stream);
+
+    size_t size_dir_stream = dir_stream.GetSize();
+
+    wxMemoryBuffer _dir(size_dir_stream);
+
+    dir_stream.CopyTo(_dir.GetData(), size_dir_stream);
+
+    Directory *dirdesc = new Packer::Directory(_dir);
+
+    for each (const Resource &resource in dirdesc->resources)
+    {
+        if (resource.file_name.empty())
+        {
+            description.AppendLine("Empty name resource");
+
+            continue;
+        }
+
+        wxMemoryBuffer data = file.ReadBytes(resource.info.offset, resource.info.length);
+
+        if (data.GetBufSize())
+        {
+            description.AppendLine(wxString::Format("%s %d %d", resource.file_name.c_str(), resource.info.length, resource.info.decompressedLength));
+        }
+        else
+        {
+            description.AppendLine("Empty buffer");
+        }
+    }
+
+    delete dirdesc;
 }
 
 

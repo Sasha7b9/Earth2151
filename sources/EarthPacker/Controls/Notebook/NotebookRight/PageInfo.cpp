@@ -28,7 +28,7 @@ void PageInfo::DrawDescription()
 {
     for (int i = 0; i < description.size(); i++)
     {
-        DrawText(1, i * 10, description[i]);
+        DrawText(1, i * 18, description[i]);
     }
 }
 
