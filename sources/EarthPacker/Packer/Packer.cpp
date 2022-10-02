@@ -197,6 +197,8 @@ void Packer::GetDescriptionFileWD(const wxFileName &file_name, DescriptionFile &
 
     int counter = 1;
 
+    description.AppendLine(wxString::Format("%d resources", dirdesc->resources.size()));
+
     for each (const Resource &resource in dirdesc->resources)
     {
         if (resource.file_name.empty())
