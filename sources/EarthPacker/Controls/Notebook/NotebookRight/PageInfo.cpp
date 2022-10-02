@@ -18,11 +18,26 @@ void PageInfo::OnPaintEvent(wxPaintEvent &)
 {
     BeginScene(*wxWHITE_BRUSH, wxPen(wxColor(0, 0, 0)));
 
+    DrawDescription();
+
     EndScene();
 }
 
 
-void PageInfo::SetDescriptionFile(const DescriptionFile &description)
+void PageInfo::DrawDescription()
 {
+    if (!description.IsValid())
+    {
+        DrawText(1, 0, "File is not supported");
 
+        return;
+    }
+}
+
+
+void PageInfo::SetDescriptionFile(const DescriptionFile &_description)
+{
+    description = _description;
+
+    Refresh();
 }

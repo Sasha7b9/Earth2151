@@ -15,5 +15,9 @@ public:
 
 private:
 
+    DescriptionFile description;
+
     void OnPaintEvent(wxPaintEvent &);
+
+    void DrawDescription();
 };
