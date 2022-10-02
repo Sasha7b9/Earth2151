@@ -2,6 +2,10 @@
 #pragma once
 
 
+/*
+*  Текстовое описание разбираемого файла
+*/
+
 class DescriptionFile : public std::vector<std::string>
 {
 public:

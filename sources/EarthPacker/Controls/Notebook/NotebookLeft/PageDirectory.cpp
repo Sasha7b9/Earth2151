@@ -25,16 +25,11 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event)
 {
     wxString path = GetPath(event.GetItem());
 
-    wxFileName fileName(path);
+    DescriptionFile description;
 
-    if (fileName.GetExt() == "msh")
-    {
-        PageInfo::self->SetTitle("Is mesh file");
-    }
-    else
-    {
-        PageInfo::self->SetTitle("Not supported file");
-    }
+    Packer::GetDescriptionFile(path, description);
+
+    PageInfo::self->SetDescriptionFile(description);
 }
 
 

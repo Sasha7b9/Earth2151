@@ -133,3 +133,8 @@ bool Packer::IsValidWDFile(wxFileInputStream &stream)
 
     return std::memcmp(buffer, template_buffer, 8) == 0;
 }
+
+
+void Packer::GetDescriptionFile(const wxString &path, DescriptionFile &description)
+{
+}
