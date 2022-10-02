@@ -40,7 +40,6 @@ void Packer::ProcessFile(const wxString &path)
 
     wxMemoryBuffer dirData = file.ReadBytes(file.GetSize() - dirLn, dirLn);
 
-
     wxMemoryInputStream dirDataStream(dirData.GetData(), dirData.GetBufSize());
 
     wxZlibInputStream zstream(dirDataStream);

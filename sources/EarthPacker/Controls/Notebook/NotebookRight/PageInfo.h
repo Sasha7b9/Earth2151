@@ -10,6 +10,11 @@ public:
 
     static PageInfo *self;
 
+    void SetTitle(const wxString &);
+
 private:
+
+    wxString title;
+
     void OnPaintEvent(wxPaintEvent &);
 };

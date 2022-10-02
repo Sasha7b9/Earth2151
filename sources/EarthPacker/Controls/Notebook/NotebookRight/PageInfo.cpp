@@ -18,7 +18,15 @@ void PageInfo::OnPaintEvent(wxPaintEvent &)
 {
     BeginScene(*wxWHITE_BRUSH, wxPen(wxColor(0, 0, 0)));
 
-    DrawText(1, 0, "Тестовая строка");
+    DrawText(1, 0, title);
 
     EndScene();
+}
+
+
+void PageInfo::SetTitle(const wxString &_title)
+{
+    title = _title;
+
+    Refresh();
 }

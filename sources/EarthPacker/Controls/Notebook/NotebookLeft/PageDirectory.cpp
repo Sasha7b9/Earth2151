@@ -2,6 +2,7 @@
 #include "defines.h"
 #include "Controls/Notebook/NotebookLeft/PageDirectory.h"
 #include "Packer/Packer.h"
+#include "Controls/Notebook/NotebookRight/PageInfo.h"
 
 
 PageDirectory *PageDirectory::self = nullptr;
@@ -22,7 +23,18 @@ PageDirectory::PageDirectory(wxWindow *parent) : wxGenericDirCtrl(parent)
 
 void PageDirectory::OnFileSelected(wxTreeEvent &event)
 {
-    GetPath(event.GetItem());
+    wxString path = GetPath(event.GetItem());
+
+    wxFileName fileName(path);
+
+    if (fileName.GetExt() == "msh")
+    {
+        PageInfo::self->SetTitle("Is mesh file");
+    }
+    else
+    {
+        PageInfo::self->SetTitle("Not supported file");
+    }
 }
 
 
