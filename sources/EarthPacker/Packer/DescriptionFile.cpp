@@ -7,3 +7,9 @@ bool DescriptionFile::IsValid() const
 {
     return false;
 }
+
+
+void DescriptionFile::AppendLine(pchar line)
+{
+    push_back(line);
+}

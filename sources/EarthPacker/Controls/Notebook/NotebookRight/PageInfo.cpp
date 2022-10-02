@@ -26,11 +26,9 @@ void PageInfo::OnPaintEvent(wxPaintEvent &)
 
 void PageInfo::DrawDescription()
 {
-    if (!description.IsValid())
+    for (int i = 0; i < description.size(); i++)
     {
-        DrawText(1, 0, "File is not supported");
-
-        return;
+        DrawText(1, i * 10, description[i]);
     }
 }
 

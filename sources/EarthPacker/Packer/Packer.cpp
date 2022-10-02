@@ -137,4 +137,12 @@ bool Packer::IsValidWDFile(wxFileInputStream &stream)
 
 void Packer::GetDescriptionFile(const wxString &path, DescriptionFile &description)
 {
+    wxFileName file_name(path);
+
+    if (file_name.GetExt().empty())
+    {
+        return;
+    }
+
+    description.AppendLine(wxString::Format("File : %s", path.c_str()));
 }
