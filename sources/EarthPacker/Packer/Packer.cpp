@@ -24,15 +24,10 @@ void Packer::ProcessFile(const wxString &path)
     if (fileName.GetExt() == "msh")
     {
         CreateModel(fileName);
-
-        return;
     }
-
-    if (fileName.GetExt() == "wd")
+    else if (fileName.GetExt() == "wd")
     {
         UnpackFile(fileName);
-
-        return;
     }
 }
 
