@@ -15,6 +15,8 @@ public:
 
 private:
 
+    static const int PIXELS_IN_LINE = 18;
+
     DescriptionFile description;
 
     void OnPaintEvent(wxPaintEvent &);
@@ -22,4 +24,10 @@ private:
     void OnSizeEvent(wxSizeEvent &);
 
     void DrawDescription();
+
+    // Вызывается при установке нового DescriptionFile
+    void ResetScrollBar();
+
+    // Вызывается при изменении размера
+    void MoveScrollBar();
 };
