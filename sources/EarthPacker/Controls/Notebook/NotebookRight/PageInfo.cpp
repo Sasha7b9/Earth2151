@@ -30,6 +30,8 @@ void PageInfo::DrawDescription()
     {
         DrawText(1, i * 18, description[i]);
     }
+
+    SetScrollbar(wxSB_VERTICAL, 0, 16, 50);
 }
 
 

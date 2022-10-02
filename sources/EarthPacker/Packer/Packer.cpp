@@ -195,11 +195,13 @@ void Packer::GetDescriptionFileWD(const wxFileName &file_name, DescriptionFile &
 
     Directory *dirdesc = new Packer::Directory(_dir);
 
+    int counter = 1;
+
     for each (const Resource &resource in dirdesc->resources)
     {
         if (resource.file_name.empty())
         {
-            description.AppendLine("Empty name resource");
+            description.AppendLine(wxString::Format("%d : Empty name resource", counter++));
 
             continue;
         }
@@ -208,11 +210,11 @@ void Packer::GetDescriptionFileWD(const wxFileName &file_name, DescriptionFile &
 
         if (data.GetBufSize())
         {
-            description.AppendLine(wxString::Format("%s %d %d", resource.file_name.c_str(), resource.info.length, resource.info.decompressedLength));
+            description.AppendLine(wxString::Format("%d : %s %d %d", counter++, resource.file_name.c_str(), resource.info.length, resource.info.decompressedLength));
         }
         else
         {
-            description.AppendLine("Empty buffer");
+            description.AppendLine(wxString::Format("%d : Empty buffer", counter++));
         }
     }
 
