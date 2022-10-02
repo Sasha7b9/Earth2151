@@ -55,9 +55,8 @@ Frame::Frame(const wxString &title)
 
     Bind(wxEVT_MENU, &Frame::OnAbout, this, wxID_ABOUT);
     Bind(wxEVT_MENU, &Frame::OnQuit, this, wxID_EXIT);
-    Bind(wxEVT_CLOSE_WINDOW, &Frame::OnCloseWindow, this);
-
-    Bind(wxEVT_SIZE, &Frame::OnSize, this);
+    Bind(wxEVT_CLOSE_WINDOW, &Frame::OnCloseEvent, this);
+    Bind(wxEVT_SIZE, &Frame::OnSizeEvent, this);
 
     wxBoxSizer *sizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -94,7 +93,7 @@ void Frame::OnQuit(wxCommandEvent &WXUNUSED(event))
 }
 
 
-void Frame::OnCloseWindow(wxCloseEvent &event)
+void Frame::OnCloseEvent(wxCloseEvent &event)
 {
     self = nullptr;
 
@@ -127,7 +126,7 @@ void Frame::OnAbout(wxCommandEvent &WXUNUSED(event))
 }
 
 
-void Frame::OnSize(wxSizeEvent &event)
+void Frame::OnSizeEvent(wxSizeEvent &event)
 {
     NotebookRight::self->SetSizeRaw({ GetClientRect().width - NotebookLeft::self->GetSize().x, GetClientRect().height });
 

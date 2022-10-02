@@ -12,9 +12,9 @@ public:
 
     static Frame *self;
 
-    void OnSize(wxSizeEvent &);
+    void OnSizeEvent(wxSizeEvent &);
 
-    void OnCloseWindow(wxCloseEvent &);
+    void OnCloseEvent(wxCloseEvent &);
 
 private:
 
