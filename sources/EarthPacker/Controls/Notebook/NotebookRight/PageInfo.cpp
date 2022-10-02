@@ -12,6 +12,7 @@ PageInfo::PageInfo(wxWindow *parent) : Canvas(parent)
 
     Bind(wxEVT_PAINT, &PageInfo::OnPaintEvent, this);
     Bind(wxEVT_SIZE, &PageInfo::OnSizeEvent, this);
+    Bind(wxEVT_SCROLL_LINEDOWN, &PageInfo::OnScrollEvent, this);
 }
 
 
@@ -30,6 +31,12 @@ void PageInfo::OnSizeEvent(wxSizeEvent &event)
     MoveScrollBar();
 
     event.Skip();
+}
+
+
+void PageInfo::OnScrollEvent(wxScrollEvent &event)
+{
+    int i = 0;
 }
 
 
@@ -54,7 +61,7 @@ void PageInfo::SetDescriptionFile(const DescriptionFile &_description)
 
 void PageInfo::ResetScrollBar()
 {
-    if (PIXELS_IN_LINE * description.size() > GetClientSize().GetHeight())
+    if (PIXELS_IN_LINE * description.size() > (uint)GetClientSize().GetHeight())
     {
         SetScrollbar(wxSB_VERTICAL, 0, GetClientSize().GetHeight() / PIXELS_IN_LINE, PIXELS_IN_LINE * description.size());
     }

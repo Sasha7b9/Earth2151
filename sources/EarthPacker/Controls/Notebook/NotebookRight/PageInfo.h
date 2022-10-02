@@ -23,6 +23,8 @@ private:
 
     void OnSizeEvent(wxSizeEvent &);
 
+    void OnScrollEvent(wxScrollEvent &);
+
     void DrawDescription();
 
     // Вызывается при установке нового DescriptionFile
