@@ -13,7 +13,10 @@ namespace Packer
 
     static void CreateModel(const wxFileName &);
 
-    static void UnpackFile(const wxFileName &);
+    static bool UnpackFile(const wxFileName &);
+
+    static void GetDescriptionFileWD(const wxFileName &, DescriptionFile &);
+    static void GetDescriptionFileMSH(const wxFileName &, DescriptionFile &);
 }
 
 
@@ -38,13 +41,13 @@ void Packer::CreateModel(const wxFileName &file_name)
 }
 
 
-void Packer::UnpackFile(const wxFileName &file_name)
+bool Packer::UnpackFile(const wxFileName &file_name)
 {
     FileInputStream file(file_name.GetFullPath());
 
     if (!IsValidWDFile(file))
     {
-        return;
+        return false;
     }
 
     uint dirLn = file.ReadUINT(file.GetSize() - 4);
@@ -119,6 +122,8 @@ void Packer::UnpackFile(const wxFileName &file_name)
     }
 
     delete dirdesc;
+
+    return true;
 }
 
 
@@ -145,4 +150,26 @@ void Packer::GetDescriptionFile(const wxString &path, DescriptionFile &descripti
     }
 
     description.AppendLine(wxString::Format("File : %s", path.c_str()));
+
+    if (file_name.GetExt() == "wd")
+    {
+        GetDescriptionFileWD(file_name, description);
+    }
+    else if (file_name.GetExt() == "msh")
+    {
+        GetDescriptionFileMSH(file_name, description);
+    }
 }
+
+
+void Packer::GetDescriptionFileWD(const wxFileName &file_name, DescriptionFile &description)
+{
+
+}
+
+
+void Packer::GetDescriptionFileMSH(const wxFileName &file_name, DescriptionFile &description)
+{
+
+}
+
