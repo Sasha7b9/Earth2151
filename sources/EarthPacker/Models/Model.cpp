@@ -6,7 +6,7 @@
 #include "Packer/Resources/Mesh.h"
 
 
-Models::Model::Model(const wxString &path) : file_path(path)
+Models::Model::Model(const wxString &path)
 {
     FileInputStream stream(path);
 
@@ -88,7 +88,7 @@ void Models::Model::GetParts(FileInputStream &stream, std::list<ModelPart *> &_p
     while (stream.TellI() < stream.GetSize())
     {
         size_t size = stream.GetSize();
-        size_t pos = stream.TellI();
+        wxFileOffset pos = stream.TellI();
 
         _parts.push_back(new ModelPart(stream));
     }
