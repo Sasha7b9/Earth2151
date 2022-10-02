@@ -54,7 +54,14 @@ void PageInfo::SetDescriptionFile(const DescriptionFile &_description)
 
 void PageInfo::ResetScrollBar()
 {
-    SetScrollbar(wxSB_VERTICAL, 0, GetClientSize().GetHeight() / PIXELS_IN_LINE, PIXELS_IN_LINE * description.size());
+    if (PIXELS_IN_LINE * description.size() > GetClientSize().GetHeight())
+    {
+        SetScrollbar(wxSB_VERTICAL, 0, GetClientSize().GetHeight() / PIXELS_IN_LINE, PIXELS_IN_LINE * description.size());
+    }
+    else
+    {
+        SetScrollbar(wxSB_VERTICAL, 0, 100, 100);
+    }
 }
 
 
