@@ -9,13 +9,11 @@
 
 namespace Packer
 {
-    static bool IsValidWDFile(wxFileInputStream &);
-
     static void CreateModel(const wxFileName &);
 
     static bool UnpackFile(const wxFileName &);
 
-    static void GetDescriptionFileWD(const wxFileName &, DescriptionFile &);
+    static bool GetDescriptionFileWD(const wxFileName &, DescriptionFile &);
     static void GetDescriptionFileMSH(const wxFileName &, DescriptionFile &);
 }
 
@@ -43,32 +41,14 @@ void Packer::CreateModel(const wxFileName &file_name)
 
 bool Packer::UnpackFile(const wxFileName &file_name)
 {
-    FileInputStream file(file_name.GetFullPath());
+    ResourceDirectory dirdesc;
 
-    if (!IsValidWDFile(file))
+    if (!dirdesc.Make(file_name))
     {
         return false;
     }
 
-    uint dirLn = file.ReadUINT(file.GetSize() - 4);
-
-    wxMemoryBuffer dirData = file.ReadBytes(file.GetSize() - dirLn, dirLn);
-
-    wxMemoryInputStream dirDataStream(dirData.GetData(), dirData.GetBufSize());
-
-    wxZlibInputStream zstream(dirDataStream);
-
-    wxMemoryOutputStream dir_stream;
-
-    zstream.Read(dir_stream);
-
-    size_t size_dir_stream = dir_stream.GetSize();
-
-    wxMemoryBuffer _dir(size_dir_stream);
-
-    dir_stream.CopyTo(_dir.GetData(), size_dir_stream);
-
-    ResourceDirectory dirdesc(_dir);
+    FileInputStream file(file_name.GetFullPath());
 
     for each (auto desc in dirdesc.resources)
     {
@@ -125,19 +105,6 @@ bool Packer::UnpackFile(const wxFileName &file_name)
 }
 
 
-bool Packer::IsValidWDFile(wxFileInputStream &stream)
-{
-    wxZlibInputStream zstream(stream);
-
-    uint8 buffer[8];
-    static const uint8 template_buffer[8] = { 0xff, 0xa1, 0xd0, '1', 'W', 'D', 0x00, 0x02 };
-
-    zstream.Read(buffer, 8);
-
-    return std::memcmp(buffer, template_buffer, 8) == 0;
-}
-
-
 void Packer::GetDescriptionFile(const wxString &path, DescriptionFile &description)
 {
     wxFileName file_name(path);
@@ -160,38 +127,16 @@ void Packer::GetDescriptionFile(const wxString &path, DescriptionFile &descripti
 }
 
 
-void Packer::GetDescriptionFileWD(const wxFileName &file_name, DescriptionFile &description)
+bool Packer::GetDescriptionFileWD(const wxFileName &file_name, DescriptionFile &description)
 {
-    FileInputStream file(file_name.GetFullPath());
+    ResourceDirectory dirdesc;
 
-    if (!IsValidWDFile(file))
+    if (!dirdesc.Make(file_name))
     {
-        description.AppendLine("Is not valid WD file");
-
-        return;
+        return false;
     }
 
-    uint dir_len = file.ReadUINT(file.GetSize() - 4);
-
-    description.AppendLine(wxString::Format("dir_len = %d", dir_len));
-
-    wxMemoryBuffer dir_data = file.ReadBytes(file.GetSize() - dir_len, dir_len);
-
-    wxMemoryInputStream dirDataStream(dir_data.GetData(), dir_data.GetBufSize());
-
-    wxZlibInputStream zstream(dirDataStream);
-
-    wxMemoryOutputStream dir_stream;
-
-    zstream.Read(dir_stream);
-
-    size_t size_dir_stream = dir_stream.GetSize();
-
-    wxMemoryBuffer _dir(size_dir_stream);
-
-    dir_stream.CopyTo(_dir.GetData(), size_dir_stream);
-
-    ResourceDirectory dirdesc(_dir);
+    FileInputStream file(file_name.GetFullPath());
 
     int counter = 1;
 
@@ -219,6 +164,8 @@ void Packer::GetDescriptionFileWD(const wxFileName &file_name, DescriptionFile &
             description.AppendLine(wxString::Format("%d : Empty resource",  counter++));
         }
     }
+
+    return true;
 }
 
 

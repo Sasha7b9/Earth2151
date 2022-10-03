@@ -8,11 +8,15 @@ namespace Packer
     class ResourceDirectory
     {
     public:
-        ResourceDirectory(wxMemoryBuffer &);
+
+        bool Make(const wxFileName &);
 
         std::vector<Resource> resources;
 
     private:
+
         void ReadFileDescriptors(wxMemoryInputStream &);
+
+        bool IsValidWDFile(wxFileInputStream &);
     };
 }

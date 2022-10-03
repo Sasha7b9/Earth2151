@@ -2,13 +2,54 @@
 #include "defines.h"
 #include "Packer/Resources/ResourceDirectory.h"
 #include "Packer/Resources/ResourceFactory.h"
+#include "Utils/FileInputStream.h"
 
 
-Packer::ResourceDirectory::ResourceDirectory(wxMemoryBuffer &directoryData)
+bool Packer::ResourceDirectory::Make(const wxFileName &file_name)
 {
-    wxMemoryInputStream stream((uint8 *)directoryData.GetData() + 10, directoryData.GetBufSize() - 10);
+    FileInputStream file(file_name.GetFullPath());
+
+    if (!IsValidWDFile(file))
+    {
+        return false;
+    }
+
+    uint dirLn = file.ReadUINT(file.GetSize() - 4);
+
+    wxMemoryBuffer dirData = file.ReadBytes(file.GetSize() - dirLn, dirLn);
+
+    wxMemoryInputStream dirDataStream(dirData.GetData(), dirData.GetBufSize());
+
+    wxZlibInputStream zstream(dirDataStream);
+
+    wxMemoryOutputStream dir_stream;
+
+    zstream.Read(dir_stream);
+
+    size_t size_dir_stream = dir_stream.GetSize();
+
+    wxMemoryBuffer dir(size_dir_stream);
+
+    dir_stream.CopyTo(dir.GetData(), size_dir_stream);
+
+    wxMemoryInputStream stream((uint8 *)dir.GetData() + 10, dir.GetBufSize() - 10);
 
     ReadFileDescriptors(stream);
+
+    return true;
+}
+
+
+bool Packer::ResourceDirectory::IsValidWDFile(wxFileInputStream &stream)
+{
+    wxZlibInputStream zstream(stream);
+
+    uint8 buffer[8];
+    static const uint8 template_buffer[8] = { 0xff, 0xa1, 0xd0, '1', 'W', 'D', 0x00, 0x02 };
+
+    zstream.Read(buffer, 8);
+
+    return std::memcmp(buffer, template_buffer, 8) == 0;
 }
 
 
