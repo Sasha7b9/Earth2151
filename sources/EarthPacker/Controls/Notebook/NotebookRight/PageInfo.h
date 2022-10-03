@@ -20,10 +20,10 @@ private:
     DescriptionFile description;
 
     void OnPaintEvent(wxPaintEvent &);
-
     void OnSizeEvent(wxSizeEvent &);
-
-    void OnScrollEvent(wxScrollWinEvent &);
+    void OnScrollTrackEvent(wxScrollWinEvent &);
+    void OnScrollLineUpEvent(wxScrollWinEvent &);
+    void OnScrollLineDownEvent(wxScrollWinEvent &);
 
     void DrawDescription();
 
@@ -42,6 +42,12 @@ private:
         int GetThumb();
 
         int SetPosition(int pos);
+        int GetPosition() const { return position; }
+
+        void MoveOnLines(int num_lines);
+
+        // ¬озвращает первую выводимую строку текста
+        int GetFirstLine();
 
         PageInfo *keeper;
 

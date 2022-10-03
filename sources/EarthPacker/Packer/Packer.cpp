@@ -197,10 +197,17 @@ void Packer::GetDescriptionFileWD(const wxFileName &file_name, DescriptionFile &
 
     int counter = 1;
 
-    description.AppendLine(wxString::Format("%d resources", dirdesc->resources.size()));
+    uint num_resources = dirdesc->resources.size();
+
+    description.AppendLine(wxString::Format("%d resources", num_resources));
 
     for each (const Resource &resource in dirdesc->resources)
     {
+        if (counter == 52)
+        {
+            counter = counter;
+        }
+
         if (resource.file_name.empty())
         {
             description.AppendLine(wxString::Format("%d : Empty name resource", counter++));
@@ -208,15 +215,15 @@ void Packer::GetDescriptionFileWD(const wxFileName &file_name, DescriptionFile &
             continue;
         }
 
-        wxMemoryBuffer data = file.ReadBytes(resource.info.offset, resource.info.length);
-
-        if (data.GetBufSize())
+        if (resource.info.length)
         {
+            wxMemoryBuffer data = file.ReadBytes(resource.info.offset, resource.info.length);
+
             description.AppendLine(wxString::Format("%d : %s %d %d", counter++, resource.file_name.c_str(), resource.info.length, resource.info.decompressedLength));
         }
         else
         {
-            description.AppendLine(wxString::Format("%d : Empty buffer", counter++));
+            description.AppendLine(wxString::Format("%d : Empty buffer",  counter++));
         }
     }
 

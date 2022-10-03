@@ -12,7 +12,9 @@ PageInfo::PageInfo(wxWindow *parent) : Canvas(parent)
 
     Bind(wxEVT_PAINT, &PageInfo::OnPaintEvent, this);
     Bind(wxEVT_SIZE, &PageInfo::OnSizeEvent, this);
-    Bind(wxEVT_SCROLLWIN_THUMBTRACK, &PageInfo::OnScrollEvent, this);
+    Bind(wxEVT_SCROLLWIN_LINEUP, &PageInfo::OnScrollLineUpEvent, this);
+    Bind(wxEVT_SCROLLWIN_LINEDOWN, &PageInfo::OnScrollLineDownEvent, this);
+    Bind(wxEVT_SCROLLWIN_THUMBTRACK, &PageInfo::OnScrollTrackEvent, this);
 
     scroll_bar.keeper = this;
 }
@@ -36,17 +38,37 @@ void PageInfo::OnSizeEvent(wxSizeEvent &event)
 }
 
 
-void PageInfo::OnScrollEvent(wxScrollWinEvent &event)
+void PageInfo::OnScrollTrackEvent(wxScrollWinEvent &event)
 {
     scroll_bar.SetPosition(event.GetPosition());
+
+    Refresh();
+}
+
+
+void PageInfo::OnScrollLineUpEvent(wxScrollWinEvent &)
+{
+    scroll_bar.MoveOnLines(-1);
+
+    Refresh();
+}
+
+
+void PageInfo::OnScrollLineDownEvent(wxScrollWinEvent &)
+{
+    scroll_bar.MoveOnLines(1);
+
+    Refresh();
 }
 
 
 void PageInfo::DrawDescription()
 {
-    for (size_t i = 0; i < description.size(); i++)
+    int first_line = scroll_bar.GetFirstLine();
+
+    for (size_t i = first_line; i < description.size(); i++)
     {
-        DrawText(1, i * PIXELS_IN_LINE, description[i]);
+        DrawText(1, i * PIXELS_IN_LINE - first_line * PIXELS_IN_LINE, description[i]);
     }
 }
 
@@ -69,20 +91,20 @@ void PageInfo::ScrollBar::Reset()
     }
     else
     {
-        keeper->SetScrollbar(wxSB_VERTICAL, SetPosition(0), 100, 100);
+        keeper->SetScrollbar(wxSB_VERTICAL, SetPosition(0), GetThumb(), GetRange());
     }
 }
 
 
 int PageInfo::ScrollBar::GetRange()
 {
-    return PIXELS_IN_LINE * keeper->description.Size();
+    return PIXELS_IN_LINE * keeper->description.Size() + PIXELS_IN_LINE;
 }
 
 
 int PageInfo::ScrollBar::GetThumb()
 {
-    return keeper->GetClientSize().GetHeight() / PIXELS_IN_LINE;
+    return keeper->GetClientSize().GetHeight();
 }
 
 
@@ -95,6 +117,33 @@ int PageInfo::ScrollBar::SetPosition(int pos)
     return position;
 };
 
+
+int PageInfo::ScrollBar::GetFirstLine()
+{
+    if (position == 0)
+    {
+        return 0;
+    }
+
+    return position / keeper->PIXELS_IN_LINE;
+}
+
+
+void PageInfo::ScrollBar::MoveOnLines(int num_lines)
+{
+    position += num_lines * keeper->PIXELS_IN_LINE;
+
+    if (position < 0)
+    {
+        position = 0;
+    }
+    else if (position >= GetRange())
+    {
+        position = GetRange();
+    }
+
+    SetPosition(position);
+}
 
 
 void PageInfo::MoveScrollBar()

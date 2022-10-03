@@ -49,7 +49,7 @@ void Log::Write(char *format, ...)
 void Log::Error(char *format, ...)
 {
     char buffer[SIZE_BUFFER];
-    std::strcpy(buffer, "!!! ERRROR !!!");
+    std::strcpy(buffer, "!!! ERRROR !!! ");
     char *pointer = buffer + std::strlen(buffer);
     std::va_list args;
     va_start(args, format);
