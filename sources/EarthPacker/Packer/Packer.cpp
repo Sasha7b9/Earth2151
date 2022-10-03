@@ -28,7 +28,10 @@ void Packer::ProcessFile(const wxString &path)
     {
         ResourceDirectory directory;
 
-        MakeResourceDirectory(path, directory);
+        if (directory.Make(fileName))
+        {
+            directory.Unpack(fileName.GetPath() + wxFileName::GetPathSeparator());
+        }
     }
 }
 
@@ -36,70 +39,6 @@ void Packer::ProcessFile(const wxString &path)
 void Packer::CreateModel(const wxFileName &file_name)
 {
     new Models::Model(file_name);
-}
-
-
-bool Packer::MakeResourceDirectory(const wxString &path, ResourceDirectory &directory)
-{
-    wxFileName file_name(path);
-
-    if (!directory.Make(file_name))
-    {
-        return false;
-    }
-
-    FileInputStream file(file_name.GetFullPath());
-
-    for each (auto desc in directory.resources)
-    {
-        if (desc.file_name.empty())
-        {
-            continue;
-        }
-
-        wxMemoryBuffer &data = desc.data;
-
-        if (data.GetBufSize())
-        {
-            wxFileName path_resource(file_name.GetPath() + wxFileName::GetPathSeparator() + desc.file_name);
-
-            wxString dir = path_resource.GetPath();
-
-            if (!wxDir::Exists(dir))
-            {
-                wxDir::Make(dir);
-            }
-
-            wxFile file_resource;
-
-            file_resource.Create(path_resource.GetFullPath(), true);
-
-            file_resource.Write(data.GetData(), data.GetBufSize());
-
-            if (desc.unknown_data.size())
-            {
-                wxFile file_unknown;
-
-                file_unknown.Create(file_name.GetPath() + wxFileName::GetPathSeparator() + desc.file_name + ".unknownData", true);
-
-                for (uint i = 0; i < desc.unknown_data.size(); i++)
-                {
-                    file_unknown.Write(&desc.unknown_data[i], 1);
-                }
-            }
-
-            if (typeid(desc) == typeid(Packer::TranslatableResource))
-            {
-                wxFile file_trans;
-
-                file_trans.Create(file_name.GetPath() + wxFileName::GetPathSeparator() + desc.file_name + ".translationId", true);
-
-                file_trans.Write(((Packer::TranslatableResource *)&desc)->translationID); //-V717
-            }
-        }
-    }
-
-    return true;
 }
 
 

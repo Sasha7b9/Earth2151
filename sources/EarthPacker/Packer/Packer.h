@@ -8,7 +8,5 @@ namespace Packer
 {
     void ProcessFile(const wxString &);
 
-    bool MakeResourceDirectory(const wxString &path, ResourceDirectory &);
-
     void GetDescriptionFile(const wxString &path, DescriptionFile &out);
 }

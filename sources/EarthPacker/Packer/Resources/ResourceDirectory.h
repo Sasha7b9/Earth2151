@@ -11,6 +11,8 @@ namespace Packer
 
         bool Make(const wxFileName &);
 
+        void Unpack(const wxString &path);
+
         std::vector<Resource> resources;
 
         bool IsValid() const { return resources.size() != 0; }

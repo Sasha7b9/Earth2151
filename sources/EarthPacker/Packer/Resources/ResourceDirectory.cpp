@@ -4,6 +4,7 @@
 #include "Packer/Resources/ResourceFactory.h"
 #include "Utils/FileInputStream.h"
 #include "Utils/Zlib.h"
+#include "Packer/Resources/TranslatableResource.h"
 
 
 bool Packer::ResourceDirectory::Make(const wxFileName &file_name)
@@ -53,6 +54,61 @@ bool Packer::ResourceDirectory::Make(const wxFileName &file_name)
     }
 
     return true;
+}
+
+
+void Packer::ResourceDirectory::Unpack(const wxString &path)
+{
+    wxFileName file_name(path);
+
+    for each (auto desc in resources)
+    {
+        if (desc.file_name.empty())
+        {
+            continue;
+        }
+
+        wxMemoryBuffer &data = desc.data;
+
+        if (data.GetBufSize())
+        {
+            wxFileName path_resource(file_name.GetPath() + wxFileName::GetPathSeparator() + desc.file_name);
+
+            wxString dir = path_resource.GetPath();
+
+            if (!wxDir::Exists(dir))
+            {
+                wxDir::Make(dir);
+            }
+
+            wxFile file_resource;
+
+            file_resource.Create(path_resource.GetFullPath(), true);
+
+            file_resource.Write(data.GetData(), data.GetBufSize());
+
+            if (desc.unknown_data.size())
+            {
+                wxFile file_unknown;
+
+                file_unknown.Create(file_name.GetPath() + wxFileName::GetPathSeparator() + desc.file_name + ".unknownData", true);
+
+                for (uint i = 0; i < desc.unknown_data.size(); i++)
+                {
+                    file_unknown.Write(&desc.unknown_data[i], 1);
+                }
+            }
+
+            if (typeid(desc) == typeid(Packer::TranslatableResource))
+            {
+                wxFile file_trans;
+
+                file_trans.Create(file_name.GetPath() + wxFileName::GetPathSeparator() + desc.file_name + ".translationId", true);
+
+                file_trans.Write(((Packer::TranslatableResource *)&desc)->translationID); //-V717
+            }
+        }
+    }
 }
 
 
