@@ -34,7 +34,7 @@ bool Packer::ResourceDirectory::Make(const wxFileName &file_name)
 
     wxMemoryInputStream stream((uint8 *)dir.GetData() + 10, dir.GetBufSize() - 10);
 
-    ReadFileDescriptors(stream);
+    ReadResourcesDescriptors(stream);
 
     return true;
 }
@@ -53,7 +53,7 @@ bool Packer::ResourceDirectory::IsValidWDFile(wxFileInputStream &stream)
 }
 
 
-void Packer::ResourceDirectory::ReadFileDescriptors(wxMemoryInputStream &stream)
+void Packer::ResourceDirectory::ReadResourcesDescriptors(wxMemoryInputStream &stream)
 {
     while (!stream.Eof())
     {

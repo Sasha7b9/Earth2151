@@ -18,6 +18,7 @@ namespace Packer
 
         std::string file_name;
         ResourceInfo info;
+        std::vector<uint8> data;
         std::vector<uint8> unknown_data;
     };
 }
