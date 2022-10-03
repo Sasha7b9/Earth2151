@@ -3,7 +3,7 @@
 #include "Controls/Notebook/NotebookLeft/PageDirectory.h"
 #include "Packer/Packer.h"
 #include "Controls/Notebook/NotebookRight/PageInfo.h"
-#include "Packer/Resources/ResourceDirectory.h"
+#include "Packer/Resources/ArchiveWD.h"
 
 
 PageDirectory *PageDirectory::self = nullptr;

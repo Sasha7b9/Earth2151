@@ -2,7 +2,7 @@
 #include "defines.h"
 #include "Packer/Packer.h"
 #include "Models/Model.h"
-#include "Packer/Resources/ResourceDirectory.h"
+#include "Packer/Resources/ArchiveWD.h"
 #include "Utils/Zlib.h"
 #include "Packer/Resources/TranslatableResource.h"
 
@@ -11,7 +11,7 @@ namespace Packer
 {
     static void CreateModel(const wxFileName &);
 
-    static bool GetDescriptionFileWD(const wxFileName &, DescriptionFile &);
+    static bool GetDescriptionFileWD(const ArchiveWD &, DescriptionFile &);
     static void GetDescriptionFileMSH(const wxFileName &, DescriptionFile &);
 }
 
@@ -55,7 +55,11 @@ void Packer::GetDescriptionFile(const wxString &path, DescriptionFile &descripti
 
     if (file_name.GetExt() == "wd")
     {
-        GetDescriptionFileWD(file_name, description);
+        ArchiveWD arch;
+
+        arch.Make(file_name);
+
+        GetDescriptionFileWD(arch, description);
     }
     else if (file_name.GetExt() == "msh")
     {
@@ -64,22 +68,11 @@ void Packer::GetDescriptionFile(const wxString &path, DescriptionFile &descripti
 }
 
 
-bool Packer::GetDescriptionFileWD(const wxFileName &file_name, DescriptionFile &description)
+bool Packer::GetDescriptionFileWD(const ArchiveWD &arch, DescriptionFile &description)
 {
-    ArchiveWD arch;
-
-    if (!arch.Make(file_name))
-    {
-        return false;
-    }
-
-    FileInputStream file(file_name.GetFullPath());
-
     int counter = 1;
 
-    uint num_resources = arch.resources.size();
-
-    description.AppendLine(wxString::Format("%d resources", num_resources));
+    description.AppendLine(wxString::Format("%d resources", arch.resources.size()));
 
     for each (const Resource &resource in arch.resources)
     {
@@ -92,8 +85,6 @@ bool Packer::GetDescriptionFileWD(const wxFileName &file_name, DescriptionFile &
 
         if (resource.info.length)
         {
-            wxMemoryBuffer data = file.ReadBytes(resource.info.offset, resource.info.length);
-
             description.AppendLine(wxString::Format("%d : %s %d %d", counter++, resource.file_name.c_str(), resource.info.length, resource.info.decompressedLength));
         }
         else

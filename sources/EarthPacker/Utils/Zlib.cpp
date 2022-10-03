@@ -5,7 +5,15 @@
 
 wxMemoryBuffer Zlib::Decompress(const wxMemoryBuffer &buffer)
 {
-    wxMemoryInputStream stream(buffer.GetData(), buffer.GetBufSize());
+    static size_t full_size = 0;
+
+    size_t size = buffer.GetBufSize();
+
+    full_size += size;
+
+    LOG_WRITE("Decompress %d bytes, all %f MB", size, (float)full_size / 1024.0f / 1024.0f);
+
+    wxMemoryInputStream stream(buffer.GetData(), size);
 
     wxMemoryOutputStream ostream;
 
