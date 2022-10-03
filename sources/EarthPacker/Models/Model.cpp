@@ -87,8 +87,8 @@ void Models::Model::GetParts(FileInputStream &stream, std::list<ModelPart *> &_p
 
     while (stream.TellI() < stream.GetSize())
     {
-        size_t size = stream.GetSize();
-        wxFileOffset pos = stream.TellI();
+//        size_t size = stream.GetSize();
+//        wxFileOffset pos = stream.TellI();
 
         _parts.push_back(new ModelPart(stream));
     }

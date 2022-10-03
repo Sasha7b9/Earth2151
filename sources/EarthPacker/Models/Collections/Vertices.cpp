@@ -5,7 +5,7 @@
 
 void Vertices::Create(FileInputStream &stream)
 {
-    int vertices = (int)stream.ReadUINT();
+//    int vertices = (int)stream.ReadUINT();
     int blocks = (int)stream.ReadUINT();
 
     for (int i = 0; i < blocks; i++)

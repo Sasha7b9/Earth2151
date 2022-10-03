@@ -68,7 +68,7 @@ bool Packer::UnpackFile(const wxFileName &file_name)
 
     dir_stream.CopyTo(_dir.GetData(), size_dir_stream);
 
-    Directory *dirdesc = new Packer::Directory(_dir);
+    ResourceDirectory *dirdesc = new Packer::ResourceDirectory(_dir);
 
     for each (auto desc in dirdesc->resources)
     {
@@ -193,7 +193,7 @@ void Packer::GetDescriptionFileWD(const wxFileName &file_name, DescriptionFile &
 
     dir_stream.CopyTo(_dir.GetData(), size_dir_stream);
 
-    Directory *dirdesc = new Packer::Directory(_dir);
+    ResourceDirectory *dirdesc = new Packer::ResourceDirectory(_dir);
 
     int counter = 1;
 
@@ -231,7 +231,7 @@ void Packer::GetDescriptionFileWD(const wxFileName &file_name, DescriptionFile &
 }
 
 
-void Packer::GetDescriptionFileMSH(const wxFileName &file_name, DescriptionFile &description)
+void Packer::GetDescriptionFileMSH(const wxFileName &, DescriptionFile &)
 {
 
 }

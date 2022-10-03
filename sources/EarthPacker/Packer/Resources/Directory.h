@@ -5,10 +5,10 @@
 
 namespace Packer
 {
-    class Directory
+    class ResourceDirectory
     {
     public:
-        Directory(wxMemoryBuffer &);
+        ResourceDirectory(wxMemoryBuffer &);
 
         std::vector<Resource> resources;
 

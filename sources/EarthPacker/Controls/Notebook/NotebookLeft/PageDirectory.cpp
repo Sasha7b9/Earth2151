@@ -35,5 +35,7 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event)
 
 void PageDirectory::OnFileActivated(wxTreeEvent &event)
 {
+
+
     Packer::ProcessFile(PageDirectory::self->GetPath(event.GetItem()));
 }
