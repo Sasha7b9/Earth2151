@@ -85,14 +85,7 @@ void PageInfo::SetDescriptionFile(const DescriptionFile &_description)
 
 void PageInfo::ScrollBar::Reset()
 {
-    if (PIXELS_IN_LINE * keeper->description.Size() > keeper->GetClientSize().GetHeight())
-    {
-        keeper->SetScrollbar(wxSB_VERTICAL, SetPosition(0), GetThumb(), GetRange());
-    }
-    else
-    {
-        keeper->SetScrollbar(wxSB_VERTICAL, SetPosition(0), GetThumb(), GetRange());
-    }
+    keeper->SetScrollbar(wxSB_VERTICAL, SetPosition(0), GetThumb(), GetRange());
 }
 
 

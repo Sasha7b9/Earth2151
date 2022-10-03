@@ -223,7 +223,7 @@ void Packer::GetDescriptionFileWD(const wxFileName &file_name, DescriptionFile &
         }
         else
         {
-            description.AppendLine(wxString::Format("%d : Empty buffer",  counter++));
+            description.AppendLine(wxString::Format("%d : Empty resource",  counter++));
         }
     }
 
