@@ -13,6 +13,8 @@ namespace Packer
 
         std::vector<Resource> resources;
 
+        bool IsValid() const { return resources.size() != 0; }
+
     private:
 
         void ReadFileDescriptors(wxMemoryInputStream &);

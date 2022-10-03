@@ -3,6 +3,7 @@
 #include "Controls/Notebook/NotebookLeft/PageDirectory.h"
 #include "Packer/Packer.h"
 #include "Controls/Notebook/NotebookRight/PageInfo.h"
+#include "Packer/Resources/ResourceDirectory.h"
 
 
 PageDirectory *PageDirectory::self = nullptr;
@@ -35,7 +36,5 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
 
 void PageDirectory::OnFileActivated(wxTreeEvent &event) //-V2009
 {
-
-
     Packer::ProcessFile(PageDirectory::self->GetPath(event.GetItem()));
 }

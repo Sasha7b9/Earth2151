@@ -11,8 +11,6 @@ namespace Packer
 {
     static void CreateModel(const wxFileName &);
 
-    static bool UnpackFile(const wxFileName &);
-
     static bool GetDescriptionFileWD(const wxFileName &, DescriptionFile &);
     static void GetDescriptionFileMSH(const wxFileName &, DescriptionFile &);
 }
@@ -28,7 +26,9 @@ void Packer::ProcessFile(const wxString &path)
     }
     else if (fileName.GetExt() == "wd")
     {
-        UnpackFile(fileName);
+        ResourceDirectory directory;
+
+        MakeResourceDirectory(path, directory);
     }
 }
 
@@ -39,18 +39,18 @@ void Packer::CreateModel(const wxFileName &file_name)
 }
 
 
-bool Packer::UnpackFile(const wxFileName &file_name)
+bool Packer::MakeResourceDirectory(const wxString &path, ResourceDirectory &directory)
 {
-    ResourceDirectory dirdesc;
+    wxFileName file_name(path);
 
-    if (!dirdesc.Make(file_name))
+    if (!directory.Make(file_name))
     {
         return false;
     }
 
     FileInputStream file(file_name.GetFullPath());
 
-    for each (auto desc in dirdesc.resources)
+    for each (auto desc in directory.resources)
     {
         if (desc.file_name.empty())
         {
@@ -63,11 +63,11 @@ bool Packer::UnpackFile(const wxFileName &file_name)
         {
             wxFileName path_resource(file_name.GetPath() + wxFileName::GetPathSeparator() + desc.file_name);
 
-            wxString directory = path_resource.GetPath();
+            wxString dir = path_resource.GetPath();
 
-            if (!wxDir::Exists(directory))
+            if (!wxDir::Exists(dir))
             {
-                wxDir::Make(directory);
+                wxDir::Make(dir);
             }
 
             wxFile file_resource;
