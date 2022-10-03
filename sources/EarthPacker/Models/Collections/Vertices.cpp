@@ -39,7 +39,7 @@ void Vertices::GetVertices(const wxMemoryBuffer &buffer)
 }
 
 
-float Vertices::TakeFloat(void *buffer)
+float Vertices::TakeFloat(const void *buffer)
 {
     float result = 0.0f;
 

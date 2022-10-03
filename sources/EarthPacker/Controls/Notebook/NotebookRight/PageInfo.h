@@ -49,7 +49,7 @@ private:
         // ¬озвращает первую выводимую строку текста
         int GetFirstLine();
 
-        PageInfo *keeper;
+        PageInfo *keeper = nullptr;
 
     private:
         int position = 0;

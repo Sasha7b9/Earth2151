@@ -11,5 +11,5 @@ NotebookRight::NotebookRight(wxWindow *parent) : Notebook(parent)
 {
     self = this;
 
-    AddPage(new PageInfo(this), "Info");
+    wxBookCtrlBase::AddPage(new PageInfo(this), "Info");
 }

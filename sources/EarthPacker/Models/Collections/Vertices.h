@@ -12,5 +12,5 @@ private:
     static const int VERTICES_IN_BLOCK = 4;
     static const int FIELD_SIZE = 4;
     void GetVertices(const wxMemoryBuffer &);
-    float TakeFloat(void *);
+    float TakeFloat(const void *);
 };

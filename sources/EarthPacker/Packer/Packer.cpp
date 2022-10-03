@@ -68,9 +68,9 @@ bool Packer::UnpackFile(const wxFileName &file_name)
 
     dir_stream.CopyTo(_dir.GetData(), size_dir_stream);
 
-    ResourceDirectory *dirdesc = new Packer::ResourceDirectory(_dir);
+    ResourceDirectory dirdesc(_dir);
 
-    for each (auto desc in dirdesc->resources)
+    for each (auto desc in dirdesc.resources)
     {
         if (desc.file_name.empty())
         {
@@ -116,12 +116,10 @@ bool Packer::UnpackFile(const wxFileName &file_name)
 
                 file_trans.Create(file_name.GetPath() + wxFileName::GetPathSeparator() + desc.file_name + ".translationId", true);
 
-                file_trans.Write(((Packer::TranslatableResource *)&desc)->translationID);
+                file_trans.Write(((Packer::TranslatableResource *)&desc)->translationID); //-V717
             }
         }
     }
-
-    delete dirdesc;
 
     return true;
 }
@@ -193,21 +191,16 @@ void Packer::GetDescriptionFileWD(const wxFileName &file_name, DescriptionFile &
 
     dir_stream.CopyTo(_dir.GetData(), size_dir_stream);
 
-    ResourceDirectory *dirdesc = new Packer::ResourceDirectory(_dir);
+    ResourceDirectory dirdesc(_dir);
 
     int counter = 1;
 
-    uint num_resources = dirdesc->resources.size();
+    uint num_resources = dirdesc.resources.size();
 
     description.AppendLine(wxString::Format("%d resources", num_resources));
 
-    for each (const Resource &resource in dirdesc->resources)
+    for each (const Resource &resource in dirdesc.resources)
     {
-        if (counter == 52)
-        {
-            counter = counter;
-        }
-
         if (resource.file_name.empty())
         {
             description.AppendLine(wxString::Format("%d : Empty name resource", counter++));
@@ -226,8 +219,6 @@ void Packer::GetDescriptionFileWD(const wxFileName &file_name, DescriptionFile &
             description.AppendLine(wxString::Format("%d : Empty resource",  counter++));
         }
     }
-
-    delete dirdesc;
 }
 
 
