@@ -5,7 +5,7 @@
 
 namespace Packer
 {
-    class ResourceDirectory
+    class ArchiveWD
     {
     public:
 

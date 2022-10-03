@@ -26,11 +26,11 @@ void Packer::ProcessFile(const wxString &path)
     }
     else if (fileName.GetExt() == "wd")
     {
-        ResourceDirectory directory;
+        ArchiveWD arch;
 
-        if (directory.Make(fileName))
+        if (arch.Make(fileName))
         {
-            directory.Unpack(fileName.GetPath() + wxFileName::GetPathSeparator());
+            arch.Unpack(fileName.GetPath() + wxFileName::GetPathSeparator());
         }
     }
 }
@@ -66,9 +66,9 @@ void Packer::GetDescriptionFile(const wxString &path, DescriptionFile &descripti
 
 bool Packer::GetDescriptionFileWD(const wxFileName &file_name, DescriptionFile &description)
 {
-    ResourceDirectory dirdesc;
+    ArchiveWD arch;
 
-    if (!dirdesc.Make(file_name))
+    if (!arch.Make(file_name))
     {
         return false;
     }
@@ -77,11 +77,11 @@ bool Packer::GetDescriptionFileWD(const wxFileName &file_name, DescriptionFile &
 
     int counter = 1;
 
-    uint num_resources = dirdesc.resources.size();
+    uint num_resources = arch.resources.size();
 
     description.AppendLine(wxString::Format("%d resources", num_resources));
 
-    for each (const Resource &resource in dirdesc.resources)
+    for each (const Resource &resource in arch.resources)
     {
         if (resource.file_name.empty())
         {

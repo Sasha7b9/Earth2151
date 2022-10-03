@@ -7,7 +7,7 @@
 #include "Packer/Resources/TranslatableResource.h"
 
 
-bool Packer::ResourceDirectory::Make(const wxFileName &file_name)
+bool Packer::ArchiveWD::Make(const wxFileName &file_name)
 {
     FileInputStream file(file_name.GetFullPath());
 
@@ -57,7 +57,7 @@ bool Packer::ResourceDirectory::Make(const wxFileName &file_name)
 }
 
 
-void Packer::ResourceDirectory::Unpack(const wxString &path)
+void Packer::ArchiveWD::Unpack(const wxString &path)
 {
     wxFileName file_name(path);
 
@@ -112,7 +112,7 @@ void Packer::ResourceDirectory::Unpack(const wxString &path)
 }
 
 
-bool Packer::ResourceDirectory::IsValidWDFile(wxFileInputStream &stream)
+bool Packer::ArchiveWD::IsValidWDFile(wxFileInputStream &stream)
 {
     wxZlibInputStream zstream(stream);
 
