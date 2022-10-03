@@ -17,8 +17,6 @@ namespace Packer
 
     private:
 
-        void ReadResourcesDescriptors(wxMemoryInputStream &);
-
         bool IsValidWDFile(wxFileInputStream &);
     };
 }

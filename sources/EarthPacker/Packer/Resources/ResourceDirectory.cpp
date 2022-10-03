@@ -3,6 +3,7 @@
 #include "Packer/Resources/ResourceDirectory.h"
 #include "Packer/Resources/ResourceFactory.h"
 #include "Utils/FileInputStream.h"
+#include "Utils/Zlib.h"
 
 
 bool Packer::ResourceDirectory::Make(const wxFileName &file_name)
@@ -34,7 +35,22 @@ bool Packer::ResourceDirectory::Make(const wxFileName &file_name)
 
     wxMemoryInputStream stream((uint8 *)dir.GetData() + 10, dir.GetBufSize() - 10);
 
-    ReadResourcesDescriptors(stream);
+    while (!stream.Eof())
+    {
+        Resource resource = ResourceFactory::Create(stream);
+
+        if (resource.info.length)
+        {
+            resource.data = file.ReadBytes(resource.info.offset, resource.info.length);
+
+            if (resource.info.decompressedLength != resource.info.length)
+            {
+                resource.data = Zlib::Decompress(resource.data);
+            }
+        }
+
+        resources.emplace_back(resource);
+    }
 
     return true;
 }
@@ -50,13 +66,4 @@ bool Packer::ResourceDirectory::IsValidWDFile(wxFileInputStream &stream)
     zstream.Read(buffer, 8);
 
     return std::memcmp(buffer, template_buffer, 8) == 0;
-}
-
-
-void Packer::ResourceDirectory::ReadResourcesDescriptors(wxMemoryInputStream &stream)
-{
-    while (!stream.Eof())
-    {
-        resources.emplace_back(ResourceFactory::Create(stream));
-    }
 }

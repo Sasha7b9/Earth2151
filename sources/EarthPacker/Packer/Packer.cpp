@@ -57,7 +57,7 @@ bool Packer::MakeResourceDirectory(const wxString &path, ResourceDirectory &dire
             continue;
         }
 
-        wxMemoryBuffer data = file.ReadBytes(desc.info.offset, desc.info.length);
+        wxMemoryBuffer &data = desc.data;
 
         if (data.GetBufSize())
         {
@@ -73,8 +73,6 @@ bool Packer::MakeResourceDirectory(const wxString &path, ResourceDirectory &dire
             wxFile file_resource;
 
             file_resource.Create(path_resource.GetFullPath(), true);
-
-            data = (desc.info.decompressedLength == desc.info.length) ? data : Zlib::Decompress(data);
 
             file_resource.Write(data.GetData(), data.GetBufSize());
 
