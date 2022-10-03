@@ -1,6 +1,6 @@
 // 2022/09/23 20:23:36 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
-#include "Packer/Resources/Directory.h"
+#include "Packer/Resources/ResourceDirectory.h"
 #include "Packer/Resources/ResourceFactory.h"
 
 
