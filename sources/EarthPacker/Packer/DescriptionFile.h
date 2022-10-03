@@ -11,5 +11,6 @@ class DescriptionFile : public std::vector<std::string>
 public:
     bool IsValid() const;
     void AppendLine(pchar);
+    int Size();
 private:
 };

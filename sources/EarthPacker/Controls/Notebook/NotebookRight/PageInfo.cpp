@@ -38,11 +38,7 @@ void PageInfo::OnSizeEvent(wxSizeEvent &event)
 
 void PageInfo::OnScrollEvent(wxScrollWinEvent &event)
 {
-    int pos = event.GetPosition();
-
-    SetScrollPos(wxSB_VERTICAL, pos);
-
-
+    scroll_bar.SetPosition(event.GetPosition());
 }
 
 
@@ -67,15 +63,38 @@ void PageInfo::SetDescriptionFile(const DescriptionFile &_description)
 
 void PageInfo::ScrollBar::Reset()
 {
-    if (PIXELS_IN_LINE * keeper->description.size() > (uint)keeper->GetClientSize().GetHeight())
+    if (PIXELS_IN_LINE * keeper->description.Size() > keeper->GetClientSize().GetHeight())
     {
-        keeper->SetScrollbar(wxSB_VERTICAL, 0, keeper->GetClientSize().GetHeight() / PIXELS_IN_LINE, PIXELS_IN_LINE * keeper->description.size());
+        keeper->SetScrollbar(wxSB_VERTICAL, SetPosition(0), GetThumb(), GetRange());
     }
     else
     {
-        keeper->SetScrollbar(wxSB_VERTICAL, 0, 100, 100);
+        keeper->SetScrollbar(wxSB_VERTICAL, SetPosition(0), 100, 100);
     }
 }
+
+
+int PageInfo::ScrollBar::GetRange()
+{
+    return PIXELS_IN_LINE * keeper->description.Size();
+}
+
+
+int PageInfo::ScrollBar::GetThumb()
+{
+    return keeper->GetClientSize().GetHeight() / PIXELS_IN_LINE;
+}
+
+
+int PageInfo::ScrollBar::SetPosition(int pos)
+{
+    position = pos;
+
+    keeper->SetScrollPos(wxSB_VERTICAL, position);
+
+    return position;
+};
+
 
 
 void PageInfo::MoveScrollBar()

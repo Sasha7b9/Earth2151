@@ -35,6 +35,18 @@ private:
         // Вызывается при установке нового DescriptionFile
         void Reset();
 
+        // Возвращает полную область скроллбара
+        int GetRange();
+
+        // Возвращает видимую область скроллбара
+        int GetThumb();
+
+        int SetPosition(int pos);
+
         PageInfo *keeper;
+
+    private:
+        int position = 0;
+
     } scroll_bar;
 };

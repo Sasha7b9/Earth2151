@@ -13,3 +13,9 @@ void DescriptionFile::AppendLine(pchar line)
 {
     push_back(line);
 }
+
+
+int DescriptionFile::Size()
+{
+    return (int)size();
+}
