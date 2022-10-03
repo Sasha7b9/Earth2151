@@ -1,11 +1,14 @@
 // 2022/09/27 16:59:23 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
 #include "Packer/DescriptionFile.h"
+#include "Packer/Resources/ResourceDirectory.h"
 
 
 namespace Packer
 {
     void ProcessFile(const wxString &);
+
+    bool MakeResourceDirectory(const wxString &path, ResourceDirectory &);
 
     void GetDescriptionFile(const wxString &path, DescriptionFile &out);
 }
