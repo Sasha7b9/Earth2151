@@ -15,13 +15,13 @@ PageDirectory::PageDirectory(wxWindow *parent) : wxGenericDirCtrl(parent)
     wxWindowBase::SetMinClientSize({ 200, 100 });
     SetClientSize({ 200, 100 });
 
-    ExpandPath("C:/Temp");
+    wxGenericDirCtrl::ExpandPath("C:/Temp");
 
     Bind(wxEVT_DIRCTRL_SELECTIONCHANGED, &PageDirectory::OnFileSelected, this);
     Bind(wxEVT_DIRCTRL_FILEACTIVATED, &PageDirectory::OnFileActivated, this);
 }
 
-void PageDirectory::OnFileSelected(wxTreeEvent &event)
+void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
 {
     wxString path = GetPath(event.GetItem());
 
@@ -33,7 +33,7 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event)
 }
 
 
-void PageDirectory::OnFileActivated(wxTreeEvent &event)
+void PageDirectory::OnFileActivated(wxTreeEvent &event) //-V2009
 {
 
 

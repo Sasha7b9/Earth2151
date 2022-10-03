@@ -38,7 +38,7 @@ void PageInfo::OnSizeEvent(wxSizeEvent &event)
 }
 
 
-void PageInfo::OnScrollTrackEvent(wxScrollWinEvent &event)
+void PageInfo::OnScrollTrackEvent(wxScrollWinEvent &event) //-V2009
 {
     scroll_bar.SetPosition(event.GetPosition());
 
