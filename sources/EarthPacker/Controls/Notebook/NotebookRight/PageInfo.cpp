@@ -12,7 +12,9 @@ PageInfo::PageInfo(wxWindow *parent) : Canvas(parent)
 
     Bind(wxEVT_PAINT, &PageInfo::OnPaintEvent, this);
     Bind(wxEVT_SIZE, &PageInfo::OnSizeEvent, this);
-    Bind(wxEVT_SCROLL_LINEDOWN, &PageInfo::OnScrollEvent, this);
+    Bind(wxEVT_SCROLLWIN_THUMBTRACK, &PageInfo::OnScrollEvent, this);
+
+    scroll_bar.keeper = this;
 }
 
 
@@ -34,9 +36,13 @@ void PageInfo::OnSizeEvent(wxSizeEvent &event)
 }
 
 
-void PageInfo::OnScrollEvent(wxScrollEvent &event)
+void PageInfo::OnScrollEvent(wxScrollWinEvent &event)
 {
-    int i = 0;
+    int pos = event.GetPosition();
+
+    SetScrollPos(wxSB_VERTICAL, pos);
+
+
 }
 
 
@@ -53,21 +59,21 @@ void PageInfo::SetDescriptionFile(const DescriptionFile &_description)
 {
     description = _description;
 
-    ResetScrollBar();
+    scroll_bar.Reset();
 
     Refresh();
 }
 
 
-void PageInfo::ResetScrollBar()
+void PageInfo::ScrollBar::Reset()
 {
-    if (PIXELS_IN_LINE * description.size() > (uint)GetClientSize().GetHeight())
+    if (PIXELS_IN_LINE * keeper->description.size() > (uint)keeper->GetClientSize().GetHeight())
     {
-        SetScrollbar(wxSB_VERTICAL, 0, GetClientSize().GetHeight() / PIXELS_IN_LINE, PIXELS_IN_LINE * description.size());
+        keeper->SetScrollbar(wxSB_VERTICAL, 0, keeper->GetClientSize().GetHeight() / PIXELS_IN_LINE, PIXELS_IN_LINE * keeper->description.size());
     }
     else
     {
-        SetScrollbar(wxSB_VERTICAL, 0, 100, 100);
+        keeper->SetScrollbar(wxSB_VERTICAL, 0, 100, 100);
     }
 }
 

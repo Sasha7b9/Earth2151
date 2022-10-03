@@ -23,13 +23,18 @@ private:
 
     void OnSizeEvent(wxSizeEvent &);
 
-    void OnScrollEvent(wxScrollEvent &);
+    void OnScrollEvent(wxScrollWinEvent &);
 
     void DrawDescription();
 
-    // Вызывается при установке нового DescriptionFile
-    void ResetScrollBar();
-
     // Вызывается при изменении размера
     void MoveScrollBar();
+
+    struct ScrollBar
+    {
+        // Вызывается при установке нового DescriptionFile
+        void Reset();
+
+        PageInfo *keeper;
+    } scroll_bar;
 };
