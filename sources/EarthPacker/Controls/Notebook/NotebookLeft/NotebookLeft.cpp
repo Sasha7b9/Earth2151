@@ -11,5 +11,5 @@ NotebookLeft::NotebookLeft(wxWindow *parent) : Notebook(parent)
 {
     self = this;
 
-    AddPage(new PageDirectory(this), "Directory");
+    wxBookCtrlBase::AddPage(new PageDirectory(this), "Directory");
 }
