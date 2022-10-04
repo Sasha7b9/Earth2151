@@ -52,6 +52,11 @@ void PageDirectory::OnRightClick(wxTreeEvent &event)
 {
     SelectPath(GetPath(event.GetItem()));
 
+    if (!Packer::ArchiveWD::IsCorrectFile(GetPath(event.GetItem())))
+    {
+        return;
+    }
+
     wxMenu menu;
 
     menu.Append(ID_POPUP_VIEW, "View");

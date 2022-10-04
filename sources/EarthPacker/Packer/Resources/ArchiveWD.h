@@ -20,6 +20,8 @@ namespace Packer
 
         std::vector<Resource> resources;
 
+        static bool IsCorrectFile(const wxString &path);
+
     private:
 
         wxFileName file_name;
