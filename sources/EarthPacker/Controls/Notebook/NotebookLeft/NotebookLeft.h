@@ -9,4 +9,6 @@ public:
     NotebookLeft(wxWindow *);
 
     static NotebookLeft *self;
+
+    void DeletePageRaw(wxWindow *);
 };

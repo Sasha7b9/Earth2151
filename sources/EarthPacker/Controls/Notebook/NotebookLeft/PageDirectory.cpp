@@ -85,5 +85,7 @@ void PageDirectory::OnMenuView(wxCommandEvent &)
 {
     Packer::ArchiveWD arch(GetPath());
 
+    NotebookLeft::self->DeletePage(1);
+
     NotebookLeft::self->AddPage(new PageInfoWD(GetPath()), GetPath());
 }

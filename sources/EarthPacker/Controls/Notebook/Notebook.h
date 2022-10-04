@@ -8,5 +8,8 @@ public:
     Notebook(wxWindow *);
 
     void SetSizeRaw(const wxSize &);
+
+    virtual bool DeletePage(size_t n) override;
+
 private:
 };

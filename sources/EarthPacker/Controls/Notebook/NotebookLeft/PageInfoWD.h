@@ -6,4 +6,7 @@ class PageInfoWD : public wxTreeCtrl
 public:
     PageInfoWD(const wxString &file_path);
 private:
+
+    void OnMouseRightUpEvent(wxMouseEvent &);
+    void OnMenuClose(wxCommandEvent &);
 };

@@ -6,5 +6,24 @@
 
 PageInfoWD::PageInfoWD(const wxString &) : wxTreeCtrl(NotebookLeft::self)
 {
+    Bind(wxEVT_RIGHT_UP, &PageInfoWD::OnMouseRightUpEvent, this);
+}
 
+
+void PageInfoWD::OnMouseRightUpEvent(wxMouseEvent &event)
+{
+    wxMenu menu;
+
+    menu.Append(wxID_EXIT, "Close");
+    Bind(wxEVT_MENU, &PageInfoWD::OnMenuClose, this, wxID_EXIT);
+
+    PopupMenu(&menu, event.GetPosition());
+
+    event.Skip();
+}
+
+
+void PageInfoWD::OnMenuClose(wxCommandEvent &)
+{
+    NotebookLeft::self->DeletePageRaw(this);
 }

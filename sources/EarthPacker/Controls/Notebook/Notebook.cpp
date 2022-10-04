@@ -21,3 +21,14 @@ void Notebook::SetSizeRaw(const wxSize &size)
         GetPage(i)->Refresh();
     }
 }
+
+
+bool Notebook::DeletePage(size_t n)
+{
+    if ((GetPageCount() - 2) < n)
+    {
+        return wxNotebook::DeletePage(n);
+    }
+
+    return false;
+}

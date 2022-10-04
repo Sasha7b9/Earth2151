@@ -13,3 +13,18 @@ NotebookLeft::NotebookLeft(wxWindow *parent) : Notebook(parent)
 
     wxBookCtrlBase::AddPage(new PageDirectory(this), "Directory");
 }
+
+
+void NotebookLeft::DeletePageRaw(wxWindow *window)
+{
+    size_t num_pages = GetPageCount();
+
+    for (size_t i = 0; i < num_pages; i++)
+    {
+        if (GetPage(i) == window)
+        {
+            DeletePage(i);
+            break;
+        }
+    }
+}
