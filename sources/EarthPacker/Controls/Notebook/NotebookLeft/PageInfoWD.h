@@ -4,6 +4,6 @@
 class PageInfoWD : public wxTreeCtrl
 {
 public:
-    PageInfoWD(wxWindow *parent);
+    PageInfoWD(const wxString &file_path);
 private:
 };

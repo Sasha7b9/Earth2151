@@ -4,6 +4,8 @@
 #include "Packer/Packer.h"
 #include "Controls/Notebook/NotebookRight/PageInfo.h"
 #include "Packer/Resources/ArchiveWD.h"
+#include "Controls/Notebook/NotebookLeft/NotebookLeft.h"
+#include "Controls/Notebook/NotebookLeft/PageInfoWD.h"
 
 
 PageDirectory *PageDirectory::self = nullptr;
@@ -81,5 +83,7 @@ void PageDirectory::OnMenuUnpack(wxCommandEvent &)
 
 void PageDirectory::OnMenuView(wxCommandEvent &)
 {
+    Packer::ArchiveWD arch(GetPath());
 
+    NotebookLeft::self->AddPage(new PageInfoWD(GetPath()), GetPath());
 }
