@@ -15,4 +15,6 @@ private:
     void OnFileActivated(wxTreeEvent &);
     void OnFileSelected(wxTreeEvent &);
     void OnRightClick(wxTreeEvent &);
+
+    void OnMenuUnpack(wxCommandEvent &);
 };

@@ -9,6 +9,12 @@
 PageDirectory *PageDirectory::self = nullptr;
 
 
+enum
+{
+    ID_POPUP_UNPACK = wxID_HIGHEST + 1
+};
+
+
 PageDirectory::PageDirectory(wxWindow *parent) : wxGenericDirCtrl(parent)
 {
     self = this;
@@ -37,15 +43,23 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
 
 void PageDirectory::OnFileActivated(wxTreeEvent &event) //-V2009
 {
-    Packer::ProcessFile(PageDirectory::self->GetPath(event.GetItem()));
+    Packer::ProcessFile(GetPath(event.GetItem()));
 }
 
 
 void PageDirectory::OnRightClick(wxTreeEvent &event)
 {
-    wxMenu menu;
-    menu.Append(wxID_ANY, "Unpack");
-    PopupMenu(&menu, event.GetPoint().x, event.GetPoint().y);
+    SelectPath(GetPath(event.GetItem()));
 
+    wxMenu menu;
+    menu.Append(ID_POPUP_UNPACK, "Unpack");
+    Bind(wxEVT_MENU, &PageDirectory::OnMenuUnpack, this, ID_POPUP_UNPACK);
+    PopupMenu(&menu, event.GetPoint());
     event.Skip();
+}
+
+
+void PageDirectory::OnMenuUnpack(wxCommandEvent &)
+{
+    Packer::ProcessFile(GetPath());
 }
