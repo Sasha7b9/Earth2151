@@ -9,7 +9,7 @@ namespace Packer
     {
     public:
 
-        bool Make(const wxFileName &);
+        bool ReadContent(const wxFileName &);
 
         void Unpack(const wxString &path);
 

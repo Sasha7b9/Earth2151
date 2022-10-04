@@ -13,7 +13,7 @@ namespace Packer
 }
 
 
-bool Packer::ArchiveWD::Make(const wxFileName &file_name)
+bool Packer::ArchiveWD::ReadContent(const wxFileName &file_name)
 {
     FileInputStream file(file_name.GetFullPath());
 
