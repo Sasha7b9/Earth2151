@@ -28,8 +28,10 @@ void Packer::ProcessFile(const wxString &path)
     {
         ArchiveWD arch;
 
-        if (arch.ReadContent(fileName))
+        if (arch.ReadDescriptor(fileName))
         {
+            arch.ReadContent();
+
             arch.Unpack(fileName.GetPath() + wxFileName::GetPathSeparator());
         }
     }
@@ -57,7 +59,7 @@ void Packer::GetDescriptionFile(const wxString &path, DescriptionFile &descripti
     {
         ArchiveWD arch;
 
-        arch.ReadContent(file_name);
+        arch.ReadDescriptor(file_name);
 
         GetDescriptionFileWD(arch, description);
     }

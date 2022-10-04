@@ -9,8 +9,13 @@ namespace Packer
     {
     public:
 
-        bool ReadContent(const wxFileName &);
+        // Читать оглавление
+        bool ReadDescriptor(const wxFileName &);
 
+        // Читать содержимое
+        bool ReadContent();
+
+        // Распаковать содержимое
         void Unpack(const wxString &path);
 
         std::vector<Resource> resources;
@@ -18,6 +23,8 @@ namespace Packer
         bool IsValid() const { return resources.size() != 0; }
 
     private:
+
+        wxFileName file_name;
 
         bool IsValidWDFile(wxFileInputStream &);
     };

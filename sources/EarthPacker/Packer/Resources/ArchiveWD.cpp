@@ -7,14 +7,10 @@
 #include "Packer/Resources/TranslatableResource.h"
 
 
-namespace Packer
+bool Packer::ArchiveWD::ReadDescriptor(const wxFileName &_file_name)
 {
-    static void ThreadFuncUnpack(Resource &, FileInputStream &);
-}
+    file_name = _file_name;
 
-
-bool Packer::ArchiveWD::ReadContent(const wxFileName &file_name)
-{
     FileInputStream file(file_name.GetFullPath());
 
     if (!IsValidWDFile(file))
@@ -46,11 +42,6 @@ bool Packer::ArchiveWD::ReadContent(const wxFileName &file_name)
     {
         Resource resource = ResourceFactory::Create(stream);
 
-        if (resource.info.length)
-        {
-            ThreadFuncUnpack(resource, file);
-        }
-
         resources.emplace_back(resource);
     }
 
@@ -58,21 +49,32 @@ bool Packer::ArchiveWD::ReadContent(const wxFileName &file_name)
 }
 
 
-
-void Packer::ThreadFuncUnpack(Resource &resource, FileInputStream &file)
+bool Packer::ArchiveWD::ReadContent()
 {
-    resource.data = file.ReadBytes(resource.info.offset, resource.info.length);
+    FileInputStream file(file_name.GetFullPath());
 
-    if (resource.info.decompressedLength != resource.info.length)
+    if (!IsValidWDFile(file))
     {
-        resource.data = Zlib::Decompress(resource.data);
+        return false;
     }
+
+    for (Resource &resource : resources)
+    {
+        resource.data = file.ReadBytes(resource.info.offset, resource.info.length);
+
+        if (resource.info.decompressedLength != resource.info.length)
+        {
+            resource.data = Zlib::Decompress(resource.data);
+        }
+    }
+
+    return true;
 }
 
 
 void Packer::ArchiveWD::Unpack(const wxString &path)
 {
-    wxFileName file_name(path);
+    wxFileName file(path);
 
     for each (auto desc in resources)
     {
@@ -85,7 +87,7 @@ void Packer::ArchiveWD::Unpack(const wxString &path)
 
         if (data.GetBufSize())
         {
-            wxFileName path_resource(file_name.GetPath() + wxFileName::GetPathSeparator() + desc.file_name);
+            wxFileName path_resource(file.GetPath() + wxFileName::GetPathSeparator() + desc.file_name);
 
             wxString dir = path_resource.GetPath();
 
@@ -104,7 +106,7 @@ void Packer::ArchiveWD::Unpack(const wxString &path)
             {
                 wxFile file_unknown;
 
-                file_unknown.Create(file_name.GetPath() + wxFileName::GetPathSeparator() + desc.file_name + ".unknownData", true);
+                file_unknown.Create(file.GetPath() + wxFileName::GetPathSeparator() + desc.file_name + ".unknownData", true);
 
                 for (uint i = 0; i < desc.unknown_data.size(); i++)
                 {
@@ -116,7 +118,7 @@ void Packer::ArchiveWD::Unpack(const wxString &path)
             {
                 wxFile file_trans;
 
-                file_trans.Create(file_name.GetPath() + wxFileName::GetPathSeparator() + desc.file_name + ".translationId", true);
+                file_trans.Create(file.GetPath() + wxFileName::GetPathSeparator() + desc.file_name + ".translationId", true);
 
                 file_trans.Write(((Packer::TranslatableResource *)&desc)->translationID); //-V717
             }

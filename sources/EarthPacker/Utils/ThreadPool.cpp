@@ -3,7 +3,7 @@
 #include "Utils/ThreadPool.h"
 
 
-void ThreadPool::AppendTask(void *func(void *), void *cookie)
+void ThreadPool::AppendTask(void *(void *), void *)
 {
 
 }
