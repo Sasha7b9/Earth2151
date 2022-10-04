@@ -100,12 +100,7 @@ void Packer::ArchiveWD::Unpack(const wxString &path)
 
                 wxFile file_resource;
 
-                wxString _path_resource = path_resource.GetFullPath();
-
-                file_resource.Create(_path_resource, true);
-
-                void *_data = data.GetData();
-                size_t _size = data.GetBufSize();
+                file_resource.Create(path_resource.GetFullPath(), true);
 
                 file_resource.Write(data.GetData(), data.GetBufSize());
 
