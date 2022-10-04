@@ -14,6 +14,11 @@ Packer::ArchiveWD::ArchiveWD(const wxString &path) : ArchiveWD(wxFileName(path))
 
 Packer::ArchiveWD::ArchiveWD(const wxFileName &_file_name) : file_name(_file_name)
 {
+    if (file_name.GetExt() != "wd")
+    {
+        return;
+    }
+
     FileInputStream file(file_name.GetFullPath());
 
     if (!IsValidWDFile(file))
