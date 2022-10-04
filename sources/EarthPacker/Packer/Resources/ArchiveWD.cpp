@@ -157,13 +157,13 @@ bool Packer::ArchiveWD::IsValidWDFile(wxFileInputStream &stream)
 
 void Packer::ArchiveWD::GetDescription(DescriptionFile &description)
 {
-    description.AppendLine(wxString::Format("File : %s", file_name.GetFullPath().c_str()));
+    description.file_name = wxString::Format("File : %s", file_name.GetFullPath().c_str());
 
     if (file_name.GetExt() == "wd")
     {
         int counter = 1;
 
-        description.AppendLine(wxString::Format("%d resources", resources.size()));
+        description.count_resources = resources.size();
 
         for each (const Resource & resource in resources)
         {
