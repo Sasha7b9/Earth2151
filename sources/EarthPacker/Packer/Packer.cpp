@@ -12,7 +12,6 @@ namespace Packer
     static void CreateModel(const wxFileName &);
 
     static bool GetDescriptionFileWD(const ArchiveWD &, DescriptionFile &);
-    static void GetDescriptionFileMSH(const wxFileName &, DescriptionFile &);
 }
 
 
@@ -58,10 +57,6 @@ void Packer::GetDescriptionFile(const wxString &path, DescriptionFile &descripti
 
         GetDescriptionFileWD(arch, description);
     }
-    else if (file_name.GetExt() == "msh")
-    {
-        GetDescriptionFileMSH(file_name, description);
-    }
 }
 
 
@@ -92,10 +87,3 @@ bool Packer::GetDescriptionFileWD(const ArchiveWD &arch, DescriptionFile &descri
 
     return true;
 }
-
-
-void Packer::GetDescriptionFileMSH(const wxFileName &, DescriptionFile &)
-{
-
-}
-
