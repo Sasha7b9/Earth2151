@@ -36,7 +36,9 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
 
     DescriptionFile description;
 
-    Packer::GetDescriptionFile(path, description);
+    Packer::ArchiveWD arch(path);
+
+    arch.GetDescription(description);
 
     PageInfo::self->SetDescriptionFile(description);
 }

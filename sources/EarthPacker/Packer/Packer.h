@@ -7,6 +7,4 @@
 namespace Packer
 {
     void ProcessFile(const wxString &);
-
-    void GetDescriptionFile(const wxString &path, DescriptionFile &out);
 }

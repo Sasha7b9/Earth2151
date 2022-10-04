@@ -10,8 +10,6 @@
 namespace Packer
 {
     static void CreateModel(const wxFileName &);
-
-    static bool GetDescriptionFileWD(const ArchiveWD &, DescriptionFile &);
 }
 
 
@@ -37,53 +35,4 @@ void Packer::ProcessFile(const wxString &path)
 void Packer::CreateModel(const wxFileName &file_name)
 {
     new Models::Model(file_name);
-}
-
-
-void Packer::GetDescriptionFile(const wxString &path, DescriptionFile &description)
-{
-    wxFileName file_name(path);
-
-    if (file_name.GetExt().empty())
-    {
-        return;
-    }
-
-    description.AppendLine(wxString::Format("File : %s", path.c_str()));
-
-    if (file_name.GetExt() == "wd")
-    {
-        ArchiveWD arch(file_name);
-
-        GetDescriptionFileWD(arch, description);
-    }
-}
-
-
-bool Packer::GetDescriptionFileWD(const ArchiveWD &arch, DescriptionFile &description)
-{
-    int counter = 1;
-
-    description.AppendLine(wxString::Format("%d resources", arch.resources.size()));
-
-    for each (const Resource &resource in arch.resources)
-    {
-        if (resource.file_name.empty())
-        {
-            description.AppendLine(wxString::Format("%d : Empty name resource", counter++));
-
-            continue;
-        }
-
-        if (resource.info.length)
-        {
-            description.AppendLine(wxString::Format("%d : %s %d %d", counter++, resource.file_name.c_str(), resource.info.length, resource.info.decompressedLength));
-        }
-        else
-        {
-            description.AppendLine(wxString::Format("%d : Empty resource",  counter++));
-        }
-    }
-
-    return true;
 }

@@ -7,6 +7,11 @@
 #include "Packer/Resources/TranslatableResource.h"
 
 
+Packer::ArchiveWD::ArchiveWD(const wxString &path) : ArchiveWD(wxFileName(path))
+{
+}
+
+
 Packer::ArchiveWD::ArchiveWD(const wxFileName &_file_name) : file_name(_file_name)
 {
     FileInputStream file(file_name.GetFullPath());
@@ -142,4 +147,36 @@ bool Packer::ArchiveWD::IsValidWDFile(wxFileInputStream &stream)
     zstream.Read(buffer, 8);
 
     return std::memcmp(buffer, template_buffer, 8) == 0;
+}
+
+
+void Packer::ArchiveWD::GetDescription(DescriptionFile &description)
+{
+    description.AppendLine(wxString::Format("File : %s", file_name.GetFullPath().c_str()));
+
+    if (file_name.GetExt() == "wd")
+    {
+        int counter = 1;
+
+        description.AppendLine(wxString::Format("%d resources", resources.size()));
+
+        for each (const Resource & resource in resources)
+        {
+            if (resource.file_name.empty())
+            {
+                description.AppendLine(wxString::Format("%d : Empty name resource", counter++));
+
+                continue;
+            }
+
+            if (resource.info.length)
+            {
+                description.AppendLine(wxString::Format("%d : %s %d %d", counter++, resource.file_name.c_str(), resource.info.length, resource.info.decompressedLength));
+            }
+            else
+            {
+                description.AppendLine(wxString::Format("%d : Empty resource", counter++));
+            }
+        }
+    }
 }

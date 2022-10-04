@@ -1,6 +1,7 @@
 // 2022/09/23 20:23:27 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
 #include "Packer/Resources/Resource.h"
+#include "Packer/DescriptionFile.h"
 
 
 namespace Packer
@@ -10,12 +11,15 @@ namespace Packer
     public:
 
         ArchiveWD(const wxFileName &);
+        ArchiveWD(const wxString &path);
 
         // Читать содержимое
         bool ReadContent();
 
         // Распаковать содержимое
         void Unpack(const wxString &path);
+
+        void GetDescription(DescriptionFile &out);
 
         std::vector<Resource> resources;
 
