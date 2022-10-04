@@ -95,16 +95,21 @@ void Packer::ArchiveWD::Unpack(const wxString &path)
 
                 if (!wxDir::Exists(dir))
                 {
-                    wxDir::Make(dir);
+                    wxDir::Make(dir, wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
                 }
 
                 wxFile file_resource;
 
-                file_resource.Create(path_resource.GetFullPath(), true);
+                wxString _path_resource = path_resource.GetFullPath();
+
+                file_resource.Create(_path_resource, true);
+
+                void *_data = data.GetData();
+                size_t _size = data.GetBufSize();
 
                 file_resource.Write(data.GetData(), data.GetBufSize());
 
-                if (desc.unknown_data.size())
+                if (desc.unknown_data.size())   
                 {
                     wxFile file_unknown;
 
