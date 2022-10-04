@@ -20,6 +20,7 @@ PageDirectory::PageDirectory(wxWindow *parent) : wxGenericDirCtrl(parent)
 
     Bind(wxEVT_DIRCTRL_SELECTIONCHANGED, &PageDirectory::OnFileSelected, this);
     Bind(wxEVT_DIRCTRL_FILEACTIVATED, &PageDirectory::OnFileActivated, this);
+    Bind(wxEVT_TREE_ITEM_RIGHT_CLICK, &PageDirectory::OnRightClick, this);
 }
 
 void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
@@ -37,4 +38,14 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
 void PageDirectory::OnFileActivated(wxTreeEvent &event) //-V2009
 {
     Packer::ProcessFile(PageDirectory::self->GetPath(event.GetItem()));
+}
+
+
+void PageDirectory::OnRightClick(wxTreeEvent &event)
+{
+    wxMenu menu;
+    menu.Append(wxID_ANY, "Unpack");
+    PopupMenu(&menu, event.GetPoint().x, event.GetPoint().y);
+
+    event.Skip();
 }
