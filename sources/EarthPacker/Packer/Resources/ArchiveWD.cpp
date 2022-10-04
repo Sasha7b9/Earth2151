@@ -51,9 +51,7 @@ bool Packer::ArchiveWD::ReadDescriptor(const wxFileName &_file_name)
 
 bool Packer::ArchiveWD::IsCorrectFile(const wxString &path)
 {
-    FileInputStream file(path);
-
-    return ArchiveWD().IsValidWDFile(file);
+    return wxFileName(path).GetExt() == "wd";
 }
 
 
