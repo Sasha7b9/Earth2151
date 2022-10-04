@@ -89,38 +89,41 @@ void Packer::ArchiveWD::Unpack(const wxString &path)
         {
             wxFileName path_resource(file.GetPath() + wxFileName::GetPathSeparator() + desc.file_name);
 
-            wxString dir = path_resource.GetPath();
-
-            if (!wxDir::Exists(dir))
+            if (!path_resource.GetExt().empty())
             {
-                wxDir::Make(dir);
-            }
+                wxString dir = path_resource.GetPath();
 
-            wxFile file_resource;
-
-            file_resource.Create(path_resource.GetFullPath(), true);
-
-            file_resource.Write(data.GetData(), data.GetBufSize());
-
-            if (desc.unknown_data.size())
-            {
-                wxFile file_unknown;
-
-                file_unknown.Create(file.GetPath() + wxFileName::GetPathSeparator() + desc.file_name + ".unknownData", true);
-
-                for (uint i = 0; i < desc.unknown_data.size(); i++)
+                if (!wxDir::Exists(dir))
                 {
-                    file_unknown.Write(&desc.unknown_data[i], 1);
+                    wxDir::Make(dir);
                 }
-            }
 
-            if (typeid(desc) == typeid(Packer::TranslatableResource))
-            {
-                wxFile file_trans;
+                wxFile file_resource;
 
-                file_trans.Create(file.GetPath() + wxFileName::GetPathSeparator() + desc.file_name + ".translationId", true);
+                file_resource.Create(path_resource.GetFullPath(), true);
 
-                file_trans.Write(((Packer::TranslatableResource *)&desc)->translationID); //-V717
+                file_resource.Write(data.GetData(), data.GetBufSize());
+
+                if (desc.unknown_data.size())
+                {
+                    wxFile file_unknown;
+
+                    file_unknown.Create(file.GetPath() + wxFileName::GetPathSeparator() + desc.file_name + ".unknownData", true);
+
+                    for (uint i = 0; i < desc.unknown_data.size(); i++)
+                    {
+                        file_unknown.Write(&desc.unknown_data[i], 1);
+                    }
+                }
+
+                if (typeid(desc) == typeid(Packer::TranslatableResource))
+                {
+                    wxFile file_trans;
+
+                    file_trans.Create(file.GetPath() + wxFileName::GetPathSeparator() + desc.file_name + ".translationId", true);
+
+                    file_trans.Write(((Packer::TranslatableResource *)&desc)->translationID); //-V717
+                }
             }
         }
     }
