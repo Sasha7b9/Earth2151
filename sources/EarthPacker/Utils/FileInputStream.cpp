@@ -24,6 +24,8 @@ wxMemoryBuffer FileInputStream::ReadBytes(int offset, int num_bytes)
     if (num_bytes == 0)
     {
         LOG_ERROR("Need read %d bytes", num_bytes);
+
+        return wxMemoryBuffer();
     }
 
     wxMemoryBuffer result(num_bytes);
