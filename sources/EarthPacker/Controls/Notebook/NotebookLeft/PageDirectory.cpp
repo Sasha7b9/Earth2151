@@ -11,7 +11,8 @@ PageDirectory *PageDirectory::self = nullptr;
 
 enum
 {
-    ID_POPUP_UNPACK = wxID_HIGHEST + 1
+    ID_POPUP_UNPACK = wxID_HIGHEST + 1,
+    ID_POPUP_VIEW
 };
 
 
@@ -52,9 +53,15 @@ void PageDirectory::OnRightClick(wxTreeEvent &event)
     SelectPath(GetPath(event.GetItem()));
 
     wxMenu menu;
+
+    menu.Append(ID_POPUP_VIEW, "View");
+    Bind(wxEVT_MENU, &PageDirectory::OnMenuView, this, ID_POPUP_VIEW);
+
     menu.Append(ID_POPUP_UNPACK, "Unpack");
     Bind(wxEVT_MENU, &PageDirectory::OnMenuUnpack, this, ID_POPUP_UNPACK);
+
     PopupMenu(&menu, event.GetPoint());
+
     event.Skip();
 }
 
@@ -62,4 +69,10 @@ void PageDirectory::OnRightClick(wxTreeEvent &event)
 void PageDirectory::OnMenuUnpack(wxCommandEvent &)
 {
     Packer::ProcessFile(GetPath());
+}
+
+
+void PageDirectory::OnMenuView(wxCommandEvent &)
+{
+
 }
