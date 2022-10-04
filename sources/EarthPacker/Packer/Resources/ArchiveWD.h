@@ -9,8 +9,7 @@ namespace Packer
     {
     public:
 
-        // Читать оглавление
-        bool ReadDescriptor(const wxFileName &);
+        ArchiveWD(const wxFileName &);
 
         // Читать содержимое
         bool ReadContent();

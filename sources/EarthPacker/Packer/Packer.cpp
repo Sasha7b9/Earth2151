@@ -26,14 +26,11 @@ void Packer::ProcessFile(const wxString &path)
     }
     else if (fileName.GetExt() == "wd")
     {
-        ArchiveWD arch;
+        ArchiveWD arch(fileName);
 
-        if (arch.ReadDescriptor(fileName))
-        {
-            arch.ReadContent();
+        arch.ReadContent();
 
-            arch.Unpack(fileName.GetPath() + wxFileName::GetPathSeparator());
-        }
+        arch.Unpack(fileName.GetPath() + wxFileName::GetPathSeparator());
     }
 }
 
@@ -57,9 +54,7 @@ void Packer::GetDescriptionFile(const wxString &path, DescriptionFile &descripti
 
     if (file_name.GetExt() == "wd")
     {
-        ArchiveWD arch;
-
-        arch.ReadDescriptor(file_name);
+        ArchiveWD arch(file_name);
 
         GetDescriptionFileWD(arch, description);
     }

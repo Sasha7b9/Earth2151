@@ -7,15 +7,13 @@
 #include "Packer/Resources/TranslatableResource.h"
 
 
-bool Packer::ArchiveWD::ReadDescriptor(const wxFileName &_file_name)
+Packer::ArchiveWD::ArchiveWD(const wxFileName &_file_name) : file_name(_file_name)
 {
-    file_name = _file_name;
-
     FileInputStream file(file_name.GetFullPath());
 
     if (!IsValidWDFile(file))
     {
-        return false;
+        return;
     }
 
     uint dirLn = file.ReadUINT(file.GetSize() - 4);
@@ -44,8 +42,6 @@ bool Packer::ArchiveWD::ReadDescriptor(const wxFileName &_file_name)
 
         resources.emplace_back(resource);
     }
-
-    return true;
 }
 
 
