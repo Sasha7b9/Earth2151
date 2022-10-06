@@ -39,7 +39,7 @@ void PageInfo::OnSizeEvent(wxSizeEvent &event)
 
 void PageInfo::OnMouseWheel(wxMouseEvent &event)
 {
-    scroll_bar.MoveOnLines(event.GetWheelRotation() < 0 ? 1 : -1);
+    scroll_bar.MoveOnLines(event.GetWheelRotation() < 0 ? 5 : -5);
 
     Refresh();
 }
@@ -143,6 +143,8 @@ void PageInfo::ScrollBar::MoveOnLines(int num_lines)
     {
         position = GetRange();
     }
+
+    LOG_WRITE("range %d, position %d", GetRange(), position);
 
     SetPosition(position);
 }
