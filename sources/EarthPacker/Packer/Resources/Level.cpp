@@ -3,7 +3,7 @@
 #include "Packer/Resources/Level.h"
 
 
-Packer::Level::Level(std::string &filename, ResourceInfo info, std::string &_id, std::vector<uint8> *data) :
+Level::Level(std::string &filename, ResourceInfo info, std::string &_id, std::vector<uint8> *data) :
     Resource(filename, info, data), id(_id)
 {
 

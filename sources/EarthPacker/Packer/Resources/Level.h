@@ -3,14 +3,10 @@
 #include "Packer/Resources/Resource.h"
 
 
-namespace Packer
+class Level : public Resource
 {
-    class Level : public Resource
-    {
-    public:
-        Level(std::string &filename, ResourceInfo, std::string &id, std::vector<uint8> *);
-    private:
-        std::string id;
-    };
-}
-
+public:
+    Level(std::string &filename, ResourceInfo, std::string &id, std::vector<uint8> *);
+private:
+    std::string id;
+};
