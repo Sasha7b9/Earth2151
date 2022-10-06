@@ -2,7 +2,7 @@
 #include "defines.h"
 #include "Controls/Notebook/NotebookLeft/PageDirectory.h"
 #include "Controls/Notebook/NotebookRight/PageInfo.h"
-#include "Resources/ArchiveWD.h"
+#include "Resources/Archive.h"
 #include "Resources/Packer.h"
 #include "Controls/Notebook/NotebookLeft/NotebookLeft.h"
 #include "Controls/Notebook/NotebookLeft/PageInfoWD.h"

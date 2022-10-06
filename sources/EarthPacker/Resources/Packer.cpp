@@ -2,7 +2,7 @@
 #include "defines.h"
 #include "Resources/Packer.h"
 #include "Models/Model.h"
-#include "Resources/ArchiveWD.h"
+#include "Resources/Archive.h"
 #include "Utils/Zlib.h"
 #include "Resources/TranslatableResource.h"
 

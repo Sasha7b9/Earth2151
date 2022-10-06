@@ -1,6 +1,6 @@
 // 2022/09/23 20:23:36 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
-#include "Resources/ArchiveWD.h"
+#include "Resources/Archive.h"
 #include "Resources/ResourceFactory.h"
 #include "Utils/FileInputStream.h"
 #include "Utils/Zlib.h"
