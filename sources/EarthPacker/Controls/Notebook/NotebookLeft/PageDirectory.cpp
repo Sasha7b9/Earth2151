@@ -14,7 +14,8 @@ PageDirectory *PageDirectory::self = nullptr;
 enum
 {
     ID_POPUP_UNPACK = wxID_HIGHEST + 1,
-    ID_POPUP_VIEW
+    ID_POPUP_VIEW,
+    ID_POPUP_VIEW_MSH
 };
 
 
@@ -22,8 +23,8 @@ PageDirectory::PageDirectory(wxWindow *parent) : wxGenericDirCtrl(parent)
 {
     self = this;
 
-    wxWindowBase::SetMinClientSize({ 200, 100 });
-    SetClientSize({ 200, 100 });
+    wxWindowBase::SetMinClientSize({ 300, 100 });
+    SetClientSize({ 300, 100 });
 
     wxGenericDirCtrl::ExpandPath("C:/Temp/Earth2150");
 
@@ -36,7 +37,7 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
 {
     wxString path = GetPath(event.GetItem());
 
-    DescriptionFile description;
+    DescriptionFileWD description;
 
     Packer::ArchiveWD arch(path);
 
@@ -56,28 +57,36 @@ void PageDirectory::OnRightClick(wxTreeEvent &event)
 {
     SelectPath(GetPath(event.GetItem()));
 
-    if (!Packer::ArchiveWD::IsCorrectFile(GetPath(event.GetItem())))
-    {
-        return;
-    }
+    wxFileName file_name(GetPath(event.GetItem()));
 
     wxMenu menu;
 
-    menu.Append(ID_POPUP_VIEW, "View");
-    Bind(wxEVT_MENU, &PageDirectory::OnMenuView, this, ID_POPUP_VIEW);
-
-    menu.Append(ID_POPUP_UNPACK, "Unpack");
-    Bind(wxEVT_MENU, &PageDirectory::OnMenuUnpack, this, ID_POPUP_UNPACK);
+    if (file_name.GetExt() == "wd")
+    {
+        menu.Append(ID_POPUP_UNPACK, "Unpack");
+        Bind(wxEVT_MENU, &PageDirectory::OnMenuUnpack, this, ID_POPUP_UNPACK);
+    }
+    else if (file_name.GetExt() == "msh")
+    {
+        menu.Append(ID_POPUP_VIEW_MSH, "View");
+        Bind(wxEVT_MENU, &PageDirectory::OnMenuViewMSH, this, ID_POPUP_VIEW_MSH);
+    }
 
     PopupMenu(&menu, event.GetPoint());
 
     event.Skip();
+
+//    menu.Append(ID_POPUP_VIEW, "View");
+//    Bind(wxEVT_MENU, &PageDirectory::OnMenuView, this, ID_POPUP_VIEW);
 }
 
 
 void PageDirectory::OnMenuUnpack(wxCommandEvent &)
 {
     Packer::ProcessFile(GetPath());
+
+    wxGenericDirCtrl::CollapseTree();
+    wxGenericDirCtrl::ExpandPath("C:/Temp/Earth2150");
 }
 
 
@@ -90,4 +99,10 @@ void PageDirectory::OnMenuView(wxCommandEvent &)
     NotebookLeft::self->AddPage(new PageInfoWD(GetPath()), GetPath());
 
     NotebookLeft::self->ChangeSelection(1);
+}
+
+
+void PageDirectory::OnMenuViewMSH(wxCommandEvent &)
+{
+
 }

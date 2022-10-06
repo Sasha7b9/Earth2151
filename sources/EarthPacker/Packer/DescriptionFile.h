@@ -23,7 +23,7 @@ struct DescInfo
 *  Текстовое описание разбираемого файла
 */
 
-class DescriptionFile : public std::vector<DescInfo>
+class DescriptionFileWD : public std::vector<DescInfo>
 {
     friend class Packer::ArchiveWD;
 

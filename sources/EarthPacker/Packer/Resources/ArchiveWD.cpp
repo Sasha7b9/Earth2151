@@ -155,7 +155,7 @@ bool Packer::ArchiveWD::IsValidWDFile(wxFileInputStream &stream)
 }
 
 
-void Packer::ArchiveWD::GetDescription(DescriptionFile &description)
+void Packer::ArchiveWD::GetDescription(DescriptionFileWD &description)
 {
     description.file_name = wxString::Format("File : %s", file_name.GetFullPath().c_str());
 

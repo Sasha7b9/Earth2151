@@ -11,13 +11,13 @@ public:
 
     static PageInfo *self;
 
-    void SetDescriptionFile(const DescriptionFile &);
+    void SetDescriptionFile(const DescriptionFileWD &);
 
 private:
 
     static const int PIXELS_IN_LINE = 18;
 
-    DescriptionFile description;
+    DescriptionFileWD description;
 
     void OnPaintEvent(wxPaintEvent &);
     void OnSizeEvent(wxSizeEvent &);

@@ -19,7 +19,7 @@ namespace Packer
         // Распаковать содержимое
         void Unpack(const wxString &path);
 
-        void GetDescription(DescriptionFile &out);
+        void GetDescription(DescriptionFileWD &out);
 
         std::vector<Resource> resources;
 

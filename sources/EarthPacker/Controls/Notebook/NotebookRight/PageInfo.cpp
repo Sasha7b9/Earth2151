@@ -82,7 +82,7 @@ void PageInfo::DrawDescription()
 }
 
 
-void PageInfo::SetDescriptionFile(const DescriptionFile &_description)
+void PageInfo::SetDescriptionFile(const DescriptionFileWD &_description)
 {
     description = _description;
 

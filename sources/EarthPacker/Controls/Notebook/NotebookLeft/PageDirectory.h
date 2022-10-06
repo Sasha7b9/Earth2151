@@ -17,5 +17,6 @@ private:
     void OnRightClick(wxTreeEvent &);
 
     void OnMenuView(wxCommandEvent &);
+    void OnMenuViewMSH(wxCommandEvent &);
     void OnMenuUnpack(wxCommandEvent &);
 };

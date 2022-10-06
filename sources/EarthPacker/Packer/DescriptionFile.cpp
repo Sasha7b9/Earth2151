@@ -3,19 +3,19 @@
 #include "Packer/DescriptionFile.h"
 
 
-bool DescriptionFile::IsValid() const
+bool DescriptionFileWD::IsValid() const
 {
     return false;
 }
 
 
-void DescriptionFile::AppendLine(const DescInfo &info)
+void DescriptionFileWD::AppendLine(const DescInfo &info)
 {
     push_back(info);
 }
 
 
-int DescriptionFile::Size()
+int DescriptionFileWD::Size()
 {
     return (int)size();
 }
