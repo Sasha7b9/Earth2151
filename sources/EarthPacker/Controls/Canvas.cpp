@@ -48,6 +48,12 @@ void Canvas::DrawVLine(int x, int y1, int y2)
 }
 
 
+void Canvas::DrawHLine(int y, int x1, int x2)
+{
+    memDC->DrawLine(x1, y, x2, y);
+}
+
+
 void Canvas::EndScene()
 {
     memDC->SelectObject(wxNullBitmap);

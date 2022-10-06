@@ -28,6 +28,7 @@ protected:
 
     void DrawLine(int x1, int y1, int x2, int y2);
     void DrawVLine(int x, int y1, int y2);
+    void DrawHLine(int y, int x1, int x2);
 
     void EndScene();
 

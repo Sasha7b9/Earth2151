@@ -64,6 +64,8 @@ void PageInfo::DrawDescription()
 {
     int first_line = scroll_bar.GetFirstLine();
 
+    Canvas::DrawHLine(0, 0, GetClientSize().GetWidth() - 1);
+
     for (size_t i = first_line; i < description.size(); i++)
     {
         DrawLine(i * PIXELS_IN_LINE - first_line * PIXELS_IN_LINE, description[i]);
@@ -137,7 +139,7 @@ void PageInfo::ScrollBar::MoveOnLines(int num_lines)
 }
 
 
-void PageInfo::DrawLine(int y, const DescInfo &)
+void PageInfo::DrawLine(int y, const DescInfo &desc)
 {
     int width = GetClientSize().GetWidth();
 
@@ -145,5 +147,7 @@ void PageInfo::DrawLine(int y, const DescInfo &)
     Canvas::DrawLine(0, y + PIXELS_IN_LINE, width, y + PIXELS_IN_LINE);
     Canvas::DrawLine(width - 1, y, width - 1, y + PIXELS_IN_LINE);
 
-    Canvas::DrawVLine(50, y, y + PIXELS_IN_LINE);
+    Canvas::DrawVLine(35, y, y + PIXELS_IN_LINE);
+
+    DrawText(3, y + 2, wxString::Format("%d", desc.num_line));
 }
