@@ -2,6 +2,7 @@
 #pragma once
 #include "Controls/Canvas.h"
 #include "Packer/DescriptionFile.h"
+#include "Packer/Resources/ArchiveWD.h"
 
 
 class PageInfo : public Canvas
