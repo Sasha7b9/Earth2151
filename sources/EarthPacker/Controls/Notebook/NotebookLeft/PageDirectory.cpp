@@ -56,9 +56,9 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
 }
 
 
-void PageDirectory::OnFileActivated(wxTreeEvent &event) //-V2009
+void PageDirectory::OnFileActivated(wxTreeEvent &) //-V2009
 {
-    Packer::ProcessFile(GetPath(event.GetItem()));
+
 }
 
 
@@ -92,10 +92,17 @@ void PageDirectory::OnRightClick(wxTreeEvent &event)
 
 void PageDirectory::OnMenuUnpack(wxCommandEvent &)
 {
-    Packer::ProcessFile(GetPath());
+    wxFileName file_name(GetPath());
 
-    wxGenericDirCtrl::CollapseTree();
-    wxGenericDirCtrl::ExpandPath("C:/Temp/Earth2150");
+    if (file_name.GetExt() == "wd")
+    {
+        Archive arch(file_name);
+        arch.ReadContent();
+        arch.Unpack(file_name.GetPath() + wxFileName::GetPathSeparator());
+
+        wxGenericDirCtrl::CollapseTree();
+        wxGenericDirCtrl::ExpandPath("C:/Temp/Earth2150");
+    }
 }
 
 

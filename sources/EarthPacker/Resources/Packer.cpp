@@ -7,32 +7,12 @@
 #include "Resources/TranslatableResource.h"
 
 
-namespace Packer
-{
-    static void CreateModel(const wxFileName &);
-}
-
-
 void Packer::ProcessFile(const wxString &path)
 {
-    wxFileName fileName(path);
+    wxFileName file_name(path);
 
-    if (fileName.GetExt() == "msh")
+    if (file_name.GetExt() == "msh")
     {
-        CreateModel(fileName);
+        new Models::Model(file_name);
     }
-    else if (fileName.GetExt() == "wd")
-    {
-        Archive arch(fileName);
-
-        arch.ReadContent();
-
-        arch.Unpack(fileName.GetPath() + wxFileName::GetPathSeparator());
-    }
-}
-
-
-void Packer::CreateModel(const wxFileName &file_name)
-{
-    new Models::Model(file_name);
 }
