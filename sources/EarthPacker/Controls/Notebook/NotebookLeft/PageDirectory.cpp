@@ -1,9 +1,9 @@
 // 2022/09/23 13:48:54 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Controls/Notebook/NotebookLeft/PageDirectory.h"
-#include "Packer/Packer.h"
 #include "Controls/Notebook/NotebookRight/PageInfo.h"
-#include "Packer/Resources/ArchiveWD.h"
+#include "Resources/ArchiveWD.h"
+#include "Resources/Packer.h"
 #include "Controls/Notebook/NotebookLeft/NotebookLeft.h"
 #include "Controls/Notebook/NotebookLeft/PageInfoWD.h"
 

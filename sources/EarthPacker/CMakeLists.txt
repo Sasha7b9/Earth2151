@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.14)
 
 project (EarthPacker)
 
-set(CMAKE_UNITY_BUILD ON)
+set(CMAKE_UNITY_BUILD OFF)
 
 include_directories(.
                     ../ThirdParty/wxWidgets/include
@@ -72,8 +72,7 @@ file(GLOB CONTROLS_NB_RIGHT         Controls/Notebook/NotebookRight/*.*)
 file(GLOB MODELS                    Models/*.*)
 file(GLOB MODELS_COLLECTIONS        Models/Collections/*.*)
 file(GLOB MODELS_ELEMENTS           Models/Elements/*.*)
-file(GLOB PACKER                    Packer/*.*)
-file(GLOB PACKER_RESOURCES          Packer/Resources/*.*)
+file(GLOB RESOURCES                 Resources/*.*)
 file(GLOB UTILS                     Utils/*.*)
 
 source_group(src                             FILES ${SRC})
@@ -84,8 +83,7 @@ source_group(Controls/Notebook/NotebookRight FILES ${CONTROLS_NB_RIGHT})
 source_group(Models                          FILES ${MODELS})
 source_group(Models/Collections              FILES ${MODELS_COLLECTIONS})
 source_group(Models/Elements                 FILES ${MODELS_ELEMENTS})
-source_group(Packer                          FILES ${PACKER})
-source_group(Packer/Resources                FILES ${PACKER_RESOURCES})
+source_group(Resources                       FILES ${RESOURCES})
 source_group(Utils                           FILES ${UTILS})
 
 add_executable( ${PROJECT_NAME}
@@ -97,8 +95,7 @@ add_executable( ${PROJECT_NAME}
                 ${MODELS}
                 ${MODELS_COLLECTIONS}
                 ${MODELS_ELEMENTS}
-                ${PACKER}
-                ${PACKER_RESOURCES}
+                ${RESOURCES}
                 ${UTILS}
                 )
 

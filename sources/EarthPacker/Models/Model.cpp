@@ -3,7 +3,7 @@
 #include "Models/Model.h"
 #include "Utils/FileInputStream.h"
 #include "Models/Collections/MountPoints.h"
-#include "Packer/Resources/Mesh.h"
+#include "Resources/Mesh.h"
 
 
 Models::Model::Model(const wxFileName &file_name)

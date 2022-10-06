@@ -1,10 +1,10 @@
 // 2022/09/23 20:23:36 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
-#include "Packer/Resources/ArchiveWD.h"
-#include "Packer/Resources/ResourceFactory.h"
+#include "Resources/ArchiveWD.h"
+#include "Resources/ResourceFactory.h"
 #include "Utils/FileInputStream.h"
 #include "Utils/Zlib.h"
-#include "Packer/Resources/TranslatableResource.h"
+#include "Resources/TranslatableResource.h"
 
 
 ArchiveWD::ArchiveWD(const wxString &path) : ArchiveWD(wxFileName(path))
