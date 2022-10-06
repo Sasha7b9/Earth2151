@@ -3,16 +3,13 @@
 #include "Utils/FileInputStream.h"
 
 
-namespace Models
+class ModelTemplate
 {
-    class ModelTemplate
-    {
-    public:
-        ModelTemplate(FileInputStream &);
-    private:
-        static const int ROWS = 4;
-        static const int COLUMNS = 4;
+public:
+    ModelTemplate(FileInputStream &);
+private:
+    static const int ROWS = 4;
+    static const int COLUMNS = 4;
 
-        bool matrix[ROWS][COLUMNS];
-    };
-}
+    bool matrix[ROWS][COLUMNS];
+};

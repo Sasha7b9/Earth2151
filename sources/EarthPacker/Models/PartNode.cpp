@@ -3,7 +3,7 @@
 #include "Models/PartNode.h"
 
 
-PartNode::PartNode(int _id, Models::ModelPart *_part, PartNode *_parent)
+PartNode::PartNode(int _id, ModelPart *_part, PartNode *_parent)
 {
     id = _id;
     part = _part;

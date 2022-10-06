@@ -7,21 +7,18 @@
 #include "Models/Collections/Animations.h"
 
 
-namespace Models
+class ModelPart
 {
-    class ModelPart
-    {
-    public:
-        class ModelPart(FileInputStream &);
+public:
+    class ModelPart(FileInputStream &);
 
-        Vertices vertices;
-        int skipParent;
-        int unknownFlag;
-        TextureInfo texture;
-        Faces faces;
-        Animations animations;
-        int unknownValue;
-        Vector offset;
-        uint8 unknown_bytes[5];
-    };
-}
+    Vertices vertices;
+    int skipParent;
+    int unknownFlag;
+    TextureInfo texture;
+    Faces faces;
+    Animations animations;
+    int unknownValue;
+    Vector offset;
+    uint8 unknown_bytes[5];
+};

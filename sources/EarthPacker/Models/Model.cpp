@@ -6,7 +6,7 @@
 #include "Resources/Mesh.h"
 
 
-Models::Model::Model(const wxFileName &file_name)
+Model::Model(const wxFileName &file_name)
 {
     FileInputStream stream(file_name.GetFullPath());
 
@@ -41,7 +41,7 @@ Models::Model::Model(const wxFileName &file_name)
     partsTree = GetPartsTree();
 }
 
-PartNode *Models::Model::GetPartsTree()
+PartNode *Model::GetPartsTree()
 {
     int currentID = 0;
     PartNode * const root = new PartNode(currentID, *parts.begin());
@@ -68,7 +68,7 @@ PartNode *Models::Model::GetPartsTree()
 }
 
 
-void Models::Model::CheckHeader(FileInputStream &stream)
+void Model::CheckHeader(FileInputStream &stream)
 {
     wxMemoryBuffer span = stream.ReadBytes(8);
 
@@ -81,7 +81,7 @@ void Models::Model::CheckHeader(FileInputStream &stream)
 }
 
 
-void Models::Model::GetParts(FileInputStream &stream, std::list<ModelPart *> &_parts)
+void Model::GetParts(FileInputStream &stream, std::list<ModelPart *> &_parts)
 {
     _parts.clear();
 

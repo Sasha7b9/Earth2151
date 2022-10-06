@@ -3,7 +3,7 @@
 #include "Models/ModelPart.h"
 
 
-Models::ModelPart::ModelPart(FileInputStream &stream)
+ModelPart::ModelPart(FileInputStream &stream)
 {
     vertices.Create(stream);
     skipParent = stream.ReadByte();

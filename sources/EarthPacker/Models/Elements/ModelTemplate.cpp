@@ -3,7 +3,7 @@
 #include "Models/Elements/ModelTemplate.h"
 
 
-Models::ModelTemplate::ModelTemplate(FileInputStream &stream)
+ModelTemplate::ModelTemplate(FileInputStream &stream)
 {
     std::bitset<16> data{ stream.Read2Bytes() };
 

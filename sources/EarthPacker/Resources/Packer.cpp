@@ -13,6 +13,6 @@ void Packer::ProcessFile(const wxString &path)
 
     if (file_name.GetExt() == "msh")
     {
-        new Models::Model(file_name);
+        new Model(file_name);
     }
 }
