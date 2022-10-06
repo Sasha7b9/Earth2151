@@ -6,6 +6,14 @@
 #include "Resources/Mesh.h"
 
 
+#define wxUSE_EXTENDED_RTTI 1
+
+
+#if !wxUSE_EXTENDED_RTTI
+#error This sample requires XTI (eXtended RTTI) enabled
+#endif
+
+
 Model::Model(const wxFileName &file_name)
 {
     FileInputStream stream(file_name.GetFullPath());
@@ -71,6 +79,11 @@ PartNode *Model::GetPartsTree()
 void Model::SaveToXML(const wxFileName &file_name)
 {
     wxXmlDocument xml;
+
+    wxXmlNode *root = new wxXmlNode(wxXML_ELEMENT_NODE, "Root", "Content");
+    xml.SetRoot(root);
+
+    wxObjectXmlWriter 
 }
 
 

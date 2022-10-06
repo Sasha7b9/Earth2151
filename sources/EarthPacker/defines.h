@@ -27,6 +27,7 @@ typedef signed char int8;
 #include <wx/mstream.h>
 #include <wx/dir.h>
 #include <wx/wfstream.h>
-#include <glm/glm.hpp>
 #include <wx/xml/xml.h>
+#include <wx/xtixml.h>
+#include <glm/glm.hpp>
 #pragma warning(pop)
