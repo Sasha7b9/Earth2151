@@ -3,9 +3,9 @@
 #include "Controls/Notebook/NotebookLeft/PageDirectory.h"
 #include "Controls/Notebook/NotebookRight/PageInfo.h"
 #include "Resources/Archive.h"
-#include "Resources/Packer.h"
 #include "Controls/Notebook/NotebookLeft/NotebookLeft.h"
 #include "Controls/Notebook/NotebookLeft/PageInfoWD.h"
+#include "Models/Model.h"
 
 
 PageDirectory *PageDirectory::self = nullptr;
@@ -51,7 +51,7 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
     }
     else if(file_name.GetExt() == "msh")
     {
-
+        Model model(file_name);
     }
 }
 
