@@ -3,7 +3,7 @@
 #include "Packer/Resources/Interface.h"
 
 
-Packer::Interface::Interface(std::string &filename, ResourceInfo info, std::string &translationID) :
+Interface::Interface(std::string &filename, ResourceInfo info, std::string &translationID) :
     TranslatableResource(filename, info, translationID)
 {
 

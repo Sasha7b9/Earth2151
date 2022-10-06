@@ -3,11 +3,8 @@
 #include "Packer/Resources/TranslatableResource.h"
 
 
-namespace Packer
+class Interface : public TranslatableResource
 {
-    class Interface : public TranslatableResource
-    {
-    public:
-        Interface(std::string &filename, ResourceInfo, std::string &translationID);
-    };
-}
+public:
+    Interface(std::string &filename, ResourceInfo, std::string &translationID);
+};

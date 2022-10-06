@@ -3,12 +3,9 @@
 #include "Packer/Resources/Resource.h"
 
 
-namespace Packer
+class TranslatableResource : public Resource
 {
-    class TranslatableResource : public Resource
-    {
-    public:
-        TranslatableResource(std::string &filename, ResourceInfo, std::string translationID, std::vector<uint8> * = nullptr);
-        std::string translationID;
-    };
-}
+public:
+    TranslatableResource(std::string &filename, ResourceInfo, std::string translationID, std::vector<uint8> * = nullptr);
+    std::string translationID;
+};

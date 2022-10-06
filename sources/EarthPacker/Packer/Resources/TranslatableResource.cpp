@@ -3,7 +3,7 @@
 #include "Packer/Resources/TranslatableResource.h"
 
 
-Packer::TranslatableResource::TranslatableResource(std::string &filename, ResourceInfo info, std::string _translationID, std::vector<uint8> *unknown_data) :
+TranslatableResource::TranslatableResource(std::string &filename, ResourceInfo info, std::string _translationID, std::vector<uint8> *unknown_data) :
     Resource(filename, info, unknown_data), translationID(_translationID)
 {
 

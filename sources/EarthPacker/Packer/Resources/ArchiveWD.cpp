@@ -128,13 +128,13 @@ void ArchiveWD::Unpack(const wxString &path)
                     }
                 }
 
-                if (typeid(desc) == typeid(Packer::TranslatableResource))
+                if (typeid(desc) == typeid(TranslatableResource))
                 {
                     wxFile file_trans;
 
                     file_trans.Create(file.GetPath() + wxFileName::GetPathSeparator() + desc.file_name + ".translationId", true);
 
-                    file_trans.Write(((Packer::TranslatableResource *)&desc)->translationID); //-V717
+                    file_trans.Write(((TranslatableResource *)&desc)->translationID); //-V717
                 }
             }
         }
