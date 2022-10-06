@@ -28,7 +28,7 @@ private:
 
     void DrawDescription();
 
-    void DrawLine(int, const DescInfo &);
+    void DrawLine(int, const DescInfoWD &);
 
     int DrawCell(int x, int y, int width, const wxString &);
 

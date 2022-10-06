@@ -9,7 +9,7 @@ bool DescriptionFileWD::IsValid() const
 }
 
 
-void DescriptionFileWD::AppendLine(const DescInfo &info)
+void DescriptionFileWD::AppendLine(const DescInfoWD &info)
 {
     push_back(info);
 }

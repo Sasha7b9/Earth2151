@@ -37,13 +37,22 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
 {
     wxString path = GetPath(event.GetItem());
 
-    DescriptionFileWD description;
+    wxFileName file_name(path);
 
-    Packer::ArchiveWD arch(path);
+    if (file_name.GetExt() == "wd")
+    {
+        DescriptionFileWD description;
 
-    arch.GetDescription(description);
+        Packer::ArchiveWD arch(path);
 
-    PageInfo::self->SetDescriptionFile(description);
+        arch.GetDescription(description);
+
+        PageInfo::self->SetDescriptionFile(description);
+    }
+    else if(file_name.GetExt() == "msh")
+    {
+
+    }
 }
 
 

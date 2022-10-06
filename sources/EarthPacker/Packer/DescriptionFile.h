@@ -8,9 +8,9 @@ namespace Packer
 }
 
 
-struct DescInfo
+struct DescInfoWD
 {
-    DescInfo(int _num_line, const std::string &_name, int _size = 0, int _decompressed_size = 0) :
+    DescInfoWD(int _num_line, const std::string &_name, int _size = 0, int _decompressed_size = 0) :
         num_line(_num_line), name(_name), size(_size), decompressed_size(_decompressed_size) {}
     int num_line;
     std::string name;
@@ -23,13 +23,13 @@ struct DescInfo
 *  Текстовое описание разбираемого файла
 */
 
-class DescriptionFileWD : public std::vector<DescInfo>
+class DescriptionFileWD : public std::vector<DescInfoWD>
 {
     friend class Packer::ArchiveWD;
 
 public:
     bool IsValid() const;
-    void AppendLine(const DescInfo &);
+    void AppendLine(const DescInfoWD &);
     int Size();
 private:
     std::string file_name;
