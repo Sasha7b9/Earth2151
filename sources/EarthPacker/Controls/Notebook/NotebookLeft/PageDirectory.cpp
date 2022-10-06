@@ -51,7 +51,11 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
     }
     else if(file_name.GetExt() == "msh")
     {
-        Model *model = new Model(file_name);
+        Model model(file_name);
+
+        file_name.SetExt("xml");
+
+        model.SaveToXML(file_name);
     }
 }
 

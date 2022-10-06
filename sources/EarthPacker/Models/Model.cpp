@@ -68,6 +68,12 @@ PartNode *Model::GetPartsTree()
 }
 
 
+void Model::SaveToXML(const wxFileName &file_name)
+{
+    wxXmlDocument xml;
+}
+
+
 void Model::CheckHeader(FileInputStream &stream)
 {
     wxMemoryBuffer span = stream.ReadBytes(8);
