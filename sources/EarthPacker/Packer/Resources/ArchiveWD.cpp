@@ -185,3 +185,21 @@ void ArchiveWD::GetDescription(DescriptionFileWD &description)
         }
     }
 }
+
+
+bool DescriptionFileWD::IsValid() const
+{
+    return false;
+}
+
+
+void DescriptionFileWD::AppendLine(const DescInfoWD &info)
+{
+    push_back(info);
+}
+
+
+int DescriptionFileWD::Size()
+{
+    return (int)size();
+}
