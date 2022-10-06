@@ -2,12 +2,6 @@
 #pragma once
 
 
-namespace Packer
-{
-    class ArchiveWD;
-}
-
-
 struct DescInfoWD
 {
     DescInfoWD(int _num_line, const std::string &_name, int _size = 0, int _decompressed_size = 0) :
@@ -25,7 +19,7 @@ struct DescInfoWD
 
 class DescriptionFileWD : public std::vector<DescInfoWD>
 {
-    friend class Packer::ArchiveWD;
+    friend class ArchiveWD;
 
 public:
     bool IsValid() const;

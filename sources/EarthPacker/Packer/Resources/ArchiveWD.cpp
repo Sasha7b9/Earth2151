@@ -7,12 +7,12 @@
 #include "Packer/Resources/TranslatableResource.h"
 
 
-Packer::ArchiveWD::ArchiveWD(const wxString &path) : ArchiveWD(wxFileName(path))
+ArchiveWD::ArchiveWD(const wxString &path) : ArchiveWD(wxFileName(path))
 {
 }
 
 
-Packer::ArchiveWD::ArchiveWD(const wxFileName &_file_name) : file_name(_file_name)
+ArchiveWD::ArchiveWD(const wxFileName &_file_name) : file_name(_file_name)
 {
     if (file_name.GetExt() != "wd")
     {
@@ -48,20 +48,20 @@ Packer::ArchiveWD::ArchiveWD(const wxFileName &_file_name) : file_name(_file_nam
 
     while (!stream.Eof())
     {
-        Resource resource = ResourceFactory::Create(stream);
+        Packer::Resource resource = Packer::ResourceFactory::Create(stream);
 
         resources.emplace_back(resource);
     }
 }
 
 
-bool Packer::ArchiveWD::IsCorrectFile(const wxString &path)
+bool ArchiveWD::IsCorrectFile(const wxString &path)
 {
     return wxFileName(path).GetExt() == "wd";
 }
 
 
-bool Packer::ArchiveWD::ReadContent()
+bool ArchiveWD::ReadContent()
 {
     FileInputStream file(file_name.GetFullPath());
 
@@ -70,7 +70,7 @@ bool Packer::ArchiveWD::ReadContent()
         return false;
     }
 
-    for (Resource &resource : resources)
+    for (Packer::Resource &resource : resources)
     {
         resource.data = file.ReadBytes(resource.info.offset, resource.info.length);
 
@@ -84,7 +84,7 @@ bool Packer::ArchiveWD::ReadContent()
 }
 
 
-void Packer::ArchiveWD::Unpack(const wxString &path)
+void ArchiveWD::Unpack(const wxString &path)
 {
     wxFileName file(path);
 
@@ -142,7 +142,7 @@ void Packer::ArchiveWD::Unpack(const wxString &path)
 }
 
 
-bool Packer::ArchiveWD::IsValidWDFile(wxFileInputStream &stream)
+bool ArchiveWD::IsValidWDFile(wxFileInputStream &stream)
 {
     wxZlibInputStream zstream(stream);
 
@@ -155,7 +155,7 @@ bool Packer::ArchiveWD::IsValidWDFile(wxFileInputStream &stream)
 }
 
 
-void Packer::ArchiveWD::GetDescription(DescriptionFileWD &description)
+void ArchiveWD::GetDescription(DescriptionFileWD &description)
 {
     description.file_name = wxString::Format("File : %s", file_name.GetFullPath().c_str());
 
@@ -165,7 +165,7 @@ void Packer::ArchiveWD::GetDescription(DescriptionFileWD &description)
 
         description.count_resources = resources.size();
 
-        for each (const Resource & resource in resources)
+        for each (const Packer::Resource & resource in resources)
         {
             if (resource.file_name.empty())
             {

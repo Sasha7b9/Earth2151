@@ -4,31 +4,28 @@
 #include "Packer/DescriptionFile.h"
 
 
-namespace Packer
+class ArchiveWD
 {
-    class ArchiveWD
-    {
-    public:
+public:
 
-        ArchiveWD(const wxFileName &);
-        ArchiveWD(const wxString &path);
+    ArchiveWD(const wxFileName &);
+    ArchiveWD(const wxString &path);
 
-        // Читать содержимое
-        bool ReadContent();
+    // Читать содержимое
+    bool ReadContent();
 
-        // Распаковать содержимое
-        void Unpack(const wxString &path);
+    // Распаковать содержимое
+    void Unpack(const wxString &path);
 
-        void GetDescription(DescriptionFileWD &out);
+    void GetDescription(DescriptionFileWD &out);
 
-        std::vector<Resource> resources;
+    std::vector<Packer::Resource> resources;
 
-        static bool IsCorrectFile(const wxString &path);
+    static bool IsCorrectFile(const wxString &path);
 
-    private:
+private:
 
-        wxFileName file_name;
+    wxFileName file_name;
 
-        bool IsValidWDFile(wxFileInputStream &);
-    };
-}
+    bool IsValidWDFile(wxFileInputStream &);
+};

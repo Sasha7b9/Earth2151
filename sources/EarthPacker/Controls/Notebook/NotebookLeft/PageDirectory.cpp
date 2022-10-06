@@ -43,7 +43,7 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
     {
         DescriptionFileWD description;
 
-        Packer::ArchiveWD arch(path);
+        ArchiveWD arch(path);
 
         arch.GetDescription(description);
 
@@ -101,7 +101,7 @@ void PageDirectory::OnMenuUnpack(wxCommandEvent &)
 
 void PageDirectory::OnMenuView(wxCommandEvent &)
 {
-    Packer::ArchiveWD arch(GetPath());
+    ArchiveWD arch(GetPath());
 
     NotebookLeft::self->DeletePage(1);
 
