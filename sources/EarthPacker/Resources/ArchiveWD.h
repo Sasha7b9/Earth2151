@@ -20,7 +20,7 @@ struct DescInfoWD
 
 class DescriptionFileWD : public std::vector<DescInfoWD>
 {
-    friend class ArchiveWD;
+    friend class Archive;
 
 public:
     bool IsValid() const;
@@ -32,12 +32,12 @@ private:
 };
 
 
-class ArchiveWD
+class Archive
 {
 public:
 
-    ArchiveWD(const wxFileName &);
-    ArchiveWD(const wxString &path);
+    Archive(const wxFileName &);
+    Archive(const wxString &path);
 
     // Читать содержимое
     bool ReadContent();

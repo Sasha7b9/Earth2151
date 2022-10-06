@@ -23,7 +23,7 @@ void Packer::ProcessFile(const wxString &path)
     }
     else if (fileName.GetExt() == "wd")
     {
-        ArchiveWD arch(fileName);
+        Archive arch(fileName);
 
         arch.ReadContent();
 

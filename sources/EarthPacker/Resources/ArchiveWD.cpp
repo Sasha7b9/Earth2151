@@ -7,12 +7,12 @@
 #include "Resources/TranslatableResource.h"
 
 
-ArchiveWD::ArchiveWD(const wxString &path) : ArchiveWD(wxFileName(path))
+Archive::Archive(const wxString &path) : Archive(wxFileName(path))
 {
 }
 
 
-ArchiveWD::ArchiveWD(const wxFileName &_file_name) : file_name(_file_name)
+Archive::Archive(const wxFileName &_file_name) : file_name(_file_name)
 {
     if (file_name.GetExt() != "wd")
     {
@@ -55,13 +55,13 @@ ArchiveWD::ArchiveWD(const wxFileName &_file_name) : file_name(_file_name)
 }
 
 
-bool ArchiveWD::IsCorrectFile(const wxString &path)
+bool Archive::IsCorrectFile(const wxString &path)
 {
     return wxFileName(path).GetExt() == "wd";
 }
 
 
-bool ArchiveWD::ReadContent()
+bool Archive::ReadContent()
 {
     FileInputStream file(file_name.GetFullPath());
 
@@ -84,7 +84,7 @@ bool ArchiveWD::ReadContent()
 }
 
 
-void ArchiveWD::Unpack(const wxString &path)
+void Archive::Unpack(const wxString &path)
 {
     wxFileName file(path);
 
@@ -142,7 +142,7 @@ void ArchiveWD::Unpack(const wxString &path)
 }
 
 
-bool ArchiveWD::IsValidWDFile(wxFileInputStream &stream)
+bool Archive::IsValidWDFile(wxFileInputStream &stream)
 {
     wxZlibInputStream zstream(stream);
 
@@ -155,7 +155,7 @@ bool ArchiveWD::IsValidWDFile(wxFileInputStream &stream)
 }
 
 
-void ArchiveWD::GetDescription(DescriptionFileWD &description)
+void Archive::GetDescription(DescriptionFileWD &description)
 {
     description.file_name = wxString::Format("File : %s", file_name.GetFullPath().c_str());
 
