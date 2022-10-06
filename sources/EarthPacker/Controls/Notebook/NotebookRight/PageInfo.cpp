@@ -150,7 +150,7 @@ void PageInfo::ScrollBar::MoveOnLines(int num_lines)
 }
 
 
-void PageInfo::DrawLine(int y, const DescInfoWD &desc)
+void PageInfo::DrawLine(int y, const InfoArchive &desc)
 {
     int width = GetClientSize().GetWidth();
 

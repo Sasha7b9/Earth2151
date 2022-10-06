@@ -193,7 +193,7 @@ bool DescriptionArchive::IsValid() const
 }
 
 
-void DescriptionArchive::AppendLine(const DescInfoWD &info)
+void DescriptionArchive::AppendLine(const InfoArchive &info)
 {
     push_back(info);
 }

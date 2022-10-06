@@ -3,9 +3,9 @@
 #include "Resources/Resource.h"
 
 
-struct DescInfoWD
+struct InfoArchive
 {
-    DescInfoWD(int _num_line, const std::string &_name, int _size = 0, int _decompressed_size = 0) :
+    InfoArchive(int _num_line, const std::string &_name, int _size = 0, int _decompressed_size = 0) :
         num_line(_num_line), name(_name), size(_size), decompressed_size(_decompressed_size) {}
     int num_line;
     std::string name;
@@ -18,13 +18,13 @@ struct DescInfoWD
 *  Текстовое описание разбираемого файла
 */
 
-class DescriptionArchive : public std::vector<DescInfoWD>
+class DescriptionArchive : public std::vector<InfoArchive>
 {
     friend class Archive;
 
 public:
     bool IsValid() const;
-    void AppendLine(const DescInfoWD &);
+    void AppendLine(const InfoArchive &);
     int Size();
 private:
     std::string file_name;
