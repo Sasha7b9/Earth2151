@@ -32,8 +32,6 @@ void PageInfo::OnPaintEvent(wxPaintEvent &)
 
 void PageInfo::OnSizeEvent(wxSizeEvent &event)
 {
-    MoveScrollBar();
-
     event.Skip();
 }
 
@@ -68,7 +66,7 @@ void PageInfo::DrawDescription()
 
     for (size_t i = first_line; i < description.size(); i++)
     {
-        DrawText(1, i * PIXELS_IN_LINE - first_line * PIXELS_IN_LINE, description[i]);
+        DrawLine(i * PIXELS_IN_LINE - first_line * PIXELS_IN_LINE, description[i]);
     }
 }
 
@@ -139,7 +137,13 @@ void PageInfo::ScrollBar::MoveOnLines(int num_lines)
 }
 
 
-void PageInfo::MoveScrollBar()
+void PageInfo::DrawLine(int y, const DescInfo &)
 {
+    int width = GetClientSize().GetWidth();
 
+    Canvas::DrawLine(0, y, 0, y + PIXELS_IN_LINE);
+    Canvas::DrawLine(0, y + PIXELS_IN_LINE, width, y + PIXELS_IN_LINE);
+    Canvas::DrawLine(width - 1, y, width - 1, y + PIXELS_IN_LINE);
+
+    Canvas::DrawVLine(50, y, y + PIXELS_IN_LINE);
 }

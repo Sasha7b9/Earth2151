@@ -9,9 +9,9 @@ bool DescriptionFile::IsValid() const
 }
 
 
-void DescriptionFile::AppendLine(pchar line)
+void DescriptionFile::AppendLine(const DescInfo &info)
 {
-    push_back(line);
+    push_back(info);
 }
 
 

@@ -6,9 +6,9 @@ namespace Packer
 {
     struct ResourceInfo
     {
-        uint offset = 0;
-        uint length = 0;
-        uint decompressedLength = 0;
+        int offset = 0;
+        int length = 0;
+        int decompressedLength = 0;
     };
 
     class Resource

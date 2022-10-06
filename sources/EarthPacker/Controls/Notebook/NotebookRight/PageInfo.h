@@ -27,8 +27,7 @@ private:
 
     void DrawDescription();
 
-    // Вызывается при изменении размера
-    void MoveScrollBar();
+    void DrawLine(int, const DescInfo &);
 
     struct ScrollBar
     {

@@ -1,5 +1,6 @@
 // 2022/09/05 08:47:51 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
+#include "Packer/DescriptionFile.h"
 
 
 /*
@@ -24,6 +25,9 @@ protected:
     void SetPen(const wxPen &);
 
     void DrawText(int, int, const wxString &);
+
+    void DrawLine(int x1, int y1, int x2, int y2);
+    void DrawVLine(int x, int y1, int y2);
 
     void EndScene();
 

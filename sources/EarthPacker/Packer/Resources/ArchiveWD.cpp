@@ -169,18 +169,18 @@ void Packer::ArchiveWD::GetDescription(DescriptionFile &description)
         {
             if (resource.file_name.empty())
             {
-                description.AppendLine(wxString::Format("%d : Empty name resource", counter++));
+                description.AppendLine({ counter++, std::string("Empty name resource") });
 
                 continue;
             }
 
             if (resource.info.length)
             {
-                description.AppendLine(wxString::Format("%d : %s %d %d", counter++, resource.file_name.c_str(), resource.info.length, resource.info.decompressedLength));
+                description.AppendLine({ counter++, resource.file_name.c_str(), resource.info.length, resource.info.decompressedLength });
             }
             else
             {
-                description.AppendLine(wxString::Format("%d : Empty resource", counter++));
+                description.AppendLine({ counter++, "Empty resource" });
             }
         }
     }
