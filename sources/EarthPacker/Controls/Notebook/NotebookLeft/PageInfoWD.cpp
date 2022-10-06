@@ -4,9 +4,19 @@
 #include "Controls/Notebook/NotebookLeft/NotebookLeft.h"
 
 
-PageInfoWD::PageInfoWD(const wxString &) : wxTreeCtrl(NotebookLeft::self)
+PageInfoWD::PageInfoWD(const wxString &file) : wxTreeCtrl(NotebookLeft::self)
 {
     Bind(wxEVT_RIGHT_UP, &PageInfoWD::OnMouseRightUpEvent, this);
+
+    wxTreeItemId root = AddRoot(file);
+    wxArrayTreeItemIds items;
+    items.Add(AppendItem(root, "Item 1"));
+    items.Add(AppendItem(root, "Item 2"));
+
+    wxTreeItemId root1 = items.Item(0);
+    AppendItem(root1, "subitem 1");
+
+    Expand(root);
 }
 
 

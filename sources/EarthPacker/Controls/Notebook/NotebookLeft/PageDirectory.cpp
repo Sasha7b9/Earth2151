@@ -25,7 +25,7 @@ PageDirectory::PageDirectory(wxWindow *parent) : wxGenericDirCtrl(parent)
     wxWindowBase::SetMinClientSize({ 200, 100 });
     SetClientSize({ 200, 100 });
 
-    wxGenericDirCtrl::ExpandPath("C:/Temp");
+    wxGenericDirCtrl::ExpandPath("C:/Temp/Earth2150");
 
     Bind(wxEVT_DIRCTRL_SELECTIONCHANGED, &PageDirectory::OnFileSelected, this);
     Bind(wxEVT_DIRCTRL_FILEACTIVATED, &PageDirectory::OnFileActivated, this);
@@ -88,4 +88,6 @@ void PageDirectory::OnMenuView(wxCommandEvent &)
     NotebookLeft::self->DeletePage(1);
 
     NotebookLeft::self->AddPage(new PageInfoWD(GetPath()), GetPath());
+
+    NotebookLeft::self->ChangeSelection(1);
 }
