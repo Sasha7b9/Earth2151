@@ -24,6 +24,7 @@ private:
     void OnScrollTrackEvent(wxScrollWinEvent &);
     void OnScrollLineUpEvent(wxScrollWinEvent &);
     void OnScrollLineDownEvent(wxScrollWinEvent &);
+    void OnMouseWheel(wxMouseEvent &);
 
     void DrawDescription();
 

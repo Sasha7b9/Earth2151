@@ -15,6 +15,7 @@ PageInfo::PageInfo(wxWindow *parent) : Canvas(parent)
     Bind(wxEVT_SCROLLWIN_LINEUP, &PageInfo::OnScrollLineUpEvent, this);
     Bind(wxEVT_SCROLLWIN_LINEDOWN, &PageInfo::OnScrollLineDownEvent, this);
     Bind(wxEVT_SCROLLWIN_THUMBTRACK, &PageInfo::OnScrollTrackEvent, this);
+    Bind(wxEVT_MOUSEWHEEL, &PageInfo::OnMouseWheel, this);
 
     scroll_bar.keeper = this;
 }
@@ -33,6 +34,14 @@ void PageInfo::OnPaintEvent(wxPaintEvent &)
 void PageInfo::OnSizeEvent(wxSizeEvent &event)
 {
     event.Skip();
+}
+
+
+void PageInfo::OnMouseWheel(wxMouseEvent &event)
+{
+    scroll_bar.MoveOnLines(event.GetWheelRotation() < 0 ? 1 : -1);
+
+    Refresh();
 }
 
 
