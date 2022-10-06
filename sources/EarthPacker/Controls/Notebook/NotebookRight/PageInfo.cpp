@@ -153,14 +153,9 @@ void PageInfo::DrawLine(int y, const DescInfo &desc)
 
     x = DrawCell(x, y, 50, wxString::Format("%d", desc.size));
 
-    if (desc.size != desc.decompressed_size)
-    {
-        x = DrawCell(x, y, 55, wxString::Format("%d", desc.decompressed_size));
-    }
-    else
-    {
-        x = DrawCell(x, y, 55, "*");
-    }
+    wxString text_size = (desc.size != desc.decompressed_size) ? wxString::Format("%d", desc.decompressed_size) : "*";
+
+    DrawCell(x, y, 55, text_size);
 }
 
 
