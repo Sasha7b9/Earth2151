@@ -3,12 +3,9 @@
 #include "Packer/Resources/Resource.h"
 
 
-namespace Packer
+class Mesh : public Packer::Resource
 {
-    class Mesh : public Resource
-    {
-    public:
-        Mesh(std::string &filename, ResourceInfo, std::vector<uint8> *);
-    private:
-    };
-}
+public:
+    Mesh(std::string &filename, Packer::ResourceInfo, std::vector<uint8> *);
+private:
+};
