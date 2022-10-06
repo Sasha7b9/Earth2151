@@ -41,7 +41,7 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
 
     if (file_name.GetExt() == "wd")
     {
-        DescriptionFileWD description;
+        DescriptionArchive description;
 
         Archive arch(path);
 

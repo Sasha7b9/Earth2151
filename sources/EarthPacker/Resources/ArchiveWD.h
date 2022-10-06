@@ -18,7 +18,7 @@ struct DescInfoWD
 *  Текстовое описание разбираемого файла
 */
 
-class DescriptionFileWD : public std::vector<DescInfoWD>
+class DescriptionArchive : public std::vector<DescInfoWD>
 {
     friend class Archive;
 
@@ -45,7 +45,7 @@ public:
     // Распаковать содержимое
     void Unpack(const wxString &path);
 
-    void GetDescription(DescriptionFileWD &out);
+    void GetDescription(DescriptionArchive &out);
 
     std::vector<Resource> resources;
 

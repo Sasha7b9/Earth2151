@@ -155,7 +155,7 @@ bool Archive::IsValidWDFile(wxFileInputStream &stream)
 }
 
 
-void Archive::GetDescription(DescriptionFileWD &description)
+void Archive::GetDescription(DescriptionArchive &description)
 {
     description.file_name = wxString::Format("File : %s", file_name.GetFullPath().c_str());
 
@@ -187,19 +187,19 @@ void Archive::GetDescription(DescriptionFileWD &description)
 }
 
 
-bool DescriptionFileWD::IsValid() const
+bool DescriptionArchive::IsValid() const
 {
     return false;
 }
 
 
-void DescriptionFileWD::AppendLine(const DescInfoWD &info)
+void DescriptionArchive::AppendLine(const DescInfoWD &info)
 {
     push_back(info);
 }
 
 
-int DescriptionFileWD::Size()
+int DescriptionArchive::Size()
 {
     return (int)size();
 }
