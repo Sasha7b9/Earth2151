@@ -147,7 +147,14 @@ void PageInfo::DrawLine(int y, const DescInfo &desc)
     Canvas::DrawLine(0, y + PIXELS_IN_LINE, width, y + PIXELS_IN_LINE);
     Canvas::DrawLine(width - 1, y, width - 1, y + PIXELS_IN_LINE);
 
-    Canvas::DrawVLine(35, y, y + PIXELS_IN_LINE);
+    DrawCell(0, y, 35, wxString::Format("%d", desc.num_line));
+}
 
-    DrawText(3, y + 2, wxString::Format("%d", desc.num_line));
+
+int PageInfo::DrawCell(int x, int y, int width, const wxString &text)
+{
+    Canvas::DrawVLine(x + width, y, y + PIXELS_IN_LINE);
+    DrawText(x + 3, y + 2, text);
+
+    return x + width;
 }

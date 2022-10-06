@@ -29,6 +29,8 @@ private:
 
     void DrawLine(int, const DescInfo &);
 
+    int DrawCell(int x, int y, int width, const wxString &);
+
     struct ScrollBar
     {
         // Вызывается при установке нового DescriptionFile
