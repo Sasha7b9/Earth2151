@@ -3,12 +3,8 @@
 #include "Packer/Resources/Resource.h"
 
 
-namespace Packer
+class Group : public Resource
 {
-    class Group : public Resource
-    {
-    public:
-        Group(std::string &filename, ResourceInfo, std::vector<uint8> *data);
-    };
-}
-
+public:
+    Group(std::string &filename, ResourceInfo, std::vector<uint8> *data);
+};
