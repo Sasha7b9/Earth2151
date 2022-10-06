@@ -147,7 +147,20 @@ void PageInfo::DrawLine(int y, const DescInfo &desc)
     Canvas::DrawLine(0, y + PIXELS_IN_LINE, width, y + PIXELS_IN_LINE);
     Canvas::DrawLine(width - 1, y, width - 1, y + PIXELS_IN_LINE);
 
-    DrawCell(0, y, 35, wxString::Format("%d", desc.num_line));
+    int x = DrawCell(0, y, 35, wxString::Format("%d", desc.num_line));
+
+    x = DrawCell(x, y, 390, desc.name);
+
+    x = DrawCell(x, y, 50, wxString::Format("%d", desc.size));
+
+    if (desc.size != desc.decompressed_size)
+    {
+        x = DrawCell(x, y, 55, wxString::Format("%d", desc.decompressed_size));
+    }
+    else
+    {
+        x = DrawCell(x, y, 55, "*");
+    }
 }
 
 
