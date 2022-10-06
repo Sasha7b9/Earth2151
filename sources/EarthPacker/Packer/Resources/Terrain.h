@@ -3,11 +3,8 @@
 #include "Packer/Resources/TranslatableResource.h"
 
 
-namespace Packer
+class Terrain : public TranslatableResource
 {
-    class Terrain : public TranslatableResource
-    {
-    public:
-        Terrain(std::string &filename, ResourceInfo, std::string &translationID, std::vector<uint8> *data);
-    };
-}
+public:
+    Terrain(std::string &filename, ResourceInfo, std::string &translationID, std::vector<uint8> *data);
+};

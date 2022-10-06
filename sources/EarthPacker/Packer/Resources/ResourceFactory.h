@@ -3,10 +3,7 @@
 #include "Packer/Resources/Resource.h"
 
 
-namespace Packer
+namespace ResourceFactory
 {
-    namespace ResourceFactory
-    {
-        Resource Create(wxInputStream &);
-    };
-}
+    Resource Create(wxInputStream &);
+};

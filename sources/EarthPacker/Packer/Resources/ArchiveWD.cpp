@@ -48,7 +48,7 @@ ArchiveWD::ArchiveWD(const wxFileName &_file_name) : file_name(_file_name)
 
     while (!stream.Eof())
     {
-        Resource resource = Packer::ResourceFactory::Create(stream);
+        Resource resource = ResourceFactory::Create(stream);
 
         resources.emplace_back(resource);
     }

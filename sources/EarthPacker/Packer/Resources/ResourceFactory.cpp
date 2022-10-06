@@ -8,22 +8,19 @@
 #include "Packer/Resources/Mesh.h"
 
 
-namespace Packer
+namespace ResourceFactory
 {
-    namespace ResourceFactory
-    {
-        static std::string GetName(wxInputStream &);
+    static std::string GetName(wxInputStream &);
 
-        static int GetLength(wxInputStream &);
+    static int GetLength(wxInputStream &);
 
-        static ResourceInfo GetResourceInfo(wxInputStream &);
+    static ResourceInfo GetResourceInfo(wxInputStream &);
 
-        static std::vector<uint8> GetBytes(wxInputStream &, int);
-    }
+    static std::vector<uint8> GetBytes(wxInputStream &, int);
 }
 
 
-Resource Packer::ResourceFactory::Create(wxInputStream &stream)
+Resource ResourceFactory::Create(wxInputStream &stream)
 {
     auto name = GetName(stream);
 
@@ -107,7 +104,7 @@ Resource Packer::ResourceFactory::Create(wxInputStream &stream)
 }
 
 
-std::string Packer::ResourceFactory::GetName(wxInputStream &stream)
+std::string ResourceFactory::GetName(wxInputStream &stream)
 {
     int length = GetLength(stream);
 
@@ -121,7 +118,7 @@ std::string Packer::ResourceFactory::GetName(wxInputStream &stream)
 }
 
 
-int Packer::ResourceFactory::GetLength(wxInputStream &stream)
+int ResourceFactory::GetLength(wxInputStream &stream)
 {
     uint8 length = 0;
     stream.Read(&length, 1);
@@ -147,7 +144,7 @@ int Packer::ResourceFactory::GetLength(wxInputStream &stream)
 }
 
 
-ResourceInfo Packer::ResourceFactory::GetResourceInfo(wxInputStream &stream)
+ResourceInfo ResourceFactory::GetResourceInfo(wxInputStream &stream)
 {
     ResourceInfo result{0, 0, 0};
 
@@ -161,7 +158,7 @@ ResourceInfo Packer::ResourceFactory::GetResourceInfo(wxInputStream &stream)
 }
 
 
-std::vector<uint8> Packer::ResourceFactory::GetBytes(wxInputStream &stream, int length)
+std::vector<uint8> ResourceFactory::GetBytes(wxInputStream &stream, int length)
 {
     std::vector<uint8> result(length);
 

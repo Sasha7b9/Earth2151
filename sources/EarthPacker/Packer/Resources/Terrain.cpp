@@ -3,7 +3,7 @@
 #include "Packer/Resources/Terrain.h"
 
 
-Packer::Terrain::Terrain(std::string &filename, ResourceInfo info, std::string &translationID, std::vector<uint8> *data) :
+Terrain::Terrain(std::string &filename, ResourceInfo info, std::string &translationID, std::vector<uint8> *data) :
     TranslatableResource(filename, info, translationID, data)
 {
 
