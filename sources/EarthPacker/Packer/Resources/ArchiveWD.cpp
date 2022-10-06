@@ -48,7 +48,7 @@ ArchiveWD::ArchiveWD(const wxFileName &_file_name) : file_name(_file_name)
 
     while (!stream.Eof())
     {
-        Packer::Resource resource = Packer::ResourceFactory::Create(stream);
+        Resource resource = Packer::ResourceFactory::Create(stream);
 
         resources.emplace_back(resource);
     }
@@ -70,7 +70,7 @@ bool ArchiveWD::ReadContent()
         return false;
     }
 
-    for (Packer::Resource &resource : resources)
+    for (Resource &resource : resources)
     {
         resource.data = file.ReadBytes(resource.info.offset, resource.info.length);
 
@@ -165,7 +165,7 @@ void ArchiveWD::GetDescription(DescriptionFileWD &description)
 
         description.count_resources = resources.size();
 
-        for each (const Packer::Resource & resource in resources)
+        for each (const Resource & resource in resources)
         {
             if (resource.file_name.empty())
             {

@@ -19,7 +19,7 @@ public:
 
     void GetDescription(DescriptionFileWD &out);
 
-    std::vector<Packer::Resource> resources;
+    std::vector<Resource> resources;
 
     static bool IsCorrectFile(const wxString &path);
 

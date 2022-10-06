@@ -23,7 +23,7 @@ namespace Packer
 }
 
 
-Packer::Resource Packer::ResourceFactory::Create(wxInputStream &stream)
+Resource Packer::ResourceFactory::Create(wxInputStream &stream)
 {
     auto name = GetName(stream);
 
@@ -147,7 +147,7 @@ int Packer::ResourceFactory::GetLength(wxInputStream &stream)
 }
 
 
-Packer::ResourceInfo Packer::ResourceFactory::GetResourceInfo(wxInputStream &stream)
+ResourceInfo Packer::ResourceFactory::GetResourceInfo(wxInputStream &stream)
 {
     ResourceInfo result{0, 0, 0};
 

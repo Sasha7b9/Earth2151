@@ -3,7 +3,7 @@
 #include "Packer/Resources/Resource.h"
 
 
-Packer::Resource::Resource(std::string &filename, ResourceInfo _info, std::vector<uint8> *_unknown_data) :
+Resource::Resource(std::string &filename, ResourceInfo _info, std::vector<uint8> *_unknown_data) :
     file_name(filename), info(_info)
 {
     if (_unknown_data)
