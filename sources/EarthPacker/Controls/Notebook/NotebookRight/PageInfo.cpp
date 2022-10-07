@@ -99,6 +99,11 @@ void PageInfo::SetDescriptionFile(const Description *_description)
 
 void PageInfo::ScrollBar::Reset()
 {
+    if (!keeper->description)
+    {
+        return;
+    }
+
     keeper->SetScrollbar(wxSB_VERTICAL, SetPosition(0), GetThumb(), GetRange());
 }
 

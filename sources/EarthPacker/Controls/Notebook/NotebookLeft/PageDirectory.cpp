@@ -59,6 +59,10 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
 
         PageInfo::self->SetDescriptionFile(description);
     }
+    else
+    {
+        PageInfo::self->SetDescriptionFile(nullptr);
+    }
 }
 
 
