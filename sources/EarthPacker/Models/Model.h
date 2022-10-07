@@ -11,10 +11,14 @@
 
 struct InfoModel
 {
+    InfoModel() {};
+    InfoModel(FileInputStream &, int num_bytes, pchar name);
+
     uint address;
     int size;
     std::string type;
     std::vector<uint8> bytes;
+
     void Append4Bytes(uint value)
     {
         for (int i = 0; i < 4; i++)
@@ -42,7 +46,7 @@ public:
 
     Model(const wxFileName &file_name);
 
-    void GetDescription(DescriptionModel *out);
+    DescriptionModel &GetDescription();
 
 private:
 
@@ -59,6 +63,10 @@ private:
     uint16 unknown_val4 = 0;
     uint   unknown_val5 = 0;
 
+    wxMemoryBuffer unused1_10;
+    wxMemoryBuffer unused2_64;
+    wxMemoryBuffer unused3_488;
+
     PartNode *partsTree = nullptr;
 
     void CheckHeader(FileInputStream &);
@@ -67,5 +75,5 @@ private:
 
     PartNode *GetPartsTree();
 
-    InfoModel GetHeader(FileInputStream &);
+    DescriptionModel description;
 };

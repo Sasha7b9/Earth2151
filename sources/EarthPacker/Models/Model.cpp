@@ -19,7 +19,7 @@ Model::Model(const wxFileName &_file_name)
 
     model_template.Create(stream);
 
-    stream.ReadBytes(10);
+    unused1_10 = stream.ReadBytes(10);
 
     mount_points = new MountPoints(stream);
 
@@ -28,8 +28,8 @@ Model::Model(const wxFileName &_file_name)
         lights.push_back(Light(stream, i));
     }
 
-    stream.ReadBytes(64);
-    stream.ReadBytes(488);
+    unused2_64 = stream.ReadBytes(64);
+    unused3_488 = stream.ReadBytes(488);
 
     unknown_val1 = stream.Read2Bytes();
     unknown_val2 = stream.Read2Bytes();
@@ -48,34 +48,9 @@ Model::Model(const wxFileName &_file_name)
 }
 
 
-void Model::GetDescription(DescriptionModel *description)
+DescriptionModel &Model::GetDescription()
 {
-    FileInputStream stream(file_name.GetFullPath());
-
-    description->AppendInfo(GetHeader(stream));
-
-    InfoModel iType{ 8, 4, "Type" };
-    iType.Append4Bytes(stream.ReadUINT());
-    description->AppendInfo(iType);
-
-    description->AppendInfo(model_template.GetInfo());
-
-    for (int i = 0; i < 4; i++)
-    {
-        InfoModel point{ (uint)stream.TellI() };
-        point.size = sizeof(float) * 3;
-        point.type = wxString::Format("Mount point %d", i);
-        for (int byte = 0; byte < sizeof(float) * 3; byte++)
-        {
-            point.bytes.push_back(stream.ReadByte());
-        }
-        description->AppendInfo(point);
-    }
-
-    for (int i = 0; i < Light::COUNT; i++)
-    {
-        description->AppendInfo(lights[i].GetInfo());
-    }
+    return description;
 }
 
 
@@ -116,21 +91,6 @@ void Model::CheckHeader(FileInputStream &stream)
     {
         LOG_ERROR("Not mesh format");
     }
-}
-
-
-InfoModel Model::GetHeader(FileInputStream &stream)
-{
-    wxMemoryBuffer span = stream.ReadBytes(8);
-
-    InfoModel result{ 0, 8, "Header" };
-
-    for (int i = 0; i < 8; i++)
-    {
-        result.bytes.push_back(span[i]);
-    }
-
-    return result;
 }
 
 
@@ -177,4 +137,19 @@ void DescriptionModel::DrawLine(const PageInfo *page, int y, int num_lines) cons
     x = DrawCell(page, x, y, 50, info.size);
 
     x = DrawCell(page, x, y, 200, info.bytes, 16);
+}
+
+
+InfoModel::InfoModel(FileInputStream &stream, int num_bytes, pchar name)
+{
+    address = (uint)stream.TellI();
+
+    type = name;
+
+    wxMemoryBuffer data = stream.ReadBytes(num_bytes);
+
+    for (uint i = 0; i < data.GetBufSize(); i++)
+    {
+        bytes.push_back(data[i]);
+    }
 }
