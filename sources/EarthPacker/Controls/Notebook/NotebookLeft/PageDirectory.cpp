@@ -54,8 +54,6 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
         Model model(file_name);
 
         file_name.SetExt("xml");
-
-        model.SaveToXML(file_name);
     }
 }
 

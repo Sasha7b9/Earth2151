@@ -14,8 +14,6 @@ public:
 
     Model(const wxFileName &file_name);
 
-    void SaveToXML(const wxFileName &);
-
 private:
 
     std::list<ModelPart *> parts;
