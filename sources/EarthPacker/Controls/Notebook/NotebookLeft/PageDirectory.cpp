@@ -41,7 +41,7 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
 
     if (file_name.GetExt() == "wd")
     {
-        DescriptionArchive description;
+        DescriptionArchive *description = new DescriptionArchive();
 
         Archive arch(path);
 
@@ -53,7 +53,7 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
     {
         Model model(file_name);
 
-        DescriptionModel description;
+        DescriptionModel *description = new DescriptionModel();
 
         model.GetDescription(description);
 

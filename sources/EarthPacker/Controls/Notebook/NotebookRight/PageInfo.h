@@ -3,23 +3,24 @@
 #include "Controls/Canvas.h"
 #include "Resources/Archive.h"
 #include "Models/Model.h"
+#include "Resources/Description.h"
 
 
 class PageInfo : public Canvas
 {
 public:
+
+    static const int PIXELS_IN_LINE = 18;
+
     PageInfo(wxWindow *parent);
 
     static PageInfo *self;
 
-    void SetDescriptionFile(const DescriptionArchive &);
-    void SetDescriptionFile(const DescriptionModel &);
+    void SetDescriptionFile(const Description *);
 
 private:
 
-    static const int PIXELS_IN_LINE = 18;
-
-    DescriptionArchive description;
+    const Description *description;
 
     void OnPaintEvent(wxPaintEvent &);
     void OnSizeEvent(wxSizeEvent &);
@@ -28,9 +29,7 @@ private:
     void OnScrollLineDownEvent(wxScrollWinEvent &);
     void OnMouseWheel(wxMouseEvent &);
 
-    void DrawDescription();
-
-    void DrawLine(int, const InfoArchive &);
+    void DrawDescription() const;
 
     int DrawCell(int x, int y, int width, const wxString &);
 
@@ -51,7 +50,7 @@ private:
         void MoveOnLines(int num_lines);
 
         // ¬озвращает первую выводимую строку текста
-        int GetFirstLine();
+        int GetFirstLine() const;
 
         PageInfo *keeper = nullptr;
 

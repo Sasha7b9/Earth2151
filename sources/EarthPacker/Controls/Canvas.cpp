@@ -48,7 +48,7 @@ void Canvas::DrawVLine(int x, int y1, int y2)
 }
 
 
-void Canvas::DrawHLine(int y, int x1, int x2)
+void Canvas::DrawHLine(int y, int x1, int x2) const
 {
     memDC->DrawLine(x1, y, x2, y);
 }

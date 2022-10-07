@@ -6,6 +6,7 @@
 #include "Models/Collections/MountPoints.h"
 #include "Models/Collections/Lights.h"
 #include "Models/PartNode.h"
+#include "Resources/Description.h"
 
 
 struct InfoModel
@@ -14,10 +15,12 @@ struct InfoModel
 };
 
 
-class DescriptionModel : public std::vector<InfoModel>
+class DescriptionModel : public std::vector<InfoModel>, public Description
 {
 public:
-    void AppendLine(std::string &);
+    void AppendLine(const std::string &);
+    virtual int Size() const override;
+    virtual void DrawLine(const PageInfo *, int y, int num_lines) const override;
 private:
 };
 
@@ -28,7 +31,7 @@ public:
 
     Model(const wxFileName &file_name);
 
-    void GetDescription(DescriptionModel &out);
+    void GetDescription(DescriptionModel *out);
 
 private:
 

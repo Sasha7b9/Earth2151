@@ -5,6 +5,7 @@
 #include "Utils/FileInputStream.h"
 #include "Utils/Zlib.h"
 #include "Resources/TranslatableResource.h"
+#include "Controls/Notebook/NotebookRight/PageInfo.h"
 
 
 Archive::Archive(const wxString &path) : Archive(wxFileName(path))
@@ -155,32 +156,32 @@ bool Archive::IsValidWDFile(wxFileInputStream &stream)
 }
 
 
-void Archive::GetDescription(DescriptionArchive &description)
+void Archive::GetDescription(DescriptionArchive *description)
 {
-    description.file_name = wxString::Format("File : %s", file_name.GetFullPath().c_str());
+    description->file_name = wxString::Format("File : %s", file_name.GetFullPath().c_str());
 
     if (file_name.GetExt() == "wd")
     {
         int counter = 1;
 
-        description.count_resources = resources.size();
+        description->count_resources = resources.size();
 
         for each (const Resource & resource in resources)
         {
             if (resource.file_name.empty())
             {
-                description.AppendLine({ counter++, std::string("Empty name resource") });
+                description->AppendLine({ counter++, std::string("Empty name resource") });
 
                 continue;
             }
 
             if (resource.info.length)
             {
-                description.AppendLine({ counter++, resource.file_name.c_str(), resource.info.length, resource.info.decompressedLength });
+                description->AppendLine({ counter++, resource.file_name.c_str(), resource.info.length, resource.info.decompressedLength });
             }
             else
             {
-                description.AppendLine({ counter++, "Empty resource" });
+                description->AppendLine({ counter++, "Empty resource" });
             }
         }
     }
@@ -199,7 +200,29 @@ void DescriptionArchive::AppendLine(const InfoArchive &info)
 }
 
 
-int DescriptionArchive::Size()
+int DescriptionArchive::Size() const
 {
     return (int)size();
+}
+
+
+void DescriptionArchive::DrawLine(PageInfo *page, int y, int num_line)
+{
+    int width = page->GetClientSize().GetWidth();
+
+    page->DrawLine(0, y, 0, y + PageInfo::PIXELS_IN_LINE);
+    page->DrawLine(0, y + PIXELS_IN_LINE, width, y + PIXELS_IN_LINE);
+    page->DrawLine(width - 1, y, width - 1, y + PIXELS_IN_LINE);
+
+    int x = DrawCell(0, y, 35, wxString::Format("%d", desc.num_line));
+
+    x = DrawCell(x, y, 390, desc.name);
+
+    x = DrawCell(x, y, 50, wxString::Format("%d", desc.size));
+
+    wxString text_size = (desc.size != desc.decompressed_size) ? wxString::Format("%d", desc.decompressed_size) : "*";
+
+    x = DrawCell(x, y, 55, text_size);
+
+    DrawCell(x, y, 30, wxString::Format("%5.1f", (float)desc.decompressed_size / (float)desc.size));
 }

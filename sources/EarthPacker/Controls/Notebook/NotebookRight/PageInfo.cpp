@@ -69,32 +69,26 @@ void PageInfo::OnScrollLineDownEvent(wxScrollWinEvent &)
 }
 
 
-void PageInfo::DrawDescription()
+void PageInfo::DrawDescription() const
 {
     int first_line = scroll_bar.GetFirstLine();
 
     Canvas::DrawHLine(0, 0, GetClientSize().GetWidth() - 1);
 
-    for (size_t i = first_line; i < description.size(); i++)
+    for (int i = first_line; i < description->Size(); i++)
     {
-        DrawLine(i * PIXELS_IN_LINE - first_line * PIXELS_IN_LINE, description[i]);
+        description->DrawLine(this, i * PIXELS_IN_LINE - first_line * PIXELS_IN_LINE, i);
     }
 }
 
 
-void PageInfo::SetDescriptionFile(const DescriptionArchive &_description)
+void PageInfo::SetDescriptionFile(const Description *_description)
 {
     description = _description;
 
     scroll_bar.Reset();
 
     Refresh();
-}
-
-
-void PageInfo::SetDescriptionFile(const DescriptionModel &_description)
-{
-
 }
 
 
@@ -151,28 +145,6 @@ void PageInfo::ScrollBar::MoveOnLines(int num_lines)
     }
 
     SetPosition(position);
-}
-
-
-void PageInfo::DrawLine(int y, const InfoArchive &desc)
-{
-    int width = GetClientSize().GetWidth();
-
-    Canvas::DrawLine(0, y, 0, y + PIXELS_IN_LINE);
-    Canvas::DrawLine(0, y + PIXELS_IN_LINE, width, y + PIXELS_IN_LINE);
-    Canvas::DrawLine(width - 1, y, width - 1, y + PIXELS_IN_LINE);
-
-    int x = DrawCell(0, y, 35, wxString::Format("%d", desc.num_line));
-
-    x = DrawCell(x, y, 390, desc.name);
-
-    x = DrawCell(x, y, 50, wxString::Format("%d", desc.size));
-
-    wxString text_size = (desc.size != desc.decompressed_size) ? wxString::Format("%d", desc.decompressed_size) : "*";
-
-    x = DrawCell(x, y, 55, text_size);
-
-    DrawCell(x, y, 30, wxString::Format("%5.1f", (float)desc.decompressed_size / (float)desc.size));
 }
 
 

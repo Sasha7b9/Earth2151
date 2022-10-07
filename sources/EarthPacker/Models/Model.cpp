@@ -44,11 +44,11 @@ Model::Model(const wxFileName &_file_name)
 }
 
 
-void Model::GetDescription(DescriptionModel &description)
+void Model::GetDescription(DescriptionModel *description)
 {
     FileInputStream stream(file_name.GetFullPath());
 
-    description.AppendLine(GetHeader(stream));
+    description->AppendLine(GetHeader(stream));
 }
 
 
@@ -122,7 +122,7 @@ void Model::GetParts(FileInputStream &stream, std::list<ModelPart *> &_parts)
 }
 
 
-void DescriptionModel::AppendLine(std::string &line)
+void DescriptionModel::AppendLine(const std::string &line)
 {
     push_back({ line });
 }
