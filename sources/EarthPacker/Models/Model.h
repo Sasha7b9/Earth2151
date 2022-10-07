@@ -28,12 +28,13 @@ struct InfoModel
         }
     }
 
-    void Append4Bytes(uint value)
+    void AppendBytes(void *value, int num_bytes)
     {
-        for (int i = 0; i < 4; i++)
+        uint8 *pointer = (uint8 *)value;
+
+        for (int i = 0; i < num_bytes; i++)
         {
-            bytes.push_back(value & 0xFF);
-            value >>= 8;
+            bytes.push_back(*pointer++);
         }
     }
 };
@@ -79,6 +80,8 @@ private:
     PartNode *partsTree = nullptr;
 
     void CheckHeader(FileInputStream &);
+
+    int ReadType(FileInputStream &);
 
     void GetParts(FileInputStream &, std::list<ModelPart *> &);
 

@@ -15,7 +15,7 @@ Model::Model(const wxFileName &_file_name)
 
     CheckHeader(stream);
 
-    type = stream.ReadUINT();
+    type = ReadType(stream);
 
     model_template.Create(stream);
 
@@ -97,6 +97,20 @@ void Model::CheckHeader(FileInputStream &stream)
     info.AppendBytes(span);
 
     description.AppendInfo(info);
+}
+
+
+int Model::ReadType(FileInputStream &stream)
+{
+    InfoModel info((uint)stream.TellI(), 4, "Type");
+
+    int result = stream.ReadUINT();
+
+    info.AppendBytes(&result, 4);
+
+    description.AppendInfo(info);
+
+    return result;
 }
 
 
