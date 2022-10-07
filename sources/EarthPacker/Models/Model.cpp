@@ -48,9 +48,9 @@ Model::Model(const wxFileName &_file_name)
 }
 
 
-DescriptionModel &Model::GetDescription()
+void Model::GetDescription(DescriptionModel *_desc)
 {
-    return description;
+    *_desc = description;
 }
 
 

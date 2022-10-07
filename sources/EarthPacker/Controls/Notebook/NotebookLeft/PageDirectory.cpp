@@ -53,9 +53,11 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
     {
         Model model(file_name);
 
-        DescriptionModel &description = model.GetDescription();
+        DescriptionModel *description = new DescriptionModel();
 
-        PageInfo::self->SetDescriptionFile(&description);
+        model.GetDescription(description);
+
+        PageInfo::self->SetDescriptionFile(description);
     }
     else
     {

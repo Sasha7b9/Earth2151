@@ -46,7 +46,7 @@ public:
 
     Model(const wxFileName &file_name);
 
-    DescriptionModel &GetDescription();
+    void GetDescription(DescriptionModel *);
 
 private:
 
