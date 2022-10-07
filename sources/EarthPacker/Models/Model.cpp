@@ -11,6 +11,8 @@ Model::Model(const wxFileName &_file_name)
 {
     file_name = _file_name;
 
+    LOG_WRITE("%s", file_name.GetFullPath().c_str().AsChar());
+
     FileInputStream stream(file_name.GetFullPath());
 
     CheckHeader(stream);
