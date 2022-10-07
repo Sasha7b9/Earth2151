@@ -126,3 +126,15 @@ void DescriptionModel::AppendLine(const std::string &line)
 {
     push_back({ line });
 }
+
+
+int DescriptionModel::Size() const
+{
+    return size();
+}
+
+
+void DescriptionModel::DrawLine(const PageInfo *, int y, int num_lines) const
+{
+
+}

@@ -20,7 +20,7 @@ public:
 
 private:
 
-    const Description *description;
+    const Description *description = nullptr;
 
     void OnPaintEvent(wxPaintEvent &);
     void OnSizeEvent(wxSizeEvent &);

@@ -25,7 +25,7 @@ void Canvas::BeginScene(const wxBrush &brush, const wxPen &pen)
 }
 
 
-void Canvas::DrawText(int x, int y, const wxString &text)
+void Canvas::DrawText(int x, int y, const wxString &text) const
 {
     memDC->DrawText(text, x, y);
 }

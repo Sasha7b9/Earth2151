@@ -71,6 +71,11 @@ void PageInfo::OnScrollLineDownEvent(wxScrollWinEvent &)
 
 void PageInfo::DrawDescription() const
 {
+    if (!description)
+    {
+        return;
+    }
+
     int first_line = scroll_bar.GetFirstLine();
 
     Canvas::DrawHLine(0, 0, GetClientSize().GetWidth() - 1);

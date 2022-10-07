@@ -216,25 +216,25 @@ void DescriptionArchive::DrawLine(const PageInfo *page, int y, int num_line) con
     page->DrawLine(0, y + PageInfo::PIXELS_IN_LINE, width, y + PageInfo::PIXELS_IN_LINE);
     page->DrawLine(width - 1, y, width - 1, y + PageInfo::PIXELS_IN_LINE);
 
-    int x = DrawCell(0, y, 35, wxString::Format("%d", num_line));
+    int x = DrawCell(page, 0, y, 35, wxString::Format("%d", num_line));
 
-    x = DrawCell(x, y, 390, desc.name);
+    x = DrawCell(page, x, y, 390, desc.name);
 
-    x = DrawCell(x, y, 50, wxString::Format("%d", desc.size));
+    x = DrawCell(page, x, y, 50, wxString::Format("%d", desc.size));
 
     wxString text_size = (desc.size != desc.decompressed_size) ? wxString::Format("%d", desc.decompressed_size) : "*";
 
-    x = DrawCell(x, y, 55, text_size);
+    x = DrawCell(page, x, y, 55, text_size);
 
-    DrawCell(x, y, 30, wxString::Format("%5.1f", (float)desc.decompressed_size / (float)desc.size));
+    DrawCell(page, x, y, 30, wxString::Format("%5.1f", (float)desc.decompressed_size / (float)desc.size));
 }
 
 
-int DescriptionArchive::DrawCell(int x, int y, int width, const wxString &text) const
+int DescriptionArchive::DrawCell(const PageInfo *page, int x, int y, int width, const wxString &text) const
 {
     page->DrawVLine(x + width, y, y + PageInfo::PIXELS_IN_LINE);
 
-    DrawText(x + 3, y + 2, text);
+    page->DrawText(x + 3, y + 2, text);
 
     return x + width;
 }
