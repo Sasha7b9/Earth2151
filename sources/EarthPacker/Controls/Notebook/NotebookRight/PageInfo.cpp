@@ -144,8 +144,6 @@ void PageInfo::ScrollBar::MoveOnLines(int num_lines)
         position = GetRange();
     }
 
-    LOG_WRITE("range %d, position %d", GetRange(), position);
-
     SetPosition(position);
 }
 
