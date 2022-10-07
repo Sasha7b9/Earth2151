@@ -11,7 +11,8 @@
 
 struct InfoModel
 {
-    InfoModel(uint _address, int _size, const std::string _name) : address(_address), size(_size), name(_name) {}
+    InfoModel(int _address, int _size, const std::string _name) : address(_address), size(_size), name(_name) {}
+    InfoModel(wxFileOffset _address, int _size, const std::string _name) : address((int)_address), size(_size), name(_name) {}
     InfoModel() {};
     InfoModel(FileInputStream &, int num_bytes, pchar name);
 
@@ -73,19 +74,20 @@ private:
     uint16 unknown_val4 = 0;
     uint   unknown_val5 = 0;
 
-    wxMemoryBuffer unused1_10;
     wxMemoryBuffer unused2_64;
     wxMemoryBuffer unused3_488;
 
     PartNode *partsTree = nullptr;
 
+    DescriptionModel description;
+
     void CheckHeader(FileInputStream &);
 
     int ReadType(FileInputStream &);
 
+    void ReadBytes(FileInputStream &, pchar name, int num_bytes);
+
     void GetParts(FileInputStream &, std::list<ModelPart *> &);
 
     PartNode *GetPartsTree();
-
-    DescriptionModel description;
 };

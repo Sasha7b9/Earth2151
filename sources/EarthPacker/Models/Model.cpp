@@ -19,7 +19,7 @@ Model::Model(const wxFileName &_file_name)
 
     model_template.Create(stream, description);
 
-    unused1_10 = stream.ReadBytes(10);
+    ReadBytes(stream, "Unused", 10);
 
     mount_points = new MountPoints(stream);
 
@@ -45,6 +45,16 @@ Model::Model(const wxFileName &_file_name)
     GetParts(stream, parts);
 
     partsTree = GetPartsTree();
+}
+
+
+void Model::ReadBytes(FileInputStream &stream, pchar name, int num_bytes)
+{
+    InfoModel info(stream.TellI(), num_bytes, name);
+
+    info.AppendBytes(stream.ReadBytes(num_bytes));
+
+    description.AppendInfo(info);
 }
 
 
@@ -83,7 +93,7 @@ PartNode *Model::GetPartsTree()
 
 void Model::CheckHeader(FileInputStream &stream)
 {
-    InfoModel info((uint)stream.TellI(), 8, "Header");
+    InfoModel info(stream.TellI(), 8, "Header");
 
     wxMemoryBuffer span = stream.ReadBytes(8);
 
@@ -102,7 +112,7 @@ void Model::CheckHeader(FileInputStream &stream)
 
 int Model::ReadType(FileInputStream &stream)
 {
-    InfoModel info((uint)stream.TellI(), 4, "Type");
+    InfoModel info(stream.TellI(), 4, "Type");
 
     int result = stream.ReadUINT();
 
