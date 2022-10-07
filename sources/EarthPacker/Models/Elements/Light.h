@@ -13,7 +13,7 @@ struct Light : public Vector
 
     Light(FileInputStream &);
 
-    static void ToInfo(FileInputStream &, InfoModel &);
+    static void ToInfo(InfoModel &);
 
     wxColour color;
 

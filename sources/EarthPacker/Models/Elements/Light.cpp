@@ -18,3 +18,9 @@ Light::Light(FileInputStream &stream) : Vector(stream)
     tilt = stream.ReadFloat();
     ambience = stream.ReadFloat();
 }
+
+
+void Light::ToInfo(InfoModel &info)
+{
+
+}

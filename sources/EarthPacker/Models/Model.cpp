@@ -70,7 +70,12 @@ void Model::GetDescription(DescriptionModel *description)
         description->AppendLine(point);
     }
 
-
+    for (int i = 0; i < Light::COUNT; i++)
+    {
+        InfoModel info;
+        lights[i].ToInfo(info);
+        description->AppendLine(info);
+    }
 }
 
 
