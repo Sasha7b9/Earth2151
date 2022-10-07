@@ -7,7 +7,7 @@
 void ModelTemplate::Create(FileInputStream &stream)
 {
     info = new InfoModel();
-    info->type = "Model template";
+    info->name = "Model template";
     info->address = (int)stream.TellI();
 
     std::bitset<16> data{ stream.Read2Bytes() };

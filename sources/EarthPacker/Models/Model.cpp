@@ -83,7 +83,7 @@ PartNode *Model::GetPartsTree()
 
 void Model::CheckHeader(FileInputStream &stream)
 {
-    InfoModel info
+    InfoModel info((uint)stream.TellI(), 8, "Header");
 
     wxMemoryBuffer span = stream.ReadBytes(8);
 
@@ -93,6 +93,10 @@ void Model::CheckHeader(FileInputStream &stream)
     {
         LOG_ERROR("Not mesh format");
     }
+
+    info.AppendBytes(span);
+
+    description.AppendInfo(info);
 }
 
 
@@ -132,7 +136,7 @@ void DescriptionModel::DrawLine(const PageInfo *page, int y, int num_lines) cons
     page->DrawLine(0, y + PageInfo::PIXELS_IN_LINE, width, y + PageInfo::PIXELS_IN_LINE);
     page->DrawLine(width - 1, y, width - 1, y + PageInfo::PIXELS_IN_LINE);
 
-    int x = DrawCell(page, 0, y, 90, info.type);
+    int x = DrawCell(page, 0, y, 90, info.name);
 
     x = DrawCell(page, x, y, 50, info.address);
 
@@ -142,11 +146,11 @@ void DescriptionModel::DrawLine(const PageInfo *page, int y, int num_lines) cons
 }
 
 
-InfoModel::InfoModel(FileInputStream &stream, int num_bytes, pchar name)
+InfoModel::InfoModel(FileInputStream &stream, int num_bytes, pchar _name)
 {
     address = (uint)stream.TellI();
 
-    type = name;
+    name = _name;
 
     wxMemoryBuffer data = stream.ReadBytes(num_bytes);
 

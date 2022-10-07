@@ -7,7 +7,7 @@
 Light::Light(FileInputStream &stream, int number) : Vector(stream)
 {
     info = new InfoModel();
-    info->type = wxString::Format("Light %d", number);
+    info->name = wxString::Format("Light %d", number);
     info->address = (int)stream.TellI();
 
     float r = stream.ReadFloat() * 255;

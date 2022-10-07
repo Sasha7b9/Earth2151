@@ -11,13 +11,22 @@
 
 struct InfoModel
 {
+    InfoModel(uint _address, int _size, const std::string _name) : address(_address), size(_size), name(_name) {}
     InfoModel() {};
     InfoModel(FileInputStream &, int num_bytes, pchar name);
 
     uint address;
     int size;
-    std::string type;
+    std::string name;
     std::vector<uint8> bytes;
+
+    void AppendBytes(const wxMemoryBuffer &buffer)
+    {
+        for (uint i = 0; i < buffer.GetBufSize(); i++)
+        {
+            bytes.push_back(buffer[i]);
+        }
+    }
 
     void Append4Bytes(uint value)
     {
