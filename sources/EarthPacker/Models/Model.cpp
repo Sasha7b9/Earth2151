@@ -17,7 +17,7 @@ Model::Model(const wxFileName &_file_name)
 
     type = stream.ReadUINT();
 
-    model_template = new ModelTemplate(stream);
+    model_template.Create(stream);
 
     stream.ReadBytes(10);
 
@@ -58,6 +58,8 @@ void Model::GetDescription(DescriptionModel *description)
     iType.Append4Bytes(stream.ReadUINT());
     description->AppendInfo(iType);
 
+    description->AppendInfo(model_template.GetInfo());
+
     for (int i = 0; i < 4; i++)
     {
         InfoModel point{ (uint)stream.TellI() };
@@ -72,9 +74,7 @@ void Model::GetDescription(DescriptionModel *description)
 
     for (int i = 0; i < Light::COUNT; i++)
     {
-        InfoModel info;
-        lights[i].ToInfo(info);
-        description->AppendInfo(info);
+        description->AppendInfo(lights[i].GetInfo());
     }
 }
 
@@ -170,7 +170,7 @@ void DescriptionModel::DrawLine(const PageInfo *page, int y, int num_lines) cons
     page->DrawLine(0, y + PageInfo::PIXELS_IN_LINE, width, y + PageInfo::PIXELS_IN_LINE);
     page->DrawLine(width - 1, y, width - 1, y + PageInfo::PIXELS_IN_LINE);
 
-    int x = DrawCell(page, 0, y, 85, info.type);
+    int x = DrawCell(page, 0, y, 90, info.type);
 
     x = DrawCell(page, x, y, 50, info.address);
 

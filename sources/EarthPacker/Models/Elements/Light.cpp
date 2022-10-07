@@ -27,7 +27,7 @@ Light::Light(FileInputStream &stream, int number) : Vector(stream)
 }
 
 
-void Light::ToInfo(InfoModel &_info)
+InfoModel &Light::GetInfo()
 {
-    _info = *info;
+    return *info;
 }

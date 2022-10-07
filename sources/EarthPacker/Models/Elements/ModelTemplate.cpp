@@ -1,10 +1,15 @@
 // 2022/09/24 16:00:40 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Models/Elements/ModelTemplate.h"
+#include "Models/Model.h"
 
 
-ModelTemplate::ModelTemplate(FileInputStream &stream)
+void ModelTemplate::Create(FileInputStream &stream)
 {
+    info = new InfoModel();
+    info->type = "Model template";
+    info->address = (int)stream.TellI();
+
     std::bitset<16> data{ stream.Read2Bytes() };
 
     for (int col = COLUMNS - 1; col >= 0; col--)
@@ -16,4 +21,12 @@ ModelTemplate::ModelTemplate(FileInputStream &stream)
             matrix[row][COLUMNS - 1 - col] = bit;
         }
     }
+
+    info->size = (int)stream.TellI() - info->address;
+}
+
+
+InfoModel &ModelTemplate::GetInfo()
+{
+    return *info;
 }

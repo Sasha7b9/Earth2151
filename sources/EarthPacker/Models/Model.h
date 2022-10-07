@@ -49,7 +49,7 @@ private:
     wxFileName file_name;
     std::list<ModelPart *> parts;
     int type;
-    ModelTemplate *model_template = nullptr;
+    ModelTemplate model_template;
     MountPoints *mount_points = nullptr;
     std::vector<Light> lights;
 

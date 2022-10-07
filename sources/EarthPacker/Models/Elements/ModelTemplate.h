@@ -3,13 +3,23 @@
 #include "Utils/FileInputStream.h"
 
 
+struct InfoModel;
+
+
 class ModelTemplate
 {
 public:
-    ModelTemplate(FileInputStream &);
+
+    void Create(FileInputStream &);
+
+    InfoModel &GetInfo();
+
 private:
+
     static const int ROWS = 4;
     static const int COLUMNS = 4;
 
     bool matrix[ROWS][COLUMNS];
+
+    InfoModel *info = nullptr;
 };
