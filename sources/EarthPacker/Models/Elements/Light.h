@@ -7,22 +7,18 @@
 struct InfoModel;
 
 
-struct Light : public Vector
+struct Light
 {
     static const int COUNT = 5;
 
-    Light(FileInputStream &, int number);
-
-    InfoModel &GetInfo();
+    Light(FileInputStream &, DescriptionModel &, const wxString &name);
 
     wxColour color;
-
+    Vector position;
     float length;
     float direction;
     float width;
     float u3;
     float tilt;
     float ambience;
-
-    InfoModel *info;
 };

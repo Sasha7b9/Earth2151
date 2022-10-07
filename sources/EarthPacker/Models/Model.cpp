@@ -25,7 +25,7 @@ Model::Model(const wxFileName &_file_name)
 
     for (int i = 0; i < Light::COUNT; i++)
     {
-        lights.push_back(Light(stream, i));
+        lights.push_back(Light(stream, description, wxString::Format("Light %d", i)));
     }
 
     unused2_64 = stream.ReadBytes(64);
@@ -190,4 +190,10 @@ void InfoModel::Append(Vector &vector)
     AppendBytes(&vector.x, sizeof(vector.x));
     AppendBytes(&vector.y, sizeof(vector.y));
     AppendBytes(&vector.z, sizeof(vector.z));
+}
+
+
+void InfoModel::Append(float value)
+{
+    AppendBytes(&value, sizeof(value));
 }

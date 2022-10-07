@@ -4,30 +4,46 @@
 #include "Models/Model.h"
 
 
-Light::Light(FileInputStream &stream, int number) : Vector(stream)
+Light::Light(FileInputStream &stream, DescriptionModel &desc, const wxString &name)
 {
-    info = new InfoModel();
-    info->name = wxString::Format("Light %d", number);
-    info->address = (int)stream.TellI();
+    InfoModel info(stream.TellI(), 0, name.c_str());
 
-    float r = stream.ReadFloat() * 255;
-    float g = stream.ReadFloat() * 255;
-    float b = stream.ReadFloat() * 255;
+    position = Vector(stream);
+    info.Append(position);
+
+    float r = stream.ReadFloat();
+    info.Append(r);
+    r *= 255;
+
+    float g = stream.ReadFloat();
+    info.Append(g);
+    g *= 255;
+
+    float b = stream.ReadFloat();
+    info.Append(b);
+    b *= 255;
 
     color.Set((uint8)r, (uint8)g, (uint8)b);
 
     length = stream.ReadFloat();
+    info.Append(length);
+
     direction = stream.ReadFloat();
+    info.Append(direction);
+
     width = stream.ReadFloat();
+    info.Append(width);
+
     u3 = stream.ReadFloat();
+    info.Append(u3);
+
     tilt = stream.ReadFloat();
+    info.Append(tilt);
+
     ambience = stream.ReadFloat();
+    info.Append(ambience);
 
-    info->size = (int)stream.TellI() - info->address;
-}
+    info.size = (int)stream.TellI() - info.address;
 
-
-InfoModel &Light::GetInfo()
-{
-    return *info;
+    desc.AppendInfo(info);
 }
