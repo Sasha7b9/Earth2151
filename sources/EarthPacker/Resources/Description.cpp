@@ -24,6 +24,8 @@ int Description::DrawCell(const PageInfo *page, int x, int y, int width, const s
 {
     int result = x + width;
 
+    page->DrawVLine(x + width, y, y + PageInfo::PIXELS_IN_LINE);
+
     if ((int)vec.size() < num_elements)
     {
         num_elements = (int)vec.size();
@@ -31,8 +33,8 @@ int Description::DrawCell(const PageInfo *page, int x, int y, int width, const s
 
     for (int i = 0; i < num_elements; i++)
     {
-        page->DrawText(x + 3, y + 2, wxString::Format("%2X", vec[i]));
-        x += 20;
+        page->DrawText(x + 3, y + 2, wxString::Format("%02X", vec[i]));
+        x += 15;
     }
 
     return result;
