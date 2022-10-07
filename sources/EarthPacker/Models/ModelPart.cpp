@@ -8,7 +8,9 @@ ModelPart::ModelPart(FileInputStream &stream, DescriptionModel &desc, int num_mo
 {
     InfoModel info(stream.TellI(), 0, wxString::Format("Model part %d", num_model).c_str());
 
-    vertices.Create(stream);
+    int position = desc.Size();
+
+    vertices.Create(stream, desc);
     skipParent = stream.ReadByte();
     unknownFlag = stream.ReadByte();
     stream.Read2Bytes();
@@ -21,5 +23,5 @@ ModelPart::ModelPart(FileInputStream &stream, DescriptionModel &desc, int num_mo
 
     info.size = (int)stream.TellI() - info.address;
 
-    desc.AppendInfo(info);
+    desc.InsertInfo(position, info);
 }

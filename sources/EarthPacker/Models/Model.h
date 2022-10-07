@@ -48,6 +48,7 @@ struct DescriptionModel : public std::vector<InfoModel>, public Description
 {
 public:
     void AppendInfo(const InfoModel &);
+    void InsertInfo(int pos, const InfoModel &);
     virtual int Size() const override;
     virtual void DrawLine(const PageInfo *, int y, int num_lines) const override;
 private:

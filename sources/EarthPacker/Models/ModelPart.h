@@ -13,7 +13,7 @@ struct DescriptionModel;
 class ModelPart
 {
 public:
-    class ModelPart(FileInputStream &, DescriptionModel &, int num_model);
+    ModelPart(FileInputStream &, DescriptionModel &, int num_model);
 
     Vertices vertices;
     int skipParent;

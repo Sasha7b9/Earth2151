@@ -147,7 +147,13 @@ void Model::GetParts(FileInputStream &stream, std::list<ModelPart *> &_parts)
 
 void DescriptionModel::AppendInfo(const InfoModel &info)
 {
-    push_back(info);
+    insert(end(), info);
+}
+
+
+void DescriptionModel::InsertInfo(int pos, const InfoModel &info)
+{
+    insert(begin() + pos, info);
 }
 
 

@@ -1,10 +1,13 @@
 // 2022/09/24 19:44:33 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Models/Collections/Vertices.h"
+#include "Models/Model.h"
 
 
-void Vertices::Create(FileInputStream &stream)
+void Vertices::Create(FileInputStream &stream, DescriptionModel &desc)
 {
+    InfoModel info(stream.TellI(), 0, "Vertices");
+
     volatile int vertices = (int)stream.ReadUINT();
     vertices = vertices;
 
@@ -14,6 +17,10 @@ void Vertices::Create(FileInputStream &stream)
     {
         GetVertices(stream.ReadBytes(VERTICES_BLOCK_LENGTH));
     }
+
+    info.size = (int)stream.TellI() - info.address;
+
+    desc.AppendInfo(info);
 }
 
 
