@@ -1,10 +1,13 @@
 // 2022/09/24 19:43:40 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Models/ModelPart.h"
+#include "Models/Model.h"
 
 
-ModelPart::ModelPart(FileInputStream &stream)
+ModelPart::ModelPart(FileInputStream &stream, DescriptionModel &desc, int num_model)
 {
+    InfoModel info(stream.TellI(), 0, wxString::Format("Model part %d", num_model).c_str());
+
     vertices.Create(stream);
     skipParent = stream.ReadByte();
     unknownFlag = stream.ReadByte();
@@ -15,4 +18,8 @@ ModelPart::ModelPart(FileInputStream &stream)
     unknownValue = stream.ReadINT();
     offset.Create(stream);
     stream.Read(unknown_bytes, 5);
+
+    info.size = (int)stream.TellI() - info.address;
+
+    desc.AppendInfo(info);
 }

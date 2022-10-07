@@ -128,12 +128,11 @@ void Model::GetParts(FileInputStream &stream, std::list<ModelPart *> &_parts)
 {
     _parts.clear();
 
+    int num_model = 0;
+
     while (stream.TellI() < stream.GetSize())
     {
-//        size_t size = stream.GetSize();
-//        wxFileOffset pos = stream.TellI();
-
-        _parts.push_back(new ModelPart(stream));
+        _parts.push_back(new ModelPart(stream, description, ++num_model));
     }
 }
 
