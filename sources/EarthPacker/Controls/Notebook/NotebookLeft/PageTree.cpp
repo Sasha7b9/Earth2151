@@ -1,12 +1,12 @@
 // 2022/10/03 09:54:26 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
-#include "Controls/Notebook/NotebookLeft/PageInfoWD.h"
+#include "Controls/Notebook/NotebookLeft/PageTree.h"
 #include "Controls/Notebook/NotebookLeft/NotebookLeft.h"
 
 
-PageInfoWD::PageInfoWD(const wxString &file) : wxTreeCtrl(NotebookLeft::self)
+PageTree::PageTree(const wxString &file) : wxTreeCtrl(NotebookLeft::self)
 {
-    Bind(wxEVT_RIGHT_UP, &PageInfoWD::OnMouseRightUpEvent, this);
+    Bind(wxEVT_RIGHT_UP, &PageTree::OnMouseRightUpEvent, this);
 
     wxTreeItemId root = AddRoot(file);
     wxArrayTreeItemIds items;
@@ -20,12 +20,12 @@ PageInfoWD::PageInfoWD(const wxString &file) : wxTreeCtrl(NotebookLeft::self)
 }
 
 
-void PageInfoWD::OnMouseRightUpEvent(wxMouseEvent &event)
+void PageTree::OnMouseRightUpEvent(wxMouseEvent &event)
 {
     wxMenu menu;
 
     menu.Append(wxID_EXIT, "Close");
-    Bind(wxEVT_MENU, &PageInfoWD::OnMenuClose, this, wxID_EXIT);
+    Bind(wxEVT_MENU, &PageTree::OnMenuClose, this, wxID_EXIT);
 
     PopupMenu(&menu, event.GetPosition());
 
@@ -33,7 +33,7 @@ void PageInfoWD::OnMouseRightUpEvent(wxMouseEvent &event)
 }
 
 
-void PageInfoWD::OnMenuClose(wxCommandEvent &)
+void PageTree::OnMenuClose(wxCommandEvent &)
 {
     NotebookLeft::self->DeletePageRaw(this);
 }

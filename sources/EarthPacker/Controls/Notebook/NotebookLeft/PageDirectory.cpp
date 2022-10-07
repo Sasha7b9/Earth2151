@@ -4,7 +4,7 @@
 #include "Controls/Notebook/NotebookRight/PageInfo.h"
 #include "Resources/Archive.h"
 #include "Controls/Notebook/NotebookLeft/NotebookLeft.h"
-#include "Controls/Notebook/NotebookLeft/PageInfoWD.h"
+#include "Controls/Notebook/NotebookLeft/PageTree.h"
 #include "Models/Model.h"
 
 
@@ -116,7 +116,7 @@ void PageDirectory::OnMenuView(wxCommandEvent &)
 
     NotebookLeft::self->DeletePage(1);
 
-    NotebookLeft::self->AddPage(new PageInfoWD(GetPath()), GetPath());
+    NotebookLeft::self->AddPage(new PageTree(GetPath()), GetPath());
 
     NotebookLeft::self->ChangeSelection(1);
 }
