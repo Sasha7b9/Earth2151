@@ -15,4 +15,5 @@ public:
 protected:
     int DrawCell(const PageInfo *, int x, int y, int width, const wxString &) const;
     int DrawCell(const PageInfo *, int x, int y, int width, int value) const;
+    int DrawCell(const PageInfo *, int x, int y, int width, const std::vector<uint8> &, int num_elements) const;
 };

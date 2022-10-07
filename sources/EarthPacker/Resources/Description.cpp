@@ -18,3 +18,22 @@ int Description::DrawCell(const PageInfo *page, int x, int y, int width, int val
 {
     return DrawCell(page, x, y, width, wxString::Format("%d", value));
 }
+
+
+int Description::DrawCell(const PageInfo *page, int x, int y, int width, const std::vector<uint8> &vec, int num_elements) const
+{
+    int result = x + width;
+
+    if ((int)vec.size() < num_elements)
+    {
+        num_elements = (int)vec.size();
+    }
+
+    for (int i = 0; i < num_elements; i++)
+    {
+        page->DrawText(x + 3, y + 2, wxString::Format("%2X", vec[i]));
+        x += 20;
+    }
+
+    return result;
+}

@@ -147,4 +147,6 @@ void DescriptionModel::DrawLine(const PageInfo *page, int y, int num_lines) cons
     int x = DrawCell(page, 0, y, 50, info.address);
 
     x = DrawCell(page, x, y, 50, info.size);
+
+    x = DrawCell(page, x, y, 200, info.bytes, 8);
 }
