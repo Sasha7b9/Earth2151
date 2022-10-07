@@ -83,6 +83,8 @@ PartNode *Model::GetPartsTree()
 
 void Model::CheckHeader(FileInputStream &stream)
 {
+    InfoModel info
+
     wxMemoryBuffer span = stream.ReadBytes(8);
 
     uint8 template_buffer[8] = { 0x4d, 0x45, 0x53, 0x48, 0x01, 0x00, 0x00, 0x00 };
