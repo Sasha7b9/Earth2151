@@ -4,10 +4,14 @@
 #include "Utils/FileInputStream.h"
 
 
-class Light : public Vector
+struct InfoModel;
+
+
+struct Light : public Vector
 {
-public:
     Light(FileInputStream &);
+
+    static void ToInfo(FileInputStream &, InfoModel &);
 
     wxColour color;
 

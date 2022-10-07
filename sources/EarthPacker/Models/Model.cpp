@@ -54,6 +54,20 @@ void Model::GetDescription(DescriptionModel *description)
     InfoModel iType{ 8, 4, "Type" };
     iType.Append4Bytes(stream.ReadUINT());
     description->AppendLine(iType);
+
+    for (int i = 0; i < 4; i++)
+    {
+        InfoModel point{ (uint)stream.TellI() };
+        point.size = sizeof(float) * 3;
+        point.type = wxString::Format("Point%d", i);
+        for (int byte = 0; byte < sizeof(float) * 3; byte++)
+        {
+            point.bytes.push_back(stream.ReadByte());
+        }
+        description->AppendLine(point);
+    }
+
+
 }
 
 
@@ -154,5 +168,5 @@ void DescriptionModel::DrawLine(const PageInfo *page, int y, int num_lines) cons
 
     x = DrawCell(page, x, y, 50, info.size);
 
-    x = DrawCell(page, x, y, 200, info.bytes, 8);
+    x = DrawCell(page, x, y, 200, info.bytes, 16);
 }
