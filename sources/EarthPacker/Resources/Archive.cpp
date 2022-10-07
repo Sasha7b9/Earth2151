@@ -216,7 +216,7 @@ void DescriptionArchive::DrawLine(const PageInfo *page, int y, int num_line) con
     page->DrawLine(0, y + PageInfo::PIXELS_IN_LINE, width, y + PageInfo::PIXELS_IN_LINE);
     page->DrawLine(width - 1, y, width - 1, y + PageInfo::PIXELS_IN_LINE);
 
-    int x = DrawCell(page, 0, y, 35, wxString::Format("%d", num_line));
+    int x = DrawCell(page, 0, y, 35, wxString::Format("%d", desc.num_line));
 
     x = DrawCell(page, x, y, 390, desc.name);
 
