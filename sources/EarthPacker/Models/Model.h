@@ -71,15 +71,6 @@ private:
     MountPoints *mount_points = nullptr;
     std::vector<Light> lights;
 
-    uint16 unknown_val1 = 0;
-    uint16 unknown_val2 = 0;
-    uint16 unknown_val3 = 0;
-    uint16 unknown_val4 = 0;
-    uint   unknown_val5 = 0;
-
-    wxMemoryBuffer unused2_64;
-    wxMemoryBuffer unused3_488;
-
     PartNode *partsTree = nullptr;
 
     DescriptionModel description;

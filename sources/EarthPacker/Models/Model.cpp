@@ -28,14 +28,14 @@ Model::Model(const wxFileName &_file_name)
         lights.push_back(Light(stream, description, wxString::Format("Light %d", i)));
     }
 
-    unused2_64 = stream.ReadBytes(64);
-    unused3_488 = stream.ReadBytes(488);
+    ReadBytes(stream, "Unused", 64);
+    ReadBytes(stream, "Unused", 488);
+    ReadBytes(stream, "Unused", 2);
 
-    unknown_val1 = stream.Read2Bytes();
-    unknown_val2 = stream.Read2Bytes();
-    unknown_val3 = stream.Read2Bytes();
-    unknown_val4 = stream.Read2Bytes();
-    unknown_val5 = stream.ReadUINT();
+    ReadBytes(stream, "Unused", 2);
+    ReadBytes(stream, "Unused", 2);
+    ReadBytes(stream, "Unused", 2);
+    ReadBytes(stream, "Unused", 4);
 
     if (type != 0)
     {
