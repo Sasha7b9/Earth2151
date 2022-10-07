@@ -4,10 +4,13 @@
 #include "Utils/FileInputStream.h"
 
 
+struct DescriptionModel;
+
+
 class MountPoints : public std::list<Vector>
 {
 public:
-    MountPoints(FileInputStream &);
+    MountPoints(FileInputStream &, DescriptionModel &);
 private:
     static const int NUMBER_OF_MOUNTPOINTS = 4;
 };

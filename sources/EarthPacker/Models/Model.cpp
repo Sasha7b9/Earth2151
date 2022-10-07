@@ -21,7 +21,7 @@ Model::Model(const wxFileName &_file_name)
 
     ReadBytes(stream, "Unused", 10);
 
-    mount_points = new MountPoints(stream);
+    mount_points = new MountPoints(stream, description);
 
     for (int i = 0; i < Light::COUNT; i++)
     {
@@ -166,7 +166,7 @@ void DescriptionModel::DrawLine(const PageInfo *page, int y, int num_lines) cons
 
     x = DrawCell(page, x, y, 50, info.size);
 
-    x = DrawCell(page, x, y, 200, info.bytes, 16);
+    x = DrawCell(page, x, y, 725, info.bytes, 48);
 }
 
 
@@ -182,4 +182,12 @@ InfoModel::InfoModel(FileInputStream &stream, int num_bytes, pchar _name)
     {
         bytes.push_back(data[i]);
     }
+}
+
+
+void InfoModel::Append(Vector &vector)
+{
+    AppendBytes(&vector.x, sizeof(vector.x));
+    AppendBytes(&vector.y, sizeof(vector.y));
+    AppendBytes(&vector.z, sizeof(vector.z));
 }

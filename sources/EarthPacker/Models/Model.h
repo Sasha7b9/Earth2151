@@ -21,6 +21,8 @@ struct InfoModel
     std::string name;
     std::vector<uint8> bytes;
 
+    void Append(Vector &);
+
     void AppendBytes(const wxMemoryBuffer &buffer)
     {
         for (uint i = 0; i < buffer.GetBufSize(); i++)
