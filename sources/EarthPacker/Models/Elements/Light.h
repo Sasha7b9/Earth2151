@@ -9,6 +9,8 @@ struct InfoModel;
 
 struct Light : public Vector
 {
+    static const int COUNT = 5;
+
     Light(FileInputStream &);
 
     static void ToInfo(FileInputStream &, InfoModel &);

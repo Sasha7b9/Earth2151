@@ -4,9 +4,9 @@
 #include "Utils/FileInputStream.h"
 #include "Models/Elements/ModelTemplate.h"
 #include "Models/Collections/MountPoints.h"
-#include "Models/Collections/Lights.h"
 #include "Models/PartNode.h"
 #include "Resources/Description.h"
+#include "Models/Elements/Light.h"
 
 
 struct InfoModel
@@ -51,7 +51,7 @@ private:
     int type;
     ModelTemplate *model_template = nullptr;
     MountPoints *mount_points = nullptr;
-    Lights *lights = nullptr;
+    std::vector<Light> lights;
 
     uint16 unknown_val1 = 0;
     uint16 unknown_val2 = 0;

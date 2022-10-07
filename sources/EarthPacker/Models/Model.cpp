@@ -23,7 +23,10 @@ Model::Model(const wxFileName &_file_name)
 
     mount_points = new MountPoints(stream);
 
-    lights = new Lights(stream);
+    for (int i = 0; i < Light::COUNT; i++)
+    {
+        lights.push_back(Light(stream));
+    }
 
     stream.ReadBytes(64);
     stream.ReadBytes(488);
