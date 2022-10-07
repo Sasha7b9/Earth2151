@@ -52,11 +52,11 @@ void Model::GetDescription(DescriptionModel *description)
 {
     FileInputStream stream(file_name.GetFullPath());
 
-    description->AppendLine(GetHeader(stream));
+    description->AppendInfo(GetHeader(stream));
 
     InfoModel iType{ 8, 4, "Type" };
     iType.Append4Bytes(stream.ReadUINT());
-    description->AppendLine(iType);
+    description->AppendInfo(iType);
 
     for (int i = 0; i < 4; i++)
     {
@@ -67,14 +67,14 @@ void Model::GetDescription(DescriptionModel *description)
         {
             point.bytes.push_back(stream.ReadByte());
         }
-        description->AppendLine(point);
+        description->AppendInfo(point);
     }
 
     for (int i = 0; i < Light::COUNT; i++)
     {
         InfoModel info;
         lights[i].ToInfo(info);
-        description->AppendLine(info);
+        description->AppendInfo(info);
     }
 }
 
@@ -148,7 +148,7 @@ void Model::GetParts(FileInputStream &stream, std::list<ModelPart *> &_parts)
 }
 
 
-void DescriptionModel::AppendLine(const InfoModel &info)
+void DescriptionModel::AppendInfo(const InfoModel &info)
 {
     push_back(info);
 }

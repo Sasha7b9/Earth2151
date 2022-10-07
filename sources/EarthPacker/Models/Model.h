@@ -29,7 +29,7 @@ struct InfoModel
 class DescriptionModel : public std::vector<InfoModel>, public Description
 {
 public:
-    void AppendLine(const InfoModel &);
+    void AppendInfo(const InfoModel &);
     virtual int Size() const override;
     virtual void DrawLine(const PageInfo *, int y, int num_lines) const override;
 private:

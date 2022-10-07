@@ -25,7 +25,7 @@ class DescriptionArchive : public std::vector<InfoArchive>, public Description
 
 public:
     bool IsValid() const;
-    void AppendLine(const InfoArchive &);
+    void AppendInfo(const InfoArchive &);
     virtual int Size() const override;
     virtual void DrawLine(const PageInfo *, int y, int num_line) const override;
 private:

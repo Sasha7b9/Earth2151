@@ -170,18 +170,18 @@ void Archive::GetDescription(DescriptionArchive *description)
         {
             if (resource.file_name.empty())
             {
-                description->AppendLine({ counter++, std::string("Empty name resource") });
+                description->AppendInfo({ counter++, std::string("Empty name resource") });
 
                 continue;
             }
 
             if (resource.info.length)
             {
-                description->AppendLine({ counter++, resource.file_name.c_str(), resource.info.length, resource.info.decompressedLength });
+                description->AppendInfo({ counter++, resource.file_name.c_str(), resource.info.length, resource.info.decompressedLength });
             }
             else
             {
-                description->AppendLine({ counter++, "Empty resource" });
+                description->AppendInfo({ counter++, "Empty resource" });
             }
         }
     }
@@ -194,7 +194,7 @@ bool DescriptionArchive::IsValid() const
 }
 
 
-void DescriptionArchive::AppendLine(const InfoArchive &info)
+void DescriptionArchive::AppendInfo(const InfoArchive &info)
 {
     push_back(info);
 }
