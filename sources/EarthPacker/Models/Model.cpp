@@ -4,6 +4,7 @@
 #include "Utils/FileInputStream.h"
 #include "Models/Collections/MountPoints.h"
 #include "Resources/Mesh.h"
+#include "Controls/Notebook/NotebookRight/PageInfo.h"
 
 
 Model::Model(const wxFileName &_file_name)
@@ -92,16 +93,15 @@ void Model::CheckHeader(FileInputStream &stream)
 }
 
 
-std::string Model::GetHeader(FileInputStream &stream)
+InfoModel Model::GetHeader(FileInputStream &stream)
 {
     wxMemoryBuffer span = stream.ReadBytes(8);
 
-    std::string result("Header :");
+    InfoModel result{ 0, 8, "Header" };
 
     for (int i = 0; i < 8; i++)
     {
-        result.append(" ");
-        result.append(wxString::Format("%02X", span[i]));
+        result.bytes.push_back(span[i]);
     }
 
     return result;
@@ -122,9 +122,9 @@ void Model::GetParts(FileInputStream &stream, std::list<ModelPart *> &_parts)
 }
 
 
-void DescriptionModel::AppendLine(const std::string &line)
+void DescriptionModel::AppendLine(const InfoModel &info)
 {
-    push_back({ line });
+    push_back(info);
 }
 
 
@@ -134,7 +134,17 @@ int DescriptionModel::Size() const
 }
 
 
-void DescriptionModel::DrawLine(const PageInfo *, int y, int num_lines) const
+void DescriptionModel::DrawLine(const PageInfo *page, int y, int num_lines) const
 {
+    const InfoModel &info = (*this)[num_lines];
 
+    int width = page->GetClientSize().GetWidth();
+
+    page->DrawLine(0, y, 0, y + PageInfo::PIXELS_IN_LINE);
+    page->DrawLine(0, y + PageInfo::PIXELS_IN_LINE, width, y + PageInfo::PIXELS_IN_LINE);
+    page->DrawLine(width - 1, y, width - 1, y + PageInfo::PIXELS_IN_LINE);
+
+    int x = DrawCell(page, 0, y, 50, info.address);
+
+    x = DrawCell(page, x, y, 50, info.size);
 }

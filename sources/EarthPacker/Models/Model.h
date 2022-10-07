@@ -11,14 +11,17 @@
 
 struct InfoModel
 {
-    std::string line;
+    uint address;
+    int size;
+    std::string type;
+    std::vector<uint8> bytes;
 };
 
 
 class DescriptionModel : public std::vector<InfoModel>, public Description
 {
 public:
-    void AppendLine(const std::string &);
+    void AppendLine(const InfoModel &);
     virtual int Size() const override;
     virtual void DrawLine(const PageInfo *, int y, int num_lines) const override;
 private:
@@ -56,5 +59,5 @@ private:
 
     PartNode *GetPartsTree();
 
-    std::string GetHeader(FileInputStream &);
+    InfoModel GetHeader(FileInputStream &);
 };

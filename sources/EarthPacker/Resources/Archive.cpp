@@ -208,7 +208,7 @@ int DescriptionArchive::Size() const
 
 void DescriptionArchive::DrawLine(const PageInfo *page, int y, int num_line) const
 {
-    const InfoArchive desc = (*this)[num_line];
+    const InfoArchive &desc = (*this)[num_line];
 
     int width = page->GetClientSize().GetWidth();
 
@@ -227,14 +227,4 @@ void DescriptionArchive::DrawLine(const PageInfo *page, int y, int num_line) con
     x = DrawCell(page, x, y, 55, text_size);
 
     DrawCell(page, x, y, 30, wxString::Format("%5.1f", (float)desc.decompressed_size / (float)desc.size));
-}
-
-
-int DescriptionArchive::DrawCell(const PageInfo *page, int x, int y, int width, const wxString &text) const
-{
-    page->DrawVLine(x + width, y, y + PageInfo::PIXELS_IN_LINE);
-
-    page->DrawText(x + 3, y + 2, text);
-
-    return x + width;
 }
