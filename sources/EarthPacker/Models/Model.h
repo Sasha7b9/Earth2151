@@ -15,6 +15,14 @@ struct InfoModel
     int size;
     std::string type;
     std::vector<uint8> bytes;
+    void Append4Bytes(uint value)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            bytes.push_back(value & 0xFF);
+            value >>= 8;
+        }
+    }
 };
 
 

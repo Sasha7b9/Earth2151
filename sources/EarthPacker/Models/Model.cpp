@@ -50,6 +50,10 @@ void Model::GetDescription(DescriptionModel *description)
     FileInputStream stream(file_name.GetFullPath());
 
     description->AppendLine(GetHeader(stream));
+
+    InfoModel iType{ 8, 4, "Type" };
+    iType.Append4Bytes(stream.ReadUINT());
+    description->AppendLine(iType);
 }
 
 
