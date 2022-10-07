@@ -6,8 +6,10 @@
 #include "Resources/Mesh.h"
 
 
-Model::Model(const wxFileName &file_name)
+Model::Model(const wxFileName &_file_name)
 {
+    file_name = _file_name;
+
     FileInputStream stream(file_name.GetFullPath());
 
     CheckHeader(stream);
@@ -40,6 +42,15 @@ Model::Model(const wxFileName &file_name)
 
     partsTree = GetPartsTree();
 }
+
+
+void Model::GetDescription(DescriptionModel &description)
+{
+    FileInputStream stream(file_name.GetFullPath());
+
+    description.AppendLine(GetHeader(stream));
+}
+
 
 PartNode *Model::GetPartsTree()
 {
@@ -81,6 +92,22 @@ void Model::CheckHeader(FileInputStream &stream)
 }
 
 
+std::string Model::GetHeader(FileInputStream &stream)
+{
+    wxMemoryBuffer span = stream.ReadBytes(8);
+
+    std::string result("Header :");
+
+    for (int i = 0; i < 8; i++)
+    {
+        result.append(" ");
+        result.append(wxString::Format("%02X", span[i]));
+    }
+
+    return result;
+}
+
+
 void Model::GetParts(FileInputStream &stream, std::list<ModelPart *> &_parts)
 {
     _parts.clear();
@@ -92,4 +119,10 @@ void Model::GetParts(FileInputStream &stream, std::list<ModelPart *> &_parts)
 
         _parts.push_back(new ModelPart(stream));
     }
+}
+
+
+void DescriptionModel::AppendLine(std::string &line)
+{
+    push_back({ line });
 }

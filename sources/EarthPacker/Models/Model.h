@@ -8,14 +8,31 @@
 #include "Models/PartNode.h"
 
 
+struct InfoModel
+{
+    std::string line;
+};
+
+
+class DescriptionModel : public std::vector<InfoModel>
+{
+public:
+    void AppendLine(std::string &);
+private:
+};
+
+
 class Model
 {
 public:
 
     Model(const wxFileName &file_name);
 
+    void GetDescription(DescriptionModel &out);
+
 private:
 
+    wxFileName file_name;
     std::list<ModelPart *> parts;
     int type;
     ModelTemplate *model_template = nullptr;
@@ -35,4 +52,6 @@ private:
     void GetParts(FileInputStream &, std::list<ModelPart *> &);
 
     PartNode *GetPartsTree();
+
+    std::string GetHeader(FileInputStream &);
 };

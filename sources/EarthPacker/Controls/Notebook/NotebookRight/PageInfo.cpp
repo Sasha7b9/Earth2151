@@ -92,6 +92,12 @@ void PageInfo::SetDescriptionFile(const DescriptionArchive &_description)
 }
 
 
+void PageInfo::SetDescriptionFile(const DescriptionModel &_description)
+{
+
+}
+
+
 void PageInfo::ScrollBar::Reset()
 {
     keeper->SetScrollbar(wxSB_VERTICAL, SetPosition(0), GetThumb(), GetRange());

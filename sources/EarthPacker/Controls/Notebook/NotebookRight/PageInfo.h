@@ -2,6 +2,7 @@
 #pragma once
 #include "Controls/Canvas.h"
 #include "Resources/Archive.h"
+#include "Models/Model.h"
 
 
 class PageInfo : public Canvas
@@ -12,6 +13,7 @@ public:
     static PageInfo *self;
 
     void SetDescriptionFile(const DescriptionArchive &);
+    void SetDescriptionFile(const DescriptionModel &);
 
 private:
 

@@ -53,7 +53,11 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
     {
         Model model(file_name);
 
-        file_name.SetExt("xml");
+        DescriptionModel description;
+
+        model.GetDescription(description);
+
+        PageInfo::self->SetDescriptionFile(description);
     }
 }
 
