@@ -11,9 +11,9 @@ struct Light : public Vector
 {
     static const int COUNT = 5;
 
-    Light(FileInputStream &);
+    Light(FileInputStream &, int number);
 
-    static void ToInfo(InfoModel &);
+    void ToInfo(InfoModel &);
 
     wxColour color;
 
@@ -23,4 +23,6 @@ struct Light : public Vector
     float u3;
     float tilt;
     float ambience;
+
+    InfoModel *info;
 };

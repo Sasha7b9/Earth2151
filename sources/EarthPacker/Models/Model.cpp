@@ -25,7 +25,7 @@ Model::Model(const wxFileName &_file_name)
 
     for (int i = 0; i < Light::COUNT; i++)
     {
-        lights.push_back(Light(stream));
+        lights.push_back(Light(stream, i));
     }
 
     stream.ReadBytes(64);
