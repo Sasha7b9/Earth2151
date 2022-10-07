@@ -17,7 +17,7 @@ Model::Model(const wxFileName &_file_name)
 
     type = ReadType(stream);
 
-    model_template.Create(stream);
+    model_template.Create(stream, description);
 
     unused1_10 = stream.ReadBytes(10);
 

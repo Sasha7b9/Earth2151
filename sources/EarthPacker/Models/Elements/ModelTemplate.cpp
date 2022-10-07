@@ -4,13 +4,13 @@
 #include "Models/Model.h"
 
 
-void ModelTemplate::Create(FileInputStream &stream)
+void ModelTemplate::Create(FileInputStream &stream, DescriptionModel &desc)
 {
-    info = new InfoModel();
-    info->name = "Model template";
-    info->address = (int)stream.TellI();
+    InfoModel info((uint)stream.TellI(), 0, "Model Template");
 
-    std::bitset<16> data{ stream.Read2Bytes() };
+    uint16 bytes = stream.Read2Bytes();
+
+    std::bitset<16> data{ bytes };
 
     for (int col = COLUMNS - 1; col >= 0; col--)
     {
@@ -22,11 +22,9 @@ void ModelTemplate::Create(FileInputStream &stream)
         }
     }
 
-    info->size = (int)stream.TellI() - info->address;
-}
+    info.size = (int)stream.TellI() - info.address;
 
+    info.AppendBytes(&bytes, 2);
 
-InfoModel &ModelTemplate::GetInfo()
-{
-    return *info;
+    desc.AppendInfo(info);
 }

@@ -4,15 +4,14 @@
 
 
 struct InfoModel;
+struct DescriptionModel;
 
 
 class ModelTemplate
 {
 public:
 
-    void Create(FileInputStream &);
-
-    InfoModel &GetInfo();
+    void Create(FileInputStream &, DescriptionModel &);
 
 private:
 
@@ -20,6 +19,4 @@ private:
     static const int COLUMNS = 4;
 
     bool matrix[ROWS][COLUMNS];
-
-    InfoModel *info = nullptr;
 };

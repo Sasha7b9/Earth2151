@@ -15,7 +15,7 @@ struct InfoModel
     InfoModel() {};
     InfoModel(FileInputStream &, int num_bytes, pchar name);
 
-    uint address;
+    int address;
     int size;
     std::string name;
     std::vector<uint8> bytes;
@@ -40,7 +40,7 @@ struct InfoModel
 };
 
 
-class DescriptionModel : public std::vector<InfoModel>, public Description
+struct DescriptionModel : public std::vector<InfoModel>, public Description
 {
 public:
     void AppendInfo(const InfoModel &);
