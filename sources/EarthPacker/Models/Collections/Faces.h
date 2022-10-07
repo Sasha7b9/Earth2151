@@ -3,7 +3,10 @@
 #include "Models/Elements/Face.h"
 
 
+struct DescriptionModel;
+
+
 struct Faces : std::list<Face>
 {
-    void Create(FileInputStream &);
+    void Create(FileInputStream &, DescriptionModel &);
 };

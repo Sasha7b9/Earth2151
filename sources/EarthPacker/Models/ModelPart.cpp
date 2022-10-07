@@ -13,7 +13,7 @@ ModelPart::ModelPart(FileInputStream &stream, DescriptionModel &desc, int num_mo
     unknownFlag = stream.ReadByte();
     stream.Read2Bytes();
     texture.Create(stream);
-    faces.Create(stream);
+    faces.Create(stream, desc);
     animations.Create(stream);
     unknownValue = stream.ReadINT();
     offset.Create(stream);

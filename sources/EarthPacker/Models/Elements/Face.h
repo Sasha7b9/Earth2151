@@ -3,9 +3,12 @@
 #include "Utils/FileInputStream.h"
 
 
+struct DescriptionModel;
+
+
 struct Face
 {
-    Face(FileInputStream &);
+    Face(FileInputStream &, DescriptionModel &);
 
     int v1 = 0;
     int v2 = 0;
