@@ -40,11 +40,16 @@ Model::Model(const wxFileName &_file_name)
     if (type != 0)
     {
         LOG_ERROR("Not supported mesh format");
+
+        InfoModel info(0, 0, "Not supported mesh format");
+        description.AppendInfo(info);
     }
+    else
+    {
+        GetParts(stream, parts);
 
-    GetParts(stream, parts);
-
-    partsTree = GetPartsTree();
+        partsTree = GetPartsTree();
+    }
 }
 
 
@@ -133,6 +138,7 @@ void Model::GetParts(FileInputStream &stream, std::list<ModelPart *> &_parts)
     while (stream.TellI() < stream.GetSize())
     {
         _parts.push_back(new ModelPart(stream, description, ++num_model));
+        LOG_WRITE("Model part %d", num_model);
     }
 }
 

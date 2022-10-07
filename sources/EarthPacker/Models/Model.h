@@ -11,7 +11,7 @@
 
 struct InfoModel
 {
-    InfoModel(int _address, int _size, const std::string _name) : address(_address), size(_size), name(_name) {}
+    InfoModel(int _address, int _size, pchar _name) : address(_address), size(_size), name(_name) {}
     InfoModel(wxFileOffset _address, int _size, pchar _name) : address((int)_address), size(_size), name(_name) {}
     InfoModel() {};
     InfoModel(FileInputStream &, int num_bytes, pchar name);
