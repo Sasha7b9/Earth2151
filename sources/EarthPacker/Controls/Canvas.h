@@ -13,7 +13,9 @@ public:
 
     Canvas(wxWindow *parent);
 
-    static Canvas *self;
+    void DrawLine(int x1, int y1, int x2, int y2) const;
+
+    void DrawVLine(int x, int y1, int y2) const;
 
 protected:
 
@@ -25,8 +27,6 @@ protected:
 
     void DrawText(int, int, const wxString &);
 
-    void DrawLine(int x1, int y1, int x2, int y2);
-    void DrawVLine(int x, int y1, int y2);
     void DrawHLine(int y, int x1, int x2) const;
 
     void EndScene();

@@ -31,6 +31,7 @@ public:
 private:
     std::string file_name;
     int count_resources;        // Количество файлов в архиве
+    int DrawCell(int x, int y, int width, const wxString &) const;
 };
 
 

@@ -4,13 +4,8 @@
 #include <map>
 
 
-Canvas *Canvas::self = nullptr;
-
-
 Canvas::Canvas(wxWindow *parent) : wxPanel(parent, wxID_ANY)
 {
-    self = this;
-
     Bind(wxEVT_PAINT, &Canvas::OnPaint, this);
 }
 
@@ -36,13 +31,13 @@ void Canvas::DrawText(int x, int y, const wxString &text)
 }
 
 
-void Canvas::DrawLine(int x1, int y1, int x2, int y2)
+void Canvas::DrawLine(int x1, int y1, int x2, int y2) const
 {
     memDC->DrawLine(x1, y1, x2, y2);
 }
 
 
-void Canvas::DrawVLine(int x, int y1, int y2)
+void Canvas::DrawVLine(int x, int y1, int y2) const
 {
     memDC->DrawLine(x, y1, x, y2);
 }

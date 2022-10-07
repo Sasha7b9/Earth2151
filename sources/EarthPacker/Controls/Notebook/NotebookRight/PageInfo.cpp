@@ -100,7 +100,7 @@ void PageInfo::ScrollBar::Reset()
 
 int PageInfo::ScrollBar::GetRange()
 {
-    return PIXELS_IN_LINE * keeper->description.Size() + PIXELS_IN_LINE;
+    return PIXELS_IN_LINE * keeper->description->Size() + PIXELS_IN_LINE;
 }
 
 
@@ -120,7 +120,7 @@ int PageInfo::ScrollBar::SetPosition(int pos)
 };
 
 
-int PageInfo::ScrollBar::GetFirstLine()
+int PageInfo::ScrollBar::GetFirstLine() const
 {
     if (position == 0)
     {
@@ -145,13 +145,4 @@ void PageInfo::ScrollBar::MoveOnLines(int num_lines)
     }
 
     SetPosition(position);
-}
-
-
-int PageInfo::DrawCell(int x, int y, int width, const wxString &text)
-{
-    Canvas::DrawVLine(x + width, y, y + PIXELS_IN_LINE);
-    DrawText(x + 3, y + 2, text);
-
-    return x + width;
 }

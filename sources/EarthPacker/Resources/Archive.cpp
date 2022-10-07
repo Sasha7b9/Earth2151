@@ -206,15 +206,17 @@ int DescriptionArchive::Size() const
 }
 
 
-void DescriptionArchive::DrawLine(PageInfo *page, int y, int num_line)
+void DescriptionArchive::DrawLine(const PageInfo *page, int y, int num_line) const
 {
+    const InfoArchive desc = (*this)[num_line];
+
     int width = page->GetClientSize().GetWidth();
 
     page->DrawLine(0, y, 0, y + PageInfo::PIXELS_IN_LINE);
-    page->DrawLine(0, y + PIXELS_IN_LINE, width, y + PIXELS_IN_LINE);
-    page->DrawLine(width - 1, y, width - 1, y + PIXELS_IN_LINE);
+    page->DrawLine(0, y + PageInfo::PIXELS_IN_LINE, width, y + PageInfo::PIXELS_IN_LINE);
+    page->DrawLine(width - 1, y, width - 1, y + PageInfo::PIXELS_IN_LINE);
 
-    int x = DrawCell(0, y, 35, wxString::Format("%d", desc.num_line));
+    int x = DrawCell(0, y, 35, wxString::Format("%d", num_line));
 
     x = DrawCell(x, y, 390, desc.name);
 
@@ -225,4 +227,14 @@ void DescriptionArchive::DrawLine(PageInfo *page, int y, int num_line)
     x = DrawCell(x, y, 55, text_size);
 
     DrawCell(x, y, 30, wxString::Format("%5.1f", (float)desc.decompressed_size / (float)desc.size));
+}
+
+
+int DescriptionArchive::DrawCell(int x, int y, int width, const wxString &text) const
+{
+    page->DrawVLine(x + width, y, y + PageInfo::PIXELS_IN_LINE);
+
+    DrawText(x + 3, y + 2, text);
+
+    return x + width;
 }
