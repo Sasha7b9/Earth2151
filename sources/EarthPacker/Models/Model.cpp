@@ -7,10 +7,8 @@
 #include "Controls/Notebook/NotebookRight/PageInfo.h"
 
 
-Model::Model(const wxFileName &_file_name)
+Model::Model(const wxFileName &_file_name) : file_name(_file_name)
 {
-    file_name = _file_name;
-
     LOG_WRITE("%s", file_name.GetFullPath().c_str().AsChar());
 
     FileInputStream stream(file_name.GetFullPath());
@@ -27,7 +25,7 @@ Model::Model(const wxFileName &_file_name)
 
     for (int i = 0; i < Light::COUNT; i++)
     {
-        lights.push_back(Light(stream, description, wxString::Format("Light %d", i)));
+        lights.emplace_back(Light(stream, description, wxString::Format("Light %d", i)));
     }
 
     ReadBytes(stream, "Unused", 64);

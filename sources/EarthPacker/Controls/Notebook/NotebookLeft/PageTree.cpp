@@ -8,7 +8,7 @@ PageTree::PageTree(const wxString &file) : wxTreeCtrl(NotebookLeft::self)
 {
     Bind(wxEVT_RIGHT_UP, &PageTree::OnMouseRightUpEvent, this);
 
-    wxTreeItemId root = AddRoot(file);
+    wxTreeItemId root = wxTreeCtrl::AddRoot(file);
     wxArrayTreeItemIds items;
     items.Add(AppendItem(root, "Item 1"));
     items.Add(AppendItem(root, "Item 2"));
@@ -16,7 +16,7 @@ PageTree::PageTree(const wxString &file) : wxTreeCtrl(NotebookLeft::self)
     wxTreeItemId root1 = items.Item(0);
     AppendItem(root1, "subitem 1");
 
-    Expand(root);
+    wxTreeCtrl::Expand(root);
 }
 
 
