@@ -10,6 +10,6 @@ namespace Log
 {
     void Init();
     void DeInit();
-    void Write(char *format, ...);
-    void Error(char *format, ...);
+    void Write(const char *format, ...);
+    void Error(const char *format, ...);
 }

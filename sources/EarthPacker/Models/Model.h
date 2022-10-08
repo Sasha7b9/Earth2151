@@ -9,49 +9,39 @@
 #include "Models/Elements/Light.h"
 
 
-struct InfoModel
+struct HeaderInfoModel
 {
-    InfoModel(int _address, int _size, pchar _name) : address(_address), size(_size), name(_name) {}
-    InfoModel(wxFileOffset _address, int _size, pchar _name) : address((int)_address), size(_size), name(_name) {}
-    InfoModel() {};
-    InfoModel(FileInputStream &, int num_bytes, pchar name);
-
-    int address;
-    int size;
+    int offset;
     std::string name;
-    std::vector<uint8> bytes;
-
-    void Append(Vector &);
-    void Append(float);
-
-    void AppendBytes(const wxMemoryBuffer &buffer)
-    {
-        for (uint i = 0; i < buffer.GetBufSize(); i++)
-        {
-            bytes.push_back(buffer[i]);
-        }
-    }
-
-    void AppendBytes(void *value, int num_bytes)
-    {
-        uint8 *pointer = (uint8 *)value;
-
-        for (int i = 0; i < num_bytes; i++)
-        {
-            bytes.push_back(*pointer++);
-        }
-    }
 };
 
 
-struct DescriptionModel : public std::vector<InfoModel>, public Description
+struct InfoModel
 {
-public:
-    void AppendInfo(const InfoModel &);
-    void InsertInfo(int pos, const InfoModel &);
+    InfoModel(int offset, pchar name);
+    InfoModel(uint offset, pchar name);
+    InfoModel(wxFileOffset offset, pchar name, int size = 0);
+
+    InfoModel &AppendBytes(const wxMemoryBuffer &);
+    InfoModel &AppendBytes(void *data, int num_bytes);
+
+    HeaderInfoModel header;
+    int size;
+    std::vector<uint8> bytes;
+};
+
+
+struct DescriptionModel : public Description, public std::map<HeaderInfoModel, InfoModel>
+{
     virtual int Size() const override;
-    virtual void DrawLine(const PageInfo *, int y, int num_lines) const override;
+    virtual void DrawLine(const PageInfo *, int y, int num_line) const override;
+
+    void AppendInfo(const InfoModel &);
+    void AppendInfo(InfoModel &, FileInputStream &);
+
 private:
+
+    InfoModel &GetInfo(int num_line);
 };
 
 
@@ -61,7 +51,7 @@ public:
 
     Model(const wxFileName &file_name);
 
-    void GetDescription(DescriptionModel *);
+    void GetDescription(DescriptionModel *out);
 
 private:
 
@@ -80,7 +70,7 @@ private:
 
     int ReadType(FileInputStream &);
 
-    void ReadBytes(FileInputStream &, pchar name, int num_bytes);
+    void ReadBytes(FileInputStream &, pchar name, int num_bytes); 
 
     void GetParts(FileInputStream &, std::list<ModelPart *> &);
 

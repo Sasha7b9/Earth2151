@@ -29,7 +29,7 @@ void Log::DeInit()
 }
 
 
-void Log::Write(char *format, ...)
+void Log::Write(const char *format, ...)
 {
     char buffer[SIZE_BUFFER];
     char *pointer = buffer;
@@ -46,7 +46,7 @@ void Log::Write(char *format, ...)
 }
 
 
-void Log::Error(char *format, ...)
+void Log::Error(const char *format, ...)
 {
     char buffer[SIZE_BUFFER];
     std::strcpy(buffer, "!!! ERRROR !!! ");

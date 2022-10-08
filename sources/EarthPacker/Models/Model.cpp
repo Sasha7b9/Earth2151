@@ -43,8 +43,7 @@ Model::Model(const wxFileName &_file_name)
     {
         LOG_ERROR("Not supported mesh format");
 
-        InfoModel info(0, 0, "Not supported mesh format");
-        description.AppendInfo(info);
+        description.AppendInfo(InfoModel(0xFFFFFFFF, "Not supported mesh format"));
     }
     else
     {
@@ -57,7 +56,7 @@ Model::Model(const wxFileName &_file_name)
 
 void Model::ReadBytes(FileInputStream &stream, pchar name, int num_bytes)
 {
-    InfoModel info(stream.TellI(), num_bytes, name);
+    InfoModel info(stream.TellI(), name, num_bytes);
 
     info.AppendBytes(stream.ReadBytes(num_bytes));
 
@@ -77,7 +76,7 @@ PartNode *Model::GetPartsTree()
     PartNode * const root = new PartNode(currentID, *parts.begin());
     PartNode *lastNode = root;
 
-    for each (auto part in parts)
+    for (auto part : parts)
     {
         if (part == *parts.begin())
         {
@@ -100,7 +99,7 @@ PartNode *Model::GetPartsTree()
 
 void Model::CheckHeader(FileInputStream &stream)
 {
-    InfoModel info(stream.TellI(), 8, "Header");
+    InfoModel info(stream.TellI(), "Header", 0);
 
     wxMemoryBuffer span = stream.ReadBytes(8);
 
@@ -111,21 +110,17 @@ void Model::CheckHeader(FileInputStream &stream)
         LOG_ERROR("Not mesh format");
     }
 
-    info.AppendBytes(span);
-
-    description.AppendInfo(info);
+    description.AppendInfo(info.AppendBytes(span));
 }
 
 
 int Model::ReadType(FileInputStream &stream)
 {
-    InfoModel info(stream.TellI(), 4, "Type");
+    InfoModel info(stream.TellI(), "Type resource", 4);
 
     int result = stream.ReadUINT();
 
-    info.AppendBytes(&result, 4);
-
-    description.AppendInfo(info);
+    description.AppendInfo(info.AppendBytes(&result, 4));
 
     return result;
 }
@@ -147,13 +142,7 @@ void Model::GetParts(FileInputStream &stream, std::list<ModelPart *> &_parts)
 
 void DescriptionModel::AppendInfo(const InfoModel &info)
 {
-    insert(end(), info);
-}
-
-
-void DescriptionModel::InsertInfo(int pos, const InfoModel &info)
-{
-    insert(begin() + pos, info);
+    insert(std::pair{ info.header, info });
 }
 
 
@@ -163,50 +152,44 @@ int DescriptionModel::Size() const
 }
 
 
-void DescriptionModel::DrawLine(const PageInfo *page, int y, int num_lines) const
+void DescriptionModel::DrawLine(const PageInfo *, int, int) const
 {
-    const InfoModel &info = (*this)[num_lines];
-
-    int width = page->GetClientSize().GetWidth();
-
-    page->DrawLine(0, y, 0, y + PageInfo::PIXELS_IN_LINE);
-    page->DrawLine(0, y + PageInfo::PIXELS_IN_LINE, width, y + PageInfo::PIXELS_IN_LINE);
-    page->DrawLine(width - 1, y, width - 1, y + PageInfo::PIXELS_IN_LINE);
-
-    int x = DrawCell(page, 0, y, 90, info.name);
-
-    x = DrawCell(page, x, y, 50, info.address);
-
-    x = DrawCell(page, x, y, 50, info.size);
-
-    x = DrawCell(page, x, y, 725, info.bytes, 48);
+//    const InfoModel &info = (*this)[num_lines];
+//
+//    int width = page->GetClientSize().GetWidth();
+//
+//    page->DrawLine(0, y, 0, y + PageInfo::PIXELS_IN_LINE);
+//    page->DrawLine(0, y + PageInfo::PIXELS_IN_LINE, width, y + PageInfo::PIXELS_IN_LINE);
+//    page->DrawLine(width - 1, y, width - 1, y + PageInfo::PIXELS_IN_LINE);
+//
+//    int x = DrawCell(page, 0, y, 90, info.name);
+//
+//    x = DrawCell(page, x, y, 50, info.address);
+//
+//    x = DrawCell(page, x, y, 50, info.size);
+//
+//    x = DrawCell(page, x, y, 725, info.bytes, 48);
 }
 
 
-InfoModel::InfoModel(FileInputStream &stream, int num_bytes, pchar _name)
+//InfoModel::InfoModel(FileInputStream &stream, int num_bytes, pchar _name)
+//{
+//    address = (uint)stream.TellI();
+//
+//    name = _name;
+//
+//    wxMemoryBuffer data = stream.ReadBytes(num_bytes);
+//
+//    for (uint i = 0; i < data.GetBufSize(); i++)
+//    {
+//        bytes.push_back(data[i]);
+//    }
+//}
+
+
+void DescriptionModel::AppendInfo(InfoModel &info, FileInputStream &stream)
 {
-    address = (uint)stream.TellI();
+    info.size = (int)stream.TellI() - info.header.offset;
 
-    name = _name;
-
-    wxMemoryBuffer data = stream.ReadBytes(num_bytes);
-
-    for (uint i = 0; i < data.GetBufSize(); i++)
-    {
-        bytes.push_back(data[i]);
-    }
-}
-
-
-void InfoModel::Append(Vector &vector)
-{
-    AppendBytes(&vector.x, sizeof(vector.x));
-    AppendBytes(&vector.y, sizeof(vector.y));
-    AppendBytes(&vector.z, sizeof(vector.z));
-}
-
-
-void InfoModel::Append(float value)
-{
-    AppendBytes(&value, sizeof(value));
+    AppendInfo(info);
 }

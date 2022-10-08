@@ -20,7 +20,7 @@ void Vertices::Create(FileInputStream &stream, DescriptionModel &desc)
 
     info.size = (int)stream.TellI() - info.address;
 
-    desc.AppendInfo(info);
+    desc.AppendInfo(info, stream);
 }
 
 

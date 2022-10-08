@@ -6,18 +6,16 @@
 
 MountPoints::MountPoints(FileInputStream &stream, DescriptionModel &desc)
 {
-    InfoModel info(stream.TellI(), 0, "Mount points");
+    InfoModel info(stream.TellI(), "Mount points");
 
     for (int i = 0; i < NUMBER_OF_MOUNTPOINTS; i++)
     {
         Vector vector(stream);
 
-        info.Append(vector);
-
         push_back(vector);
     }
 
-    info.size = (int)stream.TellI() - info.address;
+    info.size = (int)stream.TellI() - info.header.offset;
 
     desc.AppendInfo(info);
 }

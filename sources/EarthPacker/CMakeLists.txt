@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.14)
 
 project (EarthPacker)
 
-set(CMAKE_UNITY_BUILD ON)
+set(CMAKE_UNITY_BUILD OFF)
 
 include_directories(.
                     ../ThirdParty/wxWidgets/include
@@ -16,7 +16,7 @@ link_directories(../generated/wxWidgets/lib/vc_dll)
 add_definitions(-DWXUSINGDLL -DGUI)
 
 if(WIN32)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -MP -Wall")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -MP -Wall /std:c++20")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS")
     
     # Older cmake versions don't support string(APPEND ...) provide a workaround

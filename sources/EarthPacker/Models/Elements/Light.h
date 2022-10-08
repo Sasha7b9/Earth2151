@@ -4,7 +4,7 @@
 #include "Utils/FileInputStream.h"
 
 
-struct InfoModel;
+struct DescriptionModel;
 
 
 struct Light

@@ -16,6 +16,7 @@ typedef signed char int8;
 #pragma warning(push, 0)
 #include <list>
 #include <bitset>
+#include <map>
 #include <wx/wx.h>
 #include <wx/statline.h>
 #include <wx/grid.h>
