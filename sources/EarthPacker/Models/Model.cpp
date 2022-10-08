@@ -178,6 +178,26 @@ InfoModel::InfoModel(wxFileOffset _offset, pchar _name, int _size) : header{(int
 }
 
 
+InfoModel &InfoModel::AppendBytes(const void *data, int num_bytes)
+{
+    uint8 *pointer = (uint8 *)data;
+
+    bytes.insert(bytes.begin(), pointer, pointer + num_bytes);
+
+    return *this;
+}
+
+
+InfoModel &InfoModel::AppendBytes(const Vector &vector)
+{
+    AppendBytes((const void *)&vector.x, sizeof(vector.x));
+    AppendBytes((const void *)&vector.y, sizeof(vector.y));
+    AppendBytes((const void *)&vector.z, sizeof(vector.z));
+
+    return *this;
+}
+
+
 void DescriptionModel::AppendInfo(InfoModel &info, FileInputStream &stream)
 {
     info.size = (int)stream.TellI() - info.header.offset;

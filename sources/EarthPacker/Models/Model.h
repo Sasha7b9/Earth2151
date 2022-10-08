@@ -25,9 +25,9 @@ struct InfoModel
     InfoModel(wxFileOffset offset, pchar name, int size = 0);
 
     InfoModel &AppendBytes(const wxMemoryBuffer &);
-    InfoModel &AppendBytes(void *data, int num_bytes);
-    InfoModel &AppendBytes(Vector &);
-    InfoModel &AppendBytes(float);
+    InfoModel &AppendBytes(const void *data, int num_bytes);
+    InfoModel &AppendBytes(const Vector &);
+    InfoModel &AppendBytes(const float);
 
     HeaderInfoModel header;
     int size;
