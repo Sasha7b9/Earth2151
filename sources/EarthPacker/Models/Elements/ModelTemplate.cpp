@@ -6,7 +6,7 @@
 
 void ModelTemplate::Create(FileInputStream &stream, DescriptionModel &desc)
 {
-    InfoModel info(stream.TellI(), 0, "Model Template");
+    InfoModel info(stream.TellI(), "Model Template");
 
     uint16 bytes = stream.Read2Bytes();
 
@@ -22,9 +22,7 @@ void ModelTemplate::Create(FileInputStream &stream, DescriptionModel &desc)
         }
     }
 
-    info.size = (int)stream.TellI() - info.address;
-
     info.AppendBytes(&bytes, 2);
 
-    desc.AppendInfo(info);
+    desc.AppendInfo(info, stream);
 }
