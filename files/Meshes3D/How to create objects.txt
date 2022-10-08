@@ -1,0 +1,188 @@
+1. Meshes description
+2. How to install Plugin
+3. How to create object
+4. How to export object to AOD
+5. How to convert AOD to MSH
+
+-------------------------------------------------------------------------------
+1. Meshes description
+
+Game uses 3D meshes stoted in MSH format in Meshes directory.
+
+To create mesh in MSH format you have to do following steps:
+a) create 3D object in #D Studio MAX v3.1
+b) export object to AOD format using "EARTH2150 Utility" plugin
+c) convert AOD file into MSH format using AOD2MSH.EXE program
+-------------------------------------------------------------------------------
+2. How to install Plugin
+
+Just copy EarthExp.dle into your MAX plugin's directory.
+Plugin called "Earth 2150 Utility" will be located in the Utilities Tab.
+
+-------------------------------------------------------------------------------
+3. How to create object
+
+---
+3.1 Look at the examples 
+
+Use our example file EDUST1.MAX
+This file included small ED tank chassis.
+You can modify it.
+
+We use MAX Spot lights as special objects. Please do not remove any of them.
+If there is a number after the name of the slot it usually means that
+you can add more slots of that type (e.g. SLOT_SC1, SLOT_SC2...)
+All slots are listed later in that chapter.
+
+As you can see in the example the tank "stands" on the XY plane, it's pivot point
+is exactly in the 0,0,0 point and its front points in the direction of the X axis.
+That means that inside the game ground level (or water for ships) will be in the
+place of XY plane and the unit will move towards positive values of X axis.
+It will also use it's pivot point for turning.
+
+Notice that there is only one root object and it's name is the same
+as the name of the file. It is called the main object and all other
+objects and slots have to be linked to it.
+
+The second file - EDWCA1.MAX - is the turret for the tank.
+It's pivot and direction is like in previous example.
+Inside the game it will be attached to the SLOT_SC1 of the tank (pivot to pivot).
+
+Now look at the barrel: it is linked to the body of the turret and is animated.
+It has also SLOT_MI1 (missile) linked to it.
+Animation is very short and is played back during shooting.
+The name of this object is very important: LC1S0E5K20.
+L - is the type of the object (L means that this is a barrel, P is "regular" subobject)
+C - (optional) is type of the animation (if any). C means not looped animation.
+	(there are also looped animations - A, and "gate" (forward or backward) animations -B).
+1 - number of subobject (unanimated barrel would be named L1 instead of LC1)
+S0 - number of the first frame of animation
+E5 - number of the last frame of animation
+K20 - maximum angle the barrel can be rised
+
+There can be lots of information inside the objects name, most of
+whoch is optional and there's no need to discribe all of it right now.
+
+You can check now how the tank looks in MAX:
+open EDUST1.MAX, merge all objects from EDWCA1.MAX and
+place object EDWCA1 on the light called SLOT_SC1 (aligning their pivots).
+
+Now look at EDBBC.MAX file. It is one of ED buildings,
+notice that it is bigger than tank, have diffrent slots
+and is placed in diffrent way than vehicles (see p.3.2).
+It also has three looping animations (PA_S_E_), two of them are spinning radars,
+and third is an animated light (one of many features not described in this file ;) ).
+
+---
+3.2 Dimensions and placement of vehicles and buildings
+
+The game uses grid of sqares 8x8 MAX units each. That means that vehicles
+shouldn't exceed dimensions of 8x8 units or they will overlap in the game.
+For scaling purposes use example files included with this doc.
+
+Vehicles are placed in the middle of the 3DS MAX world (point 0,0,0)
+and they shouldn't be bigger than "ingame square" (8x8 units).
+
+Buildings can be up to 4 "squares" big in any direction (32 units)
+and they are placed inside the "bottom right" of the XY plane (X>0, Y<0).
+Pivot point is always in 0,0,0 while the building spreads in (+X) and (-Y) directions.
+To tell the game how big is the building there are special objects called "heights".
+
+
+---
+3.2 The most important rules for creating ingame objects:
+
+- Pivot point of the main object ALWAYS must be placed at point 0,0,0
+- There can be only one main (root) object and its name should match
+	the name of the file, all other objects including slots are linked to it
+- All objects (except slots) have to be of Editable Mesh type
+- Pivots of ALL objects (geometry, not slots) in the scene MUST be aligned to world
+- All (geometry) objects MUST have reseted X-Forms and collapsed stacks
+	(although when objects is Editable Mesh it's still possible to export it with
+	some Edit Mesh and Unwrap UVW modifiers in the stack)
+- Every objects should have exactly ONE material. If you need more than one texture
+	on a mesh use Multi/SubObject Material and Material ID feature of EditableMesh
+- All geometry MUST have at least one texture applied (game uses only Diffuse
+	texture slot in materials, other textures and colors are ignored)
+- All faces should have mapping coordinates, or MAX will use random UVW values
+	which sometimes causes a crash while exporting to AOD.
+- Animated objects must have proper names (with animation type A/B/C and S_E_ section)
+	and there must be keys on the first and the last frame specified in the name
+	of the object for each animated modifiers
+- For animation of Position and Rotation transforms TCB controllers must be used.
+	Animation of Scale isn't supported. Main objects and slots can't be animated.
+
+---
+3.3 List of slots:
+
+Notice: Vehicles have one SLOT_HT1 and one SLOT_SM1,
+	buildings four pairs of them (HT1 - HT4, SM1-SM4)
+	Each object should have also SLOT_CE.
+
+a) Slots common for units and buildings:
+
+SLOT_CE	- center (not pivot point!), small meshes in the interface are spinning around it
+SLOT_SC1	- this light determine where cannon should be attached to the tank.
+	you can add more if you want to create object with more cannons (max is 4)
+SLOT_MI1	- (MIssile) point where missiles appear during shooting (usually end of the barrel)
+
+SLOT_HT1 - (HiT) - point where enemy missiles will hit the object
+SLOT_SM1 - (SMoke) - point where black smoke will be emitted after hit
+
+LIGHT_HL1	- (headlight) - light switched on during night. You can change color
+	and brightness of the light and those parameters will be used in game.
+	You can also change cone angle and length. 
+
+b) Optional unit slots:
+
+SLOT_ST1	- (Smoke Trace) - emits dust when a vehicle is going on sand
+SLOT_SE1	- (Smoke Engine) - exhaust pipe
+SLOT_SK1 - (Smoke Kilwater) - water trail at the rear end of boats and amphibias 
+
+c) Special building slots:
+
+SLOT_TR1 - (TRansport) - unloading place for land ore transporters, for mines and refineries only
+SLOT_PR - (PRoduction) - place where new units appear (inside the factory),
+SLOT_MV - (MoVe) - place where new unit goes after production (from SLOT_PR),
+		it must be exactly in the middle of the 8x8 units box and outside the factory
+SLOT_L - Landing zone for flying transporters 
+SLOT_CH1 - (CHimney) - chimney smoke
+
+WARNING: Slots TR, PR, MV and L must be exactly in the middle of the 8x8 units box
+
+
+------------------------------------------------------------------------------
+4. How to export object to AOD
+
+Make sure that all objects are correct :)
+Use "Earth 2150 Utility".
+Functions of plugin:
+	1. CHECK - checks object without saving
+	2. EXPORT - checks objects and, if correct, saves *.MAX and exports *.AOD
+	4. CONVERT - converts all *.MAX files in given directory to *.AOD
+	5. RUN VIEWER - doesn't work anymore.
+
+-------------------------------------------------------------------------------
+5. How to convert AOD to MSH
+
+If toy have AOD file ready you can easily convert it into MSH format:
+
+Syntax:
+  aod2MSH.EXE objectname.aod
+
+Example:
+  aod2MSH.EXE EDUST1.aod
+
+File EDUST1 will be generated.
+
+ATTENTION:
+This program will check if object name is the same as file name
+and if all textures for object exist. To avoid error messages
+you have to run this program from meshes directory in the following subtree:
+
+GAME                    -game directory
+ - Meshes               - from this directory run aod2msk 
+ - Textures             - in this directory store textures in TEX format
+
+-------------------------------------------------------------------------------
+
