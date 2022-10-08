@@ -172,19 +172,10 @@ void DescriptionModel::DrawLine(const PageInfo *, int, int) const
 }
 
 
-//InfoModel::InfoModel(FileInputStream &stream, int num_bytes, pchar _name)
-//{
-//    address = (uint)stream.TellI();
-//
-//    name = _name;
-//
-//    wxMemoryBuffer data = stream.ReadBytes(num_bytes);
-//
-//    for (uint i = 0; i < data.GetBufSize(); i++)
-//    {
-//        bytes.push_back(data[i]);
-//    }
-//}
+InfoModel::InfoModel(wxFileOffset _offset, pchar _name, int _size) : header{(int)_offset, _name}, size(_size)
+{
+    
+}
 
 
 void DescriptionModel::AppendInfo(InfoModel &info, FileInputStream &stream)
