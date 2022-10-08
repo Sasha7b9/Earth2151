@@ -24,6 +24,8 @@ struct InfoModel
 
     InfoModel &AppendBytes(const wxMemoryBuffer &);
     InfoModel &AppendBytes(void *data, int num_bytes);
+    InfoModel &AppendBytes(Vector &);
+    InfoModel &AppendBytes(float);
 
     HeaderInfoModel header;
     int size;
