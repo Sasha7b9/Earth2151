@@ -58,6 +58,8 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
         model.GetDescription(description);
 
         PageInfo::self->SetDescriptionFile(description);
+
+        description->Log();
     }
     else
     {

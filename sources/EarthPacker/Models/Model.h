@@ -45,6 +45,8 @@ struct DescriptionModel : public Description, public std::map<HeaderInfoModel, I
     void AppendInfo(const InfoModel &);
     void AppendInfo(InfoModel &, FileInputStream &);
 
+    void Log();
+
 private:
 
     InfoModel &GetInfo(int num_line);
