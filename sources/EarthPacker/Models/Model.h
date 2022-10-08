@@ -20,7 +20,6 @@ struct HeaderInfoModel
 
 struct InfoModel
 {
-    InfoModel(int offset, pchar name);
     InfoModel(uint offset, pchar name);
     InfoModel(wxFileOffset offset, pchar name, int size = 0);
 
