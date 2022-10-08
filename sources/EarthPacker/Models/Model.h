@@ -11,7 +11,7 @@
 
 struct HeaderInfoModel
 {
-    int offset;
+    int offset = 0;
     std::string name;
 
     bool operator<(const HeaderInfoModel &rhs) const
@@ -24,7 +24,7 @@ struct HeaderInfoModel
 struct InfoModel
 {
     InfoModel(uint offset, pchar name);
-    InfoModel(wxFileOffset offset, pchar name, int size = 0);
+    InfoModel(wxFileOffset offset, pchar name);
 
     InfoModel &AppendBytes(const wxMemoryBuffer &);
     InfoModel &AppendBytes(const void *data, int num_bytes);
@@ -32,7 +32,7 @@ struct InfoModel
     InfoModel &AppendBytes(const float);
 
     HeaderInfoModel header;
-    int size;
+    int size = 0;
     std::vector<uint8> bytes;
 };
 

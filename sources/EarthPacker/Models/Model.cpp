@@ -54,7 +54,7 @@ Model::Model(const wxFileName &_file_name) : file_name(_file_name)
 
 void Model::ReadBytes(FileInputStream &stream, pchar name, int num_bytes)
 {
-    InfoModel info(stream.TellI(), name, num_bytes);
+    InfoModel info(stream.TellI(), name);
 
     info.AppendBytes(stream.ReadBytes(num_bytes));
 
@@ -97,7 +97,7 @@ PartNode *Model::GetPartsTree()
 
 void Model::CheckHeader(FileInputStream &stream)
 {
-    InfoModel info(stream.TellI(), "Header", 8);
+    InfoModel info(stream.TellI(), "Header");
 
     wxMemoryBuffer span = stream.ReadBytes(8);
 
@@ -114,7 +114,7 @@ void Model::CheckHeader(FileInputStream &stream)
 
 int Model::ReadType(FileInputStream &stream)
 {
-    InfoModel info(stream.TellI(), "Type resource", 4);
+    InfoModel info(stream.TellI(), "Type resource");
 
     int result = stream.ReadUINT();
 
@@ -170,13 +170,13 @@ void DescriptionModel::DrawLine(const PageInfo *, int, int) const
 }
 
 
-InfoModel::InfoModel(wxFileOffset _offset, pchar _name, int _size) : header{(int)_offset, _name}, size(_size)
+InfoModel::InfoModel(wxFileOffset _offset, pchar _name) : header{(int)_offset, _name}
 {
     
 }
 
 
-InfoModel::InfoModel(uint _offset, pchar _name) : header{ (int)_offset, _name }, size(0)
+InfoModel::InfoModel(uint _offset, pchar _name) : header{ (int)_offset, _name }
 {
 
 }
@@ -187,6 +187,8 @@ InfoModel &InfoModel::AppendBytes(const void *data, int num_bytes)
     uint8 *pointer = (uint8 *)data;
 
     bytes.insert(bytes.begin(), pointer, pointer + num_bytes);
+
+    size += num_bytes;
 
     return *this;
 }
