@@ -193,3 +193,9 @@ void DescriptionModel::AppendInfo(InfoModel &info, FileInputStream &stream)
 
     AppendInfo(info);
 }
+
+
+bool HeaderInfoModel::operator<(const HeaderInfoModel &rhs) const
+{
+    return (offset < rhs.offset ? true : (name < rhs.name));
+}

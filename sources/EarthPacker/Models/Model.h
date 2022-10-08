@@ -13,6 +13,8 @@ struct HeaderInfoModel
 {
     int offset;
     std::string name;
+
+    bool operator<(const HeaderInfoModel &) const;
 };
 
 
