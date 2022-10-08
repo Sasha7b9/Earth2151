@@ -14,7 +14,10 @@ struct HeaderInfoModel
     int offset;
     std::string name;
 
-    bool operator<(const HeaderInfoModel &) const;
+    bool operator<(const HeaderInfoModel &rhs) const
+    {
+        return (offset == rhs.offset) ? (name < rhs.name) : (offset < rhs.offset);
+    }
 };
 
 
