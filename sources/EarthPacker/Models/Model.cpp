@@ -97,7 +97,7 @@ PartNode *Model::GetPartsTree()
 
 void Model::CheckHeader(FileInputStream &stream)
 {
-    InfoModel info(stream.TellI(), "Header", 0);
+    InfoModel info(stream.TellI(), "Header", 8);
 
     wxMemoryBuffer span = stream.ReadBytes(8);
 
