@@ -232,6 +232,12 @@ void DescriptionModel::Log()
 {
     for (const auto &info : *this)
     {
-        LOG_WRITE("% 4X:% 5d | % 4X:% 5d | %s", info.first.offset, info.first.offset, info.second.size, info.second.size, info.first.name.c_str());
+        LOG_WRITE("% 4X:% 5d | % 4X:% 5d | %s", info.first.offset, info.first.offset, info.second.size, info.second.size, info.second.content.c_str());
     }
+}
+
+
+pchar InfoModel::Content::c_str() const
+{
+
 }

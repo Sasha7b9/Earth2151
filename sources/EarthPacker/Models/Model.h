@@ -34,6 +34,15 @@ struct InfoModel
     HeaderInfoModel header;
     int size = 0;
     std::vector<uint8> bytes;
+
+    // Здесь хранятся строки с описанием поля
+    struct Content
+    {
+        std::string content;
+        int length_name;
+
+        pchar c_str() const;
+    } content;
 };
 
 
