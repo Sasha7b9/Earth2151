@@ -7,20 +7,20 @@ namespace ResourceFactory
 {
     enum class TypeResource
     {
-        _0 = 0,
-        Generic = 1,
-        Player = 3,
-        Text = 5,
-        Interface = 9,      // Это под вопросом
-        Dialog = 17,
+        _0         = 0,
+        Generic    = 1,
+        Player     = 3,
+        Text       = 5,
+        Interface  = 9,     // Это под вопросом
+        Dialog     = 17,
         Interface2 = 25,    // Это под вопросом
-        _33,
-        Level = 43,         // Это под вопросом
-        Mesh = 49,
-        _57,
-        Level2 = 59,
-        Group = 255
+        _33        = 33,
+        Level      = 43,    // Это под вопросом
+        Mesh       = 49,
+        _57        = 57,
+        Level2     = 59,
+        Group      = 255
     };
 
-    Resource _Create(wxInputStream &);
+    Resource Create(wxInputStream &);
 };

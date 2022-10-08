@@ -20,7 +20,7 @@ namespace ResourceFactory
 }
 
 
-Resource ResourceFactory::_Create(wxInputStream &stream)
+Resource ResourceFactory::Create(wxInputStream &stream)
 {
     auto name = GetName(stream);
 
