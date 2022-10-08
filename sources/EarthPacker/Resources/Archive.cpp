@@ -89,7 +89,7 @@ void Archive::Unpack(const wxString &path)
 {
     wxFileName file(path);
 
-    for each (auto desc in resources)
+    for (auto desc : resources)
     {
         if (desc.file_name.empty())
         {
@@ -166,7 +166,7 @@ void Archive::GetDescription(DescriptionArchive *description)
 
         description->count_resources = resources.size();
 
-        for each (const Resource & resource in resources)
+        for (const Resource &resource : resources)
         {
             if (resource.file_name.empty())
             {
@@ -222,7 +222,7 @@ void DescriptionArchive::DrawLine(const PageInfo *page, int y, int num_line) con
 
     x = DrawCell(page, x, y, 50, wxString::Format("%d", desc.size));
 
-    wxString text_size = (desc.size != desc.decompressed_size) ? wxString::Format("%d", desc.decompressed_size) : "*";
+    wxString text_size = (desc.size != desc.decompressed_size) ? wxString::Format("%d", desc.decompressed_size) : wxString("*");
 
     x = DrawCell(page, x, y, 55, text_size);
 
