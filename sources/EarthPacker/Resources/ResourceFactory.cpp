@@ -20,62 +20,62 @@ namespace ResourceFactory
 }
 
 
-Resource ResourceFactory::Create(wxInputStream &stream)
+Resource ResourceFactory::_Create(wxInputStream &stream)
 {
     auto name = GetName(stream);
 
-    uint8 type = 0;
+    TypeResource type = TypeResource::_0;
 
     stream.Read(&type, 1);
 
     switch (type)
     {
-    case 0:
+    case TypeResource::_0:
         return Resource(name, GetResourceInfo(stream));
 
-    case 1:     // generic data
+    case TypeResource::Generic:
         return Resource(name, GetResourceInfo(stream));
 
-    case 3:     //player
+    case TypeResource::Player:
         return Resource(name, GetResourceInfo(stream));
 
-    case 5:     //text
+    case TypeResource::Text:
         return Resource(name, GetResourceInfo(stream));
 
-    case 9:     //interface?
-    {
-        ResourceInfo info = GetResourceInfo(stream);
-        auto name_resouce = GetName(stream);
-        return Interface(name, info, name_resouce);
-    }
+    case TypeResource::Interface:
+        {
+            ResourceInfo info = GetResourceInfo(stream);
+            auto name_resouce = GetName(stream);
+            return Interface(name, info, name_resouce);
+        }
 
-    case 17:    //dialog
+    case TypeResource::Dialog:
         return Resource(name, GetResourceInfo(stream));
 
-    case 25:    //interface?
+    case TypeResource::Interface2:
         return Resource(name, GetResourceInfo(stream));
 
-    case 33:
-    {
-        ResourceInfo info = GetResourceInfo(stream);
-        auto data = GetBytes(stream, 16);
-        return Mesh(name, info, &data);
-    }
+    case TypeResource::_33:
+        {
+            ResourceInfo info = GetResourceInfo(stream);
+            auto data = GetBytes(stream, 16);
+            return Mesh(name, info, &data);
+        }
 
-    case 43:    //level?
-    {
-        ResourceInfo info = GetResourceInfo(stream);
-        auto name_resource = GetName(stream);
-        auto data = GetBytes(stream, 16);
-        return Level(name, info, name_resource, &data);
-    }
+    case TypeResource::Level:
+        {
+            ResourceInfo info = GetResourceInfo(stream);
+            auto name_resource = GetName(stream);
+            auto data = GetBytes(stream, 16);
+            return Level(name, info, name_resource, &data);
+        }
 
     case 49:    // mesh
-    {
-        ResourceInfo info = GetResourceInfo(stream);
-        auto data = GetBytes(stream, 20);
-        return Mesh(name, info, &data);
-    }
+        {
+            ResourceInfo info = GetResourceInfo(stream);
+            auto data = GetBytes(stream, 20);
+            return Mesh(name, info, &data);
+        }
 
     case 57:
     {
@@ -86,18 +86,18 @@ Resource ResourceFactory::Create(wxInputStream &stream)
     }
 
     case 59:    //level
-    {
-        ResourceInfo info = GetResourceInfo(stream);
-        auto name_resource = GetName(stream);
-        auto data = GetBytes(stream, 20);
-        return Level(name, info, name_resource, &data);
-    }
+        {
+            ResourceInfo info = GetResourceInfo(stream);
+            auto name_resource = GetName(stream);
+            auto data = GetBytes(stream, 20);
+            return Level(name, info, name_resource, &data);
+        }
 
     case 255:   //group
-    {
-        auto data = GetBytes(stream, 3);
-        return Group(name, ResourceInfo(), &data);
-    }
+        {
+            auto data = GetBytes(stream, 3);
+            return Group(name, ResourceInfo(), &data);
+        }
     }
 
     return Resource(name, GetResourceInfo(stream));

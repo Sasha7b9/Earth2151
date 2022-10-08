@@ -5,5 +5,18 @@
 
 namespace ResourceFactory
 {
-    Resource Create(wxInputStream &);
+    enum class TypeResource
+    {
+        _0 = 0,
+        Generic = 1,
+        Player = 3,
+        Text = 5,
+        Interface = 9,      // Это под вопросом
+        Dialog = 17,
+        Interface2 = 25,    // Это под вопросом
+        _33,
+        Level = 43          // Это под вопросом
+    };
+
+    Resource _Create(wxInputStream &);
 };

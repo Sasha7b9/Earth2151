@@ -49,7 +49,7 @@ Archive::Archive(const wxFileName &_file_name) : file_name(_file_name)
 
     while (!stream.Eof())
     {
-        Resource resource = ResourceFactory::Create(stream);
+        Resource resource = ResourceFactory::_Create(stream);
 
         resources.emplace_back(resource);
     }
