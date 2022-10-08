@@ -178,6 +178,12 @@ InfoModel::InfoModel(wxFileOffset _offset, pchar _name, int _size) : header{(int
 }
 
 
+InfoModel::InfoModel(uint _offset, pchar _name) : header{ (int)_offset, _name }, size(0)
+{
+
+}
+
+
 InfoModel &InfoModel::AppendBytes(const void *data, int num_bytes)
 {
     uint8 *pointer = (uint8 *)data;
@@ -190,9 +196,25 @@ InfoModel &InfoModel::AppendBytes(const void *data, int num_bytes)
 
 InfoModel &InfoModel::AppendBytes(const Vector &vector)
 {
-    AppendBytes((const void *)&vector.x, sizeof(vector.x));
-    AppendBytes((const void *)&vector.y, sizeof(vector.y));
-    AppendBytes((const void *)&vector.z, sizeof(vector.z));
+    AppendBytes(&vector.x, sizeof(vector.x));
+    AppendBytes(&vector.y, sizeof(vector.y));
+    AppendBytes(&vector.z, sizeof(vector.z));
+
+    return *this;
+}
+
+
+InfoModel &InfoModel::AppendBytes(const float value)
+{
+    AppendBytes(&value, sizeof(value));
+
+    return *this;
+}
+
+
+InfoModel &InfoModel::AppendBytes(const wxMemoryBuffer &buffer)
+{
+    AppendBytes(buffer.GetData(), buffer.GetBufSize());
 
     return *this;
 }
