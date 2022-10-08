@@ -13,9 +13,6 @@ wxMemoryBuffer FileInputStream::ReadAll()
 {
     wxMemoryBuffer result(GetSize());
 
-    wxFileOffset offset = TellI();
-    size_t size = GetSize();
-
     wxFileInputStream::ReadAll(result.GetData(), GetSize());
 
     return result;
@@ -45,8 +42,6 @@ wxMemoryBuffer FileInputStream::ReadBytes(int num_bytes)
 {
     wxMemoryBuffer result(num_bytes);
 
-    wxFileOffset offset = TellI();
-
     wxFileInputStream::Read(result.GetData(), num_bytes);
 
     return result;
@@ -57,8 +52,6 @@ uint FileInputStream::ReadUINT()
 {
     uint result = 0;
 
-    wxFileOffset offset = TellI();
-
     wxFileInputStream::Read(&result, 4);
 
     return result;
@@ -67,8 +60,6 @@ uint FileInputStream::ReadUINT()
 
 int FileInputStream::ReadINT()
 {
-    wxFileOffset offset = TellI();
-
     return (int)ReadUINT();
 }
 
@@ -76,8 +67,6 @@ int FileInputStream::ReadINT()
 float FileInputStream::ReadFloat()
 {
     float result = 0.0f;
-
-    wxFileOffset offset = TellI();
 
     uint bytes = ReadUINT();
 
@@ -89,8 +78,6 @@ float FileInputStream::ReadFloat()
 
 uint8 FileInputStream::ReadByte()
 {
-    wxFileOffset offset = TellI();
-
     return (uint8)GetC();
 }
 
@@ -98,8 +85,6 @@ uint8 FileInputStream::ReadByte()
 uint16 FileInputStream::Read2Bytes()
 {
     uint16 result = 0;
-
-    wxFileOffset offset = TellI();
 
     wxFileInputStream::Read(&result, 2);
 
