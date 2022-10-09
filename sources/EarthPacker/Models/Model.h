@@ -35,7 +35,8 @@ struct InfoModel
         UnusedBytes,
         Header,
         Type,
-        ModelPart
+        ModelPart,
+        Vector
     };
 
     InfoModel(Type type, uint offset, pchar name);

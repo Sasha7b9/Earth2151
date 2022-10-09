@@ -5,9 +5,12 @@
 #include "Models/Elements/RotationFrame.h"
 
 
+struct DescriptionModel;
+
+
 struct PositionOffsetFrames : public std::list<Vector>
 {
-    void Create(FileInputStream &);
+    void Create(FileInputStream &, DescriptionModel &);
 };
 
 
@@ -20,7 +23,7 @@ struct RotationFrames : public std::list<RotationFrame>
 class Animations
 {
 public:
-    void Create(FileInputStream &);
+    void Create(FileInputStream &, DescriptionModel &);
 
     PositionOffsetFrames unknownAnimationData;
     PositionOffsetFrames movementFrames;

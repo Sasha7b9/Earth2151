@@ -10,7 +10,7 @@ MountPoints::MountPoints(FileInputStream &stream, DescriptionModel &desc)
 
     for (int i = 0; i < NUMBER_OF_MOUNTPOINTS; i++)
     {
-        Vector vector(stream);
+        Vector vector(stream, desc);
 
         push_back(vector);
     }

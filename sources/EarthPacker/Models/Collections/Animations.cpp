@@ -3,13 +3,13 @@
 #include "Models/Collections/Animations.h"
 
 
-void PositionOffsetFrames::Create(FileInputStream &stream)
+void PositionOffsetFrames::Create(FileInputStream &stream, DescriptionModel &desc)
 {
     int length = stream.ReadINT();
 
     for (int i = 0; i < length; i++)
     {
-        push_back(Vector(stream));
+        push_back(Vector(stream, desc));
     }
 }
 
@@ -25,9 +25,9 @@ void RotationFrames::Create(FileInputStream &stream)
 }
 
 
-void Animations::Create(FileInputStream &stream)
+void Animations::Create(FileInputStream &stream, DescriptionModel &desc)
 {
-    unknownAnimationData.Create(stream);
-    movementFrames.Create(stream);
+    unknownAnimationData.Create(stream, desc);
+    movementFrames.Create(stream, desc);
     rotationFrames.Create(stream);
 }

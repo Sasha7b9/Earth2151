@@ -3,6 +3,9 @@
 #include "Utils/FileInputStream.h"
 
 
+struct DescriptionModel;
+
+
 struct Vector
 {
     float x = 0.0f;
@@ -11,7 +14,7 @@ struct Vector
 
     Vector(float _x = 0.0f, float _y = 0.0f, float _z = 0.0f) : x(_x), y(_y), z(_z) {}
 
-    Vector(FileInputStream &);
+    Vector(FileInputStream &, DescriptionModel &);
 
-    void Create(FileInputStream &);
+    void Create(FileInputStream &, DescriptionModel &);
 };

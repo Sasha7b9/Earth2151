@@ -8,7 +8,7 @@ Light::Light(FileInputStream &stream, DescriptionModel &desc, const wxString &na
 {
     InfoModel info(InfoModel::Type::Light, stream.TellI(), name.c_str());
 
-    position = Vector(stream);
+    position = Vector(stream, desc);
     info.AppendBytes(position);
 
     float r = stream.ReadFloat();
