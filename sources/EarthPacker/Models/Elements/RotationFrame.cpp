@@ -9,7 +9,7 @@ RotationFrame::RotationFrame(int num_frame)
     FileInputStream &stream = *FileInputStream::Get();
     DescriptionModel &desc = *DescriptionModel::Get();
 
-    InfoModel info(InfoModel::Type::Mat44, stream.TellI(), wxString::Format("anim r %d", num_frame));
+    InfoModel info(InfoModel::Type::Mat44, stream.TellI(), wxString::Format("rot a %d", num_frame));
 
     (*this)[0][0] = stream.ReadFloat();
     (*this)[0][1] = stream.ReadFloat();

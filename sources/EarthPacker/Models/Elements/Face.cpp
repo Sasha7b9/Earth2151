@@ -4,9 +4,9 @@
 #include "Models/Model.h"
 
 
-Face::Face(FileInputStream &stream, DescriptionModel &desc)
+Face::Face(FileInputStream &stream, DescriptionModel &desc, int num)
 {
-    InfoModel info(InfoModel::Type::Face, stream.TellI(), "face");
+    InfoModel info(InfoModel::Type::Face, stream.TellI(), wxString::Format("face %d", num).c_str());
 
     v1 = stream.Read2Bytes();
     v2 = stream.Read2Bytes();

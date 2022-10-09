@@ -4,14 +4,43 @@
 #include "Models/Model.h"
 
 
-void PositionOffsetFrames::Create(FileInputStream &stream, DescriptionModel &desc)
+void PositionOffsetFrames::Create(FileInputStream &stream, DescriptionModel &desc, bool unknown)
 {
-    int length = stream.ReadINT();
+    int length = 0;
+    if (unknown)
+    {
+        length = ReadUINT("unkn frames");
+    }
+    else
+    {
+        length = ReadUINT("frames");
+    }
 
     for (int i = 0; i < length; i++)
     {
-        push_back(Vector(stream, desc, wxString::Format("anim p %d", i).c_str()));
+        if (unknown)
+        {
+            push_back(Vector(stream, desc, wxString::Format("unkn a %d", i).c_str()));
+        }
+        else
+        {
+            push_back(Vector(stream, desc, wxString::Format("pos a %d", i).c_str()));
+        }
     }
+}
+
+
+uint PositionOffsetFrames::ReadUINT(pchar name)
+{
+    FileInputStream &stream = *FileInputStream::Get();
+
+    InfoModel info(InfoModel::Type::UINT, stream.TellI(), name);
+
+    uint result = stream.ReadUINT();
+
+    DescriptionModel::Get()->AppendInfo(info.AppendBytes(result));
+
+    return result;
 }
 
 
@@ -50,7 +79,7 @@ uint RotationFrames::ReadUINT(pchar name)
 
 void Animations::Create(FileInputStream &stream, DescriptionModel &desc)
 {
-    unknownAnimationData.Create(stream, desc);
-    movementFrames.Create(stream, desc);
+    unknownAnimationData.Create(stream, desc, true);
+    movementFrames.Create(stream, desc, false);
     rotationFrames.Create();
 }

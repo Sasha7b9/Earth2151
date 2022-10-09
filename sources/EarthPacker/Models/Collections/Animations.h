@@ -10,7 +10,11 @@ struct DescriptionModel;
 
 struct PositionOffsetFrames : public std::list<Vector>
 {
-    void Create(FileInputStream &, DescriptionModel &);
+    void Create(FileInputStream &, DescriptionModel &, bool unknown);
+
+private:
+
+    uint ReadUINT(pchar name);
 };
 
 

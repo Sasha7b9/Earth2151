@@ -45,8 +45,8 @@ struct InfoModel
         RotationFrames
     };
 
-    InfoModel(Type type, uint offset, pchar name);
-    InfoModel(Type type, wxFileOffset offset, pchar name);
+    InfoModel(Type type, uint offset, pchar name = "");
+    InfoModel(Type type, wxFileOffset offset, pchar name = "");
 
     InfoModel &AppendBytes(const wxMemoryBuffer &);
     InfoModel &AppendBytes(const void *data, int num_bytes);

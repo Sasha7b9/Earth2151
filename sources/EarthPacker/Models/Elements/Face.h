@@ -8,7 +8,7 @@ struct DescriptionModel;
 
 struct Face
 {
-    Face(FileInputStream &, DescriptionModel &);
+    Face(FileInputStream &, DescriptionModel &, int num);
 
     int v1 = 0;
     int v2 = 0;

@@ -9,6 +9,6 @@ void Faces::Create(FileInputStream &stream, DescriptionModel &desc)
 
     for (int i = 0; i < faces; i++)
     {
-        push_back(Face(stream, desc));
+        push_back(Face(stream, desc, i));
     }
 }
