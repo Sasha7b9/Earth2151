@@ -4,6 +4,14 @@
 #include "Models/Model.h"
 
 
+Vector::Vector(uint8 *bytes)
+{
+    memcpy(&x, bytes, 4);
+    memcpy(&y, bytes + 4, 4);
+    memcpy(&z, bytes + 8, 4);
+}
+
+
 Vector::Vector(FileInputStream &stream, DescriptionModel &desc)
 {
     Create(stream, desc);
@@ -27,4 +35,10 @@ void Vector::Create(FileInputStream &stream, DescriptionModel &desc)
     info.AppendBytes(z);
 
     desc.AppendInfo(info);
+}
+
+
+string Vector::ToString() const
+{
+    return wxString::Format("(%f , %f , %f)", x, y, z).c_str().AsChar();
 }

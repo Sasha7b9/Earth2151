@@ -16,5 +16,10 @@ struct Vector
 
     Vector(FileInputStream &, DescriptionModel &);
 
+    // Конструктор из 12-ти байт
+    Vector(uint8 *);
+
     void Create(FileInputStream &, DescriptionModel &);
+
+    string ToString() const;
 };

@@ -355,6 +355,12 @@ void InfoModel::Content::CreateEngBeginLine(string &line, InfoModel &info)
             f(line, bits);
         }
     }
+    else if (info.type == Type::Vector)
+    {
+        PrepareForEndBeginLine(line);
+
+        line.append(Vector(info.bytes.data()).ToString().c_str());
+    }
 }
 
 
