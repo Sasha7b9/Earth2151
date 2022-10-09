@@ -171,13 +171,13 @@ void DescriptionModel::DrawLine(const PageInfo *, int, int) const
 
 InfoModel::InfoModel(Type _type, wxFileOffset _offset, pchar _name) : header{(int)_offset, _name}, type(_type)
 {
-    
+    content.SetParent(this);
 }
 
 
 InfoModel::InfoModel(Type _type, uint _offset, pchar _name) : header{ (int)_offset, _name }, type(_type)
 {
-
+    content.SetParent(this);
 }
 
 
@@ -268,5 +268,15 @@ pchar InfoModel::Content::Next()
 
 void InfoModel::Content::Create()
 {
+    std::string line;
 
+    CreateBeginLine(line);
+
+    content.push_back(line);
+}
+
+
+void InfoModel::Content::CreateBeginLine(std::string &line)
+{
+    line.append(wxString::Format(" %X | %X", info->header.offset, info->size).c_str());
 }

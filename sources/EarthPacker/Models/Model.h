@@ -54,14 +54,17 @@ struct InfoModel
     // Здесь хранятся строки с описанием поля
     struct Content
     {
+        void SetParent(InfoModel *_info) { info = _info; };
         pchar First();
         pchar Next();
     private:
         std::vector<std::string> content;
         static const int length_name = 20;      // Количество знакомест на описание раздела
         int current_line = 0;                   // Эту строку нужно выводить сейчас
+        InfoModel *info;
         bool IsCreated() const { return content.size() != 0; }
         void Create();
+        void CreateBeginLine(std::string &);
     } content;
 };
 
