@@ -424,9 +424,13 @@ void InfoModel::Content::CreateEngBeginLine(string &line, InfoModel &info)
     {
         for (int i = 0; i < 8; i++)
         {
+            while (line.size() % 8)
+            {
+                line.append(" ");
+            }
             float value = 0.0f;
             memcpy(&value, info.bytes.data() + i * sizeof(value), sizeof(value));
-            line.append(wxString::Format("%f ", value));
+            line.append(wxString::Format("% 5.3f ", value));
         }
     }
     else if (info.type == Type::VerticesBlock)
@@ -446,8 +450,8 @@ void InfoModel::Content::CreateEngBeginLine(string &line, InfoModel &info)
             }
         };
 
-        f(line, info.bytes.data(), " x%d %f  ", 1);
-        f(line, info.bytes.data() + sizeof(float) * 4, " y%d %f  ", -1);
+        f(line, info.bytes.data(), " x%d % 5f  ", 1);
+        f(line, info.bytes.data() + sizeof(float) * 4, " y%d % 5f  ", -1);
     }
     else if (info.type == Type::Face)
     {
@@ -498,27 +502,31 @@ void InfoModel::Content::CreateEndNextLine(string &line, InfoModel &info)
 
         if (shown_bytes == 64)
         {
-            f(line, info.bytes.data() + shown_bytes - bytes_in_line, " z%d %f  ", 1);
-            f(line, info.bytes.data() + shown_bytes - bytes_in_line / 2, "nx%d %f  ", 1);
+            f(line, info.bytes.data() + shown_bytes - bytes_in_line, " z%d % 5f  ", 1);
+            f(line, info.bytes.data() + shown_bytes - bytes_in_line / 2, "nx%d % 5f  ", 1);
         }
         else if (shown_bytes == 96)
         {
-            f(line, info.bytes.data() + shown_bytes - bytes_in_line, "ny%d %f  ", -1);
-            f(line, info.bytes.data() + shown_bytes - bytes_in_line / 2, "nz%d %f  ", 1);
+            f(line, info.bytes.data() + shown_bytes - bytes_in_line, "ny%d % 5f  ", -1);
+            f(line, info.bytes.data() + shown_bytes - bytes_in_line / 2, "nz%d % 5f  ", 1);
         }
         else if (shown_bytes == 128)
         {
-            f(line, info.bytes.data() + shown_bytes - bytes_in_line, " u%d %f  ", -1);
-            f(line, info.bytes.data() + shown_bytes - bytes_in_line / 2, " v%d %f  ", 1);
+            f(line, info.bytes.data() + shown_bytes - bytes_in_line, " u%d % 5f  ", -1);
+            f(line, info.bytes.data() + shown_bytes - bytes_in_line / 2, " v%d % 5f  ", 1);
         }
     }
     else if (info.type == Type::Mat44)
     {
         for (int i = 0; i < 8; i++)
         {
+            while (line.size() % 8)
+            {
+                line.append(" ");
+            }
             float value = 0.0f;
             memcpy(&value, info.bytes.data() + i * sizeof(value) + bytes_in_line, sizeof(value));
-            line.append(wxString::Format("%f ", value));
+            line.append(wxString::Format("% 5.3f ", value));
         }
     }
 }
