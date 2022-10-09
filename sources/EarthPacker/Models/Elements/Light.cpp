@@ -9,39 +9,17 @@ Light::Light(FileInputStream &stream, DescriptionModel &desc, const wxString &na
     InfoModel info(InfoModel::Type::Light, stream.TellI(), name.c_str());
 
     position = Vector(stream, desc);
-    info.AppendBytes(position);
 
-    float r = stream.ReadFloat();
-    info.AppendBytes(r);
-    r *= 255;
-
-    float g = stream.ReadFloat();
-    info.AppendBytes(g);
-    g *= 255;
-
-    float b = stream.ReadFloat();
-    info.AppendBytes(b);
-    b *= 255;
-
+    float r = stream.ReadFloat() * 255;
+    float g = stream.ReadFloat() * 255;
+    float b = stream.ReadFloat() * 255;
     color.Set((uint8)r, (uint8)g, (uint8)b);
-
     length = stream.ReadFloat();
-    info.AppendBytes(length);
-
     direction = stream.ReadFloat();
-    info.AppendBytes(direction);
-
     width = stream.ReadFloat();
-    info.AppendBytes(width);
-
     u3 = stream.ReadFloat();
-    info.AppendBytes(u3);
-
     tilt = stream.ReadFloat();
-    info.AppendBytes(tilt);
-
     ambience = stream.ReadFloat();
-    info.AppendBytes(ambience);
 
-    desc.AppendInfo(info, stream);
+    desc.AppendInfo(info);
 }
