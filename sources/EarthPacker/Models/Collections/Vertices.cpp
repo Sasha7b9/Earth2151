@@ -14,7 +14,7 @@ void Vertices::Create(FileInputStream &stream, DescriptionModel &desc)
 
     for (uint i = 0; i < blocks; i++)
     {
-        GetVertices(stream.ReadBytes(VERTICES_BLOCK_LENGTH));
+        GetVertices(i);
     }
 
     info.size = (int)stream.TellI() - info.header.offset;
@@ -37,8 +37,14 @@ uint Vertices::ReadUINT(pchar name)
 }
 
 
-void Vertices::GetVertices(const wxMemoryBuffer &buffer)
+void Vertices::GetVertices(int num_block)
 {
+    FileInputStream &stream = *FileInputStream::Get();
+
+    InfoModel info(InfoModel::Type::VerticesBlock, stream.TellI(), wxString::Format("block %d", num_block));
+
+    wxMemoryBuffer buffer = stream.ReadBytes(VERTICES_BLOCK_LENGTH);
+
     uint8 *data = (uint8 *)buffer.GetData();
 
     for (int i = 0; i < VERTICES_IN_BLOCK; i++)
@@ -58,6 +64,8 @@ void Vertices::GetVertices(const wxMemoryBuffer &buffer)
 
         push_back(Vertex(Vector(x, y, z), Vector(normalX, normalY, normalZ), u, v));
     }
+
+    DescriptionModel::Get()->AppendInfo(info.AppendBytes(buffer));
 }
 
 

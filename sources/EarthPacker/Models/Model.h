@@ -39,7 +39,8 @@ struct InfoModel
         Vector,
         Color,
         Float,
-        UINT
+        UINT,
+        VerticesBlock
     };
 
     InfoModel(Type type, uint offset, pchar name);
