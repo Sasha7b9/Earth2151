@@ -11,11 +11,11 @@ Light::Light(FileInputStream &stream, DescriptionModel &desc, const wxString &na
     position = Vector(stream, desc, "position");
     color = CreateColor();
     length = ReadFloat("length");
-    direction = stream.ReadFloat();
-    width = stream.ReadFloat();
-    u3 = stream.ReadFloat();
-    tilt = stream.ReadFloat();
-    ambience = stream.ReadFloat();
+    direction = ReadFloat("direction");
+    width = ReadFloat("width");
+    u3 = ReadFloat("u3");
+    tilt = ReadFloat("tilt");
+    ambience = ReadFloat("ambience");
 
     info.size = (int)stream.TellI() - info.header.offset;
 
