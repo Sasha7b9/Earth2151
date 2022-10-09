@@ -50,6 +50,7 @@ if(WIN32)
         endforeach()
     endif()
 
+    add_compile_options(/wd4355)    # 'this': used in base member initializer list
     add_compile_options(/wd4365)    # 'action' : conversion from 'type_1' to 'type_2', signed/unsigned mismatch
     add_compile_options(/wd4464)
     add_compile_options(/wd4514)    # 'function' : unreferenced inline function has been removed

@@ -169,15 +169,15 @@ void DescriptionModel::DrawLine(const PageInfo *, int, int) const
 }
 
 
-InfoModel::InfoModel(Type _type, wxFileOffset _offset, pchar _name) : header{(int)_offset, _name}, type(_type)
+InfoModel::InfoModel(Type _type, wxFileOffset _offset, pchar _name) : header{(int)_offset, _name}, type(_type), content(*this)
 {
-    content.SetParent(this);
+
 }
 
 
-InfoModel::InfoModel(Type _type, uint _offset, pchar _name) : header{ (int)_offset, _name }, type(_type)
+InfoModel::InfoModel(Type _type, uint _offset, pchar _name) : header{ (int)_offset, _name }, type(_type), content(*this)
 {
-    content.SetParent(this);
+
 }
 
 
@@ -278,5 +278,5 @@ void InfoModel::Content::Create()
 
 void InfoModel::Content::CreateBeginLine(std::string &line)
 {
-    line.append(wxString::Format(" % 4X | % 4X", info->header.offset, info->size).c_str());
+    line.append(wxString::Format(" % 4X | % 4X", info.header.offset, info.size).c_str());
 }
