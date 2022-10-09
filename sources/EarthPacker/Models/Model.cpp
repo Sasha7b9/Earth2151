@@ -420,6 +420,10 @@ void InfoModel::Content::CreateEngBeginLine(string &line, InfoModel &info)
         memcpy(&value, info.bytes.data(), sizeof(value));
         line.append(wxString::Format("%f", value));
     }
+    else if (info.type == Type::VerticesBlock)
+    {
+
+    }
 }
 
 
