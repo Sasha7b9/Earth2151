@@ -428,13 +428,49 @@ void InfoModel::Content::CreateEngBeginLine(string &line, InfoModel &info)
             {
                 float value = 0.0f;
                 memcpy(&value, data + sizeof(value) * i, sizeof(value));
-                value *= sign;
+                value *= (float)sign;
                 l.append(wxString::Format(format, i, value));
             }
         };
 
         f(line, info.bytes.data(), "x%d(%f)  ", 1);
         f(line, info.bytes.data() + sizeof(float) * 4, "y%d(%f)  ", -1);
+    }
+}
+
+
+void InfoModel::Content::CreateEndNextLine(string &line, InfoModel &info)
+{
+    PrepareForEndBeginLine(line);
+
+    if (info.type == Type::VerticesBlock)
+    {
+        auto f = [](string &l, uint8 *data, pchar format, int sign)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                float value = 0.0f;
+                memcpy(&value, data + sizeof(value) * i, sizeof(value));
+                value *= (float)sign;
+                l.append(wxString::Format(format, i, value));
+            }
+        };
+
+        if (shown_bytes == 64)
+        {
+            f(line, info.bytes.data() - bytes_in_line, "z%d(%f)  ", 1);
+            f(line, info.bytes.data() - bytes_in_line / 2, "nx%d(%f)  ", 1);
+        }
+        else if (shown_bytes == 96)
+        {
+            f(line, info.bytes.data() - bytes_in_line, "ny%d(%f)  ", -1);
+            f(line, info.bytes.data() - bytes_in_line / 2, "nz%d(%f)  ", 1);
+        }
+        else if (shown_bytes == 128)
+        {
+            f(line, info.bytes.data() - bytes_in_line, "u%d(%f)  ", -1);
+            f(line, info.bytes.data() - bytes_in_line / 2, "v%d(%f)  ", 1);
+        }
     }
 }
 
@@ -474,4 +510,6 @@ void InfoModel::Content::CreateNextLine(string &line, InfoModel &info)
             break;
         }
     }
+
+    CreateEndNextLine(line, info);
 }

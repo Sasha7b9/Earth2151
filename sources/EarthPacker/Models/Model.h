@@ -74,6 +74,7 @@ struct InfoModel
         void CreateBeginLine(string &, InfoModel &);
         void CreateEngBeginLine(string &, InfoModel &);
         void CreateNextLine(string &, InfoModel &);
+        void CreateEndNextLine(string &, InfoModel &);
         void PrepareForEndBeginLine(string &);
     } content;
 };
