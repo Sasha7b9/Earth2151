@@ -38,7 +38,8 @@ struct InfoModel
         ModelPart,
         Vector,
         Color,
-        Float
+        Float,
+        UINT
     };
 
     InfoModel(Type type, uint offset, pchar name);
@@ -48,6 +49,7 @@ struct InfoModel
     InfoModel &AppendBytes(const void *data, int num_bytes);
     InfoModel &AppendBytes(const Vector &);
     InfoModel &AppendBytes(const float);
+    InfoModel &AppendBytes(const uint);
 
     HeaderInfoModel header;
     int size = 0;

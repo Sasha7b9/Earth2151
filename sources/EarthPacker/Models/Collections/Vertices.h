@@ -16,4 +16,6 @@ private:
     static const int FIELD_SIZE = 4;
     void GetVertices(const wxMemoryBuffer &);
     float TakeFloat(const void *);
+
+    uint ReadUINT(pchar name);
 };

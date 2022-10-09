@@ -8,12 +8,11 @@ void Vertices::Create(FileInputStream &stream, DescriptionModel &desc)
 {
     InfoModel info(InfoModel::Type::Vertices, stream.TellI(), "Vertices");
 
-    volatile int vertices = (int)stream.ReadUINT();
-    vertices = vertices;
+    ReadUINT("num vertices");
 
-    int blocks = (int)stream.ReadUINT();
+    uint blocks = ReadUINT("num blocks");
 
-    for (int i = 0; i < blocks; i++)
+    for (uint i = 0; i < blocks; i++)
     {
         wxMemoryBuffer bytes = stream.ReadBytes(VERTICES_BLOCK_LENGTH);
         GetVertices(bytes);
@@ -21,6 +20,20 @@ void Vertices::Create(FileInputStream &stream, DescriptionModel &desc)
     }
 
     desc.AppendInfo(info);
+}
+
+
+uint Vertices::ReadUINT(pchar name)
+{
+    FileInputStream &stream = *FileInputStream::Get();
+
+    InfoModel info(InfoModel::Type::UINT, stream.TellI(), name);
+
+    uint result = stream.ReadUINT();
+
+    DescriptionModel::Get()->AppendInfo(info.AppendBytes(result));
+
+    return result;
 }
 
 

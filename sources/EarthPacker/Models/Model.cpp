@@ -217,6 +217,14 @@ InfoModel &InfoModel::AppendBytes(const float value)
 }
 
 
+InfoModel &InfoModel::AppendBytes(const uint value)
+{
+    AppendBytes(&value, sizeof(value));
+
+    return *this;
+}
+
+
 InfoModel &InfoModel::AppendBytes(const wxMemoryBuffer &buffer)
 {
     AppendBytes(buffer.GetData(), buffer.GetBufSize());
