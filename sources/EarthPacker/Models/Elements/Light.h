@@ -25,4 +25,5 @@ struct Light
 private:
 
     wxColour CreateColor();
+    float ReadFloat(pchar name);
 };

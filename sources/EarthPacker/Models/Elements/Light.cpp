@@ -10,7 +10,7 @@ Light::Light(FileInputStream &stream, DescriptionModel &desc, const wxString &na
 
     position = Vector(stream, desc, "position");
     color = CreateColor();
-    length = stream.ReadFloat();
+    length = ReadFloat("length");
     direction = stream.ReadFloat();
     width = stream.ReadFloat();
     u3 = stream.ReadFloat();
@@ -45,4 +45,19 @@ wxColour Light::CreateColor()
     desc.AppendInfo(info);
 
     return wxColour((uint8)r, (uint8)g, (uint8)b);
+}
+
+
+float Light::ReadFloat(pchar name)
+{
+    FileInputStream &stream = *FileInputStream::Get();
+    DescriptionModel &desc = *DescriptionModel::Get();
+
+    InfoModel info(InfoModel::Type::Float, stream.TellI(), name);
+
+    float result = stream.ReadFloat();
+
+    desc.AppendInfo(info.AppendBytes(result));
+
+    return result;
 }

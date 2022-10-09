@@ -362,10 +362,10 @@ void InfoModel::Content::CreateBeginLine(std::string &line, InfoModel &info)
 
 void InfoModel::Content::CreateEngBeginLine(string &line, InfoModel &info)
 {
+    PrepareForEndBeginLine(line);
+
     if (info.type == Type::Header)
     {
-        PrepareForEndBeginLine(line);
-
         for (uint i = 0; i < info.bytes.size(); i++)
         {
             line.append(wxString::Format("%c", (char)info.bytes[i]));
@@ -373,8 +373,6 @@ void InfoModel::Content::CreateEngBeginLine(string &line, InfoModel &info)
     }
     else if (info.type == Type::Type)
     {
-        PrepareForEndBeginLine(line);
-
         uint t = 0;
         memcpy(&t, info.bytes.data(), 4);
 
@@ -382,8 +380,6 @@ void InfoModel::Content::CreateEngBeginLine(string &line, InfoModel &info)
     }
     else if (info.type == Type::ModelTemplate)
     {
-        PrepareForEndBeginLine(line);
-
         uint16 bits = 0;
         memcpy(&bits, info.bytes.data(), 2);
 
@@ -404,15 +400,17 @@ void InfoModel::Content::CreateEngBeginLine(string &line, InfoModel &info)
     }
     else if (info.type == Type::Vector)
     {
-        PrepareForEndBeginLine(line);
-
         line.append(Vector(info.bytes.data()).ToString().c_str());
     }
     else if (info.type == Type::Color)
     {
-        PrepareForEndBeginLine(line);
-
         line.append(Vector(info.bytes.data()).ToString().c_str());
+    }
+    else if (info.type == Type::Float)
+    {
+        float value = 0.0f;
+        memcpy(&value, info.bytes.data(), sizeof(value));
+        line.append(wxString::Format("%f", value));
     }
 }
 

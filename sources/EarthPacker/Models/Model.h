@@ -37,7 +37,8 @@ struct InfoModel
         Type,
         ModelPart,
         Vector,
-        Color
+        Color,
+        Float
     };
 
     InfoModel(Type type, uint offset, pchar name);
