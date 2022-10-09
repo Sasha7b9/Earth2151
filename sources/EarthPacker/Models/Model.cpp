@@ -232,19 +232,42 @@ void DescriptionModel::Log()
 {
     for (auto &info : *this)
     {
-        LOG_WRITE("% 4X:% 5d | % 4X:% 5d | %s", info.first.offset, info.first.offset, info.second.size, info.second.size, info.second.content.c_str());
+        pchar line = info.second.content.First();
+
+        while (line)
+        {
+            LOG_WRITE(line);
+            line = info.second.content.Next();
+        }
     }
 }
 
 
-pchar InfoModel::Content::c_str()
+pchar InfoModel::Content::First()
 {
     if (!IsCreated())
     {
         Create();
     }
 
-    return content.c_str();
+    current_line = -1;
+
+    return Next();
+}
+
+
+pchar InfoModel::Content::Next()
+{
+    current_line++;
+
+    if (current_line < (int)content.size())
+    {
+        return content[current_line].c_str();
+    }
+
+    current_line = content.size();
+
+    return nullptr;
 }
 
 

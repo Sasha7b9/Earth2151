@@ -54,11 +54,13 @@ struct InfoModel
     // Здесь хранятся строки с описанием поля
     struct Content
     {
-        pchar c_str();
+        pchar First();
+        pchar Next();
     private:
-        std::string content;
-        int length_name;
-        bool IsCreated() const { return !content.empty(); }
+        std::vector<std::string> content;
+        static const int length_name = 20;      // Количество знакомест на описание раздела
+        int current_line = -1;                   // Последняя возвращённая функцией Next() строка
+        bool IsCreated() const { return content.size() != 0; }
         void Create();
     } content;
 };
