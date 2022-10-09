@@ -11,7 +11,7 @@ namespace Log
 {
     static HANDLE handle = nullptr;
 
-    static const int SIZE_BUFFER = 1024;
+    static const int SIZE_BUFFER = 1024 * 2;
 }
 
 

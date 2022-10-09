@@ -276,7 +276,7 @@ void InfoModel::Content::Create(InfoModel &info)
 }
 
 
-void InfoModel::Content::CreateBeginLine(std::string &line, InfoModel &info)
+int InfoModel::Content::CreateBeginLine(std::string &line, InfoModel &info)
 {
     line.append(wxString::Format(" % 4X: % 5d | % 4X: % 5d | %s", info.header.offset, info.header.offset, info.size, info.size, info.header.name.c_str()).c_str().AsChar());
 
@@ -286,4 +286,9 @@ void InfoModel::Content::CreateBeginLine(std::string &line, InfoModel &info)
     }
 
     line.append("|");
+
+    for (uint i = 0; i < info.bytes.size(); i++)
+    {
+        line.append(wxString::Format(" % 2X", info.bytes[i]));
+    }
 }
