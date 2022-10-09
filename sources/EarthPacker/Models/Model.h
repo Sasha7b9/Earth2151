@@ -54,17 +54,15 @@ struct InfoModel
     // «десь хран€тс€ строки с описанием пол€
     struct Content
     {
-        Content(InfoModel &_info) : info(_info) {}
-        pchar First();
+        pchar First(InfoModel &);
         pchar Next();
     private:
         std::vector<std::string> content;
-        static const int length_name = 20;      //  оличество знакомест на описание раздела
+        static const int length_title = 45;     //  оличество знакомест на заголовок (символы до содежимого блока)
         int current_line = 0;                   // Ёту строку нужно выводить сейчас
-        InfoModel &info;
         bool IsCreated() const { return content.size() != 0; }
-        void Create();
-        void CreateBeginLine(std::string &);
+        void Create(InfoModel &);
+        void CreateBeginLine(std::string &, InfoModel &);
     } content;
 };
 

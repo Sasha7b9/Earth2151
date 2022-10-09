@@ -169,13 +169,13 @@ void DescriptionModel::DrawLine(const PageInfo *, int, int) const
 }
 
 
-InfoModel::InfoModel(Type _type, wxFileOffset _offset, pchar _name) : header{(int)_offset, _name}, type(_type), content(*this)
+InfoModel::InfoModel(Type _type, wxFileOffset _offset, pchar _name) : header{(int)_offset, _name}, type(_type)
 {
 
 }
 
 
-InfoModel::InfoModel(Type _type, uint _offset, pchar _name) : header{ (int)_offset, _name }, type(_type), content(*this)
+InfoModel::InfoModel(Type _type, uint _offset, pchar _name) : header{ (int)_offset, _name }, type(_type)
 {
 
 }
@@ -231,7 +231,7 @@ void DescriptionModel::Log()
 {
     for (auto &info : *this)
     {
-        pchar line = info.second.content.First();
+        pchar line = info.second.content.First(info.second);
 
         while (line)
         {
@@ -242,11 +242,11 @@ void DescriptionModel::Log()
 }
 
 
-pchar InfoModel::Content::First()
+pchar InfoModel::Content::First(InfoModel &info)
 {
     if (!IsCreated())
     {
-        Create();
+        Create(info);
     }
 
     current_line = 0;
@@ -266,17 +266,24 @@ pchar InfoModel::Content::Next()
 }
 
 
-void InfoModel::Content::Create()
+void InfoModel::Content::Create(InfoModel &info)
 {
     std::string line;
 
-    CreateBeginLine(line);
+    CreateBeginLine(line, info);
 
     content.push_back(line);
 }
 
 
-void InfoModel::Content::CreateBeginLine(std::string &line)
+void InfoModel::Content::CreateBeginLine(std::string &line, InfoModel &info)
 {
-    line.append(wxString::Format(" % 4X | % 4X", info.header.offset, info.size).c_str());
+    line.append(wxString::Format(" % 4X: % 5d | % 4X: % 5d | %s", info.header.offset, info.header.offset, info.size, info.size, info.header.name.c_str()).c_str().AsChar());
+
+    while (line.size() < length_title)
+    {
+        line.append(" ");
+    }
+
+    line.append("|");
 }
