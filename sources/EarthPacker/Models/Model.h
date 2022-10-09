@@ -64,7 +64,7 @@ struct InfoModel
         pchar Next();
     private:
         vector<string> content;
-        static const int length_title = 44;     //  оличество знакомест на заголовок (символы до содежимого блока)
+        static const int length_title = 47;     //  оличество знакомест на заголовок (символы до содежимого блока)
         static const int bytes_in_line = 32;
         int current_line = 0;                   // Ёту строку нужно выводить сейчас
         int shown_bytes = 0;                    // „исло выведенных байт

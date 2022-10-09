@@ -344,7 +344,7 @@ void InfoModel::Content::Create(InfoModel &info)
 
 void InfoModel::Content::CreateBeginLine(std::string &line, InfoModel &info)
 {
-    line.append(wxString::Format(" % 4X: % 5d | % 4X: % 5d | %s", info.header.offset, info.header.offset, info.size, info.size, info.header.name.c_str()).c_str().AsChar());
+    line.append(wxString::Format(" % 5X: % 7d | % 4X: % 5d | %s", info.header.offset, info.header.offset, info.size, info.size, info.header.name.c_str()).c_str().AsChar());
 
     while (line.size() < length_title)
     {
@@ -436,7 +436,7 @@ void InfoModel::Content::PrepareForEndBeginLine(string &line)
 
 void InfoModel::Content::CreateNextLine(string &line, InfoModel &info)
 {
-    line.append(wxString::Format("             |             |", info.header.offset, info.header.offset, info.size, info.size).c_str().AsChar());
+    line.append(wxString::Format("                |             |", info.header.offset, info.header.offset, info.size, info.size).c_str().AsChar());
 
     while (line.size() < length_title)
     {
