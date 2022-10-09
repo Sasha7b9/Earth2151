@@ -24,10 +24,23 @@ Light::Light(FileInputStream &stream, DescriptionModel &desc, const wxString &na
 wxColour Light::CreateColor()
 {
     FileInputStream &stream = *FileInputStream::Get();
+    DescriptionModel &desc = *DescriptionModel::Get();
 
-    float r = stream.ReadFloat() * 255;
-    float g = stream.ReadFloat() * 255;
-    float b = stream.ReadFloat() * 255;
+    InfoModel info(InfoModel::Type::Color, stream.TellI(), "color");
+
+    float r = stream.ReadFloat();
+    info.AppendBytes(r);
+    r *= 255;
+
+    float g = stream.ReadFloat();
+    info.AppendBytes(g);
+    g *= 255;
+
+    float b = stream.ReadFloat();
+    info.AppendBytes(b);
+    b *= 255;
+
+    desc.AppendInfo(info);
 
     return wxColour((uint8)r, (uint8)g, (uint8)b);
 }
