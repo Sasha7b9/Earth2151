@@ -278,5 +278,5 @@ void InfoModel::Content::Create()
 
 void InfoModel::Content::CreateBeginLine(std::string &line)
 {
-    line.append(wxString::Format(" %X | %X", info->header.offset, info->size).c_str());
+    line.append(wxString::Format(" % 4X | % 4X", info->header.offset, info->size).c_str());
 }
