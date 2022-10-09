@@ -12,6 +12,8 @@ namespace Log
     static HANDLE handle = nullptr;
 
     static const int SIZE_BUFFER = 1024 * 2;
+
+    static wxFile file;
 }
 
 
@@ -20,12 +22,16 @@ void Log::Init()
     AllocConsole();
 
     handle = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    file.Create("c:\\Temp\\Earth2150\\log.log", true);
 }
 
 
 void Log::DeInit()
 {
     FreeConsole();
+
+    file.Close();
 }
 
 
@@ -43,6 +49,8 @@ void Log::Write(const char *format, ...)
     DWORD written_bytes = 0;
 
     WriteConsoleA(handle, buffer, std::strlen(buffer), &written_bytes, nullptr);
+
+    file.Write(buffer);
 }
 
 
@@ -61,4 +69,6 @@ void Log::Error(const char *format, ...)
     DWORD written_bytes = 0;
 
     WriteConsoleA(handle, buffer, std::strlen(buffer), &written_bytes, nullptr);
+
+    file.Write(buffer);
 }
