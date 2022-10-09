@@ -6,5 +6,5 @@
 class RotationFrame : public glm::mat4
 {
 public:
-    RotationFrame(FileInputStream &);
+    RotationFrame();
 };

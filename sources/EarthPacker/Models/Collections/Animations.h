@@ -16,7 +16,11 @@ struct PositionOffsetFrames : public std::list<Vector>
 
 struct RotationFrames : public std::list<RotationFrame>
 {
-    void Create(FileInputStream &);
+    void Create();
+
+private:
+
+    uint ReadUINT(pchar name);
 };
 
 

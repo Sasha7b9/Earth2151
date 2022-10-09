@@ -1,6 +1,7 @@
 // 2022/09/24 21:03:10 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Models/Collections/Animations.h"
+#include "Models/Model.h"
 
 
 void PositionOffsetFrames::Create(FileInputStream &stream, DescriptionModel &desc)
@@ -14,14 +15,36 @@ void PositionOffsetFrames::Create(FileInputStream &stream, DescriptionModel &des
 }
 
 
-void RotationFrames::Create(FileInputStream &stream)
+void RotationFrames::Create()
 {
-    int length = stream.ReadINT();
+    FileInputStream &stream = *FileInputStream::Get();
+
+    InfoModel info(InfoModel::Type::RotationFrames, stream.TellI(), " Rotation frames");
+
+    int length = ReadUINT("num frames");
 
     for (int i = 0; i < length; i++)
     {
-        push_back(RotationFrame(stream));
+        push_back(RotationFrame());
     }
+
+    info.size = (int)stream.TellI() - info.header.offset;
+
+    DescriptionModel::Get()->AppendInfo(info);
+}
+
+
+uint RotationFrames::ReadUINT(pchar name)
+{
+    FileInputStream &stream = *FileInputStream::Get();
+
+    InfoModel info(InfoModel::Type::UINT, stream.TellI(), name);
+
+    uint result = stream.ReadUINT();
+
+    DescriptionModel::Get()->AppendInfo(info.AppendBytes(result));
+
+    return result;
 }
 
 
@@ -29,5 +52,5 @@ void Animations::Create(FileInputStream &stream, DescriptionModel &desc)
 {
     unknownAnimationData.Create(stream, desc);
     movementFrames.Create(stream, desc);
-    rotationFrames.Create(stream);
+    rotationFrames.Create();
 }

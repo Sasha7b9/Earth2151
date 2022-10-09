@@ -455,6 +455,14 @@ void InfoModel::Content::CreateEngBeginLine(string &line, InfoModel &info)
             data += 2;
         }
     }
+    else if (info.type == Type::UINT)
+    {
+        uint value = 0;
+
+        memcpy(&value, info.bytes.data(), 4);
+
+        line.append(wxString::Format("%d", value));
+    }
 }
 
 

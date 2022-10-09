@@ -40,7 +40,9 @@ struct InfoModel
         Color,
         Float,
         UINT,
-        VerticesBlock
+        VerticesBlock,
+        Mat44,
+        RotationFrames
     };
 
     InfoModel(Type type, uint offset, pchar name);
