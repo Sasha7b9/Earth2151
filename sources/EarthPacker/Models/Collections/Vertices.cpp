@@ -18,7 +18,9 @@ void Vertices::Create(FileInputStream &stream, DescriptionModel &desc)
         GetVertices(stream.ReadBytes(VERTICES_BLOCK_LENGTH));
     }
 
-    desc.AppendInfo(info, stream);
+    info.size = (int)stream.TellI() - info.header.offset;
+
+    desc.AppendInfo(info);
 }
 
 
