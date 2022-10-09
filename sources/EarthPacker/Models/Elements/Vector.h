@@ -14,12 +14,12 @@ struct Vector
 
     Vector(float _x = 0.0f, float _y = 0.0f, float _z = 0.0f) : x(_x), y(_y), z(_z) {}
 
-    Vector(FileInputStream &, DescriptionModel &);
+    Vector(FileInputStream &, DescriptionModel &, pchar name);
 
     // Конструктор из 12-ти байт
     Vector(uint8 *);
 
-    void Create(FileInputStream &, DescriptionModel &);
+    void Create(FileInputStream &, DescriptionModel &, pchar name);
 
     string ToString() const;
 };

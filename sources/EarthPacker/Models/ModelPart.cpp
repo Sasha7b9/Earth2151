@@ -16,7 +16,7 @@ ModelPart::ModelPart(FileInputStream &stream, DescriptionModel &desc, int num_mo
     faces.Create(stream, desc);
     animations.Create(stream, desc);
     unknownValue = stream.ReadINT();
-    offset.Create(stream, desc);
+    offset.Create(stream, desc, "offset");
     stream.Read(unknown_bytes, 5);
 
     desc.AppendInfo(info, stream);

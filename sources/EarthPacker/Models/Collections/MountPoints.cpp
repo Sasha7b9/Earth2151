@@ -10,7 +10,7 @@ MountPoints::MountPoints(FileInputStream &stream, DescriptionModel &desc)
 
     for (int i = 0; i < NUMBER_OF_MOUNTPOINTS; i++)
     {
-        Vector vector(stream, desc);
+        Vector vector(stream, desc, wxString::Format("point %d", i).c_str());
 
         push_back(vector);
     }

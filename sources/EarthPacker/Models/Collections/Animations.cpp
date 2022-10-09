@@ -9,7 +9,7 @@ void PositionOffsetFrames::Create(FileInputStream &stream, DescriptionModel &des
 
     for (int i = 0; i < length; i++)
     {
-        push_back(Vector(stream, desc));
+        push_back(Vector(stream, desc, wxString::Format("pos offset %d", i).c_str()));
     }
 }
 

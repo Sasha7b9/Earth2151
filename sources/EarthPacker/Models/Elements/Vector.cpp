@@ -12,17 +12,17 @@ Vector::Vector(uint8 *bytes)
 }
 
 
-Vector::Vector(FileInputStream &stream, DescriptionModel &desc)
+Vector::Vector(FileInputStream &stream, DescriptionModel &desc, pchar name)
 {
-    Create(stream, desc);
+    Create(stream, desc, name);
 }
 
 
-void Vector::Create(FileInputStream &stream, DescriptionModel &desc)
+void Vector::Create(FileInputStream &stream, DescriptionModel &desc, pchar name)
 {
     static int counter = 0;
 
-    InfoModel info(InfoModel::Type::Vector, stream.TellI(), wxString::Format("Vector %d", counter++).c_str());
+    InfoModel info(InfoModel::Type::Vector, stream.TellI(), name);
 
     x = stream.ReadFloat();
 
