@@ -3,6 +3,9 @@
 #include "Utils/FileInputStream.h"
 
 
+FileInputStream *FileInputStream::current = nullptr;
+
+
 FileInputStream::FileInputStream(const wxString &file_path) : wxFileInputStream(file_path)
 {
 

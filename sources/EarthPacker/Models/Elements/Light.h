@@ -21,4 +21,8 @@ struct Light
     float u3;
     float tilt;
     float ambience;
+
+private:
+
+    wxColour CreateColor();
 };

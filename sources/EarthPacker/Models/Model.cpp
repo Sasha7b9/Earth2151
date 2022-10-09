@@ -13,6 +13,8 @@ Model::Model(const wxFileName &_file_name) : file_name(_file_name)
 
     FileInputStream stream(file_name.GetFullPath());
 
+    FileInputStream::Set(&stream);
+
     CheckHeader(stream);
 
     type = ReadType(stream);
