@@ -250,6 +250,7 @@ pchar InfoModel::Content::First(InfoModel &info)
     }
 
     current_line = 0;
+    shown_bytes = 0;
 
     return Next();
 }
@@ -273,10 +274,20 @@ void InfoModel::Content::Create(InfoModel &info)
     CreateBeginLine(line, info);
 
     content.push_back(line);
+
+    while (shown_bytes < (int)info.bytes.size())
+    {
+        std::string next;
+
+        CreateNextLine(next, info);
+
+        content.push_back(next);
+    }
+
 }
 
 
-int InfoModel::Content::CreateBeginLine(std::string &line, InfoModel &info)
+void InfoModel::Content::CreateBeginLine(std::string &line, InfoModel &info)
 {
     line.append(wxString::Format(" % 4X: % 5d | % 4X: % 5d | %s", info.header.offset, info.header.offset, info.size, info.size, info.header.name.c_str()).c_str().AsChar());
 
@@ -290,5 +301,53 @@ int InfoModel::Content::CreateBeginLine(std::string &line, InfoModel &info)
     for (uint i = 0; i < info.bytes.size(); i++)
     {
         line.append(wxString::Format(" % 2X", info.bytes[i]));
+        shown_bytes++;
+
+        if (shown_bytes == bytes_in_line)
+        {
+            break;
+        }
+    }
+
+    CreateEngBeginLine(line, info);
+}
+
+
+void InfoModel::Content::CreateEngBeginLine(std::string &line, InfoModel &info)
+{
+    if (info.type == Type::Header)
+    {
+        line.append(" : ");
+        for (uint i = 0; i < info.bytes.size(); i++)
+        {
+            line.append(wxString::Format("%c", (char)info.bytes[i]));
+        }
+    }
+}
+
+
+void InfoModel::Content::CreateNextLine(std::string &line, InfoModel &info)
+{
+    line.append(wxString::Format("             |             |", info.header.offset, info.header.offset, info.size, info.size).c_str().AsChar());
+
+    while (line.size() < length_title)
+    {
+        line.append(" ");
+    }
+
+    line.append("|");
+
+    int num_bytes = 0;  // Выведено байт в данной строке
+
+    for (uint i = shown_bytes; i < info.bytes.size(); i++)
+    {
+        line.append(wxString::Format(" % 2X", info.bytes[i]));
+        shown_bytes++;
+        num_bytes++;
+
+        if (num_bytes == bytes_in_line)
+        {
+            break;
+        }
     }
 }

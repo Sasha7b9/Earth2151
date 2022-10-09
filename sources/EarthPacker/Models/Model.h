@@ -58,13 +58,16 @@ struct InfoModel
         pchar Next();
     private:
         std::vector<std::string> content;
-        static const int length_title = 45;     //  оличество знакомест на заголовок (символы до содежимого блока)
+        static const int length_title = 44;     //  оличество знакомест на заголовок (символы до содежимого блока)
+        static const int bytes_in_line = 32;
         int current_line = 0;                   // Ёту строку нужно выводить сейчас
         int shown_bytes = 0;                    // „исло выведенных байт
         bool IsCreated() const { return content.size() != 0; }
         void Create(InfoModel &);
         // ¬озвращает количество выведенных байт из массива
         void CreateBeginLine(std::string &, InfoModel &);
+        void CreateEngBeginLine(std::string &, InfoModel &);
+        void CreateNextLine(std::string &, InfoModel &);
     } content;
 };
 
