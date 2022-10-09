@@ -420,6 +420,15 @@ void InfoModel::Content::CreateEngBeginLine(string &line, InfoModel &info)
         memcpy(&value, info.bytes.data(), sizeof(value));
         line.append(wxString::Format("%f", value));
     }
+    else if (info.type == Type::Mat44)
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            float value = 0.0f;
+            memcpy(&value, info.bytes.data() + i * sizeof(value), sizeof(value));
+            line.append(wxString::Format("%f ", value));
+        }
+    }
     else if (info.type == Type::VerticesBlock)
     {
         auto f = [](string &l, uint8 *data, pchar format, int sign)
