@@ -133,7 +133,6 @@ void Model::GetParts(FileInputStream &stream, std::list<ModelPart *> &_parts)
     while (stream.TellI() < stream.GetSize())
     {
         _parts.push_back(new ModelPart(stream, description, ++num_model));
-        LOG_WRITE("Model part %d", num_model);
     }
 }
 
@@ -250,7 +249,7 @@ pchar InfoModel::Content::First()
         Create();
     }
 
-    current_line = -1;
+    current_line = 0;
 
     return Next();
 }
@@ -258,14 +257,10 @@ pchar InfoModel::Content::First()
 
 pchar InfoModel::Content::Next()
 {
-    current_line++;
-
     if (current_line < (int)content.size())
     {
-        return content[current_line].c_str();
+        return content[current_line++].c_str();
     }
-
-    current_line = content.size();
 
     return nullptr;
 }

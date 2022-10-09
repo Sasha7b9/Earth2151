@@ -59,7 +59,7 @@ struct InfoModel
     private:
         std::vector<std::string> content;
         static const int length_name = 20;      // Количество знакомест на описание раздела
-        int current_line = -1;                   // Последняя возвращённая функцией Next() строка
+        int current_line = 0;                   // Эту строку нужно выводить сейчас
         bool IsCreated() const { return content.size() != 0; }
         void Create();
     } content;
