@@ -15,10 +15,10 @@ void Vertices::Create(FileInputStream &stream, DescriptionModel &desc)
 
     for (int i = 0; i < blocks; i++)
     {
-        GetVertices(stream.ReadBytes(VERTICES_BLOCK_LENGTH));
+        wxMemoryBuffer bytes = stream.ReadBytes(VERTICES_BLOCK_LENGTH);
+        GetVertices(bytes);
+        info.AppendBytes(bytes);
     }
-
-    info.size = (int)stream.TellI() - info.header.offset;
 
     desc.AppendInfo(info);
 }
