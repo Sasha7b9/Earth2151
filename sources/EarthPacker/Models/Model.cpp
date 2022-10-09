@@ -239,6 +239,47 @@ void DescriptionModel::Log()
             line = info.second.content.Next();
         }
     }
+
+    LOG_WRITE("Unparsed bytes:");
+
+    int last_address = 0;
+
+    for (auto &info : *this)
+    {
+        if (info.first.offset > last_address)
+        {
+            last_address = info.first.offset;
+        }
+    }
+
+    string line;
+
+    for (int address = 0; address < last_address; address++)
+    {
+        bool exist = false;
+
+        for (auto &info : *this)
+        {
+            if (address >= info.first.offset &&
+                address < (info.first.offset + info.second.size))
+            {
+                exist = true;
+                break;
+            }
+        }
+
+        if (!exist)
+        {
+            line.append(wxString::Format("%d ", address).c_str());
+
+            if (line.size() > 200)
+            {
+                break;
+            }
+        }
+    }
+
+    LOG_WRITE(line.c_str());
 }
 
 
