@@ -32,3 +32,6 @@ typedef signed char int8;
 #include <wx/xtixml.h>
 #include <glm/glm.hpp>
 #pragma warning(pop)
+
+
+using namespace std;

@@ -313,20 +313,63 @@ void InfoModel::Content::CreateBeginLine(std::string &line, InfoModel &info)
 }
 
 
-void InfoModel::Content::CreateEngBeginLine(std::string &line, InfoModel &info)
+void InfoModel::Content::CreateEngBeginLine(string &line, InfoModel &info)
 {
     if (info.type == Type::Header)
     {
-        line.append(" : ");
+        PrepareForEndBeginLine(line);
+
         for (uint i = 0; i < info.bytes.size(); i++)
         {
             line.append(wxString::Format("%c", (char)info.bytes[i]));
         }
     }
+    else if (info.type == Type::Type)
+    {
+        PrepareForEndBeginLine(line);
+
+        uint t = 0;
+        memcpy(&t, info.bytes.data(), 4);
+
+        line.append(wxString::Format("%d", t));
+    }
+    else if (info.type == Type::ModelTemplate)
+    {
+        PrepareForEndBeginLine(line);
+
+        uint16 bits = 0;
+        memcpy(&bits, info.bytes.data(), 2);
+
+        auto f = [](string &l, uint16 &v)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                l.append(wxString::Format("%c", (char)((1 & (v)) + 0x30)));
+                v >>= 1;
+            }
+            l.append(" ");
+        };
+
+        for (int i = 0; i < 4; i++)
+        {
+            f(line, bits);
+        }
+    }
 }
 
 
-void InfoModel::Content::CreateNextLine(std::string &line, InfoModel &info)
+void InfoModel::Content::PrepareForEndBeginLine(string &line)
+{
+    while (line.size() < 142)
+    {
+        line.append(" ");
+    }
+
+    line.append(": ");
+}
+
+
+void InfoModel::Content::CreateNextLine(string &line, InfoModel &info)
 {
     line.append(wxString::Format("             |             |", info.header.offset, info.header.offset, info.size, info.size).c_str().AsChar());
 

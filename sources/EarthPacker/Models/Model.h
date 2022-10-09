@@ -12,7 +12,7 @@
 struct HeaderInfoModel
 {
     int offset = 0;
-    std::string name;
+    string name;
 
     bool operator<(const HeaderInfoModel &rhs) const
     {
@@ -48,7 +48,7 @@ struct InfoModel
 
     HeaderInfoModel header;
     int size = 0;
-    std::vector<uint8> bytes;
+    vector<uint8> bytes;
     Type type = Type::_None;
 
     // «десь хран€тс€ строки с описанием пол€
@@ -57,7 +57,7 @@ struct InfoModel
         pchar First(InfoModel &);
         pchar Next();
     private:
-        std::vector<std::string> content;
+        vector<string> content;
         static const int length_title = 44;     //  оличество знакомест на заголовок (символы до содежимого блока)
         static const int bytes_in_line = 32;
         int current_line = 0;                   // Ёту строку нужно выводить сейчас
@@ -65,14 +65,15 @@ struct InfoModel
         bool IsCreated() const { return content.size() != 0; }
         void Create(InfoModel &);
         // ¬озвращает количество выведенных байт из массива
-        void CreateBeginLine(std::string &, InfoModel &);
-        void CreateEngBeginLine(std::string &, InfoModel &);
-        void CreateNextLine(std::string &, InfoModel &);
+        void CreateBeginLine(string &, InfoModel &);
+        void CreateEngBeginLine(string &, InfoModel &);
+        void CreateNextLine(string &, InfoModel &);
+        void PrepareForEndBeginLine(string &);
     } content;
 };
 
 
-struct DescriptionModel : public Description, public std::map<HeaderInfoModel, InfoModel>
+struct DescriptionModel : public Description, public map<HeaderInfoModel, InfoModel>
 {
     virtual int Size() const override;
     virtual void DrawLine(const PageInfo *, int y, int num_line) const override;
@@ -99,11 +100,11 @@ public:
 private:
 
     wxFileName file_name;
-    std::list<ModelPart *> parts;
+    list<ModelPart *> parts;
     int type;
     ModelTemplate model_template;
     MountPoints *mount_points = nullptr;
-    std::vector<Light> lights;
+    vector<Light> lights;
 
     PartNode *partsTree = nullptr;
 
@@ -115,7 +116,7 @@ private:
 
     void ReadUnusedBytes(FileInputStream &, pchar name, int num_bytes); 
 
-    void GetParts(FileInputStream &, std::list<ModelPart *> &);
+    void GetParts(FileInputStream &, list<ModelPart *> &);
 
     PartNode *GetPartsTree();
 };
