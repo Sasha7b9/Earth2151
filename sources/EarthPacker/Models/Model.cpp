@@ -254,46 +254,46 @@ void DescriptionModel::Log()
         }
     }
 
-    LOG_WRITE("Unparsed bytes:");
-
-    int last_address = 0;
-
-    for (auto &info : *this)
-    {
-        if (info.first.offset > last_address)
-        {
-            last_address = info.first.offset;
-        }
-    }
-
-    string line;
-
-    for (int address = 0; address < last_address; address++)
-    {
-        bool exist = false;
-
-        for (auto &info : *this)
-        {
-            if (address >= info.first.offset &&
-                address < (info.first.offset + info.second.size))
-            {
-                exist = true;
-                break;
-            }
-        }
-
-        if (!exist)
-        {
-            line.append(wxString::Format("%d ", address).c_str());
-
-            if (line.size() > 200)
-            {
-                break;
-            }
-        }
-    }
-
-    LOG_WRITE(line.c_str());
+//    LOG_WRITE("Unparsed bytes:");
+//
+//    int last_address = 0;
+//
+//    for (auto &info : *this)
+//    {
+//        if (info.first.offset > last_address)
+//        {
+//            last_address = info.first.offset;
+//        }
+//    }
+//
+//    string line;
+//
+//    for (int address = 0; address < last_address; address++)
+//    {
+//        bool exist = false;
+//
+//        for (auto &info : *this)
+//        {
+//            if (address >= info.first.offset &&
+//                address < (info.first.offset + info.second.size))
+//            {
+//                exist = true;
+//                break;
+//            }
+//        }
+//
+//        if (!exist)
+//        {
+//            line.append(wxString::Format("%d ", address).c_str());
+//
+//            if (line.size() > 200)
+//            {
+//                break;
+//            }
+//        }
+//    }
+//
+//    LOG_WRITE(line.c_str());
 }
 
 
@@ -344,7 +344,7 @@ void InfoModel::Content::Create(InfoModel &info)
 
 void InfoModel::Content::CreateBeginLine(std::string &line, InfoModel &info)
 {
-    line.append(wxString::Format(" % 5X: % 7d | % 4X: % 5d | %s", info.header.offset, info.header.offset, info.size, info.size, info.header.name.c_str()).c_str().AsChar());
+    line.append(wxString::Format(" % 5X: % 7d | % 4X:% 6d | %s", info.header.offset, info.header.offset, info.size, info.size, info.header.name.c_str()).c_str().AsChar());
 
     while (line.size() < length_title)
     {
@@ -425,7 +425,7 @@ void InfoModel::Content::CreateEngBeginLine(string &line, InfoModel &info)
 
 void InfoModel::Content::PrepareForEndBeginLine(string &line)
 {
-    while (line.size() < 142)
+    while (line.size() < 145)
     {
         line.append(" ");
     }
