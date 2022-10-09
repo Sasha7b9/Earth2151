@@ -17,6 +17,8 @@ Light::Light(FileInputStream &stream, DescriptionModel &desc, const wxString &na
     tilt = stream.ReadFloat();
     ambience = stream.ReadFloat();
 
+    info.size = (int)stream.TellI() - info.header.offset;
+
     desc.AppendInfo(info);
 }
 

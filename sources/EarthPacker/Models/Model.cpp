@@ -408,6 +408,12 @@ void InfoModel::Content::CreateEngBeginLine(string &line, InfoModel &info)
 
         line.append(Vector(info.bytes.data()).ToString().c_str());
     }
+    else if (info.type == Type::Color)
+    {
+        PrepareForEndBeginLine(line);
+
+        line.append(Vector(info.bytes.data()).ToString().c_str());
+    }
 }
 
 
