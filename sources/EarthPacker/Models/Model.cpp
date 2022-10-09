@@ -430,11 +430,15 @@ void InfoModel::Content::CreateEngBeginLine(string &line, InfoModel &info)
                 memcpy(&value, data + sizeof(value) * i, sizeof(value));
                 value *= (float)sign;
                 l.append(wxString::Format(format, i, value));
+                while (l.size() % 15)
+                {
+                    l.append(" ");
+                }
             }
         };
 
-        f(line, info.bytes.data(), "x%d(%f)  ", 1);
-        f(line, info.bytes.data() + sizeof(float) * 4, "y%d(%f)  ", -1);
+        f(line, info.bytes.data(), " x%d %f  ", 1);
+        f(line, info.bytes.data() + sizeof(float) * 4, " y%d %f  ", -1);
     }
 }
 
@@ -453,23 +457,27 @@ void InfoModel::Content::CreateEndNextLine(string &line, InfoModel &info)
                 memcpy(&value, data + sizeof(value) * i, sizeof(value));
                 value *= (float)sign;
                 l.append(wxString::Format(format, i, value));
+                while (l.size() % 15)
+                {
+                    l.append(" ");
+                }
             }
         };
 
         if (shown_bytes == 64)
         {
-            f(line, info.bytes.data() - bytes_in_line, "z%d(%f)  ", 1);
-            f(line, info.bytes.data() - bytes_in_line / 2, "nx%d(%f)  ", 1);
+            f(line, info.bytes.data() + shown_bytes - bytes_in_line, " z%d %f  ", 1);
+            f(line, info.bytes.data() + shown_bytes - bytes_in_line / 2, "nx%d %f  ", 1);
         }
         else if (shown_bytes == 96)
         {
-            f(line, info.bytes.data() - bytes_in_line, "ny%d(%f)  ", -1);
-            f(line, info.bytes.data() - bytes_in_line / 2, "nz%d(%f)  ", 1);
+            f(line, info.bytes.data() + shown_bytes - bytes_in_line, "ny%d %f  ", -1);
+            f(line, info.bytes.data() + shown_bytes - bytes_in_line / 2, "nz%d %f  ", 1);
         }
         else if (shown_bytes == 128)
         {
-            f(line, info.bytes.data() - bytes_in_line, "u%d(%f)  ", -1);
-            f(line, info.bytes.data() - bytes_in_line / 2, "v%d(%f)  ", 1);
+            f(line, info.bytes.data() + shown_bytes - bytes_in_line, " u%d %f  ", -1);
+            f(line, info.bytes.data() + shown_bytes - bytes_in_line / 2, " v%d %f  ", 1);
         }
     }
 }
