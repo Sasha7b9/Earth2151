@@ -512,6 +512,15 @@ void InfoModel::Content::CreateEndNextLine(string &line, InfoModel &info)
             f(line, info.bytes.data() + shown_bytes - bytes_in_line / 2, " v%d %f  ", 1);
         }
     }
+    else if (info.type == Type::Mat44)
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            float value = 0.0f;
+            memcpy(&value, info.bytes.data() + i * sizeof(value) + bytes_in_line, sizeof(value));
+            line.append(wxString::Format("%f ", value));
+        }
+    }
 }
 
 
