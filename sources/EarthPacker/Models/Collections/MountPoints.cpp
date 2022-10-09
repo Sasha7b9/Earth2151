@@ -6,7 +6,7 @@
 
 MountPoints::MountPoints(FileInputStream &stream, DescriptionModel &desc)
 {
-    InfoModel info(stream.TellI(), "Mount points");
+    InfoModel info(InfoModel::Type::MountPoints, stream.TellI(), "Mount points");
 
     for (int i = 0; i < NUMBER_OF_MOUNTPOINTS; i++)
     {

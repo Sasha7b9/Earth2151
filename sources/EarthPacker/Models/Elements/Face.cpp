@@ -6,7 +6,7 @@
 
 Face::Face(FileInputStream &stream, DescriptionModel &desc)
 {
-    InfoModel info(stream.TellI(), "Face");
+    InfoModel info(InfoModel::Type::Face, stream.TellI(), "Face");
 
     v1 = stream.Read2Bytes();
     v2 = stream.Read2Bytes();

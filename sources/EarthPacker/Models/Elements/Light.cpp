@@ -6,7 +6,7 @@
 
 Light::Light(FileInputStream &stream, DescriptionModel &desc, const wxString &name)
 {
-    InfoModel info(stream.TellI(), name.c_str());
+    InfoModel info(InfoModel::Type::Light, stream.TellI(), name.c_str());
 
     position = Vector(stream);
     info.AppendBytes(position);

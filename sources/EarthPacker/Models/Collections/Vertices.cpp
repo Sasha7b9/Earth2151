@@ -6,7 +6,7 @@
 
 void Vertices::Create(FileInputStream &stream, DescriptionModel &desc)
 {
-    InfoModel info(stream.TellI(), "Vertices");
+    InfoModel info(InfoModel::Type::Vertices, stream.TellI(), "Vertices");
 
     volatile int vertices = (int)stream.ReadUINT();
     vertices = vertices;

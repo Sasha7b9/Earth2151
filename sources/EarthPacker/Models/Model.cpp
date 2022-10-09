@@ -19,7 +19,7 @@ Model::Model(const wxFileName &_file_name) : file_name(_file_name)
 
     model_template.Create(stream, description);
 
-    ReadBytes(stream, "Unused", 10);
+    ReadUnusedBytes(stream, "Unused", 10);
 
     mount_points = new MountPoints(stream, description);
 
@@ -28,20 +28,20 @@ Model::Model(const wxFileName &_file_name) : file_name(_file_name)
         lights.emplace_back(Light(stream, description, wxString::Format("Light %d", i)));
     }
 
-    ReadBytes(stream, "Unused", 64);
-    ReadBytes(stream, "Unused", 488);
-    ReadBytes(stream, "Unused", 2);
+    ReadUnusedBytes(stream, "Unused", 64);
+    ReadUnusedBytes(stream, "Unused", 488);
+    ReadUnusedBytes(stream, "Unused", 2);
 
-    ReadBytes(stream, "Unused", 2);
-    ReadBytes(stream, "Unused", 2);
-    ReadBytes(stream, "Unused", 2);
-    ReadBytes(stream, "Unused", 4);
+    ReadUnusedBytes(stream, "Unused", 2);
+    ReadUnusedBytes(stream, "Unused", 2);
+    ReadUnusedBytes(stream, "Unused", 2);
+    ReadUnusedBytes(stream, "Unused", 4);
 
     if (type != 0)
     {
         LOG_ERROR("Not supported mesh format");
 
-        description.AppendInfo(InfoModel(0xFFFFFFFF, "Not supported mesh format"));
+        description.AppendInfo(InfoModel(InfoModel::Type::NotSupportedMeshFormat, 0xFFFFFFFF, "Not supported mesh format"));
     }
     else
     {
@@ -52,9 +52,9 @@ Model::Model(const wxFileName &_file_name) : file_name(_file_name)
 }
 
 
-void Model::ReadBytes(FileInputStream &stream, pchar name, int num_bytes)
+void Model::ReadUnusedBytes(FileInputStream &stream, pchar name, int num_bytes)
 {
-    InfoModel info(stream.TellI(), name);
+    InfoModel info(InfoModel::Type::UnusedBytes, stream.TellI(), name);
 
     info.AppendBytes(stream.ReadBytes(num_bytes));
 
@@ -97,7 +97,7 @@ PartNode *Model::GetPartsTree()
 
 void Model::CheckHeader(FileInputStream &stream)
 {
-    InfoModel info(stream.TellI(), "Header");
+    InfoModel info(InfoModel::Type::Header, stream.TellI(), "Header");
 
     wxMemoryBuffer span = stream.ReadBytes(8);
 
@@ -114,7 +114,7 @@ void Model::CheckHeader(FileInputStream &stream)
 
 int Model::ReadType(FileInputStream &stream)
 {
-    InfoModel info(stream.TellI(), "Type resource");
+    InfoModel info(InfoModel::Type::Type, stream.TellI(), "Type resource");
 
     int result = stream.ReadUINT();
 
@@ -170,13 +170,13 @@ void DescriptionModel::DrawLine(const PageInfo *, int, int) const
 }
 
 
-InfoModel::InfoModel(wxFileOffset _offset, pchar _name) : header{(int)_offset, _name}
+InfoModel::InfoModel(Type _type, wxFileOffset _offset, pchar _name) : header{(int)_offset, _name}, type(_type)
 {
     
 }
 
 
-InfoModel::InfoModel(uint _offset, pchar _name) : header{ (int)_offset, _name }
+InfoModel::InfoModel(Type _type, uint _offset, pchar _name) : header{ (int)_offset, _name }, type(_type)
 {
 
 }
@@ -230,14 +230,25 @@ void DescriptionModel::AppendInfo(InfoModel &info, FileInputStream &stream)
 
 void DescriptionModel::Log()
 {
-    for (const auto &info : *this)
+    for (auto &info : *this)
     {
         LOG_WRITE("% 4X:% 5d | % 4X:% 5d | %s", info.first.offset, info.first.offset, info.second.size, info.second.size, info.second.content.c_str());
     }
 }
 
 
-pchar InfoModel::Content::c_str() const
+pchar InfoModel::Content::c_str()
+{
+    if (!IsCreated())
+    {
+        Create();
+    }
+
+    return content.c_str();
+}
+
+
+void InfoModel::Content::Create()
 {
 
 }

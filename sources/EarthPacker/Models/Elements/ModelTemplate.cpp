@@ -6,7 +6,7 @@
 
 void ModelTemplate::Create(FileInputStream &stream, DescriptionModel &desc)
 {
-    InfoModel info(stream.TellI(), "Model Template");
+    InfoModel info(InfoModel::Type::ModelTemplate, stream.TellI(), "Model Template");
 
     uint16 bytes = stream.Read2Bytes();
 

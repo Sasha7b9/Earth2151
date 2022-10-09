@@ -6,7 +6,7 @@
 
 ModelPart::ModelPart(FileInputStream &stream, DescriptionModel &desc, int num_model)
 {
-    InfoModel info(stream.TellI(), wxString::Format("Model part %d", num_model).c_str());
+    InfoModel info(InfoModel::Type::ModelPart, stream.TellI(), wxString::Format("Model part %d", num_model).c_str());
 
     vertices.Create(stream, desc);
     skipParent = stream.ReadByte();

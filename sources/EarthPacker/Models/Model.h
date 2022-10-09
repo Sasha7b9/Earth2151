@@ -23,8 +23,23 @@ struct HeaderInfoModel
 
 struct InfoModel
 {
-    InfoModel(uint offset, pchar name);
-    InfoModel(wxFileOffset offset, pchar name);
+    enum class Type
+    {
+        _None,
+        MountPoints,
+        NotSupportedMeshFormat,
+        Vertices,
+        Face,
+        Light,
+        ModelTemplate,
+        UnusedBytes,
+        Header,
+        Type,
+        ModelPart
+    };
+
+    InfoModel(Type type, uint offset, pchar name);
+    InfoModel(Type type, wxFileOffset offset, pchar name);
 
     InfoModel &AppendBytes(const wxMemoryBuffer &);
     InfoModel &AppendBytes(const void *data, int num_bytes);
@@ -34,14 +49,17 @@ struct InfoModel
     HeaderInfoModel header;
     int size = 0;
     std::vector<uint8> bytes;
+    Type type = Type::_None;
 
     // Здесь хранятся строки с описанием поля
     struct Content
     {
+        pchar c_str();
+    private:
         std::string content;
         int length_name;
-
-        pchar c_str() const;
+        bool IsCreated() const { return !content.empty(); }
+        void Create();
     } content;
 };
 
@@ -87,7 +105,7 @@ private:
 
     int ReadType(FileInputStream &);
 
-    void ReadBytes(FileInputStream &, pchar name, int num_bytes); 
+    void ReadUnusedBytes(FileInputStream &, pchar name, int num_bytes); 
 
     void GetParts(FileInputStream &, std::list<ModelPart *> &);
 
