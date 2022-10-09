@@ -19,5 +19,5 @@ ModelPart::ModelPart(FileInputStream &stream, DescriptionModel &desc, int num_mo
     offset.Create(stream, desc, "offset");
     stream.Read(unknown_bytes, 5);
 
-    desc.AppendInfo(info, stream);
+    desc.AppendInfo(info);
 }

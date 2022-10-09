@@ -31,7 +31,7 @@ Model::Model(const wxFileName &_file_name) : file_name(_file_name)
 
     for (int i = 0; i < Light::COUNT; i++)
     {
-        lights.emplace_back(Light(stream, description, wxString::Format("Light %d", i)));
+        lights.emplace_back(Light(stream, description, wxString::Format(" Light %d", i)));
     }
 
     ReadUnusedBytes(stream, "Unused", 64);
