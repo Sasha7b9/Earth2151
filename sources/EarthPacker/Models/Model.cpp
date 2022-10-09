@@ -440,6 +440,21 @@ void InfoModel::Content::CreateEngBeginLine(string &line, InfoModel &info)
         f(line, info.bytes.data(), " x%d %f  ", 1);
         f(line, info.bytes.data() + sizeof(float) * 4, " y%d %f  ", -1);
     }
+    else if (info.type == Type::Face)
+    {
+        uint8 *data = info.bytes.data();
+
+        while (data < &info.bytes[info.bytes.size() - 1])
+        {
+            uint16 value = 0;
+
+            memcpy(&value, data, 2);
+
+            line.append(wxString::Format("% 3d", value));
+
+            data += 2;
+        }
+    }
 }
 
 
