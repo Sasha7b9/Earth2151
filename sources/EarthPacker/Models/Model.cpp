@@ -422,18 +422,19 @@ void InfoModel::Content::CreateEngBeginLine(string &line, InfoModel &info)
     }
     else if (info.type == Type::VerticesBlock)
     {
-        auto f = [](string &l, uint8 *data, pchar format)
+        auto f = [](string &l, uint8 *data, pchar format, int sign)
         {
             for (int i = 0; i < 4; i++)
             {
                 float value = 0.0f;
                 memcpy(&value, data + sizeof(value) * i, sizeof(value));
+                value *= sign;
                 l.append(wxString::Format(format, i, value));
             }
         };
 
-        f(line, info.bytes.data(), "x%d(%f)  ");
-        f(line, info.bytes.data() + sizeof(float) * 4, "y%d(%f)  ");
+        f(line, info.bytes.data(), "x%d(%f)  ", 1);
+        f(line, info.bytes.data() + sizeof(float) * 4, "y%d(%f)  ", -1);
     }
 }
 
