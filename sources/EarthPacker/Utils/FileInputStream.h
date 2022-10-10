@@ -29,6 +29,8 @@ public:
     static void SetDescriptionModel(DescriptionModel *_desc) { desc = _desc; };
 protected:
     uint ReadUINT(pchar name);
+    uint8 ReadByte(pchar name);
+    uint16 ReadUINT16(pchar name);
     static FileInputStream *stream;
     static DescriptionModel *desc;
 };

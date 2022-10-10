@@ -9,13 +9,13 @@ ModelPart::ModelPart(int num_model)
     InfoModel info(InfoModel::Type::ModelPart, stream->TellI(), wxString::Format(" Model part %d", num_model).c_str());
 
     vertices.Create();
-    skipParent = stream->ReadByte();
-    unknownFlag = stream->ReadByte();
-    stream->Read2Bytes();
+    skipParent = ReadByte("Skip parent");
+    unknownFlag = ReadByte("Unknown flag");
+    ReadUINT16("Unknown uint16");
     texture.Create();
     faces.Create();
     animations.Create();
-    unknownValue = stream->ReadINT();
+    unknownValue = (int)ReadUINT("Unknown value");
     offset.Create("offset");
     stream->Read(unknown_bytes, 5);
 

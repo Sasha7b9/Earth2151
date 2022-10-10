@@ -119,3 +119,27 @@ uint IInputStream::ReadUINT(pchar name)
 
     return result;
 }
+
+
+uint16 IInputStream::ReadUINT16(pchar name)
+{
+    InfoModel info(InfoModel::Type::UINT16, stream->TellI(), name);
+
+    uint16 result = stream->Read2Bytes();
+
+    desc->AppendInfo(info.AppendBytes(&result, 2));
+
+    return result;
+}
+
+
+uint8 IInputStream::ReadByte(pchar name)
+{
+    InfoModel info(InfoModel::Type::Byte, stream->TellI(), name);
+
+    uint8 result = stream->ReadByte();
+
+    desc->AppendInfo(info.AppendByte(result));
+
+    return result;
+}

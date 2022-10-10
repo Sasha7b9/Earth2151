@@ -42,7 +42,9 @@ struct InfoModel
         UINT,
         VerticesBlock,
         Mat44,
-        RotationFrames
+        RotationFrames,
+        Byte,
+        UINT16
     };
 
     InfoModel(Type type, uint offset, pchar name = "");
@@ -53,7 +55,8 @@ struct InfoModel
     InfoModel &AppendBytes(const Vector &);
     InfoModel &AppendBytes(const float);
     InfoModel &AppendBytes(const uint);
-
+    InfoModel &AppendByte(const uint8);
+    
     HeaderInfoModel header;
     int size = 0;
     vector<uint8> bytes;

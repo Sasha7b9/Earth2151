@@ -222,6 +222,14 @@ InfoModel &InfoModel::AppendBytes(const uint value)
 }
 
 
+InfoModel &InfoModel::AppendByte(const uint8 value)
+{
+    AppendBytes(&value, sizeof(value));
+
+    return *this;
+}
+
+
 InfoModel &InfoModel::AppendBytes(const wxMemoryBuffer &buffer)
 {
     AppendBytes(buffer.GetData(), buffer.GetBufSize());
@@ -471,6 +479,18 @@ void InfoModel::Content::CreateEngBeginLine(string &line, InfoModel &info)
 
         memcpy(&value, info.bytes.data(), 4);
 
+        line.append(wxString::Format("%d", value));
+    }
+    else if (info.type == Type::UINT16)
+    {
+        uint16 value = 0;
+        memcpy(&value, info.bytes.data(), 2);
+        line.append(wxString::Format("%d", value));
+    }
+    else if (info.type == Type::Byte)
+    {
+        uint8 value = 0;
+        memcpy(&value, info.bytes.data(), 1);
         line.append(wxString::Format("%d", value));
     }
 }
