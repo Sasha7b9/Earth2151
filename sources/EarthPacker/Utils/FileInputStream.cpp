@@ -1,6 +1,7 @@
 // 2022/09/24 10:28:10 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "defines.h"
 #include "Utils/FileInputStream.h"
+#include "Models/Model.h"
 
 
 FileInputStream *FileInputStream::current = nullptr;
@@ -102,6 +103,20 @@ uint FileInputStream::ReadUINT(int offset)
     SeekI(offset);
 
     wxFileInputStream::Read(&result, 4);
+
+    return result;
+}
+
+
+uint IInputStream::ReadUINT(pchar name)
+{
+    FileInputStream &stream = *FileInputStream::Get();
+
+    InfoModel info(InfoModel::Type::UINT, stream.TellI(), name);
+
+    uint result = stream.ReadUINT();
+
+    DescriptionModel::Get()->AppendInfo(info.AppendBytes(result));
 
     return result;
 }

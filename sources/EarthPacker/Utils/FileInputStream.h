@@ -23,3 +23,10 @@ private:
 
     static FileInputStream *current;
 };
+
+
+class IInputStream
+{
+protected:
+    uint ReadUINT(pchar name);
+};
