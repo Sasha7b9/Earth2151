@@ -1,12 +1,13 @@
 // 2022/09/24 20:55:08 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
 #include "Models/Elements/Face.h"
+#include "Models/Collections/ICollection.h"
 
 
 struct DescriptionModel;
 
 
-struct Faces : std::list<Face>
+struct Faces : std::list<Face>, public ICollection
 {
     void Create(FileInputStream &, DescriptionModel &);
 };

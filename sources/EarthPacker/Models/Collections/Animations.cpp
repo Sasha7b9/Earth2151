@@ -13,7 +13,7 @@ void PositionOffsetFrames::Create(FileInputStream &stream, DescriptionModel &des
     }
     else
     {
-        length = ReadUINT("frames");
+        length = ReadUINT("trans frames");
     }
 
     for (int i = 0; i < length; i++)
@@ -46,20 +46,12 @@ uint PositionOffsetFrames::ReadUINT(pchar name)
 
 void RotationFrames::Create()
 {
-    FileInputStream &stream = *FileInputStream::Get();
-
-    InfoModel info(InfoModel::Type::RotationFrames, stream.TellI(), " Rot frames");
-
-    int length = ReadUINT("num frames");
+    int length = ReadUINT("rot frames");
 
     for (int i = 0; i < length; i++)
     {
         push_back(RotationFrame(i));
     }
-
-    info.size = (int)stream.TellI() - info.header.offset;
-
-    DescriptionModel::Get()->AppendInfo(info);
 }
 
 

@@ -1,12 +1,13 @@
 // 2022/09/24 19:44:29 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
 #include "Models/Elements/Vertex.h"
+#include "Models/Collections/ICollection.h"
 
 
 struct DescriptionModel;
 
 
-class Vertices : public std::list<Vertex>
+class Vertices : public std::list<Vertex>, public ICollection
 {
 public:
     void Create(FileInputStream &, DescriptionModel &);
@@ -16,6 +17,4 @@ private:
     static const int FIELD_SIZE = 4;
     void GetVertices(int num_block);
     float TakeFloat(const void *);
-
-    uint ReadUINT(pchar name);
 };

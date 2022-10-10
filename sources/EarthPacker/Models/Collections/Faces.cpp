@@ -5,7 +5,7 @@
 
 void Faces::Create(FileInputStream &stream, DescriptionModel &desc)
 {
-    int faces = (int)stream.ReadUINT();
+    int faces = (int)ReadUINT("num faces");
 
     for (int i = 0; i < faces; i++)
     {

@@ -23,20 +23,6 @@ void Vertices::Create(FileInputStream &stream, DescriptionModel &desc)
 }
 
 
-uint Vertices::ReadUINT(pchar name)
-{
-    FileInputStream &stream = *FileInputStream::Get();
-
-    InfoModel info(InfoModel::Type::UINT, stream.TellI(), name);
-
-    uint result = stream.ReadUINT();
-
-    DescriptionModel::Get()->AppendInfo(info.AppendBytes(result));
-
-    return result;
-}
-
-
 void Vertices::GetVertices(int num_block)
 {
     FileInputStream &stream = *FileInputStream::Get();
