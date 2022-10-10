@@ -4,18 +4,18 @@
 #include "Models/Model.h"
 
 
-MountPoints::MountPoints(DescriptionModel &desc)
+MountPoints::MountPoints()
 {
     InfoModel info(InfoModel::Type::MountPoints, stream->TellI(), " Mount points");
 
     for (int i = 0; i < NUMBER_OF_MOUNTPOINTS; i++)
     {
-        Vector vector(desc, wxString::Format("point %d", i).c_str());
+        Vector vector(wxString::Format("point %d", i).c_str());
 
         push_back(vector);
     }
 
     info.size = (int)stream->TellI() - info.header.offset;
 
-    desc.AppendInfo(info);
+    desc->AppendInfo(info);
 }

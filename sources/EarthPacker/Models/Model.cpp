@@ -7,32 +7,28 @@
 #include "Controls/Notebook/NotebookRight/PageInfo.h"
 
 
-DescriptionModel *DescriptionModel::current = nullptr;
-
-
 Model::Model(const wxFileName &_file_name) : file_name(_file_name)
 {
     LOG_WRITE("%s", file_name.GetFullPath().c_str().AsChar());
 
     FileInputStream main_stream(file_name.GetFullPath());
 
-    DescriptionModel::Set(&description);
-
     IInputStream::SetInputStream(&main_stream);
+    IInputStream::SetDescriptionModel(&description);
 
     CheckHeader();
 
     type = ReadType();
 
-    model_template.Create(description);
+    model_template.Create();
 
     ReadUnusedBytes("Unused", 10);
 
-    mount_points = new MountPoints(description);
+    mount_points = new MountPoints();
 
     for (int i = 0; i < Light::COUNT; i++)
     {
-        lights.emplace_back(Light(description, wxString::Format(" Light %d", i)));
+        lights.emplace_back(Light(wxString::Format(" Light %d", i)));
     }
 
     ReadUnusedBytes("Unused", 64);
@@ -139,7 +135,7 @@ void Model::GetParts(std::list<ModelPart *> &_parts)
 
     while (stream->TellI() < stream->GetSize())
     {
-        _parts.push_back(new ModelPart(description, ++num_model));
+        _parts.push_back(new ModelPart(++num_model));
     }
 }
 

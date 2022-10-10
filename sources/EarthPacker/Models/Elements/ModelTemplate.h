@@ -3,15 +3,11 @@
 #include "Utils/FileInputStream.h"
 
 
-struct InfoModel;
-struct DescriptionModel;
-
-
 class ModelTemplate : public IInputStream
 {
 public:
 
-    void Create(DescriptionModel &);
+    void Create();
 
 private:
 

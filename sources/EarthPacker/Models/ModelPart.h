@@ -7,13 +7,10 @@
 #include "Models/Collections/Animations.h"
 
 
-struct DescriptionModel;
-
-
 class ModelPart : public IInputStream
 {
 public:
-    ModelPart(DescriptionModel &, int num_model);
+    ModelPart(int num_model);
 
     Vertices vertices;
     int skipParent;

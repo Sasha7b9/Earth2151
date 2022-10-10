@@ -4,7 +4,7 @@
 #include "Models/Model.h"
 
 
-void PositionOffsetFrames::Create(DescriptionModel &desc, bool unknown)
+void PositionOffsetFrames::Create(bool unknown)
 {
     int length = 0;
     if (unknown)
@@ -20,11 +20,11 @@ void PositionOffsetFrames::Create(DescriptionModel &desc, bool unknown)
     {
         if (unknown)
         {
-            push_back(Vector(desc, wxString::Format("unkn a %d", i).c_str()));
+            push_back(Vector(wxString::Format("unkn a %d", i).c_str()));
         }
         else
         {
-            push_back(Vector(desc, wxString::Format("pos a %d", i).c_str()));
+            push_back(Vector(wxString::Format("pos a %d", i).c_str()));
         }
     }
 }
@@ -36,7 +36,7 @@ uint PositionOffsetFrames::ReadUINT(pchar name)
 
     uint result = stream->ReadUINT();
 
-    DescriptionModel::Get()->AppendInfo(info.AppendBytes(result));
+    desc->AppendInfo(info.AppendBytes(result));
 
     return result;
 }
@@ -59,15 +59,15 @@ uint RotationFrames::ReadUINT(pchar name)
 
     uint result = stream->ReadUINT();
 
-    DescriptionModel::Get()->AppendInfo(info.AppendBytes(result));
+    desc->AppendInfo(info.AppendBytes(result));
 
     return result;
 }
 
 
-void Animations::Create(DescriptionModel &desc)
+void Animations::Create()
 {
-    unknownAnimationData.Create(desc, true);
-    movementFrames.Create(desc, false);
+    unknownAnimationData.Create(true);
+    movementFrames.Create(false);
     rotationFrames.Create();
 }

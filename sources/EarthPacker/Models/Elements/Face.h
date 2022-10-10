@@ -8,7 +8,7 @@ struct DescriptionModel;
 
 struct Face : public IInputStream
 {
-    Face(DescriptionModel &, int num);
+    Face(int num);
 
     int v1 = 0;
     int v2 = 0;

@@ -84,9 +84,6 @@ struct InfoModel
 
 struct DescriptionModel : public Description, public map<HeaderInfoModel, InfoModel>
 {
-    static void Set(DescriptionModel *desc) { current = desc; };
-    static DescriptionModel *Get() { return current; };
-
     virtual int Size() const override;
     virtual void DrawLine(const PageInfo *, int y, int num_line) const override;
 
@@ -96,8 +93,6 @@ struct DescriptionModel : public Description, public map<HeaderInfoModel, InfoMo
     void Log();
 
 private:
-
-    static DescriptionModel *current;
 
     InfoModel &GetInfo(int num_line);
 };

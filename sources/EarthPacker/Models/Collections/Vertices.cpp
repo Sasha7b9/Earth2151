@@ -4,7 +4,7 @@
 #include "Models/Model.h"
 
 
-void Vertices::Create(DescriptionModel &desc)
+void Vertices::Create()
 {
     InfoModel info(InfoModel::Type::Vertices, stream->TellI(), "Vertices");
 
@@ -19,7 +19,7 @@ void Vertices::Create(DescriptionModel &desc)
 
     info.size = (int)stream->TellI() - info.header.offset;
 
-    desc.AppendInfo(info);
+    desc->AppendInfo(info);
 }
 
 
@@ -49,7 +49,7 @@ void Vertices::GetVertices(int num_block)
         push_back(Vertex(Vector(x, y, z), Vector(normalX, normalY, normalZ), u, v));
     }
 
-    DescriptionModel::Get()->AppendInfo(info.AppendBytes(buffer));
+    desc->AppendInfo(info.AppendBytes(buffer));
 }
 
 

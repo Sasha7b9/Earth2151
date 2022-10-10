@@ -4,14 +4,11 @@
 #include "Utils/FileInputStream.h"
 
 
-struct DescriptionModel;
-
-
 struct Light : public IInputStream
 {
     static const int COUNT = 5;
 
-    Light(DescriptionModel &, const wxString &name);
+    Light(const wxString &name);
 
     wxColour color;
     Vector position;

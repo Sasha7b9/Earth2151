@@ -10,7 +10,7 @@ struct DescriptionModel;
 class MountPoints : public std::list<Vector>, public IInputStream
 {
 public:
-    MountPoints(DescriptionModel &);
+    MountPoints();
 private:
     static const int NUMBER_OF_MOUNTPOINTS = 4;
 };

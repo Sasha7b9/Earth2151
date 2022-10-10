@@ -6,8 +6,6 @@
 
 RotationFrame::RotationFrame(int num_frame)
 {
-    DescriptionModel &desc = *DescriptionModel::Get();
-
     InfoModel info(InfoModel::Type::Mat44, stream->TellI(), wxString::Format("rot a %d", num_frame));
 
     (*this)[0][0] = stream->ReadFloat();
@@ -44,5 +42,5 @@ RotationFrame::RotationFrame(int num_frame)
     info.AppendBytes((*this)[3][2]);
     info.AppendBytes((*this)[3][3]);
 
-    desc.AppendInfo(info);
+    desc->AppendInfo(info);
 }

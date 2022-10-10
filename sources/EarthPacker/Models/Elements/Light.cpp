@@ -4,11 +4,11 @@
 #include "Models/Model.h"
 
 
-Light::Light(DescriptionModel &desc, const wxString &name)
+Light::Light(const wxString &name)
 {
     InfoModel info(InfoModel::Type::Light, stream->TellI(), name.c_str());
 
-    position = Vector(desc, "position");
+    position = Vector("position");
     color = CreateColor();
     length = ReadFloat("length");
     direction = ReadFloat("direction");
@@ -19,14 +19,12 @@ Light::Light(DescriptionModel &desc, const wxString &name)
 
     info.size = (int)stream->TellI() - info.header.offset;
 
-    desc.AppendInfo(info);
+    desc->AppendInfo(info);
 }
 
 
 wxColour Light::CreateColor()
 {
-    DescriptionModel &desc = *DescriptionModel::Get();
-
     InfoModel info(InfoModel::Type::Color, stream->TellI(), "color");
 
     float r = stream->ReadFloat();
@@ -41,7 +39,7 @@ wxColour Light::CreateColor()
     info.AppendBytes(b);
     b *= 255;
 
-    desc.AppendInfo(info);
+    desc->AppendInfo(info);
 
     return wxColour((uint8)r, (uint8)g, (uint8)b);
 }
@@ -49,13 +47,11 @@ wxColour Light::CreateColor()
 
 float Light::ReadFloat(pchar name)
 {
-    DescriptionModel &desc = *DescriptionModel::Get();
-
     InfoModel info(InfoModel::Type::Float, stream->TellI(), name);
 
     float result = stream->ReadFloat();
 
-    desc.AppendInfo(info.AppendBytes(result));
+    desc->AppendInfo(info.AppendBytes(result));
 
     return result;
 }

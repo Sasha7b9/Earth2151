@@ -2,6 +2,9 @@
 #pragma once
 
 
+struct DescriptionModel;
+
+
 class FileInputStream : public wxFileInputStream
 {
 public:
@@ -23,7 +26,9 @@ class IInputStream
 {
 public:
     static void SetInputStream(FileInputStream *_stream) { stream = _stream; }
+    static void SetDescriptionModel(DescriptionModel *_desc) { desc = _desc; };
 protected:
     uint ReadUINT(pchar name);
     static FileInputStream *stream;
+    static DescriptionModel *desc;
 };

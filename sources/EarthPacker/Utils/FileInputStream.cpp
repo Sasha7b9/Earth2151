@@ -5,6 +5,7 @@
 
 
 FileInputStream *IInputStream::stream = nullptr;
+DescriptionModel *IInputStream::desc = nullptr;
 
 
 FileInputStream::FileInputStream(const wxString &file_path) : wxFileInputStream(file_path)
@@ -114,7 +115,7 @@ uint IInputStream::ReadUINT(pchar name)
 
     uint result = stream->ReadUINT();
 
-    DescriptionModel::Get()->AppendInfo(info.AppendBytes(result));
+    desc->AppendInfo(info.AppendBytes(result));
 
     return result;
 }

@@ -9,7 +9,7 @@ struct DescriptionModel;
 class Vertices : public std::list<Vertex>, public IInputStream
 {
 public:
-    void Create(DescriptionModel &);
+    void Create();
 private:
     static const int VERTICES_BLOCK_LENGTH = 160;
     static const int VERTICES_IN_BLOCK = 4;

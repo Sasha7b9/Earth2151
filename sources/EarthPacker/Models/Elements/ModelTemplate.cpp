@@ -4,7 +4,7 @@
 #include "Models/Model.h"
 
 
-void ModelTemplate::Create(DescriptionModel &desc)
+void ModelTemplate::Create()
 {
     InfoModel info(InfoModel::Type::ModelTemplate, stream->TellI(), "Model template");
 
@@ -24,5 +24,5 @@ void ModelTemplate::Create(DescriptionModel &desc)
 
     info.AppendBytes(&bytes, 2);
 
-    desc.AppendInfo(info, stream);
+    desc->AppendInfo(info, stream);
 }

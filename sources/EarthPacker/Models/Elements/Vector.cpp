@@ -12,13 +12,13 @@ Vector::Vector(uint8 *bytes)
 }
 
 
-Vector::Vector(DescriptionModel &desc, pchar name)
+Vector::Vector(pchar name)
 {
-    Create(desc, name);
+    Create(name);
 }
 
 
-void Vector::Create(DescriptionModel &desc, pchar name)
+void Vector::Create(pchar name)
 {
     static int counter = 0;
 
@@ -34,7 +34,7 @@ void Vector::Create(DescriptionModel &desc, pchar name)
     info.AppendBytes(y);
     info.AppendBytes(z);
 
-    desc.AppendInfo(info);
+    desc->AppendInfo(info);
 }
 
 

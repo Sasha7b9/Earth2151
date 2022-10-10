@@ -4,7 +4,7 @@
 #include "Models/Model.h"
 
 
-Face::Face(DescriptionModel &desc, int num)
+Face::Face(int num)
 {
     InfoModel info(InfoModel::Type::Face, stream->TellI(), wxString::Format("face %d", num).c_str());
 
@@ -18,5 +18,5 @@ Face::Face(DescriptionModel &desc, int num)
     info.AppendBytes(&v3, 2);
     info.AppendBytes(&unknown, 2);
 
-    desc.AppendInfo(info, stream);
+    desc->AppendInfo(info, stream);
 }
