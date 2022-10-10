@@ -4,9 +4,6 @@
 #include "Utils/FileInputStream.h"
 
 
-struct DescriptionModel;
-
-
 class MountPoints : public std::list<Vector>, public IInputStream
 {
 public:

@@ -3,9 +3,6 @@
 #include "Models/Elements/Face.h"
 
 
-struct DescriptionModel;
-
-
 struct Faces : std::list<Face>, public IInputStream
 {
     void Create();

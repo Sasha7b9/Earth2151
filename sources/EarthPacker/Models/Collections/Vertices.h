@@ -3,9 +3,6 @@
 #include "Models/Elements/Vertex.h"
 
 
-struct DescriptionModel;
-
-
 class Vertices : public std::list<Vertex>, public IInputStream
 {
 public:
