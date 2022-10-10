@@ -4,7 +4,7 @@
 #include "Models/Model.h"
 
 
-FileInputStream *FileInputStream::current = nullptr;
+FileInputStream *IInputStream::stream = nullptr;
 
 
 FileInputStream::FileInputStream(const wxString &file_path) : wxFileInputStream(file_path)
@@ -110,11 +110,9 @@ uint FileInputStream::ReadUINT(int offset)
 
 uint IInputStream::ReadUINT(pchar name)
 {
-    FileInputStream &stream = *FileInputStream::Get();
+    InfoModel info(InfoModel::Type::UINT, stream->TellI(), name);
 
-    InfoModel info(InfoModel::Type::UINT, stream.TellI(), name);
-
-    uint result = stream.ReadUINT();
+    uint result = stream->ReadUINT();
 
     DescriptionModel::Get()->AppendInfo(info.AppendBytes(result));
 

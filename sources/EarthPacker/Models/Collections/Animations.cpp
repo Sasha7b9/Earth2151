@@ -4,7 +4,7 @@
 #include "Models/Model.h"
 
 
-void PositionOffsetFrames::Create(FileInputStream &stream, DescriptionModel &desc, bool unknown)
+void PositionOffsetFrames::Create(DescriptionModel &desc, bool unknown)
 {
     int length = 0;
     if (unknown)
@@ -20,11 +20,11 @@ void PositionOffsetFrames::Create(FileInputStream &stream, DescriptionModel &des
     {
         if (unknown)
         {
-            push_back(Vector(stream, desc, wxString::Format("unkn a %d", i).c_str()));
+            push_back(Vector(desc, wxString::Format("unkn a %d", i).c_str()));
         }
         else
         {
-            push_back(Vector(stream, desc, wxString::Format("pos a %d", i).c_str()));
+            push_back(Vector(desc, wxString::Format("pos a %d", i).c_str()));
         }
     }
 }
@@ -32,11 +32,9 @@ void PositionOffsetFrames::Create(FileInputStream &stream, DescriptionModel &des
 
 uint PositionOffsetFrames::ReadUINT(pchar name)
 {
-    FileInputStream &stream = *FileInputStream::Get();
+    InfoModel info(InfoModel::Type::UINT, stream->TellI(), name);
 
-    InfoModel info(InfoModel::Type::UINT, stream.TellI(), name);
-
-    uint result = stream.ReadUINT();
+    uint result = stream->ReadUINT();
 
     DescriptionModel::Get()->AppendInfo(info.AppendBytes(result));
 
@@ -57,11 +55,9 @@ void RotationFrames::Create()
 
 uint RotationFrames::ReadUINT(pchar name)
 {
-    FileInputStream &stream = *FileInputStream::Get();
+    InfoModel info(InfoModel::Type::UINT, stream->TellI(), name);
 
-    InfoModel info(InfoModel::Type::UINT, stream.TellI(), name);
-
-    uint result = stream.ReadUINT();
+    uint result = stream->ReadUINT();
 
     DescriptionModel::Get()->AppendInfo(info.AppendBytes(result));
 
@@ -69,9 +65,9 @@ uint RotationFrames::ReadUINT(pchar name)
 }
 
 
-void Animations::Create(FileInputStream &stream, DescriptionModel &desc)
+void Animations::Create(DescriptionModel &desc)
 {
-    unknownAnimationData.Create(stream, desc, true);
-    movementFrames.Create(stream, desc, false);
+    unknownAnimationData.Create(desc, true);
+    movementFrames.Create(desc, false);
     rotationFrames.Create();
 }

@@ -4,11 +4,11 @@
 #include "Models/Model.h"
 
 
-Light::Light(FileInputStream &stream, DescriptionModel &desc, const wxString &name)
+Light::Light(DescriptionModel &desc, const wxString &name)
 {
-    InfoModel info(InfoModel::Type::Light, stream.TellI(), name.c_str());
+    InfoModel info(InfoModel::Type::Light, stream->TellI(), name.c_str());
 
-    position = Vector(stream, desc, "position");
+    position = Vector(desc, "position");
     color = CreateColor();
     length = ReadFloat("length");
     direction = ReadFloat("direction");
@@ -17,7 +17,7 @@ Light::Light(FileInputStream &stream, DescriptionModel &desc, const wxString &na
     tilt = ReadFloat("tilt");
     ambience = ReadFloat("ambience");
 
-    info.size = (int)stream.TellI() - info.header.offset;
+    info.size = (int)stream->TellI() - info.header.offset;
 
     desc.AppendInfo(info);
 }
@@ -25,20 +25,19 @@ Light::Light(FileInputStream &stream, DescriptionModel &desc, const wxString &na
 
 wxColour Light::CreateColor()
 {
-    FileInputStream &stream = *FileInputStream::Get();
     DescriptionModel &desc = *DescriptionModel::Get();
 
-    InfoModel info(InfoModel::Type::Color, stream.TellI(), "color");
+    InfoModel info(InfoModel::Type::Color, stream->TellI(), "color");
 
-    float r = stream.ReadFloat();
+    float r = stream->ReadFloat();
     info.AppendBytes(r);
     r *= 255;
 
-    float g = stream.ReadFloat();
+    float g = stream->ReadFloat();
     info.AppendBytes(g);
     g *= 255;
 
-    float b = stream.ReadFloat();
+    float b = stream->ReadFloat();
     info.AppendBytes(b);
     b *= 255;
 
@@ -50,12 +49,11 @@ wxColour Light::CreateColor()
 
 float Light::ReadFloat(pchar name)
 {
-    FileInputStream &stream = *FileInputStream::Get();
     DescriptionModel &desc = *DescriptionModel::Get();
 
-    InfoModel info(InfoModel::Type::Float, stream.TellI(), name);
+    InfoModel info(InfoModel::Type::Float, stream->TellI(), name);
 
-    float result = stream.ReadFloat();
+    float result = stream->ReadFloat();
 
     desc.AppendInfo(info.AppendBytes(result));
 

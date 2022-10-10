@@ -7,11 +7,11 @@ struct InfoModel;
 struct DescriptionModel;
 
 
-class ModelTemplate
+class ModelTemplate : public IInputStream
 {
 public:
 
-    void Create(FileInputStream &, DescriptionModel &);
+    void Create(DescriptionModel &);
 
 private:
 

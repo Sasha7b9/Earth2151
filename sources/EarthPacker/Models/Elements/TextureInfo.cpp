@@ -3,13 +3,13 @@
 #include "Models/Elements/TextureInfo.h"
 
 
-void TextureInfo::Create(FileInputStream &stream)
+void TextureInfo::Create()
 {
-    int fileNameLenght = (int)stream.ReadUINT();
+    int fileNameLenght = (int)stream->ReadUINT();
 
     wxMemoryBuffer buffer(fileNameLenght + 1);
 
-    stream.Read(buffer.GetData(), fileNameLenght);
+    stream->Read(buffer.GetData(), fileNameLenght);
 
     ((char *)buffer.GetData())[buffer.GetBufSize() - 1] = 0;
 

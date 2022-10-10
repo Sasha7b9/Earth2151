@@ -3,7 +3,7 @@
 #include "Utils/FileInputStream.h"
 
 
-class RotationFrame : public glm::mat4
+class RotationFrame : public glm::mat4, public IInputStream
 {
 public:
     RotationFrame(int num_frame);

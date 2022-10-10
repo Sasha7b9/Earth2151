@@ -8,9 +8,9 @@
 struct DescriptionModel;
 
 
-struct PositionOffsetFrames : public std::list<Vector>
+struct PositionOffsetFrames : public std::list<Vector>, public IInputStream
 {
-    void Create(FileInputStream &, DescriptionModel &, bool unknown);
+    void Create(DescriptionModel &, bool unknown);
 
 private:
 
@@ -18,7 +18,7 @@ private:
 };
 
 
-struct RotationFrames : public std::list<RotationFrame>
+struct RotationFrames : public std::list<RotationFrame>, public IInputStream
 {
     void Create();
 
@@ -28,10 +28,10 @@ private:
 };
 
 
-class Animations
+class Animations : public IInputStream
 {
 public:
-    void Create(FileInputStream &, DescriptionModel &);
+    void Create(DescriptionModel &);
 
     PositionOffsetFrames unknownAnimationData;
     PositionOffsetFrames movementFrames;

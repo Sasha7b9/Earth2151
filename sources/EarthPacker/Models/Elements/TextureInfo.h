@@ -3,10 +3,10 @@
 #include "Utils/FileInputStream.h"
 
 
-class TextureInfo
+class TextureInfo : public IInputStream
 {
 public:
-    void Create(FileInputStream &);
+    void Create();
 
     std::string file_name;
 };

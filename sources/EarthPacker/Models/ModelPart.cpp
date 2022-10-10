@@ -4,22 +4,22 @@
 #include "Models/Model.h"
 
 
-ModelPart::ModelPart(FileInputStream &stream, DescriptionModel &desc, int num_model)
+ModelPart::ModelPart(DescriptionModel &desc, int num_model)
 {
-    InfoModel info(InfoModel::Type::ModelPart, stream.TellI(), wxString::Format(" Model part %d", num_model).c_str());
+    InfoModel info(InfoModel::Type::ModelPart, stream->TellI(), wxString::Format(" Model part %d", num_model).c_str());
 
-    vertices.Create(stream, desc);
-    skipParent = stream.ReadByte();
-    unknownFlag = stream.ReadByte();
-    stream.Read2Bytes();
-    texture.Create(stream);
-    faces.Create(stream, desc);
-    animations.Create(stream, desc);
-    unknownValue = stream.ReadINT();
-    offset.Create(stream, desc, "offset");
-    stream.Read(unknown_bytes, 5);
+    vertices.Create(desc);
+    skipParent = stream->ReadByte();
+    unknownFlag = stream->ReadByte();
+    stream->Read2Bytes();
+    texture.Create();
+    faces.Create(desc);
+    animations.Create(desc);
+    unknownValue = stream->ReadINT();
+    offset.Create(desc, "offset");
+    stream->Read(unknown_bytes, 5);
 
-    info.size = (int)stream.TellI() - info.header.offset;
+    info.size = (int)stream->TellI() - info.header.offset;
 
     desc.AppendInfo(info);
 }

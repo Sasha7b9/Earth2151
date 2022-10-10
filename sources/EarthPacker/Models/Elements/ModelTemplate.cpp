@@ -4,11 +4,11 @@
 #include "Models/Model.h"
 
 
-void ModelTemplate::Create(FileInputStream &stream, DescriptionModel &desc)
+void ModelTemplate::Create(DescriptionModel &desc)
 {
-    InfoModel info(InfoModel::Type::ModelTemplate, stream.TellI(), "Model template");
+    InfoModel info(InfoModel::Type::ModelTemplate, stream->TellI(), "Model template");
 
-    uint16 bytes = stream.Read2Bytes();
+    uint16 bytes = stream->Read2Bytes();
 
     std::bitset<16> data{ bytes };
 

@@ -6,9 +6,9 @@
 struct DescriptionModel;
 
 
-struct Face
+struct Face : public IInputStream
 {
-    Face(FileInputStream &, DescriptionModel &, int num);
+    Face(DescriptionModel &, int num);
 
     int v1 = 0;
     int v2 = 0;

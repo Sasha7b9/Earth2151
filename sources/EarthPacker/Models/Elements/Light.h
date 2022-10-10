@@ -7,11 +7,11 @@
 struct DescriptionModel;
 
 
-struct Light
+struct Light : public IInputStream
 {
     static const int COUNT = 5;
 
-    Light(FileInputStream &, DescriptionModel &, const wxString &name);
+    Light(DescriptionModel &, const wxString &name);
 
     wxColour color;
     Vector position;

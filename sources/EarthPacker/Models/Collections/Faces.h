@@ -8,5 +8,5 @@ struct DescriptionModel;
 
 struct Faces : std::list<Face>, public IInputStream
 {
-    void Create(FileInputStream &, DescriptionModel &);
+    void Create(DescriptionModel &);
 };

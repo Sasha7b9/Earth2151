@@ -3,12 +3,12 @@
 #include "Models/Collections/Faces.h"
 
 
-void Faces::Create(FileInputStream &stream, DescriptionModel &desc)
+void Faces::Create(DescriptionModel &desc)
 {
     int faces = (int)ReadUINT("num faces");
 
     for (int i = 0; i < faces; i++)
     {
-        push_back(Face(stream, desc, i));
+        push_back(Face(desc, i));
     }
 }

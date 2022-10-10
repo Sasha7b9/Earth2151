@@ -12,23 +12,23 @@ Vector::Vector(uint8 *bytes)
 }
 
 
-Vector::Vector(FileInputStream &stream, DescriptionModel &desc, pchar name)
+Vector::Vector(DescriptionModel &desc, pchar name)
 {
-    Create(stream, desc, name);
+    Create(desc, name);
 }
 
 
-void Vector::Create(FileInputStream &stream, DescriptionModel &desc, pchar name)
+void Vector::Create(DescriptionModel &desc, pchar name)
 {
     static int counter = 0;
 
-    InfoModel info(InfoModel::Type::Vector, stream.TellI(), name);
+    InfoModel info(InfoModel::Type::Vector, stream->TellI(), name);
 
-    x = stream.ReadFloat();
+    x = stream->ReadFloat();
 
-    y = -stream.ReadFloat();
+    y = -stream->ReadFloat();
 
-    z = stream.ReadFloat();
+    z = stream->ReadFloat();
 
     info.AppendBytes(x);
     info.AppendBytes(y);

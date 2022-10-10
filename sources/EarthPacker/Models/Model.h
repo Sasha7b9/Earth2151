@@ -91,7 +91,7 @@ struct DescriptionModel : public Description, public map<HeaderInfoModel, InfoMo
     virtual void DrawLine(const PageInfo *, int y, int num_line) const override;
 
     void AppendInfo(const InfoModel &);
-    void AppendInfo(InfoModel &, FileInputStream &);
+    void AppendInfo(InfoModel &, FileInputStream *);
 
     void Log();
 
@@ -103,7 +103,7 @@ private:
 };
 
 
-class Model
+class Model : public IInputStream
 {
 public:
 
@@ -124,13 +124,13 @@ private:
 
     DescriptionModel description;
 
-    void CheckHeader(FileInputStream &);
+    void CheckHeader();
 
-    int ReadType(FileInputStream &);
+    int ReadType();
 
-    void ReadUnusedBytes(FileInputStream &, pchar name, int num_bytes); 
+    void ReadUnusedBytes(pchar name, int num_bytes); 
 
-    void GetParts(FileInputStream &, list<ModelPart *> &);
+    void GetParts(list<ModelPart *> &);
 
     PartNode *GetPartsTree();
 };

@@ -10,10 +10,10 @@
 struct DescriptionModel;
 
 
-class ModelPart
+class ModelPart : public IInputStream
 {
 public:
-    ModelPart(FileInputStream &, DescriptionModel &, int num_model);
+    ModelPart(DescriptionModel &, int num_model);
 
     Vertices vertices;
     int skipParent;

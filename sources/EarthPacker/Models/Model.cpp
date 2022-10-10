@@ -14,34 +14,35 @@ Model::Model(const wxFileName &_file_name) : file_name(_file_name)
 {
     LOG_WRITE("%s", file_name.GetFullPath().c_str().AsChar());
 
-    FileInputStream stream(file_name.GetFullPath());
+    FileInputStream main_stream(file_name.GetFullPath());
 
     DescriptionModel::Set(&description);
-    FileInputStream::Set(&stream);
 
-    CheckHeader(stream);
+    IInputStream::SetInputStream(&main_stream);
 
-    type = ReadType(stream);
+    CheckHeader();
 
-    model_template.Create(stream, description);
+    type = ReadType();
 
-    ReadUnusedBytes(stream, "Unused", 10);
+    model_template.Create(description);
 
-    mount_points = new MountPoints(stream, description);
+    ReadUnusedBytes("Unused", 10);
+
+    mount_points = new MountPoints(description);
 
     for (int i = 0; i < Light::COUNT; i++)
     {
-        lights.emplace_back(Light(stream, description, wxString::Format(" Light %d", i)));
+        lights.emplace_back(Light(description, wxString::Format(" Light %d", i)));
     }
 
-    ReadUnusedBytes(stream, "Unused", 64);
-    ReadUnusedBytes(stream, "Unused", 488);
-    ReadUnusedBytes(stream, "Unused", 2);
+    ReadUnusedBytes("Unused", 64);
+    ReadUnusedBytes("Unused", 488);
+    ReadUnusedBytes("Unused", 2);
 
-    ReadUnusedBytes(stream, "Unused", 2);
-    ReadUnusedBytes(stream, "Unused", 2);
-    ReadUnusedBytes(stream, "Unused", 2);
-    ReadUnusedBytes(stream, "Unused", 4);
+    ReadUnusedBytes("Unused", 2);
+    ReadUnusedBytes("Unused", 2);
+    ReadUnusedBytes("Unused", 2);
+    ReadUnusedBytes("Unused", 4);
 
     if (type != 0)
     {
@@ -51,18 +52,18 @@ Model::Model(const wxFileName &_file_name) : file_name(_file_name)
     }
     else
     {
-        GetParts(stream, parts);
+        GetParts(parts);
 
         partsTree = GetPartsTree();
     }
 }
 
 
-void Model::ReadUnusedBytes(FileInputStream &stream, pchar name, int num_bytes)
+void Model::ReadUnusedBytes(pchar name, int num_bytes)
 {
-    InfoModel info(InfoModel::Type::UnusedBytes, stream.TellI(), name);
+    InfoModel info(InfoModel::Type::UnusedBytes, stream->TellI(), name);
 
-    info.AppendBytes(stream.ReadBytes(num_bytes));
+    info.AppendBytes(stream->ReadBytes(num_bytes));
 
     description.AppendInfo(info);
 }
@@ -101,11 +102,11 @@ PartNode *Model::GetPartsTree()
 }
 
 
-void Model::CheckHeader(FileInputStream &stream)
+void Model::CheckHeader()
 {
-    InfoModel info(InfoModel::Type::Header, stream.TellI(), "Header");
+    InfoModel info(InfoModel::Type::Header, stream->TellI(), "Header");
 
-    wxMemoryBuffer span = stream.ReadBytes(8);
+    wxMemoryBuffer span = stream->ReadBytes(8);
 
     uint8 template_buffer[8] = { 0x4d, 0x45, 0x53, 0x48, 0x01, 0x00, 0x00, 0x00 };
 
@@ -118,11 +119,11 @@ void Model::CheckHeader(FileInputStream &stream)
 }
 
 
-int Model::ReadType(FileInputStream &stream)
+int Model::ReadType()
 {
-    InfoModel info(InfoModel::Type::Type, stream.TellI(), "Type resource");
+    InfoModel info(InfoModel::Type::Type, stream->TellI(), "Type resource");
 
-    int result = stream.ReadUINT();
+    int result = stream->ReadUINT();
 
     description.AppendInfo(info.AppendBytes(&result, 4));
 
@@ -130,15 +131,15 @@ int Model::ReadType(FileInputStream &stream)
 }
 
 
-void Model::GetParts(FileInputStream &stream, std::list<ModelPart *> &_parts)
+void Model::GetParts(std::list<ModelPart *> &_parts)
 {
     _parts.clear();
 
     int num_model = 0;
 
-    while (stream.TellI() < stream.GetSize())
+    while (stream->TellI() < stream->GetSize())
     {
-        _parts.push_back(new ModelPart(stream, description, ++num_model));
+        _parts.push_back(new ModelPart(description, ++num_model));
     }
 }
 
@@ -233,9 +234,9 @@ InfoModel &InfoModel::AppendBytes(const wxMemoryBuffer &buffer)
 }
 
 
-void DescriptionModel::AppendInfo(InfoModel &info, FileInputStream &stream)
+void DescriptionModel::AppendInfo(InfoModel &info, FileInputStream *stream)
 {
-    info.size = (int)stream.TellI() - info.header.offset;
+    info.size = (int)stream->TellI() - info.header.offset;
 
     AppendInfo(info);
 }

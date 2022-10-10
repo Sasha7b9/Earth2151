@@ -4,9 +4,9 @@
 #include "Models/Model.h"
 
 
-void Vertices::Create(FileInputStream &stream, DescriptionModel &desc)
+void Vertices::Create(DescriptionModel &desc)
 {
-    InfoModel info(InfoModel::Type::Vertices, stream.TellI(), "Vertices");
+    InfoModel info(InfoModel::Type::Vertices, stream->TellI(), "Vertices");
 
     ReadUINT("num vertices");
 
@@ -17,7 +17,7 @@ void Vertices::Create(FileInputStream &stream, DescriptionModel &desc)
         GetVertices(i);
     }
 
-    info.size = (int)stream.TellI() - info.header.offset;
+    info.size = (int)stream->TellI() - info.header.offset;
 
     desc.AppendInfo(info);
 }
@@ -25,11 +25,9 @@ void Vertices::Create(FileInputStream &stream, DescriptionModel &desc)
 
 void Vertices::GetVertices(int num_block)
 {
-    FileInputStream &stream = *FileInputStream::Get();
+    InfoModel info(InfoModel::Type::VerticesBlock, stream->TellI(), wxString::Format("block %d", num_block));
 
-    InfoModel info(InfoModel::Type::VerticesBlock, stream.TellI(), wxString::Format("block %d", num_block));
-
-    wxMemoryBuffer buffer = stream.ReadBytes(VERTICES_BLOCK_LENGTH);
+    wxMemoryBuffer buffer = stream->ReadBytes(VERTICES_BLOCK_LENGTH);
 
     uint8 *data = (uint8 *)buffer.GetData();
 

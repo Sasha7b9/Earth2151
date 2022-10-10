@@ -6,7 +6,7 @@
 struct DescriptionModel;
 
 
-struct Vector
+struct Vector : public IInputStream
 {
     float x = 0.0f;
     float y = 0.0f;
@@ -14,12 +14,12 @@ struct Vector
 
     Vector(float _x = 0.0f, float _y = 0.0f, float _z = 0.0f) : x(_x), y(_y), z(_z) {}
 
-    Vector(FileInputStream &, DescriptionModel &, pchar name);
+    Vector(DescriptionModel &, pchar name);
 
     // Конструктор из 12-ти байт
     Vector(uint8 *);
 
-    void Create(FileInputStream &, DescriptionModel &, pchar name);
+    void Create(DescriptionModel &, pchar name);
 
     string ToString() const;
 };
