@@ -8,5 +8,5 @@ class TextureInfo : public IInputStream
 public:
     void Create();
 
-    std::string file_name;
+//    std::string file_name;
 };

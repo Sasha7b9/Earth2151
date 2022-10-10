@@ -158,3 +158,16 @@ wxMemoryBuffer IInputStream::ReadBytes(pchar name, int num_bytes)
     return buffer;
 }
 
+
+wxMemoryBuffer IInputStream::ReadText(pchar name, int num_bytes)
+{
+    InfoModel info(InfoModel::Type::Text, stream->TellI(), name);
+
+    wxMemoryBuffer buffer = stream->ReadBytes(num_bytes);
+
+    info.AppendBytes(buffer);
+
+    desc->AppendInfo(info);
+
+    return buffer;
+}

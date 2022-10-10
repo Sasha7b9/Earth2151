@@ -45,6 +45,7 @@ struct InfoModel
         RotationFrames,
         Byte,
         UINT16,
+        Text
     };
 
     InfoModel(Type type, uint offset, pchar name = "");

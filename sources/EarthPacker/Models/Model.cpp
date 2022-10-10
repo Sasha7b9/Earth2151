@@ -483,6 +483,16 @@ void InfoModel::Content::CreateEngBeginLine(string &line, InfoModel &info)
         memcpy(&value, info.bytes.data(), 1);
         line.append(wxString::Format("%d", value));
     }
+    else if (info.type == Type::Text)
+    {
+        string text;
+        for (uint i = 0; i < info.bytes.size(); i++)
+        {
+            text.push_back((char)info.bytes[i]);
+        }
+        text.push_back('\0');
+        line.append(text.c_str());
+    }
 }
 
 

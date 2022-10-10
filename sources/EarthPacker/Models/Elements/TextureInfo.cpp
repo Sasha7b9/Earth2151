@@ -5,13 +5,9 @@
 
 void TextureInfo::Create()
 {
-    int fileNameLenght = (int)ReadUINT("Name length");
+    int fileNameLenght = (int)ReadUINT("Len file name");
 
-    wxMemoryBuffer buffer(fileNameLenght + 1);
+    ReadText("Name texture", fileNameLenght);
 
-    stream->Read(buffer.GetData(), fileNameLenght);
-
-    ((char *)buffer.GetData())[buffer.GetBufSize() - 1] = 0;
-
-    file_name = (char *)buffer.GetData();
+//    file_name = (char *)buffer.GetData();
 }
