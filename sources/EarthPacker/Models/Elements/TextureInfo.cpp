@@ -5,7 +5,7 @@
 
 void TextureInfo::Create()
 {
-    int fileNameLenght = (int)stream->ReadUINT();
+    int fileNameLenght = (int)ReadUINT("Name length");
 
     wxMemoryBuffer buffer(fileNameLenght + 1);
 

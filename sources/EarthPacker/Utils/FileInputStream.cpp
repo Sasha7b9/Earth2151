@@ -43,16 +43,6 @@ wxMemoryBuffer FileInputStream::ReadBytes(int offset, int num_bytes)
 }
 
 
-wxMemoryBuffer FileInputStream::ReadBytes(int num_bytes)
-{
-    wxMemoryBuffer result(num_bytes);
-
-    wxFileInputStream::Read(result.GetData(), num_bytes);
-
-    return result;
-}
-
-
 uint FileInputStream::ReadUINT()
 {
     uint result = 0;
@@ -121,6 +111,16 @@ uint IInputStream::ReadUINT(pchar name)
 }
 
 
+wxMemoryBuffer FileInputStream::ReadBytes(int num_bytes)
+{
+    wxMemoryBuffer result(num_bytes);
+
+    wxFileInputStream::Read(result.GetData(), num_bytes);
+
+    return result;
+}
+
+
 uint16 IInputStream::ReadUINT16(pchar name)
 {
     InfoModel info(InfoModel::Type::UINT16, stream->TellI(), name);
@@ -143,3 +143,18 @@ uint8 IInputStream::ReadByte(pchar name)
 
     return result;
 }
+
+
+wxMemoryBuffer IInputStream::ReadBytes(pchar name, int num_bytes)
+{
+    InfoModel info(InfoModel::Type::Bytes, stream->TellI(), name);
+
+    wxMemoryBuffer buffer = stream->ReadBytes(num_bytes);
+
+    info.AppendBytes(buffer);
+
+    desc->AppendInfo(info);
+
+    return buffer;
+}
+

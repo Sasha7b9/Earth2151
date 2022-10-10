@@ -31,6 +31,8 @@ protected:
     uint ReadUINT(pchar name);
     uint8 ReadByte(pchar name);
     uint16 ReadUINT16(pchar name);
+    wxMemoryBuffer ReadBytes(pchar name, int num_bytes);
+
     static FileInputStream *stream;
     static DescriptionModel *desc;
 };

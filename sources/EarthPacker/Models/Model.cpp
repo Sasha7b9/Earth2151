@@ -22,7 +22,7 @@ Model::Model(const wxFileName &_file_name) : file_name(_file_name)
 
     model_template.Create();
 
-    ReadUnusedBytes("Unused", 10);
+    ReadBytes("Unused", 10);
 
     mount_points = new MountPoints();
 
@@ -31,14 +31,14 @@ Model::Model(const wxFileName &_file_name) : file_name(_file_name)
         lights.emplace_back(Light(wxString::Format(" Light %d", i)));
     }
 
-    ReadUnusedBytes("Unused", 64);
-    ReadUnusedBytes("Unused", 488);
-    ReadUnusedBytes("Unused", 2);
+    ReadBytes("Unused", 64);
+    ReadBytes("Unused", 488);
+    ReadBytes("Unused", 2);
 
-    ReadUnusedBytes("Unused", 2);
-    ReadUnusedBytes("Unused", 2);
-    ReadUnusedBytes("Unused", 2);
-    ReadUnusedBytes("Unused", 4);
+    ReadBytes("Unused", 2);
+    ReadBytes("Unused", 2);
+    ReadBytes("Unused", 2);
+    ReadBytes("Unused", 4);
 
     if (type != 0)
     {
@@ -52,16 +52,6 @@ Model::Model(const wxFileName &_file_name) : file_name(_file_name)
 
         partsTree = GetPartsTree();
     }
-}
-
-
-void Model::ReadUnusedBytes(pchar name, int num_bytes)
-{
-    InfoModel info(InfoModel::Type::UnusedBytes, stream->TellI(), name);
-
-    info.AppendBytes(stream->ReadBytes(num_bytes));
-
-    description.AppendInfo(info);
 }
 
 

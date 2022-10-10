@@ -32,7 +32,7 @@ struct InfoModel
         Face,
         Light,
         ModelTemplate,
-        UnusedBytes,
+        Bytes,
         Header,
         Type,
         ModelPart,
@@ -44,7 +44,7 @@ struct InfoModel
         Mat44,
         RotationFrames,
         Byte,
-        UINT16
+        UINT16,
     };
 
     InfoModel(Type type, uint offset, pchar name = "");
@@ -125,8 +125,6 @@ private:
     void CheckHeader();
 
     int ReadType();
-
-    void ReadUnusedBytes(pchar name, int num_bytes); 
 
     void GetParts(list<ModelPart *> &);
 
