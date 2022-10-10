@@ -8,20 +8,12 @@
 struct PositionOffsetFrames : public std::list<Vector>, public IInputStream
 {
     void Create(bool unknown);
-
-private:
-
-    uint ReadUINT(pchar name);
 };
 
 
 struct RotationFrames : public std::list<RotationFrame>, public IInputStream
 {
     void Create();
-
-private:
-
-    uint ReadUINT(pchar name);
 };
 
 

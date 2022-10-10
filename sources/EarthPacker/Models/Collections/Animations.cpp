@@ -30,18 +30,6 @@ void PositionOffsetFrames::Create(bool unknown)
 }
 
 
-uint PositionOffsetFrames::ReadUINT(pchar name)
-{
-    InfoModel info(InfoModel::Type::UINT, stream->TellI(), name);
-
-    uint result = stream->ReadUINT();
-
-    desc->AppendInfo(info.AppendBytes(result));
-
-    return result;
-}
-
-
 void RotationFrames::Create()
 {
     int length = ReadUINT("rot frames");
@@ -50,18 +38,6 @@ void RotationFrames::Create()
     {
         push_back(RotationFrame(i));
     }
-}
-
-
-uint RotationFrames::ReadUINT(pchar name)
-{
-    InfoModel info(InfoModel::Type::UINT, stream->TellI(), name);
-
-    uint result = stream->ReadUINT();
-
-    desc->AppendInfo(info.AppendBytes(result));
-
-    return result;
 }
 
 
