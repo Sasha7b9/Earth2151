@@ -9,7 +9,17 @@ Texture::Texture(const wxFileName &_file_name) : file_name(_file_name)
 
     IInputStream::SetInputStream(&main_stream);
 
-    TextureHeader header = ReadHeader();
+    const TextureHeader header = ReadHeader();
+
+    if (header.number_of_maps > 0)
+    {
+        for (int i = 0; i < header.number_of_maps; i++)
+        {
+            const TextureHeader t = ReadHeader();
+
+            list<Image> images = ReadBitmap(t.type, t.sub_type);
+        }
+    }
 }
 
 
@@ -50,4 +60,60 @@ TextureHeader Texture::ReadHeader()
     }
 
     return TextureHeader(buffer[8], buffer[10], number_maps);
+}
+
+
+list<Image> Texture::ReadBitmap(int type, int sub_type)
+{
+    int info_length = 0;
+    switch (type)
+    {
+    case 6:
+    case 38:
+        info_length = 12;
+        break;
+    case 34:
+        info_length = sub_type > 0 ? 24 : 8;
+        break;
+    default:
+        info_length = 8;
+        break;
+    }
+
+    list<Image> images;
+
+    vector<uint8> dimensions(info_length);
+
+    stream->Read(dimensions.data(), info_length);
+
+    int width = 0;
+    memcpy(&width, dimensions.data(), 4);
+
+    int height = 0;
+    memcpy(&height, dimensions.data() + 4, 4);
+
+    int number_mipmaps = 1;
+
+    if (type == 38 || type == 6)
+    {
+        memcpy(&number_mipmaps, dimensions.data() + 8, 4);
+    }
+
+    do
+    {
+        wxImage image(width, height);
+
+        for (int w = 0; w < width; w++)
+        {
+            for (int h = 0; h < height; h++)
+            {
+                uint8 red = stream->ReadByte();
+                uint8 green = stream->ReadByte();
+                uint8 blue = stream->ReadByte();
+                uint8 alpha = stream->ReadByte();
+
+                image.Set
+            }
+        }
+    } while (images.size());
 }

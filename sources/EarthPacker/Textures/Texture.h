@@ -1,6 +1,7 @@
 // 2022/11/26 15:41:02 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
 #include "Utils/FileInputStream.h"
+#include "Textures/Image.h"
 
 
 struct TextureHeader
@@ -23,6 +24,9 @@ public:
 
 private:
     wxFileName file_name;
+
+    list<Image> ReadBitmap(int type, int sub_type);
+
 
     TextureHeader ReadHeader();
 };
