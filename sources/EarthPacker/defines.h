@@ -14,6 +14,7 @@ typedef signed char int8;
 #include "Log.h"
 
 #pragma warning(push, 0)
+#pragma warning(disable: 5262 5264)
 #include <list>
 #include <bitset>
 #include <map>
