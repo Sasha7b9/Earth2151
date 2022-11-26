@@ -95,10 +95,6 @@ struct DescriptionModel : public Description, public map<HeaderInfoModel, InfoMo
     void AppendInfo(InfoModel &, FileInputStream *);
 
     void Log();
-
-private:
-
-    InfoModel &GetInfo(int num_line);
 };
 
 
@@ -106,7 +102,7 @@ class Model : public IInputStream
 {
 public:
 
-    Model(const wxFileName &file_name);
+    Model(const wxFileName &);
 
     void GetDescription(DescriptionModel *out);
 

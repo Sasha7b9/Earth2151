@@ -6,6 +6,7 @@
 #include "Controls/Notebook/NotebookLeft/NotebookLeft.h"
 #include "Controls/Notebook/NotebookLeft/PageTree.h"
 #include "Models/Model.h"
+#include "Textures/Texture.h"
 
 
 PageDirectory *PageDirectory::self = nullptr;
@@ -39,7 +40,14 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
 
     wxFileName file_name(path);
 
-    if (file_name.GetExt() == "wd")
+    string ext = file_name.GetExt().c_str().AsChar();
+
+#pragma warning(push)
+#pragma warning(disable: 4242 4244)
+    transform(ext.begin(), ext.end(), ext.begin(), tolower);
+#pragma warning(pop)
+
+    if (ext == "wd")
     {
         DescriptionArchive *description = new DescriptionArchive();
 
@@ -49,7 +57,7 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
 
         PageInfo::self->SetDescriptionFile(description);
     }
-    else if(file_name.GetExt() == "msh")
+    else if (ext == "msh")
     {
         Model model(file_name);
 
@@ -60,6 +68,12 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
         PageInfo::self->SetDescriptionFile(description);
 
         description->Log();
+    }
+    else if (ext == "tex")
+    {
+        Texture texture(file_name);
+
+        texture.SaveAsBMP();
     }
     else
     {

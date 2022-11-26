@@ -18,6 +18,7 @@ typedef signed char int8;
 #include <list>
 #include <bitset>
 #include <map>
+#include <algorithm>
 #include <wx/wx.h>
 #include <wx/statline.h>
 #include <wx/grid.h>
