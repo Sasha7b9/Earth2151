@@ -74,6 +74,7 @@ file(GLOB MODELS                    Models/*.*)
 file(GLOB MODELS_COLLECTIONS        Models/Collections/*.*)
 file(GLOB MODELS_ELEMENTS           Models/Elements/*.*)
 file(GLOB RESOURCES                 Resources/*.*)
+file(GLOB TEXTURES                  Textures/*.*)
 file(GLOB UTILS                     Utils/*.*)
 
 source_group(src                             FILES ${SRC})
@@ -85,6 +86,7 @@ source_group(Models                          FILES ${MODELS})
 source_group(Models/Collections              FILES ${MODELS_COLLECTIONS})
 source_group(Models/Elements                 FILES ${MODELS_ELEMENTS})
 source_group(Resources                       FILES ${RESOURCES})
+source_group(Textures                        FILES ${TEXTURES})
 source_group(Utils                           FILES ${UTILS})
 
 add_executable( ${PROJECT_NAME}
@@ -97,6 +99,7 @@ add_executable( ${PROJECT_NAME}
                 ${MODELS_COLLECTIONS}
                 ${MODELS_ELEMENTS}
                 ${RESOURCES}
+                ${TEXTURES}
                 ${UTILS}
                 )
 
