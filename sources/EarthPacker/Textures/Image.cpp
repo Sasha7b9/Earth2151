@@ -3,15 +3,14 @@
 #include "Textures/Image.h"
 
 
-Image::Image(int width, int height)
+Image::Image(int width, int height) : wxImage(width, height)
 {
-    image.Resize({ width, height }, {0, 0});
 }
 
 
 void Image::SetPixel(int x, int y, uint8 r, uint8 g, uint8 b, uint8)
 {
-    image.SetRGB(x, y, r, g, b);
+    SetRGB(x, y, r, g, b);
 }
 
 
@@ -22,7 +21,7 @@ void Image::SaveAsBMP(string dir, string name, int i) const
         wxDir::Make(dir, wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
     }
 
-    wxString out_file = wxString::Format("%s%d%dx%d.png", name, i, image.GetWidth(), image.GetHeight());
+    wxString out_file = wxString::Format("%s\\%s_%d_%dx%d.png", dir.c_str(), name, i, GetWidth(), GetHeight());
 
-    image.SaveFile(out_file);
+    SaveFile(out_file);
 }
