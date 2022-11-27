@@ -23,7 +23,9 @@ public:
 private:
     wxFileName file_path;
 
-    list<Image> ReadBitmap(int type, int sub_type);
+    static const bool high_resolution_only;
+
+    vector<Image> ReadBitmap(int type, int sub_type);
 
     TextureHeader ReadHeader();
 };

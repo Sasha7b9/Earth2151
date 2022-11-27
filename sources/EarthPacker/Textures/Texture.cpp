@@ -3,6 +3,9 @@
 #include "Textures/Texture.h"
 
 
+const bool Texture::high_resolution_only = true;
+
+
 Texture::Texture(const wxFileName &_file_path) : file_path(_file_path)
 {
     wxString output_path = file_path.GetPath();
@@ -19,21 +22,35 @@ Texture::Texture(const wxFileName &_file_path) : file_path(_file_path)
         {
             const TextureHeader t = ReadHeader();
 
-            list<Image> images = ReadBitmap(t.type, t.sub_type);
+            vector<Image> images = ReadBitmap(t.type, t.sub_type);
 
-            for (const Image &image : images)
+            if (high_resolution_only)
             {
-                image.SaveAsBMP(output_path.c_str().AsChar(), file_path.GetName().c_str().AsChar(), i);
+                images[0].SaveAsBMP(output_path.c_str().AsChar(), file_path.GetName().c_str().AsChar(), i);
+            }
+            else
+            {
+                for (const Image &image : images)
+                {
+                    image.SaveAsBMP(output_path.c_str().AsChar(), file_path.GetName().c_str().AsChar(), i);
+                }
             }
         }
     }
     else
     {
-        list<Image> images = ReadBitmap(header.type, header.sub_type);
+        vector<Image> images = ReadBitmap(header.type, header.sub_type);
 
-        for (const Image &image : images)
+        if (high_resolution_only)
         {
-            image.SaveAsBMP(output_path.c_str().AsChar(), file_path.GetName().c_str().AsChar(), 0);
+            images[0].SaveAsBMP(output_path.c_str().AsChar(), file_path.GetName().c_str().AsChar(), 0);
+        }
+        else
+        {
+            for (const Image &image : images)
+            {
+                image.SaveAsBMP(output_path.c_str().AsChar(), file_path.GetName().c_str().AsChar(), 0);
+            }
         }
     }
 }
@@ -73,7 +90,7 @@ TextureHeader Texture::ReadHeader()
 }
 
 
-list<Image> Texture::ReadBitmap(int type, int sub_type)
+vector<Image> Texture::ReadBitmap(int type, int sub_type)
 {
     int info_length = 0;
     switch (type)
@@ -90,7 +107,7 @@ list<Image> Texture::ReadBitmap(int type, int sub_type)
         break;
     }
 
-    list<Image> images;
+    vector<Image> images;
 
     vector<uint8> dimensions(info_length);
 
