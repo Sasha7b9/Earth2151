@@ -26,7 +26,10 @@ Texture::Texture(const wxFileName &_file_path) : file_path(_file_path)
 
             if (high_resolution_only)
             {
-                images[0].SaveAsBMP(output_path.c_str().AsChar(), file_path.GetName().c_str().AsChar(), i);
+                if (i == 0)
+                {
+                    images[0].SaveAsBMP(output_path.c_str().AsChar(), file_path.GetName().c_str().AsChar(), i);
+                }
             }
             else
             {
