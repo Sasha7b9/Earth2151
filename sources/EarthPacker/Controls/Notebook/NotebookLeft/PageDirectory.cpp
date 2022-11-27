@@ -72,8 +72,6 @@ void PageDirectory::OnFileSelected(wxTreeEvent &event) //-V2009
     else if (ext == "tex")
     {
         Texture texture(file_name);
-
-        texture.SaveAsBMP();
     }
     else
     {

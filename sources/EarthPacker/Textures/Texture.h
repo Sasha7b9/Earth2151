@@ -20,13 +20,10 @@ class Texture : public IInputStream
 public:
     Texture(const wxFileName &);
 
-    void SaveAsBMP();
-
 private:
-    wxFileName file_name;
+    wxFileName file_path;
 
     list<Image> ReadBitmap(int type, int sub_type);
-
 
     TextureHeader ReadHeader();
 };

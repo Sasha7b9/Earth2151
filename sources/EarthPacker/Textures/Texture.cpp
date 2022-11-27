@@ -3,9 +3,11 @@
 #include "Textures/Texture.h"
 
 
-Texture::Texture(const wxFileName &_file_name) : file_name(_file_name)
+Texture::Texture(const wxFileName &_file_path) : file_path(_file_path)
 {
-    FileInputStream main_stream(file_name.GetFullPath());
+    wxString output_path = file_path.GetPath();
+
+    FileInputStream main_stream(file_path.GetFullPath());
 
     IInputStream::SetInputStream(&main_stream);
 
@@ -18,14 +20,22 @@ Texture::Texture(const wxFileName &_file_name) : file_name(_file_name)
             const TextureHeader t = ReadHeader();
 
             list<Image> images = ReadBitmap(t.type, t.sub_type);
+
+            for (const Image &image : images)
+            {
+                image.SaveAsBMP(output_path.c_str().AsChar(), file_path.GetName().c_str().AsChar(), i);
+            }
         }
     }
-}
+    else
+    {
+        list<Image> images = ReadBitmap(header.type, header.sub_type);
 
-
-void Texture::SaveAsBMP()
-{
-
+        for (const Image &image : images)
+        {
+            image.SaveAsBMP(output_path.c_str().AsChar(), file_path.GetName().c_str().AsChar(), 0);
+        }
+    }
 }
 
 
@@ -92,7 +102,7 @@ list<Image> Texture::ReadBitmap(int type, int sub_type)
     int height = 0;
     memcpy(&height, dimensions.data() + 4, 4);
 
-    int number_mipmaps = 1;
+    uint number_mipmaps = 1;
 
     if (type == 38 || type == 6)
     {
@@ -101,7 +111,7 @@ list<Image> Texture::ReadBitmap(int type, int sub_type)
 
     do
     {
-        wxImage image(width, height);
+        Image image(width, height);
 
         for (int w = 0; w < width; w++)
         {
@@ -112,8 +122,15 @@ list<Image> Texture::ReadBitmap(int type, int sub_type)
                 uint8 blue = stream->ReadByte();
                 uint8 alpha = stream->ReadByte();
 
-                image.Set
+                image.SetPixel(w, h, red, green, blue, alpha);
             }
         }
-    } while (images.size());
+
+        images.push_back(image);
+        width /= 2;
+        height /= 2;
+
+    } while (images.size() < number_mipmaps);
+
+    return images;
 }

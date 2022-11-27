@@ -6,5 +6,8 @@ class Image
 {
 public:
     Image(int w, int h);
+    void SetPixel(int x, int y, uint8 r, uint8 g, uint8 b, uint8 a);
+    void SaveAsBMP(string dir, string name, int i) const;
 private:
+    wxImage image;
 };
