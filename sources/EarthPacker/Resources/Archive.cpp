@@ -31,28 +31,34 @@ Archive::Archive(const wxFileName &_file_name) : file_name(_file_name)
 
     wxMemoryBuffer dirData = file.ReadBytes(file.GetSize() - dirLn, dirLn);
 
-    wxMemoryInputStream dirDataStream(dirData.GetData(), dirData.GetBufSize());
+    wxMemoryInputStream dirDataStream(dirData.GetData(), dirData.GetBufSize());     // Ётот данные дл€ декомпрессии
 
-    wxZlibInputStream zstream(dirDataStream);
+    wxZlibInputStream zstream(dirDataStream);                                       // Ёто поток декомпрессии
 
-    wxMemoryOutputStream dir_stream;
+    wxMemoryOutputStream dir_stream;                                                // «десь декодированные данные
 
     zstream.Read(dir_stream);
 
-    size_t size_dir_stream = dir_stream.GetSize();
+    size_t size_dir_stream = dir_stream.GetSize();                                  // –азмер декодированных данных
 
     wxMemoryBuffer dir(size_dir_stream);
 
-    dir_stream.CopyTo(dir.GetData(), size_dir_stream);
+    dir_stream.CopyTo(dir.GetData(), size_dir_stream);                              // «десь декодированные данные
 
-    wxMemoryInputStream stream((uint8 *)dir.GetData() + 10, dir.GetBufSize() - 10);
+    wxMemoryInputStream stream((uint8 *)dir.GetData() + 10, dir.GetBufSize() - 10); // ѕоток декодированных данных, которые мы будем разбирать на ресурсы
+
+    int counter = 0;
 
     while (!stream.Eof())
     {
+        counter++;
+
         Resource resource = ResourceFactory::Create(stream);
 
         resources.emplace_back(resource);
     }
+
+    counter = counter;
 }
 
 
@@ -71,13 +77,18 @@ bool Archive::ReadContent()
         return false;
     }
 
+    int counter_all = 0;
+    int counter_decompressed = 0;
+
     for (Resource &resource : resources)
     {
+        counter_all++;
         resource.data = file.ReadBytes(resource.info.offset, resource.info.length);
 
         if (resource.info.decompressedLength != resource.info.length)
         {
             resource.data = Zlib::Decompress(resource.data);
+            counter_decompressed++;
         }
     }
 
