@@ -1,0 +1,23 @@
+
+
+sub_66F700  Цикл обработки сообщений Windows
+
+1. Пункт меню в редакторе "Открыть".
+   Срабатывает останов на CreateFileA "Earth2150/Levels/l.mis"
+   Стек вызовов:
+
+  sub_6A3C20
+      6A49DD  call sub_468060
+  
+  sub_468060
+      468145  call sub_6F5780
+  
+  sub_6F5780
+      6F58E5  call sub_6F59D0
+  
+  sub_6F59D0
+              call sub_6FF5C0(dword *a1, dword **a2, dword *a3)     // Каким-то образом формирует имя файла для вызова sub_6F4C80
+      6F5B9D  call sub_6F4C80
+
+  sub_6F4C80  (LPCSTR lpFileName, int, LONG lDistanceToMove, int)
+      6F4CF4  CreateFileA
