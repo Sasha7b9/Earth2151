@@ -1,0 +1,53 @@
+
+*** lnd ***
+
+Номер  Смещение от начала               Размер             Назначение
+0      0                                4                  Тип
+1      4                                String(1)          FileName
+2      offset(1) + sizeof(FileName)     4                  Unknown
+3      offset(2) + 4                    16                 GUID
+4      offset(3) + 16                   4                  Map Width
+5      offset(4) + 4                    4                  Map Height
+6      offset(5) + 4                    4                  Unknown (0x10)
+7      offset(6) + 4                    String(4)          Level Name
+8      offset(7) + sizeof(Level Name)   16                 TerrainType GUID
+9      offset(8) + sizeof(TerrainType)  Width * Heidht * 2 TerrainHeight[]
+10     offset(9) + sizeof(9)            Width * Height     Tunnels[]
+11     offset(10) + sizeof(Tunnels[])   Width * Height     Textures[]
+12     offset(11) + sizeof(Textures[])  Width * Height     Resources[]
+13     offset(12) + sizeof(Resources[]) 4                  Level WaterHeight
+14     offset(13) + 4                   Width * Height * 2 Water Heighth[]
+
+Кажется, клетки описываются в таком порядке: если камеру сориентировать на север (кнопка '.'), они идут слева направо снизу вверх,
+начиная с верхней левой.
+
+
+*** mis ***
+
+Номер  Смещение от начала               Размер             Назначение
+0      0                                4                  Header
+1      4                                String(1)          FileName
+2      offset(1) + sizeof(FileName)     4                  Unknown
+3      offset(2) + 4                    16                 GUID
+4      offset(3) + 16                   String(4)          Unknown
+5      offset(4) + sizeof(4)            16                 GUID lnd
+6      offset(5) + 16                   4                  Water Type
+
+
+Строка информации об объекте Unit:
+22, 74, 0, 0, 0, 100, 0, 0, -1 UCSUAS1
+ |   |  |  |  |   |   |  |   |
+ |   |  |  |  |   |   |  |   +---------- Энергощит
+ |   |  |  |  |   |   |  +-------------- Электричество
+ |   |  |  |  |   |   +----------------- Температура
+ |   |  |  |  |   +--------------------- HP
+ |   |  |  |  +------------------------- Принадлежит игроку 1
+ |   |  |  +---------------------------- Поворот (64 = 90 градусов)
+ |   |  +------------------------------- Если 1, то под землёй 
+ |   +---------------------------------- Y
+ +-------------------------------------- X
+ 
+ Строка информации о здании (имеет дополнительные поля, с разным назначеним для разных зданий):
+ 18, 18, 0, 0, 0, 100, 0, 0, -1, -1, -1, -1, -1 EDBLZ
+                              |
+                              +------------------------- Энергощит
