@@ -1,0 +1,42 @@
+﻿// 2025/02/14 22:42:09 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+#pragma once
+
+
+class Canvas : public Widget
+{
+public:
+    Canvas(const Vector2D &size);
+    Canvas(const Canvas *);
+    virtual ~Canvas();
+
+    void EndPaint();
+    void SetColorBackground(const ColorRGBA &);
+    void SetColorBrush(const ColorRGBA &);
+    void Clear();
+    void DrawPoint(float x, float y);
+    void DrawLine(float x0, float y0, float x1, float y1);
+    void DrawLine(const Point2D &p0, const Point2D &p1);
+    void DrawPolyLine(const Point2D *points, int numPoints);
+    void DrawRectangle(const Point2D &leftTop, const Point2D &size);
+    void DrawRectangle(float x, float y, float width, float height);
+    void DrawCircle(float x, float y, float radius);
+    void FillCircle(float x, float y, float radius);
+    void FillRegion(float x, float y, const ColorRGBA &);
+    void FillRegion(float x, float y, float width, float height);
+    void ClearAndFillRegion(const Point2D *points, int numPoints, const ColorRGBA &colorFill, const ColorRGBA &colorBorder, const Point2D &pointFill);
+
+    // Копирует изображение из rhs
+    void CopyFrom(const Canvas *rhs);
+
+private:
+    Texture       *texture = nullptr;
+    TextureHeader *textureHeader = nullptr;
+    uint          *imageData = nullptr;
+    ColorRGBA      colorBackground;
+    ColorRGBA      colorBrush;
+    ImageWidget   *image = nullptr;
+
+    uint GetColorUINT(int x, int y);
+    bool FillFourPoints(float x, float y, uint colorUINT);
+    bool SetPoint(float x, float y, uint colorUINT);
+};
