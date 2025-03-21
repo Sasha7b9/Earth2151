@@ -1,6 +1,6 @@
 # Earth2151
 
-![Image alt](https://github.com/Sasha7b9/Earth2151/raw/main/image.png)
+![Image alt](https://github.com/Sasha7b9/Earth2151/raw/main/Earth2151.png)
 
 ## SAST Tools
 
