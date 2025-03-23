@@ -40,7 +40,7 @@ To exit the program, press tilde and type "quit" without quotes.
 
 
 
-## Links
+## Links to sources used
 
 https://github.com/GvardianDLVII/EarthFileApi
 
