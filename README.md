@@ -17,9 +17,9 @@ You can download the archive with resources from here :  https://github.com/Sash
   displayWidth
   
   Download the archive with resources from https://github.com/Sasha7b9/Earth2151/releases/download/0.1.0/Data.zip or unzip it using the program "https://github.com/Arkezar/EarthTool" to the appropriate catalogs:  
-  Data/Earth2150 for Escape from the Blue Planet,  
-  Data/Earth2150-MP for The Moon Project,  
-  Data/Earth2150-LS for Lost Souls.
+  "Data/Earth2150" for Escape from the Blue Planet,  
+  "Data/Earth2150-MP" for The Moon Project,  
+  "Data/Earth2150-LS" for Lost Souls.
   You can select the desired directory for work in the "Settings"-"Game" menu.  
     NOTE. Levels created in one version may not be readable when another version is selected.
   
