@@ -20,7 +20,7 @@ You can download the archive with resources from here :  https://github.com/Sash
   Data/Earth2150 for Escape from the Blue Planet,  
   Data/Earth2150-MP for The Moon Project,  
   Data/Earth2150-LS for Lost Souls.
-  You can select the desired directory for work in the "Settings" menu.  
+  You can select the desired directory for work in the "Settings"-"Game" menu.  
     NOTE. Levels created in one version may not be readable when another version is selected.
   
     To load a level, follow these steps:  
