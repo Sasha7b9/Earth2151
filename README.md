@@ -27,7 +27,7 @@ You can download the archive with resources from here :
   
     Сamera control:  
   A,S,D,W  
-  NumPad : 4,5,6,3,9  
+  NumPad : 4,5,6,3,9,2,8  
   Mouse: RMB - rotation,  
          LMB+RMB - distance,  
          RMB on minimap.
