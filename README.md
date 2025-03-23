@@ -24,6 +24,13 @@ You can download the archive with resources from here :
   1. Click to "Viewer".  
   2. Click "Load" in the lower right corner.
   3. In the window that opens, select the desired level and click button "Load".
+  
+    Сamera control:  
+  A,S,D,W  
+  NumPad : 4,5,6,3,9  
+  Mouse: RMB - rotation,  
+         LMB+RMB - distance,  
+         RMB on minimap.
 
 To exit the program, press tilde and type "quit" without quotes.
 
