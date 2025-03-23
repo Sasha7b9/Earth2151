@@ -16,7 +16,7 @@ You can download the archive with resources from here :  https://github.com/Sash
   displayHeight  
   displayWidth
   
-  Download the archive with resources from https://github.com/Sasha7b9/Earth2151/releases/download/0.1.0/Data.zip or unzip or unzip the files *.wd from the original game using the program "https://github.com/Arkezar/EarthTool" to the appropriate catalogs:  
+  Download the archive with resources from https://github.com/Sasha7b9/Earth2151/releases/download/0.1.0/Data.zip or unzip the files *.wd from the original game using the program "https://github.com/Arkezar/EarthTool" to the appropriate catalogs:  
   "Data/Earth2150" for Escape from the Blue Planet,  
   "Data/Earth2150-MP" for The Moon Project,  
   "Data/Earth2150-LS" for Lost Souls.
