@@ -5,6 +5,9 @@
 ![Image alt](https://github.com/Sasha7b9/Earth2151/raw/main/Earth2151_2.png)
 
 ## Instructions
+
+https://youtu.be/7nU8G8XS1fY
+
 You can download the latest version from here :  https://github.com/Sasha7b9/Earth2151/releases/tag/0.1.0  
 You can download the archive with resources from here :  https://github.com/Sasha7b9/Earth2151/releases/tag/0.1.0  
 
