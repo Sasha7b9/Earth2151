@@ -10,7 +10,7 @@ You can download the archive with resources from here :
 
     Settings (file conf/Earth2151_config.cfg):
   displayFull - fullscreen - 0/1  
-  displayHeight
+  displayHeight  
   displayWidth
   
   Download the archive with resources or unzip it using the program "https://github.com/Arkezar/EarthTool" to the appropriate catalogs:  
