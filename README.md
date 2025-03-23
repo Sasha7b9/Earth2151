@@ -33,6 +33,7 @@ You can download the archive with resources from here :  https://github.com/Sash
   NumPad : 4,5,6,3,9,2,8  
   Mouse: RMB - rotation,  
          LMB+RMB - distance,  
+         middle button - move,  
          RMB on minimap.
 
 To exit the program, press tilde and type "quit" without quotes.
