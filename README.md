@@ -21,7 +21,7 @@ You can download the archive with resources from here :  https://github.com/Sash
   "Data/Earth2150-MP" for The Moon Project,  
   "Data/Earth2150-LS" for Lost Souls.
   You can select the desired directory for work in the "Settings"-"Game" menu.  
-    NOTE. Levels created in one game may not be readable when another game is selected.
+    NOTE. Levels created in one game may become unreadable if placed in another game's directory.
   
     To load a level, follow these steps:  
   1. Click to "Viewer".  
