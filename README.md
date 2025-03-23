@@ -8,6 +8,27 @@
 You can download the latest version from here :  
 You can download the archive with resources from here :  
 
+    Settings (file conf/Earth2151_config.cfg):
+  displayFull - fullscreen - 0/1  
+  displayHeight
+  displayWidth
+  
+  Download the archive with resources or unzip it using the program "https://github.com/Arkezar/EarthTool" to the appropriate catalogs:  
+  Data/Earth2150 for Escape from the Blue Planet,  
+  Data/Earth2150-LS for The Moon Project,  
+  Data/Earth2150-MP for Lost Souls.
+  You can select the desired directory for work in the "Settings" menu.
+    Note. Levels created in one version may not be readable when another version is selected.
+  
+    To load a level, follow these steps:  
+  1. Click to "Viewer".  
+  2. Click "Load" in the lower right corner.
+  3. In the window that opens, select the desired level and click button "Load".
+
+To exit the program, press tilde and type "quit" without quotes.
+
+
+
 ## Links
 
 https://github.com/GvardianDLVII/EarthFileApi
