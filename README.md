@@ -5,8 +5,8 @@
 ![Image alt](https://github.com/Sasha7b9/Earth2151/raw/main/Earth2151_2.png)
 
 ## Instructions
-You can download the latest version from here :  
-You can download the archive with resources from here :  
+You can download the latest version from here :  https://github.com/Sasha7b9/Earth2151/releases/tag/0.1.0  
+You can download the archive with resources from here :  https://github.com/Sasha7b9/Earth2151/releases/tag/0.1.0  
 
     Settings (file conf/Earth2151_config.cfg):
   displayFull - fullscreen - 0/1  
