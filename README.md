@@ -5,6 +5,8 @@
 ![Image alt](https://github.com/Sasha7b9/Earth2151/raw/main/Earth2151_2.png)
 
 ## Instructions
+You can download the latest version from here :\n
+You can download the archive with resources from here :\n
 
 ## Links
 
