@@ -17,8 +17,8 @@ You can download the archive with resources from here :
   Data/Earth2150 for Escape from the Blue Planet,  
   Data/Earth2150-LS for The Moon Project,  
   Data/Earth2150-MP for Lost Souls.
-  You can select the desired directory for work in the "Settings" menu.
-    Note. Levels created in one version may not be readable when another version is selected.
+  You can select the desired directory for work in the "Settings" menu.  
+    NOTE. Levels created in one version may not be readable when another version is selected.
   
     To load a level, follow these steps:  
   1. Click to "Viewer".  
