@@ -9,14 +9,14 @@
 https://youtu.be/7nU8G8XS1fY
 
 You can download the latest version from here :  https://github.com/Sasha7b9/Earth2151/releases/tag/0.1.0  
-You can download the archive with resources from here :  https://github.com/Sasha7b9/Earth2151/releases/tag/0.1.0  
+You can download the archive with resources from here :  https://github.com/Sasha7b9/Earth2151/releases/download/0.1.0/Data.zip  
 
     Settings (file conf/Earth2151_config.cfg):
   displayFull - fullscreen - 0/1  
   displayHeight  
   displayWidth
   
-  Download the archive with resources from https://github.com/Sasha7b9/Earth2151/releases/tag/0.1.0 or unzip it using the program "https://github.com/Arkezar/EarthTool" to the appropriate catalogs:  
+  Download the archive with resources from https://github.com/Sasha7b9/Earth2151/releases/download/0.1.0/Data.zip or unzip it using the program "https://github.com/Arkezar/EarthTool" to the appropriate catalogs:  
   Data/Earth2150 for Escape from the Blue Planet,  
   Data/Earth2150-LS for The Moon Project,  
   Data/Earth2150-MP for Lost Souls.
