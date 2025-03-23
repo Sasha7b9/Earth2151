@@ -16,6 +16,10 @@
 #include <Math/C4Random.h>
 #include <Resource/C4ConfigData.h>
 #include <Interface/C4Viewports.h>
+#include <Interface/C4ToolWindows.h>
+
+#undef Bool
+#include <rapidjson/document.h>
 
 
 #include <chrono>

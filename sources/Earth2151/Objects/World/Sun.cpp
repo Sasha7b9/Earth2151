@@ -6,7 +6,9 @@
 
 namespace Sun
 {
-    static Light *light = nullptr;
+    static InfiniteLight *light = nullptr;
+    static ColorRGBA color;
+    static Transform3D transform;
 }
 
 
@@ -23,21 +25,29 @@ void Sun::Init()
 
             if (l->GetLightType() == kLightInfinite)
             {
-                light = l;
+                light = (InfiniteLight *)l;
 
-                LightObject *object = l->GetObject();
+                InfiniteLightObject *object = light->GetObject();
 
                 float b = 10.0f;
 
-                object->SetLightColor({ b, b, b * 3.0f / 4.0f });
+                color.Set(b, b, b * 3.0f / 4.0f);
 
-                break;
+                object->SetLightColor(color);
+
+                transform = light->GetNodeTransform();
+
+                return;
             }
         }
 
         subnode = node->GetNextTreeNode(subnode);
 
     } while (subnode);
+
+    light = new InfiniteLight(color);
+    light->SetNodeTransform(transform);
+    TheWorldMgr->GetWorld()->GetRootNode()->AppendNewSubnode(light);
 }
 
 

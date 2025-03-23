@@ -244,10 +244,6 @@ struct FileTex2150
 
         textures.PurgeArray();
 
-        if (canvas)
-        {
-            delete canvas;
-            canvas = nullptr;
-        }
+        SAFE_DELETE(canvas);
     }
 };

@@ -12,6 +12,8 @@ public:
 
     virtual bool HandleKeyboardEvent(const KeyboardEventData *) override;
 
+    void Localize();
+
 private:
 
     WidgetObserver<GameMenuWindow> btnBackToGameObserver{ this, &GameMenuWindow::HandleButtonEvent };

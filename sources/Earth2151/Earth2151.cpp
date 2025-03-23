@@ -21,6 +21,8 @@
 #include "Clock.h"
 #include "Earth2151.h"
 #include "Interface/Menu/Menu.h"
+#include "Utils/Local.h"
+#include "Editor/Editor.h"
 
 
 using namespace Pi;
@@ -30,6 +32,10 @@ PI_ENTER_POINT(Earth2151, false)
 
 
 Earth2151 *TheEarth2151 = nullptr;
+Level2150 *TheLevel = nullptr;
+Parameters2150 *TheParameter = nullptr;
+
+
 bool Earth2151::target_destroed = false;
 
 
@@ -42,15 +48,19 @@ Earth2151::Earth2151() : Global<Earth2151>(TheEarth2151)
 
     TheInterfaceMgr->SetInputManagementMode(kInputManagementAutomatic);
 
+    Local::Init();
+
     Input::Init();
 
     new Mouse();
 
     EMenu::Init();
 
-//    TheInterfaceMgr->AddWidget(TheStartWindow);
+    TheInterfaceMgr->AddWidget(TheStartWindow);
 
-    LoadLevel();
+//    LoadLevel();
+
+//    TheEditor->LoadLevel("!BaseED.lnd");
 }
 
 
@@ -62,13 +72,15 @@ void Earth2151::LoadLevel()
 
     TheMessageMgr->BeginSinglePlayerGame();
 
-    level = new Level2150{ RESOURCE_PATH("Levels/x_amsterdam") };
-
-    param = new Parameters2150{ RESOURCE_PATH("parameters/EARTH2150.par").c_str() };
-
-    TexMesh2150::Init();
+    TheLevel = new Level2150{ RESOURCE_PATH("Levels/!BaseED") };
 
     CreateLandscape();
+
+    TheParameter = new Parameters2150{ RESOURCE_PATH("parameters/EARTH2150.par").c_str() };
+
+    TheParameter->Save();
+
+    TexMesh2150::Init();
 
     CreateGameObjects();
 
@@ -96,23 +108,27 @@ void Earth2151::LoadLevel()
 
 Earth2151::~Earth2151()
 {
+    Local::DeInit();
+
     EMenu::DeInit();
 
     Tunnels::Destroy();
 
     Landscape::Destroy();
 
-    delete param;
+    SAFE_DELETE(TheParameter);
 
-    delete TheMouse;
+    SAFE_DELETE(TheMouse);
 
     Model2150::Destroy();
 
-    delete TheCameraSpectator;
+    SAFE_DELETE(TheCameraSpectator);
 
-    delete TheCameraRTS;
+    SAFE_DELETE(TheCameraRTS);
 
-    delete TheGUI;
+    SAFE_DELETE(TheGUI);
+
+    SAFE_DELETE(TheEditor);
 
     TexLand2150::Destroy();
 
@@ -126,7 +142,7 @@ Earth2151::~Earth2151()
     TheWorldMgr->SetWorldCreator(nullptr);
     TheMessageMgr->EndGame();
 
-    delete level;
+    SAFE_DELETE(TheLevel);
 }
 
 
@@ -134,18 +150,16 @@ void Earth2151::CreateLandscape()
 {
     uint time = UCOUNT_MS;
 
-    param->Save();
-
 //    Earth2150::Unzipper::UnzipAllWD(RESOURCE_PATH("WDFiles/"));
 
     PoolTextures::Construct();
 
     {
-        if (Earth2150::Reader::ReadLand(*level))
+        if (Earth2150::Reader::ReadLand(*TheLevel))
         {
-            Landscape::Create(*level);
+            Landscape::Create(*TheLevel);
 
-            level->ReadObjects();
+            TheLevel->ReadObjects();
         }
     }
 
@@ -204,7 +218,7 @@ void Earth2151::CreateGameObjects()
 
     int counter = 0;
 
-    for each(LObject &obj in level->objects.objects)
+    for each(LObject &obj in TheLevel->objects.objects)
     {
         obj.jobCreateObject.ExecuteJob();
 
@@ -217,7 +231,7 @@ void Earth2151::CreateGameObjects()
 
     time = UCOUNT_MS - time;
 
-    LOG_WRITE("Time find entities %f sec", param->time_find_us / 1e6f);
+    LOG_WRITE("Time find entities %f sec", TheParameter->time_find_us / 1e6f);
 
     LOG_WRITE("%d objects for %d ms, %f ms/obj", counter, time, (float)time / (counter + 1));
 }
@@ -325,19 +339,20 @@ bool Earth2151::InPaused()
 }
 
 
-bool Earth2151::IsMoonProject() const
+String<> Earth2151::ResourceFile(pchar name)
 {
-    String<> name = RESOURCE_PATH("");
-
-    if (name[name.GetStringLength() - 2] == 'P')        // Moon Project
+    if (TypeGame::IsEftBP())
     {
-        return true;
+        return String<>(TheResourceMgr->DataCatalog()->GetRootPath()) + "Earth2150/" + name;
+    }
+    else if (TypeGame::IsMP())
+    {
+        return String<>(TheResourceMgr->DataCatalog()->GetRootPath()) + "Earth2150-MP/" + name;
+    }
+    else if (TypeGame::IsLS())
+    {
+        return String<>(TheResourceMgr->DataCatalog()->GetRootPath()) + "Earth2150-LS/" + name;
     }
 
-    if (name[name.GetStringLength() - 2] == 'S')        // Lost Souls
-    {
-        return true;
-    }
-
-    return false;
+    return "";
 }

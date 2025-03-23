@@ -4,6 +4,7 @@
 #include "Interface/Controls/Button.h"
 #include "Interface/Widgets/ObjectViewportWidget.h"
 #include "Interface/Controls/CheckBox.h"
+#include "Settings.h"
 
 
 class Tab;

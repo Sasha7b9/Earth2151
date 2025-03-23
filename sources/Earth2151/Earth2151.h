@@ -3,6 +3,7 @@
 #include "Earth2150/Files/Model2150.h"
 #include "Earth2150/Parameters/Parameters2150.h"
 #include "Earth2150/Earth2150Types.h"
+#include "Settings.h"
 
 // Путь к файлам этой игры
 #define DATA_PATH(x) Earth2151::DataFile(x)
@@ -10,6 +11,7 @@
 
 // Путь к файлам оригинальной игры
 #define RESOURCE_PATH(x) Earth2151::ResourceFile(x)
+
 
 namespace Pi
 {
@@ -70,15 +72,7 @@ namespace Pi
             return String<>(TheResourceMgr->DataCatalog()->GetRootPath()) + "Earth2151/" + name;
         }
 
-        static String<> ResourceFile(pchar name)
-        {
-            return String<>(TheResourceMgr->DataCatalog()->GetRootPath()) + "Earth2150-MP/" + name;
-        }
-
-        // Для Moon Project и Lost Souls есть небольшие различия в некоторых файлах
-        bool IsMoonProject() const;
-
-        Parameters2150 *param = nullptr;
+        static String<> ResourceFile(pchar name);
 
         void CreateLandscape();
 
@@ -107,8 +101,6 @@ namespace Pi
         LocatorRegistration     locatorReg{ kLocatorSpectator, "Spectator Camera" };
         MaterialRegistration    materialMarker{ kMaterialSplatter, "material/Splatter" };
 
-        Level2150 *level = nullptr;
-
         static World *CreateWorld(pchar name, void *);
 
         static void EscapeCallback(void *);
@@ -125,3 +117,5 @@ namespace Pi
 
 
 extern Earth2151 *TheEarth2151;
+extern Level2150 *TheLevel;
+extern Parameters2150 *TheParameter;

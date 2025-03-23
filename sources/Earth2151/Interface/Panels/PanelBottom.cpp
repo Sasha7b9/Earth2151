@@ -5,7 +5,7 @@
 #include "Interface/Controls/Button.h"
 #include "Interface/Panels/PanelMap.h"
 #include "Interface/Panels/PanelMain.h"
-//#include "Interface/Menu/MenuGame.h"
+#include "Editor/Editor.h"
 
 
 PanelBottom *ThePanelBottom = nullptr;
@@ -13,7 +13,9 @@ PanelBottom *ThePanelBottom = nullptr;
 
 PanelBottom::PanelBottom()
     : PanelWindow(SET::GUI::BOTTOM::SIZE()),
-    Global<PanelBottom>(ThePanelBottom)
+    Global<PanelBottom>(ThePanelBottom),
+    observerPanelMainHide{ (new PanelMain(), ThePanelMain), &PanelMain::HandleHideShow },
+    observerPanelMapHide{ (new PanelMap(), ThePanelMap), &PanelMap::HandleHideShow }
 {
     SetWidgetPosition({ (float)SET::GUI::BOTTOM::X(), (float)SET::GUI::BOTTOM::Y() });
 
@@ -26,7 +28,16 @@ PanelBottom::PanelBottom()
     btnMenu = new TButton(TButton::Type::Normal, {SET::WINDOW::SIZE().x - 300.0f, 2.0f}, "MENU");
     AppendNewSubnode(btnMenu);
 
+    btnLoad = new TButton(TButton::Type::Normal, { SET::WINDOW::SIZE().x - 450.0f, 2.0f }, "LOAD");
+    AppendNewSubnode(btnLoad);
+
     btnHideMain->SetObserver(&observerPanelMainHide);
     btnHideMap->SetObserver(&observerPanelMapHide);
-//    btnMenu->SetObserver(&observerButtonMenu);
+    btnLoad->SetObserver(&observerButtonload);
+}
+
+
+void PanelBottom::HanbleButtonLoadEvent(Widget *button, const WidgetEventData *data)
+{
+    TheEditor->OpenWindowLoadLevel();
 }

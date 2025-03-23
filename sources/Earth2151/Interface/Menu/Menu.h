@@ -7,4 +7,7 @@ namespace EMenu
     void Init();
 
     void DeInit();
+
+    // Написать надписи в соотвествии с установленным языком
+    void Localize();
 }

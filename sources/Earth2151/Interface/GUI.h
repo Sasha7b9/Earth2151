@@ -1,5 +1,6 @@
 ﻿// 2025/02/14 22:34:18 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
+#include "Earth2151.h"
 
 
 class GUI : public Widget, public Global<GUI>

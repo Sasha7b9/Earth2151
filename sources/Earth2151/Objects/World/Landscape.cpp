@@ -333,6 +333,8 @@ void Landscape::Destroy()
 {
     land.Destroy();
 
+    geometries.PurgeArray();
+
     storage_normals.Destroy();
 
     Water::Destroy();
@@ -876,8 +878,12 @@ float Landscape::GetHeight(const Point2D &coord, Bivector3D *normal)
 
     uint64 time = TheTimeMgr->GetMicrosecondCount();
 
+    static int counter = 0;
+
     for (int i = 0; i < geometries.GetArrayElementCount(); i++)
     {
+        counter++;
+
         if (geometries[i]->DetectCollision({ coord.x + 1e-2f, coord.y + 1e-2f, 100.0f }, { coord.x + 1e-2f, coord.y + 1e-2f, -100.0f }, 0.0f, &data))
         {
             time = TheTimeMgr->GetMicrosecondCount() - time;

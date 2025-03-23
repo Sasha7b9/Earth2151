@@ -52,6 +52,11 @@ void GUI::Show()
 
 void GUI::MouseLeftIsPress()
 {
+    if (!TheGameCursor)
+    {
+        return;
+    }
+
     mouse_pos = TheGameCursor->position;
 
     for (Widget *widget : movabled)

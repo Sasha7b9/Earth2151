@@ -1,9 +1,7 @@
 # 2025/01/05 23:12:58 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 project (Earth2151)
 
-
 #set(CMAKE_UNITY_BUILD OFF)
-
 
 include_directories(
     .
@@ -13,6 +11,7 @@ include_directories(
     ../ThirdParty/angelscript/angelscript/include
     ../ThirdParty/angelscript/add_on
     ../ThirdParty/zlib
+    ${_ROOT_DIR_}/src/ThirdParty/rapidjson_/rapidjson/include
 )
 
 
@@ -20,7 +19,7 @@ add_definitions(-DTERATHON_IMPORT)
 
 
 if(MSVC)
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /STACK:1048576000")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /STACK:10000000000")
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Wall")
 
@@ -30,6 +29,9 @@ if(MSVC)
 
     add_compile_options(
 #        /wd4623
+
+        # rapidjson
+        /wd4464     # relative include path contains '..'
 
         # zlib
         /wd4061

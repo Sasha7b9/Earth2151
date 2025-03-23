@@ -126,6 +126,8 @@ namespace TexLand2150
         nullptr
     };
 
+    static bool is_moon_project = false;
+
     static String<> name_file_dat;                  // Файл *.dat, в котором хранится информация о тайлинге
 
     static int num_tiles_in_dat = 512 - 128 - 20;
@@ -175,6 +177,8 @@ void TexLand2150::SetType(Type::E type)
 
     if (byte & 0xF0)                // Это означает, что игра не Earth 2150, а Moon Project или Lost Souls
     {
+        is_moon_project = true;
+
         char types[8] = { '3', '2', '1', '4', '5', '6', '7', '8' };              // Terrains.dat
 
         name_file_dat[name_file_dat.GetStringLength() - 5] = types[type];
@@ -414,17 +418,13 @@ void TexLand2150::CreateTiles()
 
     int pos_begin_tiles = 0x101;
 
-    uint8 byte = 0;
-
-    file.ReadFile(&byte, 1);
-
-    if (byte & 0xF0)                // Это означает, что игра не Earth 2150, а Moon Project или Lost Souls
+    if (is_moon_project)
     {
         char buffer[64];
 
-        file.ReadFile(buffer, 3);
+        file.ReadFile(buffer, 4);
 
-        byte = 0;                   // Длина строки
+        uint8 byte = 0;                   // Длина строки
 
         file.ReadFile(&byte, 1);
 
@@ -508,4 +508,10 @@ bool TexTunnels2150::GetTile(TexTile &tile)
     tile._01 = { 0.0f, size };
 
     return true;
+}
+
+
+bool TexLand2150::IsMoonProject()
+{
+    return is_moon_project;
 }

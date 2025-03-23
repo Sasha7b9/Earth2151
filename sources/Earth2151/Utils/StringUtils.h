@@ -44,4 +44,6 @@ namespace SU
     bool BeginWith(pchar, pchar);
 
     void SplitToWords(pchar, Array<String<>> &, pchar delim);
+
+    double ASCIItoFloat(pchar);
 }

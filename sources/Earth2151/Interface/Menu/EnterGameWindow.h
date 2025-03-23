@@ -10,6 +10,8 @@ public:
 
     virtual void PreprocessWidget() override;
 
+    void Localize();
+
 private:
 
     WidgetObserver<EnterGameWindow> btnNewGameObserver{ this, &EnterGameWindow::HandleButtonEvent };

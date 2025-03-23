@@ -2,8 +2,8 @@
 #pragma once
 #include "Interface/Panels/PanelWindow.h"
 #include "Interface/Panels/PanelMap.h"
-//#include "Interface/Menu/MenuGame.h"
 #include "Interface/Panels/PanelMain.h"
+#include "Earth2151.h"
 
 
 class TButton;
@@ -24,10 +24,13 @@ private:
     TButton *btnHideMap = nullptr;
     TButton *btnHideMain = nullptr;
     TButton *btnMenu = nullptr;
+    TButton *btnLoad = nullptr;
 
-    WidgetObserver<PanelMain> observerPanelMainHide{ (new PanelMain(), ThePanelMain), &PanelMain::HandleHideShow };
-    WidgetObserver<PanelMap> observerPanelMapHide{ (new PanelMap(), ThePanelMap), &PanelMap::HandleHideShow };
-//    WidgetObserver<MenuGame> observerButtonMenu{ (new MenuGame(), MenuGame::self), &MenuGame::HandleOnButtonMenu };
+    WidgetObserver<PanelMain> observerPanelMainHide;
+    WidgetObserver<PanelMap> observerPanelMapHide;
+    WidgetObserver<PanelBottom> observerButtonload{ this, &PanelBottom::HanbleButtonLoadEvent };
+
+    void HanbleButtonLoadEvent(Widget *button, const WidgetEventData *data);
 };
 
 

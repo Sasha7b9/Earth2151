@@ -206,7 +206,7 @@ void LObject::JobCreateObject(Job *, void *cookie)
         name = object->strings[1];
     }
 
-    Entity *entity = TheEarth2151->param->GetEntity(name);
+    Entity *entity = TheParameter->GetEntity(name);
 
     if (entity)
     {

@@ -2,7 +2,7 @@
 #pragma once
 
 
-class ChoicePlayerWindow : public Pi::Window, public Global<ChoicePlayerWindow>
+class ChoicePlayerWindow : public Window, public Global<ChoicePlayerWindow>
 {
 public:
 
@@ -10,13 +10,13 @@ public:
 
     virtual void PreprocessWidget() override;
 
+    void Localize();
+
 private:
 
     ListWidget *listPlayers = nullptr;
 
-    WidgetObserver<ChoicePlayerWindow> btnApplyObserver{ this, &ChoicePlayerWindow::HandleButtonEvent };
-    WidgetObserver<ChoicePlayerWindow> btnDeleteObserver{ this, &ChoicePlayerWindow::HandleButtonEvent };
-    WidgetObserver<ChoicePlayerWindow> btnBackObserver{ this, &ChoicePlayerWindow::HandleButtonEvent };
+    WidgetObserver<ChoicePlayerWindow> btnObserver{ this, &ChoicePlayerWindow::HandleButtonEvent };
 
     void HandleButtonEvent(Widget *, const WidgetEventData *);
 };

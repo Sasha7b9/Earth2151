@@ -210,4 +210,6 @@ void TexMesh2150::DeInit()
     }
 
     textures.clear();
+
+    is_init = false;
 }

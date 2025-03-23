@@ -3,6 +3,79 @@
 #include "Interface/Controls/Button.h"
 
 
+struct ApplicationMode
+{
+    enum E
+    {
+        Game,
+        Editor
+    };
+
+    static void Set(E);
+
+    static bool IsGame()
+    {
+        return current == Game;
+    }
+
+private:
+
+    static E current;
+};
+
+
+struct TypeGame
+{
+    enum E
+    {
+        EftBP,      // Escape from the Blue Planet
+        MP,         // The Moon Project
+        LS          // Lost Souls
+    };
+
+    static void Set(E);
+    static bool IsEftBP()
+    {
+        return current == EftBP;
+    }
+    static bool IsMP()
+    {
+        return current == MP;
+    }
+    static bool IsLS()
+    {
+        return current == LS;
+    }
+
+private:
+
+    static E current;
+};
+
+
+struct Language
+{
+    enum E
+    {
+        English,
+        Polish,
+        Russian,
+        Count
+    };
+
+    static void Set(E);
+
+    static E Current()
+    {
+        return current;
+    }
+
+private:
+
+    static E current;
+};
+
+
 struct SET
 {                            // Settings
     struct WINDOW

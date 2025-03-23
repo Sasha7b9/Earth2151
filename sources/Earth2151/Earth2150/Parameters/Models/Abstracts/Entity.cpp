@@ -302,7 +302,7 @@ Node *Entity::CreateModel(Entity *entity, const LObject &obj)
 
             for (int i = 1; i < obj.strings.GetArrayElementCount(); i++)
             {
-                Entity *ent = TheEarth2151->param->GetEntity(obj.strings[i]);
+                Entity *ent = TheParameter->GetEntity(obj.strings[i]);
 
                 if (ent)
                 {

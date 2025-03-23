@@ -49,6 +49,11 @@ GameCursor::~GameCursor()
 
 void GameCursor::MoveWidget()
 {
+    if (!TheCameraRTS)
+    {
+        return;
+    }
+
     Vector2D speed = TheCameraRTS->GetSpeed();
 
     if (speed == Vector2D(0, 0))

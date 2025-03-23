@@ -155,22 +155,28 @@ Notebook::~Notebook()
 NotebookMainPanel::NotebookMainPanel(PanelWindow *parent)
     : Notebook(parent), Global<NotebookMainPanel>(TheNotebookMainPanel)
 {
-    numTabs = 4;
+    if (ApplicationMode::IsGame())
+    {
+        numTabs = 4;
 
-    tabs.InsertArrayElement(Tab_Info, new TabInfo(this, _("Информация")));
-    AppendNewSubnode(TheTabInfo);
+        tabs.InsertArrayElement(Tab_Info, new TabInfo(this, _("Информация")));
+        AppendNewSubnode(TheTabInfo);
 
-    tabs.InsertArrayElement(Tab_Structures, new TabStructures(this, _("Сооружения")));
-    AppendNewSubnode(TheTabStructures);
+        tabs.InsertArrayElement(Tab_Structures, new TabStructures(this, _("Сооружения")));
+        AppendNewSubnode(TheTabStructures);
 
-    tabs.InsertArrayElement(Tab_Platoons, new TabPlatoons(this, _("Взводы")));
-    AppendNewSubnode(TheTabPlatoons);
+        tabs.InsertArrayElement(Tab_Platoons, new TabPlatoons(this, _("Взводы")));
+        AppendNewSubnode(TheTabPlatoons);
 
-    tabs.InsertArrayElement(Tab_Units, new TabUnits(this, _("Подразделения")));
-    AppendNewSubnode(TheTabUnits);
+        tabs.InsertArrayElement(Tab_Units, new TabUnits(this, _("Подразделения")));
+        AppendNewSubnode(TheTabUnits);
+    }
 
-    tabTitle = new TabTitle(this, &tabs);
-    AppendNewSubnode(tabTitle);
+    if (tabs.GetArrayElementCount())
+    {
+        tabTitle = new TabTitle(this, &tabs);
+        AppendNewSubnode(tabTitle);
+    }
 
     SetActiveTab(Tab_Info);
 }
@@ -223,6 +229,10 @@ void NotebookMainPanel::SetActiveTab(uint tabID)
         RemoveSubnode(tabs[i]);
         tabTitle->buttons[i]->SetSelected(false);
     }
-    AppendSubnode(tabs[tabID]);
-    tabTitle->buttons[tabID]->SetSelected(true);
+
+    if ((int)tabID < tabs.GetArrayElementCount())
+    {
+        AppendSubnode(tabs[tabID]);
+        tabTitle->buttons[tabID]->SetSelected(true);
+    }
 }

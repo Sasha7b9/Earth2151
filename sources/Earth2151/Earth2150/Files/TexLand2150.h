@@ -67,6 +67,9 @@ namespace TexLand2150
     bool GetTile(const Tile &, TexTile &);
 
     void Destroy();
+
+    // В Moon Project отличается формат Terrains/*.dat, добавлено несколько юнитов и у ремонтинка добавлена возможность захватывать здания
+    bool IsMoonProject();
 }
 
 

@@ -158,3 +158,9 @@ void SU::SplitToWords(pchar input, Array<String<>> &out, pchar delim)
         token = std::strtok(nullptr, delim);
     }
 }
+
+
+double SU::ASCIItoFloat(pchar str)
+{
+    return std::atof(str);
+}

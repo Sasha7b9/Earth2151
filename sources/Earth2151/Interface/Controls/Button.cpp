@@ -47,9 +47,7 @@ void ButtonSkin::DrawSkin(TButton::Type type, const ColorRGBA &_colorBackground,
     DrawRectangle({ 0.0f, 0.0f }, { SET::GUI::BUTTON::WIDTH(type) - 1.0f, SET::GUI::BUTTON::HEIGHT(type) - 1.0f });
 }
 
-TButton::TButton(Type type, const Vector2D &position, pchar text) 
-    : Widget(),
-    observer(this, &TButton::HandleObserver)
+TButton::TButton(Type type, const Vector2D &position, pchar text) : Widget()
 {
     buttonType = type;
     skins.AppendArrayElement(new ButtonSkin(type, text, ButtonSkin::State::Normal));

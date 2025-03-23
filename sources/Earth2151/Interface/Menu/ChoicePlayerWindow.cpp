@@ -8,9 +8,9 @@
 ChoicePlayerWindow *TheChoicePlayerWindow = nullptr;
 
 
-#define BTN_APPLY  FindWidget("btnApply")
-#define BTN_DELETE FindWidget("btnDelete")
-#define BTN_BACK   FindWidget("btnBack")
+#define BTN_APPLY  ((PushButtonWidget *)FindWidget("btnApply"))
+#define BTN_DELETE ((PushButtonWidget *)FindWidget("btnDelete"))
+#define BTN_BACK   ((PushButtonWidget *)FindWidget("btnBack"))
 
 
 ChoicePlayerWindow::ChoicePlayerWindow() :
@@ -25,14 +25,20 @@ void ChoicePlayerWindow::PreprocessWidget()
 {
     Window::PreprocessWidget();
 
-    BTN_APPLY->SetObserver(&btnApplyObserver);
-    BTN_DELETE->SetObserver(&btnDeleteObserver);
-    BTN_BACK->SetObserver(&btnBackObserver);
+    BTN_APPLY->SetObserver(&btnObserver);
+    BTN_DELETE->SetObserver(&btnObserver);
+    BTN_BACK->SetObserver(&btnObserver);
 
     BTN_DELETE->HideWidget();
 
     listPlayers = (ListWidget *)FindWidget("listPlayers");
     listPlayers->SetItemSpacing(20);
+}
+
+
+void ChoicePlayerWindow::Localize()
+{
+
 }
 
 

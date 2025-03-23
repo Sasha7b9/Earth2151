@@ -33,7 +33,7 @@ protected:
 private:
     Array<ButtonSkin *> skins;
     bool selected = false;
-    Observer<TButton, MouseObservable> observer;
+    Observer<TButton, MouseObservable> observer{ this, &TButton::HandleObserver };
     WidgetEventData eventData;
 
     void SetState(uint buttonState);

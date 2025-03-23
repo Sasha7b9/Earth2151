@@ -2,10 +2,7 @@
 #pragma once
 
 
-using namespace Pi;
-
-
-class StartWindow : public Pi::Window, public Global<StartWindow>
+class StartWindow : public Window, public Global<StartWindow>
 {
 public:
 
@@ -15,16 +12,11 @@ public:
 
     virtual void PreprocessWidget() override;
 
+    void Localize();
+
 private:
 
-    WidgetObserver<StartWindow> buttonEDObserver{ this, &StartWindow::HandleButtonEvent };
-    WidgetObserver<StartWindow> buttonUCSObserver{ this, &StartWindow::HandleButtonEvent };
-    WidgetObserver<StartWindow> buttonLCObserver{ this, &StartWindow::HandleButtonEvent };
-    WidgetObserver<StartWindow> buttonNetworkObserver{ this, &StartWindow::HandleButtonEvent };
-    WidgetObserver<StartWindow> buttonSkirmishObserver{ this, &StartWindow::HandleButtonEvent };
-    WidgetObserver<StartWindow> buttonEditorObserver{ this, &StartWindow::HandleButtonEvent };
-    WidgetObserver<StartWindow> buttonAboutObserver{ this, &StartWindow::HandleButtonEvent };
-    WidgetObserver<StartWindow> buttonQuitObserver{ this, &StartWindow::HandleButtonEvent };
+    WidgetObserver<StartWindow> buttonObserver{ this, &StartWindow::HandleButtonEvent };
 
     void HandleButtonEvent(Widget *, const WidgetEventData *);
 };

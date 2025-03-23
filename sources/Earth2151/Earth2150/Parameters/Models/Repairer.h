@@ -1,7 +1,7 @@
 // 2025/03/05 16:43:05 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
 #include "Earth2150/Parameters/Models/Equipment.h"
-#include "Earth2151.h"
+#include "Earth2150/Files/TexLand2150.h"
 
 
 struct Repairer : public Equipment
@@ -9,7 +9,7 @@ struct Repairer : public Equipment
     Repairer(const String<> &name, const Array<int> &researhces, EntityClassType::E type, FileReader &reader) :
         Equipment(name, researhces, type, reader)
     {
-        if (TheEarth2151->IsMoonProject())
+        if (TexLand2150::IsMoonProject())
         {
             reader.ReadBuffer(&param, sizeof(param));
         }

@@ -38,6 +38,12 @@ void EnterGameWindow::PreprocessWidget()
 }
 
 
+void EnterGameWindow::Localize()
+{
+
+}
+
+
 void EnterGameWindow::HandleButtonEvent(Widget *widget, const WidgetEventData *eventData)
 {
     if (eventData->eventType == kEventWidgetActivate)
@@ -71,3 +77,7 @@ void EnterGameWindow::HandleButtonEvent(Widget *widget, const WidgetEventData *e
         }
     }
 }
+
+
+#undef BTN_QUIT
+#undef BTN_LOAD

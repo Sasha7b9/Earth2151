@@ -25,6 +25,12 @@ void GameMenuWindow::PreprocessWidget()
 }
 
 
+void GameMenuWindow::Localize()
+{
+
+}
+
+
 void GameMenuWindow::HandleButtonEvent(Widget *widget, const WidgetEventData *eventData)
 {
     if (eventData->eventType == kEventWidgetActivate)

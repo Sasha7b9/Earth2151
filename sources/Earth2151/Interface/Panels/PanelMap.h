@@ -43,7 +43,7 @@ public:
     PanelMapSprocket(PanelMap *panel);
     ~PanelMapSprocket()
     {
-        delete buffer;
+        SAFE_DELETE(buffer);
     }
 
     virtual void MoveSprocket() override;
@@ -54,8 +54,8 @@ public:
 
 private:
 
-    Canvas   *buffer;           // Здесь хранится карта
-    PanelMap *panel;            // А сюда мы копируем карту и рисуем поверх зону обзора
+    Canvas   *buffer = nullptr;     // Здесь хранится карта
+    PanelMap *panel = nullptr;      // А сюда мы копируем карту и рисуем поверх зону обзора
     float     scale;
     Point2D   leftTop;
 
