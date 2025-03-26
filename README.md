@@ -37,6 +37,7 @@ You can download the archive with resources from here :  https://github.com/Sash
          RMB on minimap.
 
 To exit the program, press tilde and type "quit" without quotes.
+Or press "Esc".
 
 Feedback : Sasha7b9@tut.by
 
