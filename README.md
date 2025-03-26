@@ -38,7 +38,7 @@ You can download the archive with resources from here :  https://github.com/Sash
 
 To exit the program, press tilde and type "quit" without quotes.
 
-
+Feedback : Sasha7b9@tut.by
 
 ## Links to sources used
 
