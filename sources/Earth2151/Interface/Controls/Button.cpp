@@ -115,7 +115,7 @@ void TButton::SetState(uint state)
     {
         Widget *node = widget;
         widget = widget->GetNextSubnode();
-        RemoveSubnode(node);
+        Widget::RemoveSubnode(node);
     }
 
     AppendSubnode(skins[state]);

@@ -18,35 +18,34 @@ GUI::GUI() : Widget(), Global<GUI>(TheGUI)
 {
     new PanelBottom();
 
-    TheInterfaceMgr->AddWidget(ThePanelMap);
-    TheInterfaceMgr->AddWidget(ThePanelMain);
-    TheInterfaceMgr->AddWidget(ThePanelBottom);
-
-    GUI::Show();
-
-    TheInterfaceMgr->AddWidget(new GameCursor());
+    new GameCursor();
 }
 
 
 GUI::~GUI()
 {
-    TheInterfaceMgr->RemoveWidget(TheGameCursor);
-
-    TheInterfaceMgr->RemoveWidget(ThePanelBottom);;
-    TheInterfaceMgr->RemoveWidget(ThePanelMap);
-    TheInterfaceMgr->RemoveWidget(ThePanelMain);
+    Hide();
 
     delete TheGameCursor;
-
     delete ThePanelBottom;
 }
 
-void GUI::Hide()
-{
-}
 
 void GUI::Show()
 {
+    TheInterfaceMgr->AddWidget(ThePanelMap);
+    TheInterfaceMgr->AddWidget(ThePanelMain);
+    TheInterfaceMgr->AddWidget(ThePanelBottom);
+    TheInterfaceMgr->AddWidget(TheGameCursor);
+}
+
+
+void GUI::Hide()
+{
+    TheInterfaceMgr->RemoveWidget(TheGameCursor);
+    TheInterfaceMgr->RemoveWidget(ThePanelBottom);;
+    TheInterfaceMgr->RemoveWidget(ThePanelMap);
+    TheInterfaceMgr->RemoveWidget(ThePanelMain);
 }
 
 

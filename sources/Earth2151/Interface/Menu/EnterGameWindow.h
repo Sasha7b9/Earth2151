@@ -12,6 +12,8 @@ public:
 
     void Localize();
 
+    void SetNamePlayer(const String<> &);
+
 private:
 
     WidgetObserver<EnterGameWindow> btnNewGameObserver{ this, &EnterGameWindow::HandleButtonEvent };

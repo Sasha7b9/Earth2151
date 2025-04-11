@@ -10,9 +10,9 @@ struct EquipableEntity : public DestructibleEntity
     {
         sight_range = reader.ReadInt();
         talk_pack_ID = reader.ReadString(4);
-        reader.ReadInt();
+        unknown = reader.ReadInt();
         shield_generator_ID = reader.ReadString(4);
-        reader.ReadInt();
+        unknown2 = reader.ReadInt();
         max_shield_update = reader.ReadInt();
         type_slot1 = reader.ReadInt();
         type_slot2 = reader.ReadInt();
@@ -30,7 +30,9 @@ struct EquipableEntity : public DestructibleEntity
 
     int sight_range;
     String<> talk_pack_ID;
+    int unknown;
     String<> shield_generator_ID;
+    int unknown2;
     int max_shield_update;
     int type_slot1;
     int type_slot2;

@@ -28,7 +28,7 @@ void PoolTextures::Construct()
 
 void PoolTextures::Destruct()
 {
-    if (!is_destructed)
+    if (is_destructed)
     {
         return;
     }

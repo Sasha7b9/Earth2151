@@ -9,6 +9,7 @@
 
 class Tab;
 class Notebook;
+class NotebookMainPanel;
 
 
 class TabTitle : public Widget

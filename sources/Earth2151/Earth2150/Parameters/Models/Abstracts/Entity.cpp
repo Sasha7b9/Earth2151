@@ -39,13 +39,6 @@
 
 Entity *Entity::Create(FileReader &reader, EntityGroupType::E group_type)
 {
-    static int counter = 0;
-
-    if (++counter == 0x2a4)
-    {
-        counter = counter;
-    }
-
     char buffer[64];
 
     int p = reader.pointer;
@@ -75,7 +68,7 @@ Entity *Entity::Create(FileReader &reader, EntityGroupType::E group_type)
         field_types.AppendArrayElement(reader.ReadBool());
     }
 
-    EntityClassType::E type = EntityClassType::None;
+    EntityClassType::E type = EntityClassType::_None;
 
     switch (group_type)
     {
@@ -172,7 +165,7 @@ pchar EntityClassType::ToString(E e)
 {
     switch (e)
     {
-    case EntityClassType::None:                     return "None";
+    case EntityClassType::_None:                    return "None";
     case EntityClassType::Vehicle:                  return "Vehicle";
     case EntityClassType::SupplyTransporter:        return "SupplyTransporter";
     case EntityClassType::Builder:                  return "Builder";
@@ -249,7 +242,7 @@ pchar EntityGroupType::ToString()
 
 Entity *EntityGroup::GetEntity(pchar name)
 {
-    for each(Entity *entity in entities)
+    for (Entity *entity : entities)
     {
         if (entity->name == name)
         {
@@ -329,7 +322,9 @@ Node *Entity::CreateModel(Entity *entity, const LObject &obj)
 
             TheWorldMgr->GetWorld()->GetRootNode()->AppendNewSubnode(node);
         }
-    }
+
+//        delete model;
+    } //-V773
     else
     {
         LOG_ERROR("Can not create entity %s", entity->name.c_str());
@@ -355,7 +350,9 @@ Node *Entity::CreateEquipment(Entity *entity)
         {
             node = model->CreateModel();
         }
-    }
+
+//        delete model;
+    } //-V773
 
     return node;
 }
@@ -363,7 +360,7 @@ Node *Entity::CreateEquipment(Entity *entity)
 
 void EntityGroup::Destroy()
 {
-    for each (Entity *entity in entities)
+    for (Entity *entity : entities)
     {
         delete entity;
     }

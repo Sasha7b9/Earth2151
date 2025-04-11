@@ -17,6 +17,14 @@ struct TexTile
     Point2D _10;    // rugth up
     Point2D _11;    // right down
     Point2D _01;    // left down
+
+    void Clear()
+    {
+        _00 = Point2D::zero;
+        _10 = Point2D::zero;
+        _11 = Point2D::zero;
+        _01 = Point2D::zero;
+    }
 };
 
 
@@ -26,7 +34,7 @@ union Tile
     // Типы текстур  в углах данного тайла
     uint8 tex[4];
 
-    struct
+    struct _s
     {                //                           +---------+
         uint8 tex00; // 0 - left up               | 0     1 |
         uint8 tex10; // 1 - right up              |         |
@@ -34,7 +42,9 @@ union Tile
         uint8 tex01; // 3 - left down             +---------+
     };
 
-    bool operator<(const Tile &rhs) const
+    _s s;
+
+    bool operator<(const Tile rhs) const
     {
         return M::Hash(tex, sizeof(tex)) < M::Hash(rhs.tex, sizeof(tex));
     }
@@ -64,7 +74,7 @@ namespace TexLand2150
 
     void CreateTiles();
 
-    bool GetTile(const Tile &, TexTile &);
+    bool GetTile(const Tile, TexTile &);
 
     void Destroy();
 

@@ -9,11 +9,9 @@ enum
 };
 
 
-class GameWorld : public World, public Global<GameWorld>
+class GameWorld : public World
 {
 public:
-
-    GameWorld(pchar name);
 
     virtual ~GameWorld() override { };
 
@@ -21,20 +19,30 @@ public:
 
     virtual ResourceResult PreprocessWorld() override;
 
-    virtual void BeginRendering(ToneMapper *toneMapper) override;
+    virtual void BeginRendering(ToneMapper *) override;
 
     void ChangeCursorPosition(float deltaX, float deltaY);
 
-    static LocatorMarker *FindSpectatorLocator(const Zone *);
+    LocatorMarker *FindSpectatorLocator(const Zone *);
+
+    // int = [0...3]
+    static void Create(int, pchar name);
+
+    // int - от нуля до 3 для выбора мира из worlds
+    static void Set(int);
+
+    static GameWorld *Current();
 
 private:
+
+    GameWorld(pchar name);
+
+    // Здесь хранятся четыре мира. В нулевом элементе - миссия; в остальных - базы в соответствии с Race::E
+    static GameWorld *worlds[4];
 
     virtual void MoveWorld() override;
 
     void RunOnFirstFrame();
 
-    virtual RigidBodyStatus HandleNewGeometryContact(RigidBodyController *, const GeometryContact *) override;
+    static int current;
 };
-
-
-extern GameWorld *TheGameWorld;

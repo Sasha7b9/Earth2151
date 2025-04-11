@@ -14,12 +14,6 @@ CameraRTS *TheCameraRTS = nullptr;
 CameraSpecatator *TheCameraSpectator = nullptr;
 
 
-void CameraRTS::Create(LocatorMarker *)
-{
-    new CameraRTS();
-}
-
-
 CameraRTS::CameraRTS()
     : FrustumCamera(2.0f, 1.0f), Global(TheCameraRTS)
 {
@@ -59,7 +53,7 @@ void CameraRTS::MoveCamera()
     {
         is_first = false;
 
-        pointFocus = { Landscape::GetSize().x / 2.0f, Landscape::GetSize().y / 2.0f, 0.0f };
+        pointFocus = Point3D{ Landscape::GetSize().x / 2.0f, Landscape::GetSize().y / 2.0f, 0.0f };
 
         distance = 100.0f;
     }
@@ -107,7 +101,7 @@ void CameraRTS::MoveCamera()
         else if (std::fabs(deltaX) > std::numeric_limits<float>::epsilon() ||
             std::fabs(deltaY) > std::numeric_limits<float>::epsilon())
         {
-            TheGameWorld->ChangeCursorPosition(deltaX, deltaY);
+            GameWorld::Current()->ChangeCursorPosition(deltaX, deltaY);
         }
 
         Point2D cursorPos = TheGameCursor->position;

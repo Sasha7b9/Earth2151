@@ -39,5 +39,8 @@ PanelBottom::PanelBottom()
 
 void PanelBottom::HanbleButtonLoadEvent(Widget *button, const WidgetEventData *data)
 {
-    TheEditor->OpenWindowLoadLevel();
+    if (button == btnLoad)
+    {
+        TheEditor->OpenWindowLoadLevel();
+    }
 }

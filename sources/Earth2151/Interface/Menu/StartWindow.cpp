@@ -3,7 +3,7 @@
 #include "Interface/Menu/StartWindow.h"
 #include "Interface/Menu/ChoicePlayerWindow.h"
 #include "Interface/Menu/StartSettingsWindow.h"
-#include "Utils/Local.h"
+#include "Utils/Locale.h"
 #include "Editor/Editor.h"
 #include "Settings.h"
 
@@ -20,6 +20,7 @@ StartWindow *TheStartWindow = nullptr;
 #define BTN_EDITOR          ((PushButtonWidget *)FindWidget("btnEditor"))
 #define BTN_ABOUT           ((PushButtonWidget *)FindWidget("btnAbout"))
 #define BTN_QUIT            ((PushButtonWidget *)FindWidget("btnQuit"))
+#define TXT_HINT            ((TextWidget *)FindWidget("txtHint"))
 
 
 StartWindow::StartWindow() :
@@ -48,16 +49,29 @@ void StartWindow::PreprocessWidget()
 
     BTN_CAMPAIGN_ED->HideWidget();
     BTN_CAMPAIGN_UCS->HideWidget();
-    BTN_CAMPAIGN_LC->HideWidget(); 
     BTN_NETWORK->HideWidget();
     BTN_SKIRMISH->HideWidget();
     BTN_ABOUT->HideWidget();
+
+    if (TypeGame().IsEftBP())
+    {
+        BTN_CAMPAIGN_LC->ShowWidget();
+    }
+    else
+    {
+        BTN_CAMPAIGN_LC->HideWidget();
+    }
 }
 
 
 void StartWindow::Localize()
 {
-    ((TextWidget *)FindWidget("txtEarth2151"))->SetText(_L("trEarth 2151"));
+    if (!TheStartWindow)
+    {
+        return;
+    }
+
+    ((TextWidget *)FindWidget("txtTitle"))->SetText(_L("trEarth 2151"));
 
     BTN_CAMPAIGN_ED->SetText(_L("trED"));
     BTN_CAMPAIGN_UCS->SetText(_L("trUCS"));
@@ -68,6 +82,15 @@ void StartWindow::Localize()
     BTN_EDITOR->SetText(_L("trEditor"));
     BTN_ABOUT->SetText(_L("trAutors"));
     BTN_QUIT->SetText(_L("trExit"));
+
+    static const pchar hints[TypeGame::Count] =
+    {
+        "trEftBP",
+        "trTMP",
+        "trLS"
+    };
+
+    TXT_HINT->SetText(_L(hints[TypeGame().Current()]));
 }
 
 
@@ -77,20 +100,25 @@ void StartWindow::HandleButtonEvent(Widget *widget, const WidgetEventData *event
     {
         if (widget == BTN_CAMPAIGN_ED)
         {
-            TheInterfaceMgr->RemoveWidget(this);
+            TypeCampaign::Set(TypeCampaign::ED);
+            TheInterfaceMgr->RemoveWidget(TheStartWindow);
             TheInterfaceMgr->AddWidget(TheChoicePlayerWindow);
         }
         else if (widget == BTN_CAMPAIGN_UCS)
         {
-
+            TypeCampaign::Set(TypeCampaign::UCS);
+            TheInterfaceMgr->RemoveWidget(TheStartWindow);
+            TheInterfaceMgr->AddWidget(TheChoicePlayerWindow);
         }
         else if (widget == BTN_CAMPAIGN_LC)
         {
-
+            TypeCampaign::Set(TypeCampaign::LC);
+            TheInterfaceMgr->RemoveWidget(TheStartWindow);
+            TheInterfaceMgr->AddWidget(TheChoicePlayerWindow);
         }
         else if (widget == BTN_SETTINGS)
         {
-            TheInterfaceMgr->RemoveWidget(this);
+            TheInterfaceMgr->RemoveWidget(TheStartWindow);
             TheInterfaceMgr->AddWidget(TheStartSettingsWindow);
         }
         else if (widget == BTN_NETWORK)

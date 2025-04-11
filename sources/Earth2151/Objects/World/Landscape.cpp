@@ -78,7 +78,7 @@ namespace Landscape
             {
                 Array<Vector3D> array;
 
-                normals.insert({ key , array });
+                normals.emplace(std::pair{ key , array });
             }
 
             it = normals.find(key);
@@ -115,9 +115,12 @@ namespace Landscape
     {
         Triangle(const Point3D p[3],  const Point2D tex[3])
         {
-            std::memcpy(ver, p, sizeof(ver));
+            for (int i = 0; i < 3; i++)
+            {
+                ver[i] = p[i];
+            }
 
-            Vector3D vec01 = p[0] - p[1];
+            Vector3D vec01 = p[0] - p[1]; //-V525
             Vector3D vec02 = p[0] - p[2];
             Vector3D vec12 = p[1] - p[2];
 
@@ -129,7 +132,10 @@ namespace Landscape
             storage_normals.Append(ver[1].x, ver[1].y, norm[1]);
             storage_normals.Append(ver[2].x, ver[2].y, norm[2]);
 
-            std::memcpy(textcoord, tex, sizeof(textcoord));
+            for (int i = 0; i < 3; i++)
+            {
+                textcoord[i] = tex[i];
+            }
         }
 
         Point3D  ver[3];
@@ -341,6 +347,12 @@ void Landscape::Destroy()
 }
 
 
+bool Landscape::IsCreated()
+{
+    return land.GetNumRows();
+}
+
+
 void Landscape::FillLnd(Level2150 &info)
 {
     HeapBuffer &lnd = info.dataLND;
@@ -405,7 +417,7 @@ void Landscape::FillLnd(Level2150 &info)
 
     file_txt.WriteString(Text::Format("Type : %d", type_texture));
 
-    for (int y = 0; y < height; y++)                                    // \ 
+    for (int y = 0; y < height; y++)                                    // /
     {                                                                   // | Так идёт нумерация в файле lnd
         for (int x = 0; x < width; x++)                                 // /
         {
@@ -533,9 +545,9 @@ Point2D Landscape::ArrayLand::GetSize() const
 }
 
 
-void Landscape::ArrayLand::SetHeight(int x, int y, float height)
+void Landscape::ArrayLand::SetHeight(int x, int y, float h)
 {
-    rows[y][x].height = height;
+    rows[y][x].height = h;
 }
 
 
@@ -543,19 +555,19 @@ void Landscape::ArrayLand::SetTexture(int x, int y, uint8 texture)
 {
     rows[y][x].texture = texture;
 
-    rows[y][x].tile.tex00 = texture & 0x07;
+    rows[y][x].tile.s.tex00 = texture & 0x07;
 
     if (x > 0)
     {
-        rows[y][x - 1].tile.tex10 = texture;
+        rows[y][x - 1].tile.s.tex10 = texture;
     }
     if (x > 0 && y > 0)
     {
-        rows[y - 1][x - 1].tile.tex11 = texture;
+        rows[y - 1][x - 1].tile.s.tex11 = texture;
     }
     if (y > 0)
     {
-        rows[y - 1][x].tile.tex01 = texture;
+        rows[y - 1][x].tile.s.tex01 = texture;
     }
 }
 
@@ -938,10 +950,4 @@ float Landscape::MinHeight()
 float Landscape::MaxHeight()
 {
     return max_height;
-}
-
-
-bool Landscape::IsCreated()
-{
-    return land.GetNumRows();
 }

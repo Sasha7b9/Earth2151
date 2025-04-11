@@ -15,11 +15,37 @@
 #include "Earth2151.h"
 
 
-GameWorld *TheGameWorld = nullptr;
+int GameWorld::current = 0;
+GameWorld *GameWorld::worlds[4] = { nullptr, nullptr, nullptr, nullptr };
 
 
-GameWorld::GameWorld(pchar name) : World(name), Global<GameWorld>(TheGameWorld)
+GameWorld::GameWorld(pchar name) : World(name)
 {
+}
+
+
+GameWorld *GameWorld::Current()
+{
+    return worlds[current];
+}
+
+
+void GameWorld::Create(int num, pchar name)
+{
+    if (num >= 0 && num < 4)
+    {
+        worlds[num] = new GameWorld(name);
+    }
+    else
+    {
+        LOG_ERROR("Bad number world - %d", num);
+    }
+}
+
+
+void GameWorld::Set(int num)
+{
+    current = num;
 }
 
 
@@ -32,6 +58,8 @@ WorldResult GameWorld::PreprocessWorld()
         return result;
     }
 
+    SetWorldCamera(TheCameraRTS);
+
     return kWorldOkay;
 }
 
@@ -40,24 +68,11 @@ void GameWorld::MoveWorld()
 {
     World::MoveWorld();
 
-    static bool first = true;
-
-    if (first)
-    {
-        first = false;
-
-        TheWorldMgr->GetWorld()->SetWorldCamera(TheCameraRTS);
-
-//        RunOnFirstFrame();
-    }
-
     TheWorldMgr->GetWorld()->FinishWorldBatch();
 
     if (Earth2151::target_destroed)
     {
         Earth2151::target_destroed = false;
-
-        Point2D s = Landscape::GetSize();
     }
 
     UCreator::Update();
@@ -69,16 +84,6 @@ void GameWorld::MoveWorld()
 void GameWorld::RunOnFirstFrame()
 {
     Particles::Init();
-
-    Point2D s = Landscape::GetSize();
-
-    for (int i = 0; i < 10; i++)
-    {
-    }
-
-    for (int i = 0; i < 30; i++)
-    {
-    }
 
     ChangeCursorPosition(1.0f, 1.0f);           // \todo Затычка чтобы курсор установился на середину экрана при запуске
     ChangeCursorPosition(-1.0f, -1.0f);
@@ -138,12 +143,6 @@ LocatorMarker *GameWorld::FindSpectatorLocator(const Zone *zone)
 Node *GameWorld::FindNodeByName(pchar node_name)
 {
     return GetRootNode()->FindFirstNodeByName(node_name);
-}
-
-
-RigidBodyStatus GameWorld::HandleNewGeometryContact(RigidBodyController *, const GeometryContact *)
-{
-    return kRigidBodyUnchanged;
 }
 
 

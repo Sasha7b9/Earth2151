@@ -7,7 +7,7 @@ struct FileFlags
 {
     enum E
     {
-        None = 0,
+        _None = 0,
         Compressed = 1,
         Archive = 2,
         Text = 4,
@@ -16,7 +16,7 @@ struct FileFlags
         GUID = 32
     };
 
-    E value = None;
+    E value = _None;
 
     bool IsNamed() const
     {
@@ -39,7 +39,7 @@ struct ResType
 {
     enum E
     {
-        None,
+        _None,
         Interface = 0x49,
         MainInterface = 0xff,
         Map = 0x4c,
@@ -64,7 +64,7 @@ struct ResType
         TransporterScript = 0x10
     };
 
-    E value = None;
+    E value = _None;
 };
 
 

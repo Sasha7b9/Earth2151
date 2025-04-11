@@ -5,6 +5,11 @@
 template<int size_buffer>
 struct StackBuffer
 {
+    void Append(char symbol)
+    {
+        Append(&symbol, 1);
+    }
+
     void Append(void *buffer, int size)
     {
         if (pointer + size <= size_buffer)

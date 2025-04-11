@@ -46,4 +46,9 @@ namespace SU
     void SplitToWords(pchar, Array<String<>> &, pchar delim);
 
     double ASCIItoFloat(pchar);
+
+    int Compare(pchar str1, pchar str2);
+
+    // Удалить открывающую и закрывающую кавычки, ежели таковые имеются
+    String<> RemoveQuotes(pchar);
 }

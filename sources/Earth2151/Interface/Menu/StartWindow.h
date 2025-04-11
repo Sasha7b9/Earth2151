@@ -2,7 +2,7 @@
 #pragma once
 
 
-class StartWindow : public Window, public Global<StartWindow>
+class StartWindow : public Pi::Window, public Global<StartWindow>
 {
 public:
 

@@ -4,6 +4,8 @@
 
 namespace M
 {
+    int ResolveMathExpression(pchar);
+
     uint  ColorToUINT(const ColorRGBA &);
 
     float LimitationFloat(float value, float min, float max);

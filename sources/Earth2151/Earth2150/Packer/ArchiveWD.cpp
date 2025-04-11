@@ -62,8 +62,6 @@ ArchiveWD::ArchiveWD(pchar full_path) : file_name(full_path)
     {
         LOG_ERROR("Can not uncompress file %s", full_path);
     }
-
-    counter = counter;
 }
 
 

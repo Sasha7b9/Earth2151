@@ -12,9 +12,12 @@ namespace Tunnels
     {
         Triangle(const Point3D p[3], const Point2D tex[3])
         {
-            std::memcpy(ver, p, sizeof(ver));
+            for (int i = 0; i < 3; i++)
+            {
+                ver[i] = p[i];
+            }
 
-            Vector3D vec01 = p[0] - p[1];
+            Vector3D vec01 = p[0] - p[1]; //-V525
             Vector3D vec02 = p[0] - p[2];
             Vector3D vec12 = p[1] - p[2];
 
@@ -22,7 +25,10 @@ namespace Tunnels
             norm[1] = Cross(vec12, -vec01);
             norm[2] = Cross(-vec02, -vec12);
 
-            std::memcpy(textcoord, tex, sizeof(textcoord));
+            for (int i = 0; i < 3; i++)
+            {
+                textcoord[i] = tex[i];
+            }
         }
 
         Point3D  ver[3];
@@ -237,24 +243,29 @@ void Tunnels::Tuns::CreateTriangleMesh()
             {
                 AddPlaneH(x, y, h, h, h, h);
 
+                float upY = UpY(y);
+                float downY = DownY(y);
+                float rightX = RightX(x);
+                float leftX = LeftX(x);
+
                 if (y < GetNumRows() - 1 && Get(x, y + 1) == 0x40)
                 {
-                    AddPlaneV(x, y, { LeftX(x), UpY(y) }, { RightX(x), UpY(y) }, h);                // Up
+                    AddPlaneV(x, y, { leftX, upY }, { rightX, upY }, h);                // Up
                 }
 
                 if (Get(x + 1, y) == 0x40)
                 {
-                    AddPlaneV(x, y, { RightX(x), UpY(y) }, { RightX(x), DownY(y) }, h);             // Right
+                    AddPlaneV(x, y, { rightX, upY }, { rightX, downY }, h);             // Right
                 }
 
                 if (y > 0 && Get(x, y - 1) == 0x40)
                 {
-                    AddPlaneV(x, y, { RightX(x), DownY(y) }, { LeftX(x), DownY(y) }, h);            // Down
+                    AddPlaneV(x, y, { rightX, downY }, { leftX, downY }, h);            // Down
                 }
 
                 if (Get(x - 1, y) == 0x40)
                 {
-                    AddPlaneV(x, y, { LeftX(x), DownY(y) }, { LeftX(x), UpY(y) }, h);               // Left
+                    AddPlaneV(x, y, { leftX, downY }, { leftX, upY }, h);               // Left
                 }
             }
         }
@@ -300,11 +311,13 @@ void Tunnels::CreateGeometry()
 
     GenericGeometry *geometry = new GenericGeometry(1, &surfaceTable, materialArray);
 
-    geometry->GetObject()->SetGeometryRenderStage(kGeometryRenderStageTransparentEffect);
+    GenericGeometryObject *object = geometry->GetObject();
 
-    geometry->GetObject()->SetGeometryBlendMode(kGeometryBlendModeAccumulate);
+    object->SetGeometryRenderStage(kGeometryRenderStageTransparentEffect);
 
-    geometry->GetObject()->geometryFlags &= ~kGeometryCastShadows;
+    object->SetGeometryBlendMode(kGeometryBlendModeAccumulate);
+
+    object->geometryFlags &= ~kGeometryCastShadows;
 
     material->Release();
 

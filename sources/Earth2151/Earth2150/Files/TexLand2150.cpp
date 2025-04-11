@@ -14,13 +14,13 @@ namespace TexLand2150
 {
     struct Storage
     {
-        void Append(const Tile &key_tile, const TexTile &tex)
+        void Append(const Tile key_tile, const TexTile &tex)
         {
             auto it = tiles.find(key_tile);
 
             if (it == tiles.end())
             {
-                tiles.insert({ key_tile , new Array<TexTile> ()});
+                tiles.try_emplace(key_tile , new Array<TexTile> ());
             }
 
             it = tiles.find(key_tile);
@@ -38,7 +38,7 @@ namespace TexLand2150
             tex_tiles->AppendArrayElement(tex);
         }
 
-        bool Get(const Tile &tile, TexTile &tex)
+        bool Get(const Tile tile, TexTile &tex)
         {
             auto it = tiles.find(tile);
 
@@ -69,12 +69,12 @@ namespace TexLand2150
         }
 
         // Возвращает наиболее подобный тайл - где совпадает максимальное количество уголов
-        void GetSimilar(const Tile &tile, TexTile &tex)
+        void GetSimilar(const Tile tile, TexTile &tex)
         {
             int number_mutches = 0;
             Tile key;
 
-            for each(auto item in tiles)
+            for (auto item : tiles)
             {
                 int count = 0;
 
@@ -295,7 +295,7 @@ void TexLand2150::GetTexTile(int y, int x, TexTile &tex)
     tex._00.y = fy;
 
     tex._10.x = fx;
-    tex._10.y = fy + size_tile;
+    tex._10.y = fy + size_tile; //-V525
 
     tex._11.x = fx + size_tile;
     tex._11.y = fy + size_tile;
@@ -311,11 +311,11 @@ void TexLand2150::GetTexTile(int num_tex, TexTile &tile)
 }
 
 
-bool TexLand2150::GetTile(const Tile &tile, TexTile &tex)
+bool TexLand2150::GetTile(const Tile tile, TexTile &tex)
 {
     bool result = false;
 
-    std::memset(&tex, 0, sizeof(tex));
+    tex.Clear();
 
     if (storage_tiles.Get(tile, tex))
     {
@@ -325,8 +325,8 @@ bool TexLand2150::GetTile(const Tile &tile, TexTile &tex)
     {
         Tile t = tile;
 
-        M::Swap(t.tex00, t.tex01);                  // Меняем местами лево и право
-        M::Swap(t.tex10, t.tex11);
+        M::Swap(t.s.tex00, t.s.tex01);                  // Меняем местами лево и право
+        M::Swap(t.s.tex10, t.s.tex11);
 
         if (storage_tiles.Get(t, tex))
         {
@@ -339,8 +339,8 @@ bool TexLand2150::GetTile(const Tile &tile, TexTile &tex)
         {
             t = tile;
 
-            M::Swap(t.tex00, t.tex10);              // Меняем местами верх и низ
-            M::Swap(t.tex01, t.tex11);
+            M::Swap(t.s.tex00, t.s.tex10);              // Меняем местами верх и низ
+            M::Swap(t.s.tex01, t.s.tex11);
 
             if (storage_tiles.Get(t, tex))
             {
@@ -353,8 +353,8 @@ bool TexLand2150::GetTile(const Tile &tile, TexTile &tex)
             {
                 t = tile;
 
-                M::Swap(t.tex00, t.tex11);              // Перекидываем по диагоналям
-                M::Swap(t.tex01, t.tex10);
+                M::Swap(t.s.tex00, t.s.tex11);              // Перекидываем по диагоналям
+                M::Swap(t.s.tex01, t.s.tex10);
 
                 if (storage_tiles.Get(t, tex))
                 {
@@ -396,9 +396,9 @@ void TexLand2150::CreateTiles()
         {
             Tile tile = Landscape::GetTile(x, y);
 
-            uint8 texture = tile.tex00;
+            uint8 texture = tile.s.tex00;
 
-            if (texture == tile.tex10 && texture == tile.tex11 && texture == tile.tex01)
+            if (texture == tile.s.tex10 && texture == tile.s.tex11 && texture == tile.s.tex01)
             {
                 TexTile tex;
 
@@ -454,13 +454,13 @@ void TexLand2150::CreateTiles()
 
             reader.ReadBuffer(&data, 2);
 
-            tile.tex00 = data & 0x07;
+            tile.s.tex00 = data & 0x07;
             data >>= 3;
-            tile.tex10 = data & 0x07;
+            tile.s.tex10 = data & 0x07;
             data >>= 3;
-            tile.tex11 = data & 0x07;
+            tile.s.tex11 = data & 0x07;
             data >>= 3;
-            tile.tex01 = data & 0x07;
+            tile.s.tex01 = data & 0x07;
         }
 
         TexTile tex;
@@ -471,7 +471,7 @@ void TexLand2150::CreateTiles()
 
         // Перекидываем через одну из диагоналей, получая "зеркальный" тайл
         {
-            M::Swap(tile.tex10, tile.tex01);
+            M::Swap(tile.s.tex10, tile.s.tex01);
             M::Swap(tex._00, tex._11);
 
             storage_tiles.Append(tile, tex);
@@ -502,10 +502,10 @@ bool TexTunnels2150::GetTile(TexTile &tile)
 {
     float size = 1.0f / 1.0f;
 
-    tile._00 = { 0.0f, 0.0f };
-    tile._10 = { size, 0.0f };
-    tile._11 = { size, size };
-    tile._01 = { 0.0f, size };
+    tile._00 = Point2D{ 0.0f, 0.0f };
+    tile._10 = Point2D{ size, 0.0f };
+    tile._11 = Point2D{ size, size };
+    tile._01 = Point2D{ 0.0f, size };
 
     return true;
 }

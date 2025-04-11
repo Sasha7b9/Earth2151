@@ -66,14 +66,6 @@ void MovementMutator::MoveSprocket()
 {
     Sprocket::MoveSprocket();
 
-    if (state == kShowPosition)
-    {
-        state = state;
-    }
-    else if (state == kHidePosition)
-    {
-        state = state;
-    }
     if(state == kShowToHideMoving)
     {
         CalculateNewPosition(1.0F);

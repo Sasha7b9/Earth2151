@@ -51,7 +51,7 @@ void GenericObject::AppendGizmo()
 }
 
 
-void GenericObject::SetNodeScale(float scale)
+void GenericObject::SetNodeScale(float _scale)
 {
     Model *model = (Model *)GetTargetNode();
 
@@ -68,7 +68,7 @@ void GenericObject::SetNodeScale(float scale)
         {
             NodeType type = subnode->GetNodeType();
 
-            if (type == kNodeGeometry && scale != 1.0f)
+            if (type == kNodeGeometry && _scale != 1.0f)
             {
                 Geometry *geometry = (Geometry *)subnode;
 
@@ -92,7 +92,7 @@ void GenericObject::SetNodeScale(float scale)
                 {
                     Mesh *mesh = object->GetGeometryLevel(i);
 
-                    mesh->ScaleMesh({ scale, scale, scale });
+                    mesh->ScaleMesh({ _scale, _scale, _scale });
                 }
 
                 ((GenericGeometryObject *)object)->RebuildGeometry(geometry);
@@ -245,7 +245,7 @@ void MovedObject::Move()
 }
 
 
-void MovedObject::MoveForward(float direction)
+void MovedObject::MoveForward(float dir)
 {
     Vector3D offset = GetDirectionForward() * speed * FDELTA_SEC;
 
@@ -253,7 +253,7 @@ void MovedObject::MoveForward(float direction)
 
     GetTargetNode()->InvalidateNode();
 
-    speed += ((direction >= 0.0f) ? GetAccelerationSpeed() : -GetSlowSpeed()) * FDELTA_SEC;
+    speed += ((dir >= 0.0f) ? GetAccelerationSpeed() : -GetSlowSpeed()) * FDELTA_SEC;
 
     if (speed > GetMaxSpeed())
     {

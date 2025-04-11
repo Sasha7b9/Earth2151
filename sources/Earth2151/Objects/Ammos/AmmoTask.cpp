@@ -31,18 +31,6 @@ void DestroyTargetTask::Update()
 
         Vector3D cross = CalculateCrossDot(dot);
 
-        if (std::isnan(dot))
-        {
-            Node *node = controller->GetTargetNode();
-            node = node;
-
-            pchar self_name = node->GetNodeName();
-            self_name = self_name;
-
-            pchar name = target->GetNodeName();
-            name = name;
-        }
-
         controller->Rotate(cross, GetPositionTarget() - controller->GetTargetNode()->GetWorldPosition());
 
         prev_cross = cross;
@@ -78,16 +66,6 @@ Vector3D DestroyTargetTask::CalculateCrossDot(float &dot) const
     if (String<>("Rocket") == controller->GetTargetNode()->GetNodeName())
     {
         counter++;
-    }
-
-    if (std::isnan(dot))
-    {
-        Node *node = controller->GetTargetNode();
-        node = node;
-    }
-    else
-    {
-        dot = dot;
     }
 
     if (dot == 1.0f)

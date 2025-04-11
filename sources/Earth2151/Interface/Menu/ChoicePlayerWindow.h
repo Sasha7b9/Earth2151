@@ -2,7 +2,7 @@
 #pragma once
 
 
-class ChoicePlayerWindow : public Window, public Global<ChoicePlayerWindow>
+class ChoicePlayerWindow : public Pi::Window, public Global<ChoicePlayerWindow>
 {
 public:
 
@@ -12,13 +12,19 @@ public:
 
     void Localize();
 
+    String<> ResolveNamePlayer();
+
 private:
 
     ListWidget *listPlayers = nullptr;
 
-    WidgetObserver<ChoicePlayerWindow> btnObserver{ this, &ChoicePlayerWindow::HandleButtonEvent };
+    WidgetObserver<ChoicePlayerWindow> widgetObserver{ this, &ChoicePlayerWindow::HandleWidgetEvent };
 
-    void HandleButtonEvent(Widget *, const WidgetEventData *);
+    void HandleWidgetEvent(Widget *, const WidgetEventData *);
+
+    void StartEnterGameWindowIfNeed();
+
+    void FillListUsers();
 };
 
 

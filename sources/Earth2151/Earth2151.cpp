@@ -1,28 +1,23 @@
 ﻿// 2022/12/18 11:57:11 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "stdafx.h"
 #include "GameWorld.h"
-#include "Cameras.h"
 #include "Input/Input.h"
-#include "Input/Mouse.h"
 #include "Interface/GUI.h"
-#include "Earth2150/Earth2150Tool.h"
 #include "Objects/World/Landscape.h"
 #include "Graphics/PoolTextures.h"
-#include "Earth2150/Files/TexLand2150.h"
-#include "Objects/World/Sun.h"
-#include "Earth2150/Files/Model2150.h"
 #include "Earth2150/Files/TexMesh2150.h"
 #include "Graphics/Primitives.h"
 #include "Graphics/Particles.h"
-#include "Objects/Objects.h"
 #include "Objects/World/Tunnels.h"
 #include "Interface/Menu/StartWindow.h"
 #include "Interface/Menu/GameMenuWindow.h"
-#include "Clock.h"
 #include "Earth2151.h"
 #include "Interface/Menu/Menu.h"
-#include "Utils/Local.h"
+#include "Utils/Locale.h"
 #include "Editor/Editor.h"
+#include "Earth2150/Scripting/ScriptEngine.h"
+#include "Game/Game.h"
+#include "Game/GamePlayer.h"
 
 
 using namespace Pi;
@@ -48,6 +43,8 @@ Earth2151::Earth2151() : Global<Earth2151>(TheEarth2151)
 
     TheInterfaceMgr->SetInputManagementMode(kInputManagementAutomatic);
 
+    new ScriptEngine();
+
     Local::Init();
 
     Input::Init();
@@ -58,51 +55,7 @@ Earth2151::Earth2151() : Global<Earth2151>(TheEarth2151)
 
     TheInterfaceMgr->AddWidget(TheStartWindow);
 
-//    LoadLevel();
-
-//    TheEditor->LoadLevel("!BaseED.lnd");
-}
-
-
-void Earth2151::LoadLevel()
-{
-    uint time = UCOUNT_MS;
-
-    TheWorldMgr->LoadWorld("world");
-
-    TheMessageMgr->BeginSinglePlayerGame();
-
-    TheLevel = new Level2150{ RESOURCE_PATH("Levels/!BaseED") };
-
-    CreateLandscape();
-
-    TheParameter = new Parameters2150{ RESOURCE_PATH("parameters/EARTH2150.par").c_str() };
-
-    TheParameter->Save();
-
-    TexMesh2150::Init();
-
-    CreateGameObjects();
-
-    {
-        TheWorldMgr->GetWorld()->GetRootNode()->AppendNewSubnode(new WorldGizmo(Landscape::GetSize().x, 0.1f));
-
-        float ambient = 0.5f;
-
-        TheWorldMgr->GetWorld()->GetRootNode()->GetObject()->SetAmbientLight({ ambient, ambient, ambient, 0.0f });
-    }
-
-    Sun::Init();
-
     new GUI();
-
-    CameraSpecatator::Create(TheGameWorld->FindSpectatorLocator(TheWorldMgr->GetWorld()->GetRootNode()));
-
-    CameraRTS::Create(TheGameWorld->FindSpectatorLocator(TheWorldMgr->GetWorld()->GetRootNode()));
-
-    TheInputMgr->SetEscapeCallback(&EscapeCallback, this);
-
-    LOG_WRITE("Time load game %f sec", (float)(UCOUNT_MS - time) / 1e3f);
 }
 
 
@@ -136,6 +89,8 @@ Earth2151::~Earth2151()
 
     PoolTextures::Destruct();
 
+    SAFE_DELETE(TheScriptEngine);
+
     TheMessageMgr->EndGame();
 
     TheWorldMgr->UnloadWorld();
@@ -143,29 +98,10 @@ Earth2151::~Earth2151()
     TheMessageMgr->EndGame();
 
     SAFE_DELETE(TheLevel);
-}
 
+    GamePlayer::Destroy();
 
-void Earth2151::CreateLandscape()
-{
-    uint time = UCOUNT_MS;
-
-//    Earth2150::Unzipper::UnzipAllWD(RESOURCE_PATH("WDFiles/"));
-
-    PoolTextures::Construct();
-
-    {
-        if (Earth2150::Reader::ReadLand(*TheLevel))
-        {
-            Landscape::Create(*TheLevel);
-
-            TheLevel->ReadObjects();
-        }
-    }
-
-    LOG_WRITE("Time create landscape %f sec", (float)(UCOUNT_MS - time) / 1e3f);
-
-//    CreateAllModels();
+    SAFE_DELETE(TheGame);
 }
 
 
@@ -188,7 +124,7 @@ void Earth2151::CreateAllModels()
         {
             if ((element->GetFileFlags() & kFileDirectory) == 0)
             {
-                String<> file_name(element->GetFileName());
+                String<> file_name(element->fileName);
 
                 Model2150 *model = new Model2150(file_name.c_str());
 
@@ -204,36 +140,13 @@ void Earth2151::CreateAllModels()
 
                     i++;
                 }
+
+                delete model;
             }
 
             element = element->GetNextMapElement();
         }
     }
-}
-
-
-void Earth2151::CreateGameObjects()
-{
-    uint time = UCOUNT_MS;
-
-    int counter = 0;
-
-    for each(LObject &obj in TheLevel->objects.objects)
-    {
-        obj.jobCreateObject.ExecuteJob();
-
-//        TheWorldMgr->GetWorld()->SubmitWorldJob(&obj.jobCreateObject);
-
-        counter++;
-    }
-
-//    TheWorldMgr->GetWorld()->FinishWorldBatch();
-
-    time = UCOUNT_MS - time;
-
-    LOG_WRITE("Time find entities %f sec", TheParameter->time_find_us / 1e6f);
-
-    LOG_WRITE("%d objects for %d ms, %f ms/obj", counter, time, (float)time / (counter + 1));
 }
 
 
@@ -275,7 +188,11 @@ void Earth2151::HandleCameraCommand(Command *, pchar)
 
 World *Earth2151::CreateWorld(pchar name, void *)
 {
-    return new GameWorld(name);
+    GameWorld::Create(0, name);
+
+    GameWorld::Set(0);
+
+    return GameWorld::Current();
 }
 
 
@@ -341,18 +258,52 @@ bool Earth2151::InPaused()
 
 String<> Earth2151::ResourceFile(pchar name)
 {
-    if (TypeGame::IsEftBP())
+    if (TypeGame().IsEftBP())
     {
         return String<>(TheResourceMgr->DataCatalog()->GetRootPath()) + "Earth2150/" + name;
     }
-    else if (TypeGame::IsMP())
+    else if (TypeGame().IsMP())
     {
         return String<>(TheResourceMgr->DataCatalog()->GetRootPath()) + "Earth2150-MP/" + name;
     }
-    else if (TypeGame::IsLS())
+    else if (TypeGame().IsLS())
     {
         return String<>(TheResourceMgr->DataCatalog()->GetRootPath()) + "Earth2150-LS/" + name;
     }
 
     return "";
+}
+
+
+void Earth2151::ApplicationTask()
+{
+    if (TheGame)
+    {
+        TheGame->Update();
+    }
+
+    /*
+    if (!GameWorld::mission)
+    {
+        return;
+    }
+
+    static uint prev_time = 0;
+
+    uint time = UCOUNT_MS / 1000;
+
+    if (time != prev_time)
+    {
+        prev_time = time;
+
+        if (TheWorldMgr->GetWorld())
+        {
+            TheWorldMgr->SetWorld(nullptr);
+        }
+        else
+        {
+            TheWorldMgr->SetWorld(GameWorld::mission);
+        }
+    }
+    */
 }

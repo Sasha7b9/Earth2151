@@ -13,10 +13,7 @@ MemoryInputStream::MemoryInputStream(const void *_data, int _size) :
 
 void MemoryInputStream::Set(const void *_data, int _size)
 {
-    if (data)
-    {
-        delete[]data;
-    }
+    delete[]data;
 
     if (_data == nullptr || _size == 0)
     {
@@ -31,7 +28,7 @@ void MemoryInputStream::Set(const void *_data, int _size)
 
     data = new uint8[size];
 
-    std::memcpy(data, _data, size);
+    std::memcpy(data, _data, size); //-V575
 
     pointer = 0;
 }

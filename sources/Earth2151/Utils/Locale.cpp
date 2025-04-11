@@ -1,9 +1,9 @@
 ﻿// 2025/03/22 09:09:16 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "stdafx.h"
-#include "Utils/Local.h"
+#include "Utils/Locale.h"
 #include "Earth2151.h"
-#include "Utils/FileJSON.h"
 #include "Interface/Menu/Menu.h"
+#include "FileSystem/FileJSON.h"
 #include <codecvt>
 #include <string>
 
@@ -63,7 +63,7 @@ void Local::Init()
         }
     }
 
-    if (strings[Language::Current()]->GetMapElementCount() == 0)
+    if (strings[Language().Current()]->GetMapElementCount() == 0)
     {
         File file;
 
@@ -76,7 +76,7 @@ void Local::Init()
 
         FileReader reader{ &file };
 
-        char buffer[8 * 1024];
+        alignas(wchar_t) char buffer[8 * 1024];
 
         reader.ReadBuffer(buffer, 4);      // Просто откидываем первые байты
 
@@ -111,7 +111,7 @@ void Local::Init()
                 wcharToUtf8((wchar_t *)buffer).c_str() :
                 cp1251_to_utf8(buffer).c_str()) };
 
-            strings[Language::Current()]->InsertMapElement(new StructLocal(key, value));
+            strings[Language().Current()]->InsertMapElement(new StructLocal(key, value));
         }
     }
 
@@ -140,15 +140,15 @@ String<> Local::GetString(pchar str)
 
         if (json.GetVectorStrings(str, values))
         {
-            if (values.GetArrayElementCount() >= (Language::Current() + 1))
+            if (values.GetArrayElementCount() >= (Language().Current() + 1))
             {
-                return String<> (values[Language::Current()].c_str());
+                return String<> (values[Language().Current()].c_str());
             }
         }
     }
 
 
-    StructLocal *elem = strings[Language::Current()]->FindMapElement(String<>{str});
+    StructLocal *elem = strings[Language().Current()]->FindMapElement(String<>{str});
 
     if (elem)
     {
@@ -172,6 +172,8 @@ String<> Local::GetString(pchar str)
 
 std::string Local::cp1251_to_utf8(const char *str)
 {
+#ifdef WIN32
+
     std::string res;
     int result_u, result_c;
     result_u = MultiByteToWideChar(1251, 0, str, -1, 0, 0);
@@ -185,7 +187,7 @@ std::string Local::cp1251_to_utf8(const char *str)
         delete[] ures;
         return 0;
     }
-    result_c = WideCharToMultiByte(65001, 0, ures, -1, 0, 0, 0, 0);
+    result_c = WideCharToMultiByte(65001, 0, ures, -1, 0, 0, 0, 0); //-V575
     if (!result_c)
     {
         delete[] ures;
@@ -201,4 +203,10 @@ std::string Local::cp1251_to_utf8(const char *str)
     res.append(cres);
     delete[] cres;
     return res;
+
+#else
+
+    return std::string(str);
+
+#endif
 }

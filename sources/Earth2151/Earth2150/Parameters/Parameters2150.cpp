@@ -4,10 +4,9 @@
 #include "Utils/StringUtils.h"
 
 
-Parameters2150::Parameters2150(pchar _file_name)
+Parameters2150::Parameters2150(pchar _file_name) :
+    file_name(_file_name)
 {
-    file_name = _file_name;
-
     File file;
 
     if (file.OpenFile(file_name.c_str(), kFileReadOnly) != kFileOkay)
@@ -35,7 +34,7 @@ Parameters2150::Parameters2150(pchar _file_name)
 
 void Parameters2150::Destroy()
 {
-    for each(EntityGroup &group in groups)
+    for (EntityGroup &group : groups)
     {
         group.Destroy();
     }
@@ -55,11 +54,6 @@ bool Parameters2150::ReadGroups(FileReader &reader)
         EntityGroup entity_groupd;
 
         groups.AppendArrayElement(entity_groupd);
-
-        if (i == 0x167)
-        {
-            i = i;
-        }
 
         if (!groups[groups.GetArrayElementCount() - 1].Read(reader))
         {
@@ -91,13 +85,6 @@ void Parameters2150::ReadResearch(FileReader &reader)
 
 bool EntityGroup::Read(FileReader &reader)
 {
-    static int counter = 0;
-
-    if (counter++ == 0x167)
-    {
-        counter = counter;
-    }
-
     faction.value = (Faction::E)reader.ReadUInt();
     group_type.value = (EntityGroupType::E)reader.ReadUInt();
     uint group_size = reader.ReadUInt();
@@ -154,7 +141,7 @@ Entity *Parameters2150::GetEntity(pchar name)
 {
     uint64 time = TheTimeMgr->GetMicrosecondCount();
 
-    for each(EntityGroup &group in groups)
+    for (EntityGroup &group : groups)
     {
         Entity *entity = group.GetEntity(name);
 

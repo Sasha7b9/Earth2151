@@ -7,6 +7,8 @@ class CameraRTS : public FrustumCamera, public Global<CameraRTS>
 
 public:
 
+    CameraRTS();
+
     enum class E
     {
         MoveForward = 1 << 0,
@@ -21,8 +23,6 @@ public:
         ZoomIn = 1 << 9,
         ZoomOut = 1 << 10
     };
-
-    static void Create(LocatorMarker *);
 
     virtual void MoveCamera() override;
 
@@ -56,8 +56,6 @@ public:
     void SetPointFocus(const Point3D &);
 
 private:
-
-    CameraRTS();
 
     unsigned long movementFlags = 0;
     Point3D pointFocus{ 10.0f, 25.0f, 0.0f };   // Точка, вокруг которой происходит вращение камера. Сюда всегда направлен её взгляд

@@ -27,11 +27,13 @@ public:
     void HandleHideShow(Widget *button, const WidgetEventData *data);
     void HandleObserver(MouseObservable *, uint);
 
+    void ClearMap();
+
 private:
 
     PanelMapSprocket *mutator = nullptr;
 
-    Observer<PanelMap, MouseObservable> observer;
+    Observer<PanelMap, MouseObservable> observer{ this, &PanelMap::HandleObserver };
 };
 
 
@@ -52,12 +54,15 @@ public:
     Point2D CoordWorldToMap(const Point3D &coord);
     Point3D CoordMapToWorld(const Point2D &coord);
 
+    void Clear();
+
 private:
 
     Canvas   *buffer = nullptr;     // Здесь хранится карта
     PanelMap *panel = nullptr;      // А сюда мы копируем карту и рисуем поверх зону обзора
     float     scale;
     Point2D   leftTop;
+    bool      need_build = true;
 
     virtual Sprocket *Replicate() const override;
 };

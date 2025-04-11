@@ -24,28 +24,30 @@ private:
 };
 
 
-struct TypeGame
+struct TypeCampaign
 {
     enum E
     {
-        EftBP,      // Escape from the Blue Planet
-        MP,         // The Moon Project
-        LS          // Lost Souls
+        ED,
+        UCS,
+        LC,
+        Count
     };
 
-    static void Set(E);
-    static bool IsEftBP()
+    static void Set(E v)
     {
-        return current == EftBP;
+        current = v;
     }
-    static bool IsMP()
+
+    static E Current()
     {
-        return current == MP;
+        return current;
     }
-    static bool IsLS()
-    {
-        return current == LS;
-    }
+
+    static pchar Name();
+
+    // В этом файле хранится кампания
+    static String<> FileCampaign();
 
 private:
 
@@ -53,7 +55,55 @@ private:
 };
 
 
-struct Language
+
+struct GameSetting
+{
+    GameSetting(pchar _name) : name(_name) { }
+
+    void Set(int);
+
+    int Current();
+
+protected:
+
+    void Init();
+
+private:
+
+    pchar name;
+};
+
+
+struct TypeGame : public GameSetting
+{
+    enum E
+    {
+        EftBP,      // Escape from the Blue Planet
+        MP,         // The Moon Project
+        LS,         // Lost Souls
+        Count
+    };
+
+    TypeGame() : GameSetting("type_game") { }
+
+    void Set(E);
+    bool IsEftBP()
+    {
+        return Current() == EftBP;
+    }
+    bool IsMP()
+    {
+        return Current() == MP;
+    }
+    bool IsLS()
+    {
+        return Current() == LS;
+    }
+    E Current();
+};
+
+
+struct Language : public GameSetting
 {
     enum E
     {
@@ -63,16 +113,9 @@ struct Language
         Count
     };
 
-    static void Set(E);
+    Language() : GameSetting("language") { }
 
-    static E Current()
-    {
-        return current;
-    }
-
-private:
-
-    static E current;
+    void Set(int);
 };
 
 

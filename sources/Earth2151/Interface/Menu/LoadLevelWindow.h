@@ -2,7 +2,7 @@
 #pragma once
 
 
-class LoadLevelWindow : public Window, public Global<LoadLevelWindow>
+class LoadLevelWindow : public Pi::Window, public Global<LoadLevelWindow>
 {
 public:
 
@@ -18,7 +18,7 @@ private:
 
     void HandleWidgetEvent(Widget *, const WidgetEventData *);
 
-    static bool FileMapFilterLevels(pchar name, uint32 flags, const void *);
+    static bool FileMapFilterLevels(pchar name, uint flags, const void *);
 };
 
 

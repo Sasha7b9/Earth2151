@@ -15,8 +15,7 @@ PanelMap *ThePanelMap = nullptr;
 
 PanelMap::PanelMap()
     : PanelWindow(SET::GUI::MAP::SIZE()),
-    Global<PanelMap>(ThePanelMap),
-    observer(this, &PanelMap::HandleObserver)
+    Global<PanelMap>(ThePanelMap)
 {
 
     SetMovementMutator(Point2D((float)SET::GUI::MAP::VIEW::X(), (float)SET::GUI::MAP::VIEW::Y()),
@@ -61,10 +60,12 @@ void PanelMap::HandleObserver(MouseObservable *, ::Type type)
     }
 }
 
+
 void PanelMap::PreprocessWidget()
 {
     PanelWindow::PreprocessWidget();
 }
+
 
 void PanelMap::HandleHideShow(Widget *, const WidgetEventData *)
 {
@@ -77,6 +78,23 @@ PanelMapSprocket::PanelMapSprocket(PanelMap *panel_) : Sprocket(kMutatorPanelMap
 
 }
 
+
+void PanelMap::ClearMap()
+{
+    mutator->Clear();
+}
+
+
+void PanelMapSprocket::Clear()
+{
+    panel->SetColorBackground(Color::white);
+    panel->Clear();
+    panel->EndPaint();
+
+    need_build = true;
+}
+
+
 void PanelMapSprocket::MoveSprocket()
 {
     if (!Landscape::IsCreated())
@@ -84,11 +102,11 @@ void PanelMapSprocket::MoveSprocket()
         return;
     }
 
-    static bool first = true;
-
-    if (first)
+    if (need_build)
     {
-        first = false;
+        need_build = false;
+
+        SAFE_DELETE(buffer);
 
         buffer = new Canvas(panel);
 

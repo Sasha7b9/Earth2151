@@ -18,6 +18,7 @@
 #include <Interface/C4Viewports.h>
 #include <Interface/C4ToolWindows.h>
 
+
 #undef Bool
 #include <rapidjson/document.h>
 
@@ -25,6 +26,7 @@
 #include <chrono>
 #include <filesystem>
 #include <array>
+#include <map>
 
 
 using namespace Pi;

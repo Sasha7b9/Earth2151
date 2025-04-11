@@ -10,6 +10,11 @@ public:
 
     Editor();
 
+    virtual ~Editor()
+    {
+        UnloadLevel();
+    }
+
     void OpenWindowLoadLevel();
 
     void LoadLevel(pchar);

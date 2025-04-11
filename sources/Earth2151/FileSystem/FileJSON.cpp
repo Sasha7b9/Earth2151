@@ -1,6 +1,6 @@
 // 2022/09/14 14:34:59 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "stdafx.h"
-#include "Utils/FileJSON.h"
+#include "FileSystem/FileJSON.h"
 #include "Utils/StringUtils.h"
 
 
@@ -236,11 +236,6 @@ bool FileJSON::GetVectorStrings(pchar key, Array<String<>> &strings)
                 }
             }
         }
-    }
-
-    if (strings.GetArrayElementCount() == 0)
-    {
-        LOG_ERROR("Can't load array from key %s", key);
     }
 
     return strings.GetArrayElementCount() != 0;

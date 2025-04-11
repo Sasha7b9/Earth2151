@@ -91,7 +91,7 @@ void GameCursor::MoveWidget()
 
     int frame = (int)currentFrame;
  
-   SetSkin(frame);
+    SetSkin(frame);
 }
 
 

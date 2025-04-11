@@ -49,7 +49,7 @@ struct HeapBuffer
         {
             size += append_size;
             uint8 *data_new = new uint8[size];
-            std::memcpy(data_new, data, pointer);
+            std::memcpy(data_new, data, pointer); //-V575
             delete[] data;
             data = data_new;
 

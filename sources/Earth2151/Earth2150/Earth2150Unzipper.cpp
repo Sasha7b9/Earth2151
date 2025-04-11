@@ -20,7 +20,7 @@ bool Earth2150::Unzipper::UnzipFile(pchar file_name, HeapBuffer &data)
 {
     if (Text::ExtractExtension(file_name) == "wd")
     {
-        return UnzipAnother(file_name, data);
+//        return UnzipAnother(file_name, data);
     }
 
     return UnzipAnother(file_name, data);
@@ -107,8 +107,6 @@ bool Earth2150::Unzipper::UnzipAnother(pchar file_name, HeapBuffer &data)
                             (void)inflateEnd(&strm);
                             return false;
                         case Z_DATA_ERROR:
-                            (void)inflateEnd(&strm);
-                            return false;
                         case Z_MEM_ERROR:
                             (void)inflateEnd(&strm);
                             return false;
@@ -200,7 +198,7 @@ void Earth2150::Unzipper::UnzipAllWD(pchar path)
 
             while (element)
             {
-                String<> full_name(String<>(path) + element->GetFileName());
+                String<> full_name(String<>(path) + element->fileName);
 
                 ArchiveWD archive(full_name.c_str());
 

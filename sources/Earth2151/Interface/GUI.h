@@ -10,8 +10,8 @@ public:
     GUI();
     ~GUI();
 
-    void Hide();
     void Show();
+    void Hide();
 
     void MouseLeftIsPress();
     void MouseLeftIsRelease();

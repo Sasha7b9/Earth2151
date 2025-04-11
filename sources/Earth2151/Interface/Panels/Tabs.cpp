@@ -226,13 +226,13 @@ void NotebookMainPanel::SetActiveTab(uint tabID)
 {
     for (int i = 0; i < tabs.GetArrayElementCount(); i++)
     {
-        RemoveSubnode(tabs[i]);
+        Notebook::RemoveSubnode(tabs[i]);
         tabTitle->buttons[i]->SetSelected(false);
     }
 
     if ((int)tabID < tabs.GetArrayElementCount())
     {
-        AppendSubnode(tabs[tabID]);
+        Notebook::AppendSubnode(tabs[tabID]);
         tabTitle->buttons[tabID]->SetSelected(true);
     }
 }

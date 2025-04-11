@@ -25,9 +25,9 @@ public:
 
     SmokePowerPlaint(const ColorRGB &color) :
         PointParticleSystem(kParticleSmokePowerPlaint, &particlePool, "particle/Trail"),
+        smokeColor(color),
         particlePool(kMaxParticleCount, particleArray)
     {
-        smokeColor = color;
     }
 
     ~SmokePowerPlaint() { }
@@ -163,9 +163,9 @@ public:
 
     SmokeRocket(const ColorRGB &color) :
         PointParticleSystem(kParticleSmokeRocket, &particlePool, "particle/Trail"),
+        smokeColor(color),
         particlePool(kMaxParticleCount, particleArray)
     {
-        smokeColor = color;
     }
 
     ~SmokeRocket()

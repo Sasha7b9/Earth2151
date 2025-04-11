@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #include "Interface/Menu/StartSettingsWindow.h"
 #include "Interface/Menu/StartWindow.h"
-#include "Utils/Local.h"
+#include "Utils/Locale.h"
 #include "Settings.h"
 
 
@@ -38,13 +38,13 @@ void StartSettingsWindow::PreprocessWidget()
         MENU_LANG->AppendMenuItem(new MenuItemWidget("Polish"));
         MENU_LANG->AppendMenuItem(new MenuItemWidget("Russian"));
 
-        MENU_LANG->SetSelection(0, true);
+        MENU_LANG->SetSelection(Language().Current(), true);
 
-        MENU_GAME->AppendMenuItem(new MenuItemWidget("Esacape from the Blue Planet"));
+        MENU_GAME->AppendMenuItem(new MenuItemWidget("Escape from the Blue Planet"));
         MENU_GAME->AppendMenuItem(new MenuItemWidget("The Moon Project"));
         MENU_GAME->AppendMenuItem(new MenuItemWidget("Lost Souls"));
 
-        MENU_GAME->SetSelection(0, true);
+        MENU_GAME->SetSelection(TypeGame().Current(), true);
     }
 
     Localize();
@@ -53,6 +53,11 @@ void StartSettingsWindow::PreprocessWidget()
 
 void StartSettingsWindow::Localize()
 {
+    if (!TheStartSettingsWindow)
+    {
+        return;
+    }
+
     BTN_CLOSE->SetText(_L("trClose"));
     TXT_SETTINGS->SetText(_L("trSettings"));
     TXT_GAME->SetText(_L("trGame"));
@@ -65,7 +70,7 @@ void StartSettingsWindow::HandleButtonEvent(Widget *widget, const WidgetEventDat
     {
         if (widget == BTN_CLOSE)
         {
-            TheInterfaceMgr->RemoveWidget(this);
+            TheInterfaceMgr->RemoveWidget(TheStartSettingsWindow);
             TheInterfaceMgr->AddWidget(TheStartWindow);
         }
     }
@@ -73,11 +78,11 @@ void StartSettingsWindow::HandleButtonEvent(Widget *widget, const WidgetEventDat
     {
         if (widget == MENU_LANG)
         {
-            Language::Set((Language::E)MENU_LANG->GetSelection());
+            Language().Set((Language::E)MENU_LANG->GetSelection());
         }
         else if (widget == MENU_GAME)
         {
-            TypeGame::Set((TypeGame::E)MENU_GAME->GetSelection());
+            TypeGame().Set((TypeGame::E)MENU_GAME->GetSelection());
         }
     }
 }

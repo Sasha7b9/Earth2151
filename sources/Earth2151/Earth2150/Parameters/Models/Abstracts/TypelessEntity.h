@@ -6,7 +6,7 @@
 struct TypelessEntity : public Entity
 {
     TypelessEntity(const String<> &name, const Array<int> &researches) 
-        : Entity(name, researches, EntityClassType::None)
+        : Entity(name, researches, EntityClassType::_None)
     {
 
     }

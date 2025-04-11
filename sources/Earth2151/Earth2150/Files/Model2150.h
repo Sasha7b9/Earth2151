@@ -113,6 +113,7 @@ struct Part
         Lift
     };
 
+    int num_verices;
     Array<Vertex> vertices;
     uint8 backTrackDepth;
     PartType type;

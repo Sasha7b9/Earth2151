@@ -19,23 +19,51 @@ Editor *TheEditor = nullptr;
 
 Editor::Editor() : Global<Editor>(TheEditor)
 {
+    if (!TheCameraRTS)
+    {
+        new CameraRTS();
+    }
+
     TheWorldMgr->LoadWorld("world");
 
     Sun::Init();
 
     TheMessageMgr->BeginSinglePlayerGame();
 
-    CameraSpecatator::Create(TheGameWorld->FindSpectatorLocator(TheWorldMgr->GetWorld()->GetRootNode()));
+    if (!TheCameraSpectator)
+    {
+        CameraSpecatator::Create(GameWorld::Current()->FindSpectatorLocator(TheWorldMgr->GetWorld()->GetRootNode()));
+    }
 
-    CameraRTS::Create(TheGameWorld->FindSpectatorLocator(TheWorldMgr->GetWorld()->GetRootNode()));
+    TheGUI->Show();
 
-    new GUI();
+    TheInputMgr->SetEscapeCallback(&EscapeCallback, this);
 }
 
 
 void Editor::LoadLevel(pchar name)
 {
     UnloadLevel();
+
+    if (!TheCameraRTS)
+    {
+        new CameraRTS();
+    }
+
+    TheWorldMgr->LoadWorld("world");
+
+    Sun::Init();
+
+    TheMessageMgr->BeginSinglePlayerGame();
+
+    if (!TheCameraSpectator)
+    {
+        CameraSpecatator::Create(GameWorld::Current()->FindSpectatorLocator(TheWorldMgr->GetWorld()->GetRootNode()));
+    }
+
+    TheGUI->Show();
+
+    TheInputMgr->SetEscapeCallback(&EscapeCallback, this);
 
     String<> full_name = RESOURCE_PATH("Levels/") + name;
 
@@ -62,8 +90,6 @@ void Editor::LoadLevel(pchar name)
     }
 
     Sun::Init();
-
-    TheInputMgr->SetEscapeCallback(&EscapeCallback, this);
 }
 
 
@@ -85,15 +111,29 @@ void Editor::UnloadLevel()
 
     PoolTextures::Destruct();
 
-    TheWorldMgr->GetWorld()->GetRootNode()->PurgeSubtree();
+    TheWorldMgr->UnloadWorld();
+
+    if (ThePanelMap)
+    {
+        ThePanelMap->ClearMap();
+    }
 }
 
 
 void Editor::EscapeCallback(void *)
 {
-    TheInterfaceMgr->AddWidget(TheGameMenuWindow);
+    if (TheEarth2151->InPaused())
+    {
+        TheInterfaceMgr->RemoveWidget(TheGameMenuWindow);
 
-    TheEarth2151->Pause();
+        TheEarth2151->Resume();
+    }
+    else
+    {
+        TheInterfaceMgr->AddWidget(TheGameMenuWindow);
+
+        TheEarth2151->Pause();
+    }
 }
 
 
@@ -131,7 +171,7 @@ void Editor::CreateGameObjects()
 
     int counter = 0;
 
-    for each(LObject & obj in TheLevel->objects.objects)
+    for (LObject &obj : TheLevel->objects.objects)
     {
         obj.jobCreateObject.ExecuteJob();
 

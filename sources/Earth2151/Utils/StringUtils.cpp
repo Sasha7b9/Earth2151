@@ -13,11 +13,6 @@ FileReader::FileReader(File *file)
 {
     size = file->GetFileSize();
 
-    if (size == 56)
-    {
-        size = size;
-    }
-
     data = new uint8[size];
 
     pointer = file->GetFilePosition();
@@ -98,13 +93,13 @@ uint8 *FileReader::ReadBuffer(void *buffer, int num_bytes)
 
 String<> FileReader::ReadString(int size_length)
 {
-    uint size = ReadUInt();
+    uint s = ReadUInt();
 
     char buffer[1024];
 
-    ReadBuffer(buffer, size);
+    ReadBuffer(buffer, s);
 
-    buffer[size] = '\0';
+    buffer[s] = '\0';
 
     return String<>(buffer);
 }
@@ -163,4 +158,26 @@ void SU::SplitToWords(pchar input, Array<String<>> &out, pchar delim)
 double SU::ASCIItoFloat(pchar str)
 {
     return std::atof(str);
+}
+
+
+int SU::Compare(pchar str1, pchar str2)
+{
+    return std::strcmp(str1, str2);
+}
+
+
+String<> SU::RemoveQuotes(pchar line)
+{
+    if (line[0] != '\"')
+    {
+        return line;
+    }
+
+    char buffer[512];
+    std::strcpy(buffer, line);
+
+    buffer[std::strlen(buffer) - 1] = '\0';
+
+    return String<>(buffer + 1);
 }

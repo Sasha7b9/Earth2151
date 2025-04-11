@@ -7,21 +7,24 @@
 #include "Interface/Menu/EnterGameWindow.h"
 #include "Interface/Menu/StartSettingsWindow.h"
 #include "Interface/Menu/LoadLevelWindow.h"
+#include "Interface/Menu/ConfirmRemovePlayerWindow.h"
 
 
 void EMenu::Init()
 {
     new StartWindow();
 
-//    new ChoicePlayerWindow();
+    new ChoicePlayerWindow();
 
-//    new GameMenuWindow();
+    new GameMenuWindow();
 
-//    new EnterGameWindow();
+    new EnterGameWindow();
 
     new StartSettingsWindow();
 
     new LoadLevelWindow();
+
+    new ConfirmRemovePlayerWindow();
 }
 
 
@@ -29,27 +32,26 @@ void EMenu::DeInit()
 {
     delete TheStartWindow;
 
-//    delete TheChoicePlayerWindow;
+    delete TheChoicePlayerWindow;
 
-//    delete TheGameMenuWindow;
+    delete TheGameMenuWindow;
 
-//    delete TheEnterGameWindow;
+    delete TheEnterGameWindow;
 
     delete TheStartSettingsWindow;
 
     delete TheLoadLevelWindow;
+
+    delete TheConfirmDeletePlayerWindow;
 }
 
 
 void EMenu::Localize()
 {
-    if (TheStartWindow)
-    {
-        TheStartWindow->Localize();
-//        TheChoicePlayerWindow->Localize();
-//        TheGameMenuWindow->Localize();
-//        TheEnterGameWindow->Localize();
-        TheStartSettingsWindow->Localize();
-        TheLoadLevelWindow->Localize();
-    }
+    TheStartWindow->Localize();
+    TheEnterGameWindow->Localize();
+    TheStartSettingsWindow->Localize();
+    TheLoadLevelWindow->Localize();
+    TheGameMenuWindow->Localize();
+    TheChoicePlayerWindow->Localize();
 }

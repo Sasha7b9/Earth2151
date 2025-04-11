@@ -56,3 +56,39 @@ void Clock::Resume()
 {
     count_MS_delta += TheTimeMgr->GetMillisecondCount() - count_MS_start_pause_engine;
 }
+
+
+uint Clock::CountTicks()
+{
+    return UCOUNT_MS / 50;
+}
+
+
+Counter::Counter()
+{
+    Reset();
+}
+
+
+void Counter::Reset()
+{
+    start = COUNT_TICKS;
+}
+
+
+uint Counter::Elapsed() const
+{
+    return COUNT_TICKS - start;
+}
+
+
+void Counter::Start(uint dT)
+{
+    time_finished = COUNT_TICKS + dT;
+}
+
+
+bool Counter::IsFinished() const
+{
+    return COUNT_TICKS >= time_finished;
+}

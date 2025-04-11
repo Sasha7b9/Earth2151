@@ -100,7 +100,7 @@ void TexMesh2150::Init()
         {
             FileTex2150 *texture = new FileTex2150();
 
-            texture->file_name_tex = RESOURCE_PATH((String<>("Textures/") + element->GetFileName()).c_str());
+            texture->file_name_tex = RESOURCE_PATH((String<>("Textures/") + element->fileName).c_str());
 
             uint start_read = UCOUNT_MS;
 
@@ -204,7 +204,7 @@ bool TexMesh2150::BuildCanvas(FileTex2150 *tex)
 
 void TexMesh2150::DeInit()
 {
-    for each(auto tex in textures)
+    for (auto tex : textures)
     {
         delete tex.second;
     }

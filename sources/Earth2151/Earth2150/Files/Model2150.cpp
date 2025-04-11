@@ -34,9 +34,7 @@ static Vector3D ReadVector3D(FileReader &reader)
 
     reader.ReadBuffer(&vector, sizeof(vector));
 
-    vector.x = vector.x;
     vector.y = -vector.y;
-    vector.z = vector.z;
 
     return vector;
 }
@@ -412,7 +410,7 @@ Slot Model2150::ReadSlot(int id, FileReader &reader)
 
     Vector3D vec{ x, y, z };
 
-    return { id, vec, reader.ReadByte() / 255.0f * 3.1415296f * 2.0f, reader.ReadByte() };
+    return { id, vec, reader.ReadByte() / 255.0f * Math::pi * 2.0f, reader.ReadByte() };
 }
 
 
@@ -609,7 +607,7 @@ void Part::ReadAnimations(FileReader &reader, File &file_txt)
 
 void Part::ReadVertices(FileReader &reader)
 {
-    reader.ReadInt();                       // \todo Это количество вершин. Возможно, оно понадобится
+    num_verices = reader.ReadInt();
     int num_blocks = reader.ReadInt();
 
     for (int block = 0; block < num_blocks; block++)
@@ -884,39 +882,39 @@ GenericGeometry *Part::CreateGeometry(int num) const
 }
 
 
-String<> Part::NamePartType(PartType type) const
+String<> Part::NamePartType(PartType _type) const
 {
     String<> result;
 
-    if (type & PartType::Base)
+    if (_type == PartType::Base)
     {
         result.AppendString("_Base");
     }
-    if (type & PartType::ViewerFaced)
+    if (_type & PartType::ViewerFaced)
     {
         result.AppendString("_ViewerFaced");
     }
-    if (type & PartType::Barrel)
+    if (_type & PartType::Barrel)
     {
         result.AppendString("_Barrel");
     }
-    if (type & PartType::Subpart)
+    if (_type & PartType::Subpart)
     {
         result.AppendString("_Subpart");
     }
-    if (type & PartType::Emitter1)
+    if (_type & PartType::Emitter1)
     {
         result.AppendString("_Emitter1");
     }
-    if (type & PartType::Emitter2)
+    if (_type & PartType::Emitter2)
     {
         result.AppendString("_Emitter2");
     }
-    if (type & PartType::Emitter3)
+    if (_type & PartType::Emitter3)
     {
         result.AppendString("_Emitter3");
     }
-    if (type & PartType::Emitter4)
+    if (_type & PartType::Emitter4)
     {
         result.AppendString("_Emitter4");
     }
@@ -933,18 +931,20 @@ void Model2150::SaveToFileMDL()
 
         // Если раскомментировать, то gizmo исчезает с модели
         {
-          Model *modelC4 = new Model();
+            Model *modelC4 = new Model();
 
-          modelC4->AppendNewSubnode(node);
+            modelC4->AppendNewSubnode(node);
 
-          File file;
+            File file;
 
-          if (file.OpenFile(RESOURCE_PATH("meshes/") + file_name + ".mdl", kFileCreate) == kFileOkay)
-          {
-              modelC4->PackWorldResource(file, kPackInitialize);
+            if (file.OpenFile(RESOURCE_PATH("meshes/") + file_name + ".mdl", kFileCreate) == kFileOkay)
+            {
+                modelC4->PackWorldResource(file, kPackInitialize);
 
-              file.CloseFile();
-          }
+                file.CloseFile();
+            }
+
+            delete modelC4;
         }
     }
     else

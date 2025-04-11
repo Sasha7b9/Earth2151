@@ -1,7 +1,7 @@
 ﻿// 2025/03/22 21:29:10 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "stdafx.h"
 #include "Interface/Menu/LoadLevelWindow.h"
-#include "Utils/Local.h"
+#include "Utils/Locale.h"
 #include "Earth2151.h"
 #include "Editor/Editor.h"
 #include "Objects/World/Landscape.h"
@@ -46,7 +46,7 @@ void LoadLevelWindow::PreprocessWidget()
 
     while (element)
     {
-        LIST_LEVELS->AppendListItem(element->GetFileName());
+        LIST_LEVELS->AppendListItem(element->fileName);
         element = element->GetNextMapElement();
     }
 
@@ -57,10 +57,12 @@ void LoadLevelWindow::PreprocessWidget()
 
     LIST_LEVELS->InvalidateWidget();
     LIST_LEVELS->UpdateWidget();
+
+    Localize();
 }
 
 
-bool LoadLevelWindow::FileMapFilterLevels(pchar name, uint32 flags, const void *)
+bool LoadLevelWindow::FileMapFilterLevels(pchar name, uint flags, const void *)
 {
     if (name[0] == '.')
     {
@@ -80,6 +82,11 @@ bool LoadLevelWindow::FileMapFilterLevels(pchar name, uint32 flags, const void *
 
 void LoadLevelWindow::Localize()
 {
+    if (!TheLoadLevelWindow)
+    {
+        return;
+    }
+
     Window::PreprocessWidget();
 
     BTN_LOAD->SetText(_L("trLoad"));
@@ -94,15 +101,15 @@ void LoadLevelWindow::HandleWidgetEvent(Widget *widget, const WidgetEventData *e
     {
         if (widget == BTN_CANCEL)
         {
-            TheInterfaceMgr->RemoveWidget(this);
+            TheInterfaceMgr->RemoveWidget(TheLoadLevelWindow);
         }
-        else if(widget == BTN_LOAD)
+        else if(widget == BTN_LOAD || widget == LIST_LEVELS)
         {
             TextWidget *text = (TextWidget *)LIST_LEVELS->GetFirstSelectedListItem();
 
             TheEditor->LoadLevel(text->GetText());
 
-            TheInterfaceMgr->RemoveWidget(this);
+            TheInterfaceMgr->RemoveWidget(TheLoadLevelWindow);
 
             TheCameraRTS->SetPointFocus({ Landscape::GetNumColumns() / 2.0f, Landscape::GetNumRows() / 2.0f, 0.0f });
         }

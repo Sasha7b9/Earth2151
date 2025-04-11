@@ -2,7 +2,7 @@
 #pragma once
 
 
-class StartSettingsWindow : public Window, public Global<StartSettingsWindow>
+class StartSettingsWindow : public Pi::Window, public Global<StartSettingsWindow>
 {
 public:
 

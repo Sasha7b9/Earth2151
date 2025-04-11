@@ -3,17 +3,19 @@
 #include "Interface/Menu/EnterGameWindow.h"
 #include "Interface/Menu/ChoicePlayerWindow.h"
 #include "Earth2151.h"
+#include "Utils/Locale.h"
+#include "Game/Game.h"
 
 
 EnterGameWindow *TheEnterGameWindow = nullptr;
 
 
-#define BTN_NEW FindWidget("btnNewGame")
-#define BTN_LOAD FindWidget("btnLoadGame")
-#define BTN_TUTORIAL FindWidget("btnTutorial")
-#define BTN_VIDEO FindWidget("btnVideo")
-#define BTN_BACK FindWidget("btnBack")
-#define BTN_QUIT FindWidget("btnQuit")
+#define BTN_NEW      ((PushButtonWidget *)FindWidget("btnNewGame"))
+#define BTN_LOAD     ((PushButtonWidget *)FindWidget("btnLoadGame"))
+#define BTN_TUTORIAL ((PushButtonWidget *)FindWidget("btnTutorial"))
+#define BTN_VIDEO    ((PushButtonWidget *)FindWidget("btnVideo"))
+#define BTN_BACK     ((PushButtonWidget *)FindWidget("btnBack"))
+#define BTN_QUIT     ((PushButtonWidget *)FindWidget("btnQuit"))
 
 
 EnterGameWindow::EnterGameWindow() : Window("panels/EnterGame"), Global<EnterGameWindow>(TheEnterGameWindow)
@@ -32,15 +34,30 @@ void EnterGameWindow::PreprocessWidget()
     BTN_BACK->SetObserver(&btnBackObserver);
     BTN_QUIT->SetObserver(&btnOuitObserver);
 
-    BTN_NEW->HideWidget();
+//    BTN_NEW->HideWidget();
+    BTN_TUTORIAL->HideWidget();
     BTN_LOAD->HideWidget();
     BTN_VIDEO->HideWidget();
+
+    Localize();
 }
 
 
 void EnterGameWindow::Localize()
 {
+    if (!TheEnterGameWindow)
+    {
+        return;
+    }
 
+    Window::PreprocessWidget();
+
+    BTN_NEW->SetText(_L("trNewGame"));
+    BTN_LOAD->SetText(_L("trLoadGame"));
+    BTN_TUTORIAL->SetText(_L("trTutorial"));
+    BTN_VIDEO->SetText(_L("trVideos"));
+    BTN_BACK->SetText(_L("trReturn"));
+    BTN_QUIT->SetText(_L("trQuit"));
 }
 
 
@@ -50,7 +67,9 @@ void EnterGameWindow::HandleButtonEvent(Widget *widget, const WidgetEventData *e
     {
         if (widget == BTN_NEW)
         {
-
+            TheInterfaceMgr->RemoveWidget(TheEnterGameWindow);
+            ApplicationMode::Set(ApplicationMode::Game);
+            new Game();
         }
         else if (widget == BTN_LOAD)
         {
@@ -58,8 +77,8 @@ void EnterGameWindow::HandleButtonEvent(Widget *widget, const WidgetEventData *e
         }
         else if (widget == BTN_TUTORIAL)
         {
-            TheInterfaceMgr->RemoveWidget(TheEnterGameWindow);
-            TheEarth2151->LoadLevel();
+//            TheInterfaceMgr->RemoveWidget(TheEnterGameWindow);
+//            TheGame->LoadLevel("!BaseED");
         }
         else if (widget == BTN_VIDEO)
         {
@@ -76,6 +95,12 @@ void EnterGameWindow::HandleButtonEvent(Widget *widget, const WidgetEventData *e
             TheEngine->Quit();
         }
     }
+}
+
+
+void EnterGameWindow::SetNamePlayer(const String<> &)
+{
+
 }
 
 

@@ -6,6 +6,6 @@
 class TranslatableResource : public ResourceWD
 {
 public:
-    TranslatableResource(const String<> &filename, ResourceInfoWD, const String<> translationID, std::vector<uint8> * = nullptr);
+    TranslatableResource(const String<> &filename, ResourceInfoWD, const String<> &translationID, std::vector<uint8> * = nullptr);
     std::string translationID;
 };

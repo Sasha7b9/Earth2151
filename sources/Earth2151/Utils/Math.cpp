@@ -1,6 +1,7 @@
 ﻿// 2025/02/14 22:45:36 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "stdafx.h"
 #include "Utils/Math.h"
+#include "Utils/StringUtils.h"
 
 
 uint M::ColorToUINT(const ColorRGBA &color)
@@ -91,4 +92,19 @@ bool M::BetweenTwoPoints(const Point2D &p0, const Point2D &p1, const Point2D &va
     Rect2D rect(l - 1, t - 1, r + 1, b + 1);
 
     return rect.Contains({ (int)value.x, (int)value.y });
+}
+
+
+int M::ResolveMathExpression(pchar expr)
+{
+    Array<String<>> words;
+
+    SU::SplitToWords(expr, words, " |");
+
+    if (words.GetArrayElementCount() == 2)
+    {
+        return std::atoi(words[0].c_str()) | std::atoi(words[1].c_str());
+    }
+
+    return -22222222;
 }

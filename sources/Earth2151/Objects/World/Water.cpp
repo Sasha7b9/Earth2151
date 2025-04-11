@@ -101,15 +101,6 @@ void Water::Create(HeapBuffer &lnd, File &file_txt, int w, int h)
                     level_min = height;
                 }
 
-                if (height < -10.0f)
-                {
-                    height = height;
-                }
-                else
-                {
-                    height = height;
-                }
-
                 cells.AppendArrayElement(WaterCell{ x, Y_FROM_LND(y), height });
 
                 waters[Y_FROM_LND(y)][x].value = height;
@@ -161,8 +152,6 @@ void Water::CreateGeometry()
         WaterCell &cell = cells[i];
 
         GeometryPolygon *poligon = new GeometryPolygon();
-
-        level_min = level_min;
 
         float h = cell.height;
 

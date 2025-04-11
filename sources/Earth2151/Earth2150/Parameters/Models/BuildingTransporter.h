@@ -9,8 +9,9 @@ struct BuildingTransporter : public VerticalTransporter
         VerticalTransporter(name, researhces, type, reader)
     {
         builder_line_ID = reader.ReadString(4);
-        reader.ReadInt();
+        unknown3 = reader.ReadInt();
     }
 
     String<> builder_line_ID;
+    int unknown3;
 };

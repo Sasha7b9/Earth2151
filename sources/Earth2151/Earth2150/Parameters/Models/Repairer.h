@@ -30,7 +30,7 @@ struct Repairer : public Equipment
         int convert_buildiing_time;
         int convert_healthy_tank_time;
 
-        int convert_healty_building_time;   // \ 
+        int convert_healty_building_time;   // /
         int repaint_tank_time;              // | Этих нет в Earth 2150, начинаются с The Moon Project
         int repaint_building_time;          // |
         int upgrade_tank_time;              // /

@@ -228,6 +228,8 @@ static uint ConvertPixel(uint pixel)
 
 void CanvasTexture::SaveToBMP(pchar file_name)
 {
+#ifdef WIN32
+
     int width = header->textureWidth;
     int height = header->textureHeight;
 
@@ -296,7 +298,7 @@ void CanvasTexture::SaveToBMP(pchar file_name)
 
     while (pointer >= buffer)
     {
-        std::memcpy(out_buf, pointer, width * sizeof(uint));
+        std::memcpy(out_buf, pointer, width * sizeof(uint)); //-V575
 
         out.WriteFile(out_buf, width * sizeof(uint));
 
@@ -307,4 +309,10 @@ void CanvasTexture::SaveToBMP(pchar file_name)
 
     delete []out_buf;
     delete []buffer;
+
+#else
+
+    (void)file_name;
+
+#endif
 }

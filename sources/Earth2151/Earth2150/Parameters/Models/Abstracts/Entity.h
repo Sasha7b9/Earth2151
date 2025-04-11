@@ -17,7 +17,7 @@ struct EntityClassType
 {
     enum E
     {
-        None = 0x00000000,
+        _None = 0x00000000,
 
         Vehicle = 0x00c00101,
         SupplyTransporter = 0x01c00101,
@@ -107,11 +107,10 @@ struct EntityGroupType
 
 struct Entity
 {
-    Entity(const String<> &_name, const Array<int> &_researches, EntityClassType::E _type)
+    Entity(const String<> &_name, const Array<int> &_researches, EntityClassType::E _type) :
+        name(_name),
+        type(_type)
     {
-        name = _name;
-        type = _type;
-
         for (int i = 0; i < _researches.GetArrayElementCount(); i++)
         {
             researches.AppendArrayElement(_researches[i]);

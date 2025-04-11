@@ -3,7 +3,7 @@
 #include "Earth2150/Packer/TranslatableResource.h"
 
 
-TranslatableResource::TranslatableResource(const String<> &filename, ResourceInfoWD info, const String<> _translationID, std::vector<uint8> *unknown_data) :
+TranslatableResource::TranslatableResource(const String<> &filename, ResourceInfoWD info, const String<> &_translationID, std::vector<uint8> *unknown_data) :
     ResourceWD(filename, info, unknown_data), translationID(_translationID)
 {
 

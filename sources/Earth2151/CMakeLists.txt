@@ -28,7 +28,7 @@ if(MSVC)
     )
 
     add_compile_options(
-#        /wd4623
+        /wd4623
 
         # rapidjson
         /wd4464     # relative include path contains '..'
@@ -101,7 +101,12 @@ file(GLOB EARTH2150_PACKER                      Earth2150/Packer/*.*)
 file(GLOB EARTH2150_PARAMETERS                  Earth2150/Parameters/*.*)
 file(GLOB EARTH2150_PARAMETERS_MODELS           Earth2150/Parameters/Models/*.*)
 file(GLOB EARTH2150_PARAMETERS_MODELS_ABSTRACTS Earth2150/Parameters/Models/Abstracts/*.*)
+file(GLOB EARTH2150_SCRIPTING                   Earth2150/Scripting/*.*)
+file(GLOB EARTH2150_SCRIPTING_OBJECTS           Earth2150/Scripting/Objects/*.*)
+file(GLOB EARTH2150_SCRIPTING_PRIMITIVES        Earth2150/Scripting/Primitives/*.*)
 file(GLOB EDITOR                                Editor/*.*)
+file(GLOB FILESYSTEM                            FileSystem/*.*)
+file(GLOB GAME                                  Game/*.*)
 file(GLOB GRAPHICS                              Graphics/*.*)
 file(GLOB INPUT                                 Input/*.*)
 file(GLOB INTERFACE                             Interface/*.*)
@@ -136,7 +141,12 @@ source_group(Earth2150/Packer                       FILES ${EARTH2150_PACKER})
 source_group(Earth2150/Parameters                   FILES ${EARTH2150_PARAMETERS})
 source_group(Earth2150/Parameters/Models            FILES ${EARTH2150_PARAMETERS_MODELS})
 source_group(Earth2150/Parameters/Models/Abstracts  FILES ${EARTH2150_PARAMETERS_MODELS_ABSTRACTS})
+source_group(Earth2150/Scripting                    FILES ${EARTH2150_SCRIPTING})
+source_group(Earth2150/Scripting/Objects            FILES ${EARTH2150_SCRIPTING_OBJECTS})
+source_group(Earth2150/Scripting/Primitives         FILES ${EARTH2150_SCRIPTING_PRIMITIVES})
 source_group(Editor                                 FILES ${EDITOR})
+source_group(FileSystem                             FILES ${FILESYSTEM})
+source_group(Game                                   FILES ${GAME})
 source_group(Graphics                               FILES ${GRAPHICS})
 source_group(Input                                  FILES ${INPUT})
 source_group(Interface                              FILES ${INTERFACE})
@@ -170,7 +180,12 @@ add_executable(
     ${EARTH2150_PARAMETERS}
     ${EARTH2150_PARAMETERS_MODELS}
     ${EARTH2150_PARAMETERS_MODELS_ABSTRACTS}
+    ${EARTH2150_SCRIPTING}
+    ${EARTH2150_SCRIPTING_OBJECTS}
+    ${EARTH2150_SCRIPTING_PRIMITIVES}
     ${EDITOR}
+    ${FILESYSTEM}
+    ${GAME}
     ${GRAPHICS}
     ${INPUT}
     ${INTERFACE}
@@ -189,7 +204,7 @@ add_executable(
     ${THIRDPARTY_ZLIB}
 )
 
-add_dependencies(${PROJECT_NAME} PiEngine WorldEditor)
+#add_dependencies(${PROJECT_NAME} PiEngine WorldEditor)
 
 link_runtime()
 

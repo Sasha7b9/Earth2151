@@ -237,7 +237,7 @@ struct FileTex2150
 
     void Destroy()
     {
-        for each(Texture2150 & tex in textures)
+        for (Texture2150 &tex : textures)
         {
             tex.Destroy();
         }

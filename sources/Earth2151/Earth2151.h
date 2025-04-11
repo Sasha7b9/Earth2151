@@ -74,13 +74,6 @@ namespace Pi
 
         static String<> ResourceFile(pchar name);
 
-        void CreateLandscape();
-
-        // Создаёт игровые объекты из файла .mis, ранее считанного
-        void CreateGameObjects();
-
-        void LoadLevel();
-
         // Поставить на паузу
         void Pause();
 
@@ -101,6 +94,8 @@ namespace Pi
         LocatorRegistration     locatorReg{ kLocatorSpectator, "Spectator Camera" };
         MaterialRegistration    materialMarker{ kMaterialSplatter, "material/Splatter" };
 
+        bool in_paused = false;
+
         static World *CreateWorld(pchar name, void *);
 
         static void EscapeCallback(void *);
@@ -111,11 +106,11 @@ namespace Pi
         void HandleGizmoCommand(Command *, pchar);
         void HandleCameraCommand(Command *, pchar);
 
-        bool in_paused = false;
+        virtual void ApplicationTask() override;
     };
 }
 
 
-extern Earth2151 *TheEarth2151;
-extern Level2150 *TheLevel;
+extern Earth2151      *TheEarth2151;
+extern Level2150      *TheLevel;
 extern Parameters2150 *TheParameter;
