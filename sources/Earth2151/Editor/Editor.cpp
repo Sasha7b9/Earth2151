@@ -7,7 +7,7 @@
 #include "GameWorld.h"
 #include "Interface/Menu/GameMenuWindow.h"
 #include "Interface/Menu/LoadLevelWindow.h"
-#include "Earth2150/Files/TexMesh2150.h"
+#include "Game/Files/TexMesh2150.h"
 #include "Graphics/Primitives.h"
 #include "Objects/World/Landscape.h"
 #include "Graphics/PoolTextures.h"
@@ -69,11 +69,13 @@ void Editor::LoadLevel(pchar name)
 
     full_name[full_name.GetStringLength() - 4] = '\0';
 
-    TheLevel = new Level2150{ full_name };
+    level = new Level2150{ full_name };
 
-    CreateLandscape();
+    CreateLandscape(GameWorld::Current());
 
-    TheParameter = new Parameters2150{ RESOURCE_PATH("parameters/EARTH2150.par").c_str() };
+    String<> path = RESOURCE_PATH("parameters/EARTH2150.par");
+
+    TheParameter = new Parameters2150{ path.c_str() };
 
     TheParameter->Save();
 
@@ -82,7 +84,7 @@ void Editor::LoadLevel(pchar name)
     CreateGameObjects();
 
     {
-        TheWorldMgr->GetWorld()->GetRootNode()->AppendNewSubnode(new WorldGizmo(Landscape::GetSize().x, 0.1f));
+        TheWorldMgr->GetWorld()->GetRootNode()->AppendNewSubnode(new WorldGizmo(LANDSCAPE->GetSize().x, 0.1f));
 
         float ambient = 0.5f;
 
@@ -95,13 +97,9 @@ void Editor::LoadLevel(pchar name)
 
 void Editor::UnloadLevel()
 {
-    Tunnels::Destroy();
-
-    Landscape::Destroy();
-
     SAFE_DELETE(TheParameter);
 
-    SAFE_DELETE(TheLevel);
+    SAFE_DELETE(level);
 
     Model2150::Destroy();
 
@@ -147,18 +145,18 @@ void Editor::OpenWindowLoadLevel()
 }
 
 
-void Editor::CreateLandscape()
+void Editor::CreateLandscape(GameWorld *world)
 {
     uint time = UCOUNT_MS;
 
     PoolTextures::Construct();
 
     {
-        if (Earth2150::Reader::ReadLand(*TheLevel))
+        if (Earth2150::Reader::ReadLand(*level))
         {
-            Landscape::Create(*TheLevel);
+            Landscape::Create(*level, world);
 
-            TheLevel->ReadObjects();
+            level->ReadObjects();
         }
     }
 
@@ -171,7 +169,7 @@ void Editor::CreateGameObjects()
 
     int counter = 0;
 
-    for (LObject &obj : TheLevel->objects.objects)
+    for (LObject &obj : level->objects.objects)
     {
         obj.jobCreateObject.ExecuteJob();
 

@@ -57,7 +57,7 @@ void FS::RemoveFile(pchar nameFile)
     {
         if (errno != 2)                 // Файл не существует
         {
-            LOG_ERROR("Can't remove file %s", nameFile);
+            LOG_ERROR_HI("Can't remove file %s", nameFile);
 
             DISPLAY_LAST_ERROR();
         }
@@ -91,14 +91,14 @@ bool FS::RemoveDirectory(pchar name)
 
     if (result != 0)
     {
-        LOG_ERROR("Error SHFileOperation for directory \"%s\" with code %d", name, result);
+        LOG_ERROR_HI("Error SHFileOperation for directory \"%s\" with code %d", name, result);
     }
 
     return result == 0;
 
 #else
 
-    LOG_ERROR("FS::RemoveDirectory() Not implemented for Linux");
+    LOG_ERROR_HI("FS::RemoveDirectory() Not implemented for Linux");
 
     return false;
 
@@ -127,7 +127,7 @@ bool FS::File::Open(pchar _name, ModeAccess::E mode)
 
     if (handle == INVALID_HANDLE_VALUE)
     {
-        LOG_ERROR("Can't open file \"%s\"", name.c_str());
+        LOG_ERROR_HI("Can't open file \"%s\"", name.c_str());
 
         DISPLAY_LAST_ERROR();
 
@@ -150,7 +150,7 @@ bool FS::File::Open(pchar _name, ModeAccess::E mode)
 
     if (fileDesc == -1)
     {
-        LOG_ERROR("Can't open file \"%s\"", name.c_str());
+        LOG_ERROR_HI("Can't open file \"%s\"", name.c_str());
 
         DISPLAY_LAST_ERROR();
 
@@ -225,7 +225,7 @@ bool FS::File::Create(pchar _name, ModeAccess::E mode)
 
     if (fileDesc < 0)
     {
-        LOG_ERROR("Can't open file %s", name);
+        LOG_ERROR_HI("Can't open file %s", name);
 
         DISPLAY_LAST_ERROR();
 
@@ -248,7 +248,7 @@ void FS::File::Write(const void *buffer, int numBytes)
 
     if (WriteFile(handle, buffer, (DWORD)numBytes, &counter, NULL) == 0)
     {
-        LOG_ERROR("Can't write to file %s", name.c_str());
+        LOG_ERROR_HI("Can't write to file %s", name.c_str());
 
         DISPLAY_LAST_ERROR();
     }
@@ -259,7 +259,7 @@ void FS::File::Write(const void *buffer, int numBytes)
 
     if (write(fileDesc, buffer, numBytes) != numBytes)
     {
-        LOG_ERROR("Can't write to file %s", name.c_str());
+        LOG_ERROR_HI("Can't write to file %s", name.c_str());
 
         DISPLAY_LAST_ERROR();
     }
@@ -287,7 +287,7 @@ void FS::File::Read(void *buffer, size_t numBytes)
 
     if (ReadFile(handle, buffer, (DWORD)numBytes, &counter, NULL) == 0)
     {
-        LOG_ERROR("Can't read from file %s %llu bytes", name.c_str(), numBytes);
+        LOG_ERROR_HI("Can't read from file %s %llu bytes", name.c_str(), numBytes);
 
         DISPLAY_LAST_ERROR();
     }
@@ -296,7 +296,7 @@ void FS::File::Read(void *buffer, size_t numBytes)
 
     if (read(fileDesc, buffer, numBytes) != (ssize_t)numBytes)
     {
-        LOG_ERROR("Can't read from file %s %d bytes", name.c_str(), numBytes);
+        LOG_ERROR_HI("Can't read from file %s %d bytes", name.c_str(), numBytes);
 
         DISPLAY_LAST_ERROR();
     }
@@ -408,7 +408,7 @@ bool FS::CreateDirectory(pchar path)
 
     if (SHCreateDirectory(NULL, wpath.c_str()) != 0)
     {
-        LOG_ERROR("Can't create directory %s", full.c_str());
+        LOG_ERROR_HI("Can't create directory %s", full.c_str());
 
         DISPLAY_LAST_ERROR();
 
@@ -419,7 +419,7 @@ bool FS::CreateDirectory(pchar path)
 
 #else
 
-    LOG_ERROR("Not implemented for Linux");
+    LOG_ERROR_HI("Not implemented for Linux");
 
     return false;
 

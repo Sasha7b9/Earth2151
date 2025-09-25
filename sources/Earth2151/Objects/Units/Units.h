@@ -4,11 +4,11 @@
 
 
 // Базовый класс для юнитов
-class Unit : public MovedObject
+class GUnit : public MovedObject
 {
 protected:
 
-    Unit(pchar name_type) : MovedObject(name_type)
+    GUnit(pchar name_type) : MovedObject(name_type)
     {
         MovedObject::OnEventRebuild();
     }
@@ -18,7 +18,7 @@ protected:
 
 
 // Базовый контроллер для наземных юнитов
-class GroundUnitObject : public Unit
+class GroundUnitObject : public GUnit
 {
 public:
 
@@ -31,7 +31,7 @@ private:
 
 
 // Базовый контроллер для воздушных юнитов
-class AirUnitObject : public Unit
+class AirUnitObject : public GUnit
 {
 public:
 

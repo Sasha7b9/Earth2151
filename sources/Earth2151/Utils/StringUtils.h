@@ -14,24 +14,22 @@ struct FileReader
     int ReadInt();
     uint8 *ReadBuffer(void *buffer, int size);
     // Параметр - ширина поля длины строки, которая начинается с первого байта
-    String<> ReadString(int size_length);
+    String<> ReadString();
     int16 ReadInt16();
     uint ReadUInt();
     float ReadFloat();
     bool ReadBool();
     bool IsEOF();
     void Reset();
-
-    int GetPointer() const
+    int BytesLeft() const;
+    const uint8 *GetData() const
     {
-        return pointer;
+        return data + pointer;
     }
-
-//private:
 
     uint8 *data;
     uint size = 0;
-    uint pointer = 0;
+    int pointer = 0;
 };
 
 
@@ -51,4 +49,8 @@ namespace SU
 
     // Удалить открывающую и закрывающую кавычки, ежели таковые имеются
     String<> RemoveQuotes(pchar);
+
+    int FindSymbol(pchar, char);
+
+    String<> GetSubstring(pchar, int start, int end);
 }

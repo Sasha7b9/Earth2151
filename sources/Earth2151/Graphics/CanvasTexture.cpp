@@ -275,7 +275,7 @@ void CanvasTexture::SaveToBMP(pchar file_name)
 
     if (out.OpenFile(file_name, kFileCreate) != kFileOkay)
     {
-        LOG_ERROR("Can not create file %s", file_name);
+        LOG_ERROR_HI("Can not create file %s", file_name);
 
         delete[]buffer;
 

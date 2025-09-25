@@ -53,15 +53,15 @@ WorldGizmo::WorldGizmo(float _size, float _radius) : Node('wlgz'), size(_size), 
 {
     matRed = Materials::Create(TypeMaterial::Diffuse, Color::red);
 
-    AppendNewSubnode(CreateAxis(matRed, Transform3D::MakeRotationY(Math::pi / 2), { 0.0f,        -radius / 2, radius / 2 }));
+    Node::AppendNewSubnode(CreateAxis(matRed, Transform3D::MakeRotationY(Math::pi / 2), { 0.0f,        -radius / 2, radius / 2 }));
 
     matGreen = Materials::Create(TypeMaterial::Diffuse, Color::green);
 
-    AppendNewSubnode(CreateAxis(matGreen, Transform3D::MakeRotationX(-Math::pi / 2), { -radius / 2, 0.0f,        radius / 2 }));
+    Node::AppendNewSubnode(CreateAxis(matGreen, Transform3D::MakeRotationX(-Math::pi / 2), { -radius / 2, 0.0f,        radius / 2 }));
 
     matBlue = Materials::Create(TypeMaterial::Diffuse, Color::blue);
 
-    AppendNewSubnode(CreateAxis(matBlue, Transform3D::MakeRotationZ(Math::pi / 2), { radius / 2,  -radius / 2, 0.0f }));
+    Node::AppendNewSubnode(CreateAxis(matBlue, Transform3D::MakeRotationZ(Math::pi / 2), { radius / 2,  -radius / 2, 0.0f }));
 }
 
 

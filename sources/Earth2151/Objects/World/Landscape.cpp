@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #include "Objects/World/Landscape.h"
 #include "Graphics/PoolTextures.h"
-#include "Earth2150/Files/TexLand2150.h"
+#include "Game/Files/TexLand2150.h"
 #include "Utils/Math.h"
 #include "GameWorld.h"
 #include "Objects/World/Tunnels.h"
@@ -11,345 +11,36 @@
 #include <map>
 
 
-namespace Landscape
+
+Landscape::Landscape(Level2150 &info, GameWorld *world)
 {
-    static int SIZE_SEGMENT = 64;                           // Ландшафт разделён на сегменты для ускорения загрузки (так можно загружать его потоками и потому
-                                                            // что двигатель не может обрабатывать геометрию с более чем 65535 вершинами
-
-    static Array<GeometryObject *> geometries;
-
-    // Сюда складываются вектора нормалей по мере построения треугольников, чтобы во время построения ландшафта извлекать их усреднения для
-    // получения сглаживания ландшафта
-
-    struct StructNormals
-    {
-        StructNormals(int _x, int _y)
-        {
-            x = _x;
-            y = _y;
-        }
-
-        int x;
-        int y;
-
-        int Value() const
-        {
-            return x * 1000 + y;
-        }
-
-        bool operator<(const StructNormals &b) const
-        {
-            return Value() < b.Value();
-        }
-    };
-
-    template<class T>
-    struct StorageNormals
-    {
-        std::map<T, Array<Vector3D>> normals;
-
-        void Destroy()
-        {
-            for (auto &item : normals)
-            {
-                item.second.PurgeArray();
-            }
-
-            normals.clear();
-        }
-
-        int X(float x)
-        {
-            return (int)(x * 1000.0f);
-        }
-
-        int Y(float y)
-        {
-            return (int)(y * 1000.0f);
-        }
-
-        void Append(float x, float y, const Vector3D &normal)
-        {
-            T key{ X(x), Y(y) };
-
-            auto it = normals.find(key);
-
-            if (it == normals.end())
-            {
-                Array<Vector3D> array;
-
-                normals.emplace(std::pair{ key , array });
-            }
-
-            it = normals.find(key);
-
-            it->second.AppendArrayElement(normal);
-        }
-
-        Vector3D Get(float x, float y)
-        {
-            auto it = normals.find({ X(x), Y(y) });
-
-            if (it != normals.end())
-            {
-                Vector3D sum = Vector3D::zero;
-
-                for (int i = 0; i < it->second.GetArrayElementCount(); i++)
-                {
-                    Vector3D &vec = (it->second)[i];
-
-                    sum += vec;;
-                }
-
-                return sum.Normalize();
-            }
-
-            return Vector3D::zero;
-        }
-    };
-
-    static StorageNormals<StructNormals> storage_normals;
-
-    // Описывает элементарный треугольник для построения геометрической сетки ландшафта
-    struct Triangle
-    {
-        Triangle(const Point3D p[3],  const Point2D tex[3])
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                ver[i] = p[i];
-            }
-
-            Vector3D vec01 = p[0] - p[1]; //-V525
-            Vector3D vec02 = p[0] - p[2];
-            Vector3D vec12 = p[1] - p[2];
-
-            norm[0] = Cross(vec01, vec02);
-            norm[1] = Cross(vec12, -vec01);
-            norm[2] = Cross(-vec02, -vec12);
-
-            storage_normals.Append(ver[0].x, ver[0].y, norm[0]);
-            storage_normals.Append(ver[1].x, ver[1].y, norm[1]);
-            storage_normals.Append(ver[2].x, ver[2].y, norm[2]);
-
-            for (int i = 0; i < 3; i++)
-            {
-                textcoord[i] = tex[i];
-            }
-        }
-
-        Point3D  ver[3];
-        Vector3D norm[3];
-        Point2D  textcoord[3];
-    };
-
-    struct ArrayLand
-    {
-        void SetSize(int width, int height);
-
-        Point2D GetSize() const;
-
-        void SetHeight(int x, int y, float height);
-
-        float GetHeight(int x, int y) const
-        {
-            return rows[y][x].height;
-        }
-
-        Tile GetTile(int x, int y)
-        {
-            return rows[y][x].tile;
-        }
-
-        void SetTunnel(int x, int y, uint8);
-
-        void SetTexture(int x, int y, uint8);
-
-        uint8 GetTexture(int x, int y) const;
-
-        void SetResource(int x, int y, uint8);
-
-        void SetWater(int x, int y, float);
-
-        int GetNumColumns() const
-        {
-            return rows[0].GetArrayElementCount();
-        }
-
-        int GetNumRows() const
-        {
-            return rows.GetArrayElementCount();
-        }
-
-        void AppendTriangle(int x, int y, const Triangle &triang)
-        {
-            rows[y][x].triangles.AppendArrayElement(triang);
-        }
-
-        const Array<Triangle> &GetTriangles(int x, int y)
-        {
-            return rows[y][x].triangles;
-        }
-
-        void SetCorner(int x, int y, int corner, const Point3D &coord)
-        {
-            rows[y][x].corners[corner] = coord;
-        }
-
-        void AddPlane1(int x, int y, float hA, float hB, float hC, float hD);
-        void AddPlane2(int x, int y, float hA, float hB, float hC, float hD);
-
-        void AppendTriangle_LRLX_UUDY(int x, int y, const Point3D &, const Point2D tex[3], bool append);
-        void AppendTriangle_RRLX_UDDY(int x, int y, const Point3D &, const Point2D tex[3], bool append);
-        void AppendTriangle_LRRX_UUDY(int x, int y, const Point3D &, const Point2D tex[3], bool append);
-        void AppendTriangle_LRLX_UDDY(int x, int y, const Point3D &, const Point2D tex[3], bool append);
-        void AppendTriangle(int x, int y,  const Point3D p[3], const Point2D tex[3]);
-
-    private:
-
-        int width;
-        int height;
-
-    public:
-
-        struct Cell
-        {
-            Triangle &GetTriangle(int i)
-            {
-                return triangles[i];
-            }
-
-            void Destroy()
-            {
-                triangles.PurgeArray();
-            }
-
-            float           height;
-            uint8           texture;
-            uint8           resource;
-            float           water;
-            Array<Triangle> triangles;      // Треугольники сетки, принадлежащие данной ячейке
-            Point3D         corners[4];     // Через эти точки строим плоскость, покрывающую данную ячейку
-            Tile            tile;           // Здесь хранятся типы ладшафта по углам
-        };
-
-        Array<Array<Cell>> rows;            // Это рядки. Рядок с номером (height - 1) соответствует рядку 0 в системе координат Earth 2150 (левый верхний угол карты)
-                                            // Нумерация столбиков совпадает
-
-        Cell &GetCell(int x, int y)
-        {
-            return rows[y][x];
-        }
-
-        void Destroy()
-        {
-            for (int i = 0; i < rows.GetArrayElementCount(); i++)
-            {
-                Array<Cell> &row = rows[i];
-
-                for (int j = 0; j < row.GetArrayElementCount(); j++)
-                {
-                    row[j].Destroy();
-                }
-
-                row.PurgeArray();
-            }
-
-            rows.PurgeArray();
-        }
-    };
-
-    static ArrayLand land;
-    static float min_height = 1e3f;
-    static float max_height = -1e3f;
-
-    static float LeftX(int x)
-    {
-        return float(x) - 0.5f;
-    }
-
-    static float RightX(int x)
-    {
-        return float(x) + 0.5f;
-    }
-
-    static float UpY(int y)
-    {
-        return float(y) + 0.5f;
-    }
-
-    static float DownY(int y)
-    {
-        return float(y) - 0.5f;
-    }
-
-    static uint       typeEarth2150;        // Значение по смещению 0 из файла .lnd
-    static String<>   fileName2150;         // Имя файла из файла .lnd
-    static uint8      guid2150[16];
-    static String<>   translate_mission;
-    static int        type_texture;         // 0...7 в зависимости от времени года
-
-    static void FillLnd(Level2150 &);
-
-    // siz_size - размер ячейки хранения размера
-    static String<> ReadString(int size_size, HeapBuffer &);
-
-    // Рассчитывает треугольники для построения сетки ландшафта
-    static void CreateTrianglesMesh();
-
-    // Строит геометрию ландашфта по заранее рассчитанным треугольникам
-    static void CreateGeometryLandscapeFromTriangles();
-
-    // Создаёт один сегмент ландшафта
-    static void CreateSegment(int x_segment, int y_segment);
-
-    static void AppendTriangles(GeometrySurface *, const Array<Triangle> &);
-}
-
-
-void Landscape::Create(Level2150 &info)
-{
-    uint time = UCOUNT_MS;
+    world->landscape = this;
 
     FillLnd(info);
 
-    LOG_WRITE("time fill %u", UCOUNT_MS - time);
-
-    time = UCOUNT_MS;
-
     TexLand2150::CreateTiles();
-
-    LOG_WRITE("time tiles %u", UCOUNT_MS - time);
-
-    time = UCOUNT_MS;
 
     CreateTrianglesMesh();
 
-    LOG_WRITE("time create mesh %u", UCOUNT_MS - time);
-
-    time = UCOUNT_MS;
-
     CreateGeometryLandscapeFromTriangles();
-
-    LOG_WRITE("time create geometry %u", UCOUNT_MS - time);
 }
 
 
-void Landscape::Destroy()
+void Landscape::Create(Level2150 &info, GameWorld *world)
+{
+    new Landscape(info, world);
+}
+
+
+Landscape::~Landscape()
 {
     land.Destroy();
-
     geometries.PurgeArray();
-
     storage_normals.Destroy();
 
-    Water::Destroy();
-}
+    SAFE_DELETE(tunnels);
 
-
-bool Landscape::IsCreated()
-{
-    return land.GetNumRows();
+    SAFE_DELETE(water);
 }
 
 
@@ -378,7 +69,7 @@ void Landscape::FillLnd(Level2150 &info)
 
     land.SetSize(width, height);
 
-    LOG_WRITE("Landscape %d x %d", width, height);
+//    LOG_WRITE("Landscape %d x %d", width, height);
 
     File file_txt;
 
@@ -429,7 +120,7 @@ void Landscape::FillLnd(Level2150 &info)
         }
     }
 
-    Tunnels::ReadTunnels(lnd, file_txt, width, height);
+    tunnels = new Tunnels(lnd, file_txt, width, height);
 
     file_txt.WriteString("\n **************** Textures ***************************");
 
@@ -461,7 +152,7 @@ void Landscape::FillLnd(Level2150 &info)
         }
     }
 
-    Water::Create(lnd, file_txt, width, height);
+    water = new Water(lnd, file_txt, width, height);
 
     file_txt.WriteString("\n **************** Heights ***************************");
 
@@ -469,7 +160,7 @@ void Landscape::FillLnd(Level2150 &info)
     {
         for (int x = 0; x < width; x++)
         {
-            float h = (land.GetHeight(x, y) - Water::LevelSea()) / 256.0f;
+            float h = (land.GetHeight(x, y) - water->LevelSea()) / 256.0f;
 
             if (h < min_height)
             {
@@ -490,7 +181,7 @@ void Landscape::FillLnd(Level2150 &info)
 
     if (lnd.pointer != lnd.pointer_read)
     {
-        LOG_ERROR("Bad file");
+        LOG_ERROR_HI("Bad file");
     }
 }
 
@@ -626,22 +317,22 @@ void Landscape::CreateTrianglesMesh()
             {
                 if (h1 < height)   // Если инврертировать это условие, то исчезнут ступеньки на боках гор
                 {
-                    land.AddPlane1(x, y, h0, h1, h2, h3);
+                    land.AddPlane1(storage_normals, x, y, h0, h1, h2, h3);
                 }
                 else
                 {
-                    land.AddPlane2(x, y, h0, h1, h2, h3);
+                    land.AddPlane2(storage_normals, x, y, h0, h1, h2, h3);
                 }
             }
             else
             {
                 if (h0 > height)    // Если инврертировать это условие, то исчезнут ступеньки на боках гор
                 {
-                    land.AddPlane2(x, y, h0, h1, h2, h3);
+                    land.AddPlane2(storage_normals, x, y, h0, h1, h2, h3);
                 }
                 else
                 {
-                    land.AddPlane1(x, y, h0, h1, h2, h3);
+                    land.AddPlane1(storage_normals, x, y, h0, h1, h2, h3);
                 }
             }
         }
@@ -649,7 +340,7 @@ void Landscape::CreateTrianglesMesh()
 }
 
 
-void Landscape::ArrayLand::AddPlane1(int x, int y, float hA, float hB, float hC, float hD)
+void Landscape::ArrayLand::AddPlane1(StorageNormals<StructNormals> &stn, int x, int y, float hA, float hB, float hC, float hD)
 {
     TexTile tex;
 
@@ -657,15 +348,15 @@ void Landscape::ArrayLand::AddPlane1(int x, int y, float hA, float hB, float hC,
 
     const Point2D tex1[3] = { tex._00, tex._01, tex._10 };
 
-    land.AppendTriangle_LRLX_UUDY(x, y, { hA, hB, hD }, tex1, append);
+    AppendTriangle_LRLX_UUDY(stn, x, y, { hA, hB, hD }, tex1, append);
 
     const Point2D tex2[3] = { tex._10, tex._01, tex._11 };
 
-    land.AppendTriangle_RRLX_UDDY(x, y, { hB, hC, hD }, tex2, append);
+    AppendTriangle_RRLX_UDDY(stn, x, y, { hB, hC, hD }, tex2, append);
 }
 
 
-void Landscape::ArrayLand::AddPlane2(int x, int y, float hA, float hB, float hC, float hD)
+void Landscape::ArrayLand::AddPlane2(StorageNormals<StructNormals> &stn, int x, int y, float hA, float hB, float hC, float hD)
 {
     TexTile tex;
 
@@ -673,11 +364,11 @@ void Landscape::ArrayLand::AddPlane2(int x, int y, float hA, float hB, float hC,
 
     const Point2D tex1[3] = { tex._00, tex._11, tex._10 };
 
-    land.AppendTriangle_LRRX_UUDY(x, y, { hA, hB, hC }, tex1, append);
+    AppendTriangle_LRRX_UUDY(stn, x, y, { hA, hB, hC }, tex1, append);
 
     const Point2D tex2[3] = { tex._00, tex._01, tex._11 };
 
-    land.AppendTriangle_LRLX_UDDY(x, y, { hA, hC, hD }, tex2, append);
+    AppendTriangle_LRLX_UDDY(stn, x, y, { hA, hC, hD }, tex2, append);
 }
 
 
@@ -796,13 +487,13 @@ void Landscape::AppendTriangles(GeometrySurface *surface, const Array<Triangle> 
 }
 
 
-void Landscape::ArrayLand::AppendTriangle(int x, int y, const Point3D points[3], const Point2D tex[3])
+void Landscape::ArrayLand::AppendTriangle(StorageNormals<StructNormals> &stn, int x, int y, const Point3D points[3], const Point2D tex[3])
 {
-    AppendTriangle(x, y, { points, tex });
+    AppendTriangle( x, y, { stn, points, tex });
 }
 
 
-void Landscape::ArrayLand::AppendTriangle_LRLX_UUDY(int x, int y, const Point3D &p, const Point2D tex[3], bool append)
+void Landscape::ArrayLand::AppendTriangle_LRLX_UUDY(StorageNormals<StructNormals> &stn, int x, int y, const Point3D &p, const Point2D tex[3], bool append)
 {
     if (append)
     {
@@ -813,12 +504,12 @@ void Landscape::ArrayLand::AppendTriangle_LRLX_UUDY(int x, int y, const Point3D 
             { RightX(x), UpY(y), p[1] }
         };
 
-        AppendTriangle(x, y, points, tex);
+        AppendTriangle(stn, x, y, points, tex);
     }
 }
 
 
-void Landscape::ArrayLand::AppendTriangle_RRLX_UDDY(int x, int y, const Point3D &p, const Point2D tex[3], bool append)
+void Landscape::ArrayLand::AppendTriangle_RRLX_UDDY(StorageNormals<StructNormals> &stn, int x, int y, const Point3D &p, const Point2D tex[3], bool append)
 {
     if (append)
     {
@@ -829,12 +520,12 @@ void Landscape::ArrayLand::AppendTriangle_RRLX_UDDY(int x, int y, const Point3D 
             { RightX(x), DownY(y), p[1] }
         };
 
-        AppendTriangle(x, y, points, tex);
+        AppendTriangle(stn, x, y, points, tex);
     }
 }
 
 
-void Landscape::ArrayLand::AppendTriangle_LRRX_UUDY(int x, int y, const Point3D &p, const Point2D tex[3], bool append)
+void Landscape::ArrayLand::AppendTriangle_LRRX_UUDY(StorageNormals<StructNormals> &stn, int x, int y, const Point3D &p, const Point2D tex[3], bool append)
 {
     if (append)
     {
@@ -845,12 +536,12 @@ void Landscape::ArrayLand::AppendTriangle_LRRX_UUDY(int x, int y, const Point3D 
             { RightX(x), UpY(y), p[1] }
         };
 
-        AppendTriangle(x, y, points, tex);
+        AppendTriangle(stn, x, y, points, tex);
     }
 }
 
 
-void Landscape::ArrayLand::AppendTriangle_LRLX_UDDY(int x, int y, const Point3D &p, const Point2D tex[3], bool append)
+void Landscape::ArrayLand::AppendTriangle_LRLX_UDDY(StorageNormals<StructNormals> &stn, int x, int y, const Point3D &p, const Point2D tex[3], bool append)
 {
     if (append)
     {
@@ -861,7 +552,7 @@ void Landscape::ArrayLand::AppendTriangle_LRLX_UDDY(int x, int y, const Point3D 
             { RightX(x), DownY(y), p[1] }
         };
 
-        AppendTriangle(x, y, points, tex);
+        AppendTriangle(stn, x, y, points, tex);
     }
 }
 
@@ -916,7 +607,7 @@ float Landscape::GetHeight(const Point2D &coord, Bivector3D *normal)
     if (first)
     {
         first = false;
-        LOG_ERROR("No intersection with terrain detected in %f:%f", (float)coord.x, (float)coord.y);
+        LOG_ERROR_HI("No intersection with terrain detected in %f:%f", (float)coord.x, (float)coord.y);
     }
 
     return 25.0f;

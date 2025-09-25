@@ -3,19 +3,54 @@
 #include "Utils/HeapBuffer.h"
 
 
-namespace Water
+class Water
 {
-    void Create(HeapBuffer &, File &file, int width, int height);
+public:
 
-    void Destroy();
+    Water(HeapBuffer &, File &file, int width, int height);
+
+    ~Water();
 
     // Уровень моря
-    float LevelSea();
+    float LevelSea()
+    {
+        return level_sea;
+    }
 
     bool GetLevel(const Point2D &coord, float *);
 
     // Возвращает минимальынй уровень воды
     float GetLevelMin();
 
-    bool IsExist();
-}
+    bool IsExist()
+    {
+        return is_exist;
+    }
+
+private:
+
+    float level_sea = 0.0f;
+
+    void CreateGeometry();
+
+    struct WaterCell
+    {
+        int x;
+        int y;
+        float height;
+    };
+
+    Array<WaterCell> cells;
+
+    struct WaterHeight
+    {
+        float value;
+        bool valid;
+    };
+
+    Array<Array<WaterHeight>> waters;
+
+    float level_min = 1e3f;
+
+    bool is_exist = false;
+};

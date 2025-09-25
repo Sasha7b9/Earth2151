@@ -9,7 +9,7 @@
 https://youtu.be/7nU8G8XS1fY
 
 You can download the latest version application from here :  https://github.com/Sasha7b9/Earth2151/releases/  
-You can download the archive with resources from here :  https://github.com/Sasha7b9/Earth2151/releases/download/0.1.0/Data.zip  
+You can download the archive with resources from here :  https://github.com/Sasha7b9/Earth2151/releases/download/0.1.4/Data014.zip  
 
     Settings (file conf/Earth2151_config.cfg):
   displayFull - fullscreen - 0/1  

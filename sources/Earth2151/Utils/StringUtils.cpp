@@ -91,7 +91,13 @@ uint8 *FileReader::ReadBuffer(void *buffer, int num_bytes)
 }
 
 
-String<> FileReader::ReadString(int size_length)
+int FileReader::BytesLeft() const
+{
+    return size - pointer;
+}
+
+
+String<> FileReader::ReadString()
 {
     uint s = ReadUInt();
 
@@ -107,7 +113,7 @@ String<> FileReader::ReadString(int size_length)
 
 bool FileReader::IsEOF()
 {
-    return pointer >= size;
+    return pointer >= (int)size;
 }
 
 
@@ -174,10 +180,48 @@ String<> SU::RemoveQuotes(pchar line)
         return line;
     }
 
+    if (std::strlen(line) < 3)
+    {
+        return line;
+    }
+
     char buffer[512];
     std::strcpy(buffer, line);
 
     buffer[std::strlen(buffer) - 1] = '\0';
 
     return String<>(buffer + 1);
+}
+
+
+int SU::FindSymbol(pchar text, char symbol)
+{
+    uint len = (uint)std::strlen(text);
+
+    for (uint i = 0; i < len; i++)
+    {
+        if (text[i] == symbol)
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+
+String<> SU::GetSubstring(pchar text, int start, int end)
+{
+    if (end < 0)
+    {
+        LOG_WRITE("start = %d, end = %d, text = %s", start, end, text);
+    }
+
+    char buffer[1024];
+
+    std::strcpy(buffer, text);
+
+    buffer[end] = '\0';
+
+    return String<>(buffer + start);
 }

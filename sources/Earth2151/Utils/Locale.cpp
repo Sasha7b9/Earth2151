@@ -52,7 +52,7 @@ void Local::Init()
 {
     if (!json.Load(DATA_PATH("Language/language.json").c_str()))
     {
-        LOG_ERROR("Not parsed language.json");
+        LOG_ERROR_HI("Not parsed language.json");
     }
 
     if (strings.GetArrayElementCount() == 0)
@@ -71,7 +71,7 @@ void Local::Init()
 
         if (file.OpenFile(name_file) != kFileOkay)
         {
-            LOG_ERROR("Can not open language file %s", name_file.c_str());
+            LOG_ERROR_HI("Can not open language file %s", name_file.c_str());
         }
 
         FileReader reader{ &file };
@@ -200,7 +200,10 @@ std::string Local::cp1251_to_utf8(const char *str)
         return 0;
     }
     delete[] ures;
-    res.append(cres);
+    if (cres)
+    {
+        res.append(cres);
+    }
     delete[] cres;
     return res;
 

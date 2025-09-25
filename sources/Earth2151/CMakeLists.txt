@@ -95,33 +95,32 @@ endif()
                                    ../ThirdParty/angelscript/add_on/scriptstdstring/scriptstdstring.*
                                    ../ThirdParty/angelscript/add_on/scripthandle/scripthandle.*
                                    ../ThirdParty/angelscript/add_on/weakref/weakref.*)
-file(GLOB EARTH2150                             Earth2150/*.*)
-file(GLOB EARTH2150_FILES                       Earth2150/Files/*.*)
-file(GLOB EARTH2150_PACKER                      Earth2150/Packer/*.*)
-file(GLOB EARTH2150_PARAMETERS                  Earth2150/Parameters/*.*)
-file(GLOB EARTH2150_PARAMETERS_MODELS           Earth2150/Parameters/Models/*.*)
-file(GLOB EARTH2150_PARAMETERS_MODELS_ABSTRACTS Earth2150/Parameters/Models/Abstracts/*.*)
-file(GLOB EARTH2150_SCRIPTING                   Earth2150/Scripting/*.*)
-file(GLOB EARTH2150_SCRIPTING_OBJECTS           Earth2150/Scripting/Objects/*.*)
-file(GLOB EARTH2150_SCRIPTING_PRIMITIVES        Earth2150/Scripting/Primitives/*.*)
-file(GLOB EDITOR                                Editor/*.*)
-file(GLOB FILESYSTEM                            FileSystem/*.*)
-file(GLOB GAME                                  Game/*.*)
-file(GLOB GRAPHICS                              Graphics/*.*)
-file(GLOB INPUT                                 Input/*.*)
-file(GLOB INTERFACE                             Interface/*.*)
-file(GLOB INTERFACE_CONTROLS                    Interface/Controls/*.*)
-file(GLOB INTERFACE_MENU                        Interface/Menu/*.*)
-file(GLOB INTERFACE_MUTATORS                    Interface/Mutators/*.*)
-file(GLOB INTERFACE_PANELS                      Interface/Panels/*.*)
-file(GLOB INTERFACE_WIDGETS                     Interface/Widgets/*.*)
-file(GLOB OBJECTS                               Objects/*.*)
-file(GLOB OBJECTS_AMMOS                         Objects/Ammos/*.*)
-file(GLOB OBJECTS_STRUCTURES                    Objects/Structures/*.*)
-file(GLOB OBJECTS_UNITS                         Objects/Units/*.*)
-file(GLOB OBJECTS_WORLD                         Objects/World/*.*)
-file(GLOB SOUNDS                                Sounds/*.*)
-file(GLOB UTILS                                 Utils/*.*)
+file(GLOB EDITOR                                    Editor/*.*)
+file(GLOB FILESYSTEM                                FileSystem/*.*)
+file(GLOB GRAPHICS                                  Graphics/*.*)
+file(GLOB INPUT                                     Input/*.*)
+file(GLOB INTERFACE                                 Interface/*.*)
+file(GLOB INTERFACE_CONTROLS                        Interface/Controls/*.*)
+file(GLOB INTERFACE_MENU                            Interface/Menu/*.*)
+file(GLOB INTERFACE_MUTATORS                        Interface/Mutators/*.*)
+file(GLOB INTERFACE_PANELS                          Interface/Panels/*.*)
+file(GLOB INTERFACE_WIDGETS                         Interface/Widgets/*.*)
+file(GLOB OBJECTS                                   Objects/*.*)
+file(GLOB OBJECTS_AMMOS                             Objects/Ammos/*.*)
+file(GLOB OBJECTS_STRUCTURES                        Objects/Structures/*.*)
+file(GLOB OBJECTS_WORLD                             Objects/World/*.*)
+file(GLOB OBJECTS_UNITS                             Objects/Units/*.*)
+file(GLOB GAME                                      Game/*.*)
+file(GLOB GAME_FILES                                Game/Files/*.*)
+file(GLOB GAME_PACKER                               Game/Packer/*.*)
+file(GLOB GAME_PARAMETERS                           Game/Parameters/*.*)
+file(GLOB GAME_PARAMETERS_MODELS                    Game/Parameters/Models/*.*)
+file(GLOB GAME_PARAMETERS_MODELS_ABSTRACTS          Game/Parameters/Models/Abstracts/*.*)
+file(GLOB GAME_SCRIPTING                            Game/Scripting/*.*)
+file(GLOB GAME_SCRIPTING_OBJECTS                    Game/Scripting/Objects/*.*)
+file(GLOB GAME_SCRIPTING_PRIMITIVES                 Game/Scripting/Primitives/*.*)
+file(GLOB SOUNDS                                    Sounds/*.*)
+file(GLOB UTILS                                     Utils/*.*)
 file(GLOB THIRDPARTY_ZLIB        ../ThirdParty/zlib/uncompr.cpp
                                  ../ThirdParty/zlib/inflate.cpp
                                  ../ThirdParty/zlib/adler32.cpp
@@ -131,38 +130,38 @@ file(GLOB THIRDPARTY_ZLIB        ../ThirdParty/zlib/uncompr.cpp
                                  ../ThirdParty/zlib/inffast.cpp)
 
 
-source_group(Resources                              FILES ${RESOURCES})
-source_group(src                                    FILES ${SRC})
-source_group(AngelScript                            FILES ${ANGELSCRIPT})
-source_group(AngelScript/AS                         FILES ${ANGELSCRIPT_AS})
-source_group(Earth2150                              FILES ${EARTH2150})
-source_group(Earth2150/Files                        FILES ${EARTH2150_FILES})
-source_group(Earth2150/Packer                       FILES ${EARTH2150_PACKER})
-source_group(Earth2150/Parameters                   FILES ${EARTH2150_PARAMETERS})
-source_group(Earth2150/Parameters/Models            FILES ${EARTH2150_PARAMETERS_MODELS})
-source_group(Earth2150/Parameters/Models/Abstracts  FILES ${EARTH2150_PARAMETERS_MODELS_ABSTRACTS})
-source_group(Earth2150/Scripting                    FILES ${EARTH2150_SCRIPTING})
-source_group(Earth2150/Scripting/Objects            FILES ${EARTH2150_SCRIPTING_OBJECTS})
-source_group(Earth2150/Scripting/Primitives         FILES ${EARTH2150_SCRIPTING_PRIMITIVES})
-source_group(Editor                                 FILES ${EDITOR})
-source_group(FileSystem                             FILES ${FILESYSTEM})
-source_group(Game                                   FILES ${GAME})
-source_group(Graphics                               FILES ${GRAPHICS})
-source_group(Input                                  FILES ${INPUT})
-source_group(Interface                              FILES ${INTERFACE})
-source_group(Interface/Controls                     FILES ${INTERFACE_CONTROLS})
-source_group(Interface/Menu                         FILES ${INTERFACE_MENU})
-source_group(Interface/Mutators                     FILES ${INTERFACE_MUTATORS})
-source_group(Interface/Panels                       FILES ${INTERFACE_PANELS})
-source_group(Interface/Widgets                      FILES ${INTERFACE_WIDGETS})
-source_group(Objects                                FILES ${OBJECTS})
-source_group(Objects/Ammos                          FILES ${OBJECTS_AMMOS})
-source_group(Objects/Structures                     FILES ${OBJECTS_STRUCTURES})
-source_group(Objects/Units                          FILES ${OBJECTS_UNITS})
-source_group(Objects/World                          FILES ${OBJECTS_WORLD})
-source_group(Sounds                                 FILES ${SOUNDS})
-source_group(Utils                                  FILES ${UTILS})
-source_group(ThirdPary/zlib                         FILES ${THIRDPARTY_ZLIB})
+source_group(Resources                                      FILES ${RESOURCES})
+source_group(src                                            FILES ${SRC})
+source_group(AngelScript                                    FILES ${ANGELSCRIPT})
+source_group(AngelScript/AS                                 FILES ${ANGELSCRIPT_AS})
+source_group(Editor                                         FILES ${EDITOR})
+source_group(FileSystem                                     FILES ${FILESYSTEM})
+source_group(Game                                           FILES ${GAME})
+source_group(Graphics                                       FILES ${GRAPHICS})
+source_group(Input                                          FILES ${INPUT})
+source_group(Interface                                      FILES ${INTERFACE})
+source_group(Interface/Controls                             FILES ${INTERFACE_CONTROLS})
+source_group(Interface/Menu                                 FILES ${INTERFACE_MENU})
+source_group(Interface/Mutators                             FILES ${INTERFACE_MUTATORS})
+source_group(Interface/Panels                               FILES ${INTERFACE_PANELS})
+source_group(Interface/Widgets                              FILES ${INTERFACE_WIDGETS})
+source_group(Objects                                        FILES ${OBJECTS})
+source_group(Objects/Ammos                                  FILES ${OBJECTS_AMMOS})
+source_group(Objects/Structures                             FILES ${OBJECTS_STRUCTURES})
+source_group(Objects/World                                  FILES ${OBJECTS_WORLD})
+source_group(Objects/Units                                  FILES ${OBJECTS_UNITS})
+source_group(Game                                           FILES ${GAME})
+source_group(Game/Files                                     FILES ${GAME_FILES})
+source_group(Game/Packer                                    FILES ${GAME_PACKER})
+source_group(Game/Parameters                                FILES ${GAME_PARAMETERS})
+source_group(Game/Parameters/Models                         FILES ${GAME_PARAMETERS_MODELS})
+source_group(Game/Parameters/Models/Abstracts               FILES ${GAME_PARAMETERS_MODELS_ABSTRACTS})
+source_group(Game/Scripting                                 FILES ${GAME_SCRIPTING})
+source_group(Game/Scripting/Objects                         FILES ${GAME_SCRIPTING_OBJECTS})
+source_group(Game/Scripting/Primitives                      FILES ${GAME_SCRIPTING_PRIMITIVES})
+source_group(Sounds                                         FILES ${SOUNDS})
+source_group(Utils                                          FILES ${UTILS})
+source_group(ThirdPary/zlib                                 FILES ${THIRDPARTY_ZLIB})
 
 set_source_files_properties(
     ${THIRDPARTY_ZLIB}
@@ -174,15 +173,6 @@ add_executable(
     ${SRC}
     ${ANGELSCRIPT}
     ${ANGELSCRIPT_AS}
-    ${EARTH2150}
-    ${EARTH2150_FILES}
-    ${EARTH2150_PACKER}
-    ${EARTH2150_PARAMETERS}
-    ${EARTH2150_PARAMETERS_MODELS}
-    ${EARTH2150_PARAMETERS_MODELS_ABSTRACTS}
-    ${EARTH2150_SCRIPTING}
-    ${EARTH2150_SCRIPTING_OBJECTS}
-    ${EARTH2150_SCRIPTING_PRIMITIVES}
     ${EDITOR}
     ${FILESYSTEM}
     ${GAME}
@@ -197,8 +187,17 @@ add_executable(
     ${OBJECTS}
     ${OBJECTS_AMMOS}
     ${OBJECTS_STRUCTURES}
-    ${OBJECTS_UNITS}
     ${OBJECTS_WORLD}
+    ${OBJECTS_UNITS}
+    ${RESEARTH2150}
+    ${GAME_FILES}
+    ${GAME_PACKER}
+    ${GAME_PARAMETERS}
+    ${GAME_PARAMETERS_MODELS}
+    ${GAME_PARAMETERS_MODELS_ABSTRACTS}
+    ${GAME_SCRIPTING}
+    ${GAME_SCRIPTING_OBJECTS}
+    ${GAME_SCRIPTING_PRIMITIVES}
     ${SOUNDS}
     ${UTILS}
     ${THIRDPARTY_ZLIB}
@@ -225,3 +224,6 @@ message("_ROOT_DIR_:          ${_ROOT_DIR_}")
 message("TARGET_NAME:         ${PROJECT_NAME}")
 
 set_work_directory()
+
+
+

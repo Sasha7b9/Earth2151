@@ -3,24 +3,24 @@
 #include "Objects/Units/Units.h"
 
 
-void Unit::OnEventRebuild()
+void GUnit::OnEventRebuild()
 {
     MovedObject::OnEventRebuild();
 }
 
 
-GroundUnitObject::GroundUnitObject(pchar name_type) : Unit(name_type)
+GroundUnitObject::GroundUnitObject(pchar name_type) : GUnit(name_type)
 {
 }
 
 
 void GroundUnitObject::OnEventRebuild()
 {
-    Unit::OnEventRebuild();
+    GUnit::OnEventRebuild();
 }
 
 
-AirUnitObject::AirUnitObject(pchar name_type) : Unit(name_type)
+AirUnitObject::AirUnitObject(pchar name_type) : GUnit(name_type)
 {
     AirUnitObject::OnEventRebuild();
 }
@@ -28,7 +28,7 @@ AirUnitObject::AirUnitObject(pchar name_type) : Unit(name_type)
 
 void AirUnitObject::OnEventRebuild()
 {
-    Unit::OnEventRebuild();
+    GUnit::OnEventRebuild();
 
     READ_FLOAT(cruising_altitude);
 }

@@ -3,7 +3,7 @@
 #include "AngelScript/ControllerAS.h"
 #include "Objects/Task.h"
 #include "Graphics/Primitives.h"
-#include "Earth2150/Parameters/Models/Abstracts/Entity.h"
+#include "Game/Parameters/Models/Abstracts/Entity.h"
 
 
 // Базовый контроллер для объектов всех типов

@@ -11,15 +11,15 @@
 StartWindow *TheStartWindow = nullptr;
 
 
-#define BTN_CAMPAIGN_ED     ((PushButtonWidget *)FindWidget("btnED"))
-#define BTN_CAMPAIGN_UCS    ((PushButtonWidget *)FindWidget("btnUCS"))
-#define BTN_CAMPAIGN_LC     ((PushButtonWidget *)FindWidget("btnLC"))
-#define BTN_SETTINGS        ((PushButtonWidget *)FindWidget("btnSettings"))
+#define BTN_CAMPAIGN_ED     ((PushButtonWidget *)FindWidget("btnED"))               // Евроальянс
+#define BTN_CAMPAIGN_UCS    ((PushButtonWidget *)FindWidget("btnUCS"))              // Атлантический союз
+#define BTN_CAMPAIGN_LC     ((PushButtonWidget *)FindWidget("btnLC"))               // Дети Селены
+#define BTN_SETTINGS        ((PushButtonWidget *)FindWidget("btnSettings"))         // Настройки
 #define BTN_NETWORK         ((PushButtonWidget *)FindWidget("btnNetwork"))
 #define BTN_SKIRMISH        ((PushButtonWidget *)FindWidget("btnSkirmish"))
-#define BTN_EDITOR          ((PushButtonWidget *)FindWidget("btnEditor"))
+#define BTN_VIEWER          ((PushButtonWidget *)FindWidget("btnEditor"))           // Просмотрщик
 #define BTN_ABOUT           ((PushButtonWidget *)FindWidget("btnAbout"))
-#define BTN_QUIT            ((PushButtonWidget *)FindWidget("btnQuit"))
+#define BTN_QUIT            ((PushButtonWidget *)FindWidget("btnQuit"))             // Выход
 #define TXT_HINT            ((TextWidget *)FindWidget("txtHint"))
 
 
@@ -41,19 +41,17 @@ void StartWindow::PreprocessWidget()
     BTN_SETTINGS->SetObserver(&buttonObserver);
     BTN_NETWORK->SetObserver(&buttonObserver);
     BTN_SKIRMISH->SetObserver(&buttonObserver);
-    BTN_EDITOR->SetObserver(&buttonObserver);
+    BTN_VIEWER->SetObserver(&buttonObserver);
     BTN_ABOUT->SetObserver(&buttonObserver);
     BTN_QUIT->SetObserver(&buttonObserver);
 
     Localize();
 
-    BTN_CAMPAIGN_ED->HideWidget();
-    BTN_CAMPAIGN_UCS->HideWidget();
     BTN_NETWORK->HideWidget();
     BTN_SKIRMISH->HideWidget();
     BTN_ABOUT->HideWidget();
 
-    if (TypeGame().IsEftBP())
+    if (NameGame().IsEftBP())
     {
         BTN_CAMPAIGN_LC->ShowWidget();
     }
@@ -79,18 +77,18 @@ void StartWindow::Localize()
     BTN_SETTINGS->SetText(_L("trSettings"));
     BTN_NETWORK->SetText(_L("trNetworkGame"));
     BTN_SKIRMISH->SetText(_L("trSingleMission"));
-    BTN_EDITOR->SetText(_L("trEditor"));
+    BTN_VIEWER->SetText(_L("trEditor"));
     BTN_ABOUT->SetText(_L("trAutors"));
     BTN_QUIT->SetText(_L("trExit"));
 
-    static const pchar hints[TypeGame::Count] =
+    static const pchar hints[NameGame::Count] =
     {
         "trEftBP",
         "trTMP",
         "trLS"
     };
 
-    TXT_HINT->SetText(_L(hints[TypeGame().Current()]));
+    TXT_HINT->SetText(_L(hints[NameGame().Current()]));
 }
 
 
@@ -129,7 +127,7 @@ void StartWindow::HandleButtonEvent(Widget *widget, const WidgetEventData *event
         {
 
         }
-        else if (widget == BTN_EDITOR)
+        else if (widget == BTN_VIEWER)
         {
             TheInterfaceMgr->RemoveWidget(TheStartWindow);
             ApplicationMode::Set(ApplicationMode::Editor);

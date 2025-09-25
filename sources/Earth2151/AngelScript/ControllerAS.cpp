@@ -210,7 +210,7 @@ int ControllerAS::CompileScript()
     FILE *f = fopen(file_name.c_str(), "rb");
     if (f == 0)
     {
-        LOG_ERROR("Failed to open the script file \"%s\".", file_name.c_str())
+        LOG_ERROR_HI("Failed to open the script file \"%s\".", file_name.c_str())
             return -1;
     }
 
@@ -229,7 +229,7 @@ int ControllerAS::CompileScript()
 
     if (c == 0)
     {
-        LOG_ERROR("Failed to load script file.");
+        LOG_ERROR_HI("Failed to load script file.");
         return -1;
     }
 
@@ -242,7 +242,7 @@ int ControllerAS::CompileScript()
     int r = module->AddScriptSection("script", &script[0], len);
     if (r < 0)
     {
-        LOG_ERROR("AddScriptSection() failed");
+        LOG_ERROR_HI("AddScriptSection() failed");
         return -1;
     }
 
@@ -253,7 +253,7 @@ int ControllerAS::CompileScript()
     r = module->Build();
     if (r < 0)
     {
-        LOG_ERROR("Build() failed");
+        LOG_ERROR_HI("Build() failed");
         return -1;
     }
 
@@ -300,7 +300,7 @@ T ControllerAS::ReadGlobalVar(pchar name)
         return *var;
     }
 
-    LOG_ERROR("Can not read var \"%s\" from \"%s.as\"", name, name_type);
+    LOG_ERROR_HI("Can not read var \"%s\" from \"%s.as\"", name, name_type);
 
     if (std::is_same<T, std::string>::value)
     {
@@ -319,7 +319,7 @@ float ControllerAS::ExecuteFuncFV(pchar name_func)
 
     if (funcGetMaxSpeed == nullptr)
     {
-        LOG_ERROR("Function \"%s\" was not found", name_func);
+        LOG_ERROR_HI("Function \"%s\" was not found", name_func);
         return result;
     }
 
@@ -332,7 +332,7 @@ float ControllerAS::ExecuteFuncFV(pchar name_func)
 
     if (r < 0)
     {
-        LOG_ERROR("Failed to prepare the context");
+        LOG_ERROR_HI("Failed to prepare the context");
         return result;
     }
 
@@ -345,11 +345,11 @@ float ControllerAS::ExecuteFuncFV(pchar name_func)
         // Казнь завершилась не так, как мы планировали. Определите, почему.
         if (r == asEXECUTION_ABORTED)
         {
-            LOG_ERROR("The script was aborted before it could finish. Probably it timed out.");
+            LOG_ERROR_HI("The script was aborted before it could finish. Probably it timed out.");
         }
         else if (r == asEXECUTION_EXCEPTION)
         {
-            LOG_ERROR("The script ended with an exception.");
+            LOG_ERROR_HI("The script ended with an exception.");
 
             asIScriptFunction *fn = context->GetExceptionFunction();
 
@@ -361,7 +361,7 @@ float ControllerAS::ExecuteFuncFV(pchar name_func)
         }
         else
         {
-            LOG_ERROR("The script ended for some unforeseen reason %s.", r);
+            LOG_ERROR_HI("The script ended for some unforeseen reason %s.", r);
         }
     }
     else
@@ -383,7 +383,7 @@ std::string ControllerAS::ExecuteFuncSV(pchar name_func)
 
     if (func == nullptr)
     {
-        LOG_ERROR("Function \"%s\" was not found", name_func);
+        LOG_ERROR_HI("Function \"%s\" was not found", name_func);
         return result;
     }
 
@@ -396,7 +396,7 @@ std::string ControllerAS::ExecuteFuncSV(pchar name_func)
 
     if (r < 0)
     {
-        LOG_ERROR("Failed to prepare the context");
+        LOG_ERROR_HI("Failed to prepare the context");
         return result;
     }
 
@@ -409,11 +409,11 @@ std::string ControllerAS::ExecuteFuncSV(pchar name_func)
         // Казнь завершилась не так, как мы планировали. Определите, почему.
         if (r == asEXECUTION_ABORTED)
         {
-            LOG_ERROR("The script was aborted before it could finish. Probably it timed out.");
+            LOG_ERROR_HI("The script was aborted before it could finish. Probably it timed out.");
         }
         else if (r == asEXECUTION_EXCEPTION)
         {
-            LOG_ERROR("The script ended with an exception.");
+            LOG_ERROR_HI("The script ended with an exception.");
 
             asIScriptFunction *fn = context->GetExceptionFunction();
 
@@ -425,7 +425,7 @@ std::string ControllerAS::ExecuteFuncSV(pchar name_func)
         }
         else
         {
-            LOG_ERROR("The script ended for some unforeseen reason %s.", r);
+            LOG_ERROR_HI("The script ended for some unforeseen reason %s.", r);
         }
     }
     else

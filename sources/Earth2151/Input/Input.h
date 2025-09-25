@@ -20,6 +20,10 @@ namespace TypeAction
     const uint Center = 'cntr';         // Num 5    направить камеру на центр сцены
 
     // KeyboardAction
+    const uint Key1 = 'key1';
+    const uint Key2 = 'key2';
+    const uint Key3 = 'key3';
+    const uint Key4 = 'key4';
     const uint F1 = 'kF1';              // "F1"
     const uint F2 = 'kF2';              // "F2"
     const uint Ctrl = 'ctrl';           // "Ctrl"
@@ -55,7 +59,7 @@ private:
 class KeyboardAction : public Action
 {
 public:
-    KeyboardAction(ActionType type) : Action(type) {    }
+    KeyboardAction(ActionType type) : Action(type) { }
     virtual ~KeyboardAction() {    }
     virtual void HandleEngage() override;
     virtual void HandleDisengage() override;
@@ -65,7 +69,7 @@ public:
 class MouseButtonAction : public Action
 {
 public:
-    MouseButtonAction(ulong type) : Action(type) {};
+    MouseButtonAction(ulong type) : Action(type) { };
     virtual ~MouseButtonAction() { }
     virtual void HandleEngage() override;
     virtual void HandleDisengage() override;

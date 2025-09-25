@@ -5,7 +5,7 @@
 #include "Interface/GUI.h"
 #include "Objects/World/Landscape.h"
 #include "Graphics/PoolTextures.h"
-#include "Earth2150/Files/TexMesh2150.h"
+#include "Game/Files/TexMesh2150.h"
 #include "Graphics/Primitives.h"
 #include "Graphics/Particles.h"
 #include "Objects/World/Tunnels.h"
@@ -15,7 +15,7 @@
 #include "Interface/Menu/Menu.h"
 #include "Utils/Locale.h"
 #include "Editor/Editor.h"
-#include "Earth2150/Scripting/ScriptEngine.h"
+#include "Game/Scripting/ScriptEngine.h"
 #include "Game/Game.h"
 #include "Game/GamePlayer.h"
 
@@ -27,11 +27,7 @@ PI_ENTER_POINT(Earth2151, false)
 
 
 Earth2151 *TheEarth2151 = nullptr;
-Level2150 *TheLevel = nullptr;
 Parameters2150 *TheParameter = nullptr;
-
-
-bool Earth2151::target_destroed = false;
 
 
 Earth2151::Earth2151() : Global<Earth2151>(TheEarth2151)
@@ -65,9 +61,7 @@ Earth2151::~Earth2151()
 
     EMenu::DeInit();
 
-    Tunnels::Destroy();
-
-    Landscape::Destroy();
+    GameWorld::_DestroyAll();
 
     SAFE_DELETE(TheParameter);
 
@@ -96,8 +90,6 @@ Earth2151::~Earth2151()
     TheWorldMgr->UnloadWorld();
     TheWorldMgr->SetWorldCreator(nullptr);
     TheMessageMgr->EndGame();
-
-    SAFE_DELETE(TheLevel);
 
     GamePlayer::Destroy();
 
@@ -258,15 +250,15 @@ bool Earth2151::InPaused()
 
 String<> Earth2151::ResourceFile(pchar name)
 {
-    if (TypeGame().IsEftBP())
+    if (NameGame().IsEftBP())
     {
         return String<>(TheResourceMgr->DataCatalog()->GetRootPath()) + "Earth2150/" + name;
     }
-    else if (TypeGame().IsMP())
+    else if (NameGame().IsMP())
     {
         return String<>(TheResourceMgr->DataCatalog()->GetRootPath()) + "Earth2150-MP/" + name;
     }
-    else if (TypeGame().IsLS())
+    else if (NameGame().IsLS())
     {
         return String<>(TheResourceMgr->DataCatalog()->GetRootPath()) + "Earth2150-LS/" + name;
     }
@@ -281,29 +273,4 @@ void Earth2151::ApplicationTask()
     {
         TheGame->Update();
     }
-
-    /*
-    if (!GameWorld::mission)
-    {
-        return;
-    }
-
-    static uint prev_time = 0;
-
-    uint time = UCOUNT_MS / 1000;
-
-    if (time != prev_time)
-    {
-        prev_time = time;
-
-        if (TheWorldMgr->GetWorld())
-        {
-            TheWorldMgr->SetWorld(nullptr);
-        }
-        else
-        {
-            TheWorldMgr->SetWorld(GameWorld::mission);
-        }
-    }
-    */
 }

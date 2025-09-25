@@ -23,7 +23,13 @@ public:
 
 protected:
 
-    virtual void PreprocessController() override;
+    virtual void PreprocessController() override
+    {
+        StaticObject::PreprocessController();
+    }
 
-    virtual void Move() override;
+    virtual void Move() override
+    {
+        StaticObject::Move();
+    }
 };

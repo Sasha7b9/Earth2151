@@ -1,14 +1,14 @@
-// 2025/04/10 17:23:45 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+﻿// 2025/04/10 17:23:45 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
-#include "Game/GameTypes.h"
+#include "Game/Game.h"
 
 
 struct PlayerType
 {
     enum E
     {
-        Local,
-        AI,
+        Local,      // Человек
+        AI,         // ИИ
         Count
     };
 };
@@ -23,6 +23,13 @@ public:
     static GamePlayer *Create(int id, Race::E, PlayerType::E, pchar file_script);
 
     static void Destroy();
+
+    static GamePlayer *GetLocalPlayer();
+
+    Race::E GetRace() const
+    {
+        return race;
+    }
 
 private:
 

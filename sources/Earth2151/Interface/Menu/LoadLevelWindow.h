@@ -19,6 +19,8 @@ private:
     void HandleWidgetEvent(Widget *, const WidgetEventData *);
 
     static bool FileMapFilterLevels(pchar name, uint flags, const void *);
+
+    int last_selected = 0;    // Этот выбор был сделан в последний раз. При последующем открытии окна мы подсветим его.
 };
 
 

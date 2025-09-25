@@ -59,6 +59,8 @@ void LoadLevelWindow::PreprocessWidget()
     LIST_LEVELS->UpdateWidget();
 
     Localize();
+
+    LIST_LEVELS->SelectListItem(last_selected);
 }
 
 
@@ -107,11 +109,13 @@ void LoadLevelWindow::HandleWidgetEvent(Widget *widget, const WidgetEventData *e
         {
             TextWidget *text = (TextWidget *)LIST_LEVELS->GetFirstSelectedListItem();
 
+            last_selected = LIST_LEVELS->GetFirstSelectedIndex();
+
             TheEditor->LoadLevel(text->GetText());
 
             TheInterfaceMgr->RemoveWidget(TheLoadLevelWindow);
 
-            TheCameraRTS->SetPointFocus({ Landscape::GetNumColumns() / 2.0f, Landscape::GetNumRows() / 2.0f, 0.0f });
+            TheCameraRTS->SetPointFocus({ LANDSCAPE->GetNumColumns() / 2.0f, LANDSCAPE->GetNumRows() / 2.0f, 0.0f });
         }
     }
 }

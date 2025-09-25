@@ -5,48 +5,10 @@
 #include "Clock.h"
 
 
-namespace Water
-{
-    static float level_sea = 0.0f;
-
-    static void CreateGeometry();
-
-    float LevelSea()
-    {
-        return level_sea;
-    }
-
-    struct WaterCell
-    {
-        int x;
-        int y;
-        float height;
-    };
-
-    static Array<WaterCell> cells;
-
-    struct WaterHeight
-    {
-        float value;
-        bool valid;
-    };
-
-    static Array<Array<WaterHeight>> waters;
-
-    static float level_min = 1e3f;
-
-    static bool is_exist = false;
-
-    bool IsExist()
-    {
-        return is_exist;
-    }
-}
-
-
-void Water::Destroy()
+Water::~Water()
 {
     cells.PurgeArray();
+
     for (int i = 0; i < waters.GetArrayElementCount(); i++)
     {
         waters[i].PurgeArray();
@@ -56,7 +18,7 @@ void Water::Destroy()
 }
 
 
-void Water::Create(HeapBuffer &lnd, File &file_txt, int w, int h)
+Water::Water(HeapBuffer &lnd, File &file_txt, int w, int h)
 {
     waters.SetArrayElementCount(h);
 
@@ -70,7 +32,7 @@ void Water::Create(HeapBuffer &lnd, File &file_txt, int w, int h)
         }
     }
 
-    uint time = UCOUNT_MS;
+//    uint time = UCOUNT_MS;
 
     file_txt.WriteString("\n **************** Water ***************************");
 
@@ -81,6 +43,8 @@ void Water::Create(HeapBuffer &lnd, File &file_txt, int w, int h)
     level_sea = level;
 
     file_txt.WriteString(Text::Format("Level sea : %f", level_sea));
+
+    Landscape *landscape = GameWorld::Current()->landscape;
 
     for (int y = 0; y < h; y++)
     {
@@ -101,10 +65,10 @@ void Water::Create(HeapBuffer &lnd, File &file_txt, int w, int h)
                     level_min = height;
                 }
 
-                cells.AppendArrayElement(WaterCell{ x, Y_FROM_LND(y), height });
+                cells.AppendArrayElement(WaterCell{ x, landscape->YfromLND(y), height });
 
-                waters[Y_FROM_LND(y)][x].value = height;
-                waters[Y_FROM_LND(y)][x].valid = true;
+                waters[landscape->YfromLND(y)][x].value = height;
+                waters[landscape->YfromLND(y)][x].valid = true;
                 is_exist = true;
             }
 
@@ -126,7 +90,7 @@ void Water::Create(HeapBuffer &lnd, File &file_txt, int w, int h)
 
     CreateGeometry();
 
-    LOG_WRITE("Time create water %u ms", UCOUNT_MS - time);
+//    LOG_WRITE("Time create water %u ms", UCOUNT_MS - time);
 }
 
 

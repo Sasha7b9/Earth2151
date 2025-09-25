@@ -44,7 +44,7 @@ void StartSettingsWindow::PreprocessWidget()
         MENU_GAME->AppendMenuItem(new MenuItemWidget("The Moon Project"));
         MENU_GAME->AppendMenuItem(new MenuItemWidget("Lost Souls"));
 
-        MENU_GAME->SetSelection(TypeGame().Current(), true);
+        MENU_GAME->SetSelection(NameGame().Current(), true);
     }
 
     Localize();
@@ -82,7 +82,7 @@ void StartSettingsWindow::HandleButtonEvent(Widget *widget, const WidgetEventDat
         }
         else if (widget == MENU_GAME)
         {
-            TypeGame().Set((TypeGame::E)MENU_GAME->GetSelection());
+            NameGame().Set((NameGame::E)MENU_GAME->GetSelection());
         }
     }
 }

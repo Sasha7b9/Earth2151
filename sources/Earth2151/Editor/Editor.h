@@ -1,7 +1,8 @@
 ﻿// 2025/03/19 21:00:36 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
-#include "Earth2150/Earth2150Types.h"
-#include "Earth2150/Parameters/Parameters2150.h"
+#include "Game/Earth2150Types.h"
+#include "Game/Parameters/Parameters2150.h"
+#include "GameWorld.h"
 
 
 class Editor : public Global<Editor>
@@ -25,9 +26,11 @@ private:
 
     static void EscapeCallback(void *);
 
-    void CreateLandscape();
+    void CreateLandscape(GameWorld *);
 
     void CreateGameObjects();
+
+    Level2150 *level = nullptr;
 };
 
 

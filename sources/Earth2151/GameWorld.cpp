@@ -19,8 +19,15 @@ int GameWorld::current = 0;
 GameWorld *GameWorld::worlds[4] = { nullptr, nullptr, nullptr, nullptr };
 
 
-GameWorld::GameWorld(pchar name) : World(name)
+GameWorld::GameWorld(int _num_world, pchar name) : World(name), num_world(_num_world)
 {
+}
+
+
+GameWorld::~GameWorld()
+{
+    SAFE_DELETE(landscape);
+    SAFE_DELETE(level);
 }
 
 
@@ -34,11 +41,22 @@ void GameWorld::Create(int num, pchar name)
 {
     if (num >= 0 && num < 4)
     {
-        worlds[num] = new GameWorld(name);
+        worlds[num] = new GameWorld(num, name);
     }
     else
     {
-        LOG_ERROR("Bad number world - %d", num);
+        LOG_ERROR_HI("Bad number world - %d", num);
+    }
+}
+
+
+void GameWorld::_DestroyAll()
+{
+    TheWorldMgr->SetWorld(nullptr);
+
+    for (int i = 0; i < 4; i++)
+    {
+        SAFE_DELETE(worlds[i]);
     }
 }
 
@@ -46,6 +64,16 @@ void GameWorld::Create(int num, pchar name)
 void GameWorld::Set(int num)
 {
     current = num;
+
+    TheWorldMgr->SetWorld(Current());
+
+    ThePanelMap->ClearMap();
+}
+
+
+int GameWorld::Get()
+{
+    return current;
 }
 
 
@@ -64,16 +92,11 @@ WorldResult GameWorld::PreprocessWorld()
 }
 
 
-void GameWorld::MoveWorld()
+void GameWorld::Update()
 {
     World::MoveWorld();
 
     TheWorldMgr->GetWorld()->FinishWorldBatch();
-
-    if (Earth2151::target_destroed)
-    {
-        Earth2151::target_destroed = false;
-    }
 
     UCreator::Update();
 
@@ -173,5 +196,22 @@ void GameWorld::ChangeCursorPosition(float deltaX, float deltaY)
     if (TheGUI)
     {
         TheMouse->ChangePos((int)posX, (int)posY);
+    }
+}
+
+
+void GameWorld::UpdateAll()
+{
+    if (!Current())
+    {
+        return;
+    }
+
+    for (int i = 0; i < 4; i++)
+    {
+        if (worlds[i])
+        {
+            worlds[i]->Update();
+        }
     }
 }

@@ -1,4 +1,4 @@
-// 2025/03/22 17:19:52 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+﻿// 2025/03/22 17:19:52 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "stdafx.h"
 #include "Settings.h"
 #include "Utils/Locale.h"
@@ -28,7 +28,7 @@ void ApplicationMode::Set(ApplicationMode::E mode)
 }
 
 
-void TypeGame::Set(TypeGame::E type)
+void NameGame::Set(NameGame::E type)
 {
     Init();
 
@@ -36,7 +36,7 @@ void TypeGame::Set(TypeGame::E type)
 }
 
 
-TypeGame::E TypeGame::Current()
+NameGame::E NameGame::Current()
 {
     Init();
 
@@ -76,24 +76,49 @@ void GameSetting::Init()
 
 String<> TypeCampaign::FileCampaign()
 {
-    static const pchar names[TypeGame::Count][Count] =
+    static const pchar names[NameGame::Count][Count] =
     {
         {
-            "Scripts/campaigns/Ed/CampaignED.ec",
+            "Scripts/campaigns/Ed/CampaignED.ec",               // Escape from the Blue Planet
             "Scripts/campaigns/Ucs/CampaignUCS.ec",
             "Scripts/campaigns/Lc/CampaignLC.ec"
         },
         {
-            "Scripts/Campaigns/ED/CampaignEDMP01.ecoMP",
+            "Scripts/Campaigns/ED/CampaignEDMP01.ecoMP",        // The Moon Project
             "Scripts/Campaigns/UCS/CampaignUCSMP01.ecoMP",
             "Scripts/Campaigns/LC/CampaignLCMP01.ecoMP"
         },
         {
-            "Scripts/Campaigns/ED/campaignED_LS.ecoMP",
+            "Scripts/Campaigns/ED/campaignED_LS.ecoMP",         // Lost Souls
             "Scripts/Campaigns/UCS/campaignUCS_LS.ecoMP",
             "Scripts/Campaigns/LC/campaignlc_ds.ecoMP"
         }
     };
 
-    return RESOURCE_PATH(names[TypeGame().Current()][current]);
+    return RESOURCE_PATH(names[NameGame().Current()][current]);
+}
+
+
+String<> TypeCampaign::FileTutorial()
+{
+    static const pchar names[NameGame::Count][Count] =
+    {
+        {
+            "Scripts/campaigns/Ed/Missions/TutorialEDmis.ec",
+            "Scripts/campaigns/Ucs/Missions/TutorialUCSmis.ec",
+            "Scripts/campaigns/Lc/Missions/TutorialLCmis.ec"
+        },
+        {
+            "Scripts/Campaigns/ED/Missions/TutorialEDmis.ecoMP",
+            "Scripts/Campaigns/UCS/Missions/TutorialUCSmis.ecoMP",
+            "Scripts/Campaigns/LC/Missions/TutorialLCmis.ecoMP"
+        },
+        {
+            "Scripts/Campaigns/ED/Missions/TutorialEDmis.ecoMP",
+            "Scripts/Campaigns/UCS/Missions/TutorialUCSmis.ecoMP",
+            "Scripts/Campaigns/LC/Missions/TutorialLCmis.ecoMP"
+        }
+    };
+
+    return RESOURCE_PATH(names[NameGame().Current()][current]);
 }

@@ -19,7 +19,7 @@ struct StackBuffer
         }
         else
         {
-            LOG_ERROR("Small write buffer");
+            LOG_ERROR_HI("Small write buffer");
         }
     }
 

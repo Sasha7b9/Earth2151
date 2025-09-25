@@ -20,12 +20,59 @@ private:
 
     static void EscapeCallback(void *);
 
-    void CreateLandscape();
+    static World *CreateWorld(pchar name, void *);
+
+    void CreateLandscape(int num_world);
 
     void CreateGameObjects();
 
-    void LoadLevel(pchar);
+    void LoadLevel(int num_world, pchar);
 };
 
 
 extern Game *TheGame;
+
+
+struct TypeGame
+{
+    enum E
+    {
+        Campaign,
+        Tutorial,
+        Skirmish,
+        Count
+    };
+
+    static bool IsCampaign()
+    {
+        return current == Campaign;
+    }
+    static bool IsTutorial()
+    {
+        return current == Tutorial;
+    }
+    static bool IsSkirmish()
+    {
+        return current == Skirmish;
+    }
+    static void Set(E v)
+    {
+        current = v;
+    }
+
+private:
+
+    static E current;
+};
+
+
+struct Race
+{
+    enum E
+    {
+        UCS = 1,
+        ED = 2,
+        LC = 3,
+        Count
+    };
+};

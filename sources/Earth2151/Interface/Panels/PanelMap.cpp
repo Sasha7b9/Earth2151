@@ -8,6 +8,7 @@
 #include "Cameras.h"
 #include "Objects/World/Landscape.h"
 #include "Objects/World/Water.h"
+#include "GameWorld.h"
 
 
 PanelMap *ThePanelMap = nullptr;
@@ -97,10 +98,12 @@ void PanelMapSprocket::Clear()
 
 void PanelMapSprocket::MoveSprocket()
 {
-    if (!Landscape::IsCreated())
+    if (!GameWorld::Current() || !LANDSCAPE)
     {
         return;
     }
+
+    Landscape *landscape = GameWorld::Current()->landscape;
 
     if (need_build)
     {
@@ -110,8 +113,8 @@ void PanelMapSprocket::MoveSprocket()
 
         buffer = new Canvas(panel);
 
-        int sizeMapX = Landscape::GetNumColumns();
-        int sizeMapY = Landscape::GetNumRows();
+        int sizeMapX = landscape->GetNumColumns();
+        int sizeMapY = landscape->GetNumRows();
 
         float sizePanelX = buffer->GetWidgetSize().x;
         float sizePanelY = buffer->GetWidgetSize().y;
@@ -139,13 +142,16 @@ void PanelMapSprocket::MoveSprocket()
         {
             for (int col = 0; col < sizeMapX; col++)
             {
-                Point2D coord{ (float)col, (float)(Landscape::GetNumRows() - row - 1) };
+                Point2D coord{ (float)col, (float)(landscape->GetNumRows() - row - 1) };
 
-                float height_l = Landscape::GetHeightApproximately(coord);
+                float height_l = landscape->GetHeightApproximately(coord);
                 float height = height_l;
                 float heigth_w = 0.0f;
                 bool water_valid = false;
-                if (Water::GetLevel(coord, &heigth_w))
+
+                Water *water = GameWorld::Current()->landscape->water;
+
+                if (water->GetLevel(coord, &heigth_w))
                 {
                     if (heigth_w > height)
                     {
@@ -154,14 +160,14 @@ void PanelMapSprocket::MoveSprocket()
                     }
                 }
 
-                float min = Landscape::MinHeight();
+                float min = landscape->MinHeight();
 
-                if (Water::IsExist() && Water::GetLevelMin() > min)
+                if (water->IsExist() && water->GetLevelMin() > min)
                 {
-                    min = Water::GetLevelMin();
+                    min = water->GetLevelMin();
                 }
 
-                float range = (Landscape::MaxHeight() - min);
+                float range = (landscape->MaxHeight() - min);
 
                 if (water_valid)
                 {

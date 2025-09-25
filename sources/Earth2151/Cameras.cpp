@@ -8,6 +8,7 @@
 #include "Utils/Math.h"
 #include "Objects/World/Landscape.h"
 #include "Interface/GUI.h"
+#include "GameWorld.h"
 
 
 CameraRTS *TheCameraRTS = nullptr;
@@ -49,11 +50,11 @@ void CameraRTS::MoveCamera()
 {
     static bool is_first = true;
 
-    if (is_first)
+    if (is_first && LANDSCAPE)
     {
         is_first = false;
 
-        pointFocus = Point3D{ Landscape::GetSize().x / 2.0f, Landscape::GetSize().y / 2.0f, 0.0f };
+        pointFocus = Point3D{ LANDSCAPE->GetSize().x / 2.0f, LANDSCAPE->GetSize().y / 2.0f, 0.0f };
 
         distance = 100.0f;
     }
@@ -172,7 +173,7 @@ void CameraRTS::MoveCamera()
         }
         if (movementFlags & (uint)E::MoveCenter)
         {
-            pointFocus = Point3D(Landscape::GetSize().x / 2.0f, Landscape::GetSize().y / 2.0f, 0.0f);
+            pointFocus = Point3D(LANDSCAPE->GetSize().x / 2.0f, LANDSCAPE->GetSize().y / 2.0f, 0.0f);
         }
 
         distance = M::LimitationFloat(distance, MIN_DISTANCE, MAX_DISTANCE);

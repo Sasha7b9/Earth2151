@@ -1,8 +1,8 @@
 ﻿// 2022/12/18 11:57:15 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
-#include "Earth2150/Files/Model2150.h"
-#include "Earth2150/Parameters/Parameters2150.h"
-#include "Earth2150/Earth2150Types.h"
+#include "Game/Files/Model2150.h"
+#include "Game/Parameters/Parameters2150.h"
+#include "Game/Earth2150Types.h"
 #include "Settings.h"
 
 // Путь к файлам этой игры
@@ -63,8 +63,6 @@ namespace Pi
         Earth2151();
         virtual ~Earth2151() override;
 
-        static bool target_destroed;
-
         virtual void UnloadWorld() override;
 
         static String<> DataFile(pchar name)
@@ -112,5 +110,4 @@ namespace Pi
 
 
 extern Earth2151      *TheEarth2151;
-extern Level2150      *TheLevel;
 extern Parameters2150 *TheParameter;

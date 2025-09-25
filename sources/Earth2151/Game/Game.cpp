@@ -4,20 +4,21 @@
 #include "Clock.h"
 #include "Cameras.h"
 #include "Earth2151.h"
-#include "Earth2150/Files/TexMesh2150.h"
+#include "Game/Files/TexMesh2150.h"
 #include "Graphics/Primitives.h"
 #include "Objects/World/Landscape.h"
 #include "Objects/World/Sun.h"
 #include "GameWorld.h"
 #include "Graphics/PoolTextures.h"
 #include "Interface/GUI.h"
-#include "Earth2150/Scripting/ScriptEngine.h"
-#include "Earth2150/Scripting/ScriptStorage.h"
+#include "Game/Scripting/ScriptEngine.h"
+#include "Game/Scripting/ScriptStorage.h"
 #include "Interface/Menu/GameMenuWindow.h"
-#include "Game/Mission.h"
+#include "Game/GamePlayer.h"
 
 
 Game *TheGame = nullptr;
+TypeGame::E TypeGame::current = TypeGame::Count;
 
 
 Game::Game() : Global<Game>(TheGame)
@@ -26,6 +27,8 @@ Game::Game() : Global<Game>(TheGame)
     {
         new CameraRTS();
     }
+
+    TheWorldMgr->SetWorldCreator(&CreateWorld);
 
     TheParameter = new Parameters2150{ RESOURCE_PATH("parameters/EARTH2150.par").c_str() };
 
@@ -37,9 +40,19 @@ Game::Game() : Global<Game>(TheGame)
 
     TheInputMgr->SetEscapeCallback(&EscapeCallback, this);
 
-    TheCampaign = TheScriptStorage->GetObject(TypeCampaign::FileCampaign())->ToCampaign();
+    SAFE_DELETE(TheMission);
+    SAFE_DELETE(TheCampaign);
 
-    TheCampaign->Reset();
+    if (TypeGame::IsCampaign())
+    {
+        TheCampaign = TheScriptStorage->GetObject(TypeCampaign::FileCampaign())->ToCampaign();
+        TheCampaign->Reset();
+    }
+    else if (TypeGame::IsTutorial())
+    {
+        TheMission = TheScriptStorage->GetObject(TypeCampaign::FileTutorial())->ToMission();
+        TheMission->Reset();
+    }
 
     TheMessageMgr->BeginSinglePlayerGame();
 }
@@ -47,35 +60,49 @@ Game::Game() : Global<Game>(TheGame)
 
 Game::~Game()
 {
-    Mission::Destroy();
+   Mission::Destroy();
 
     UnloadLevel();
 }
 
 
-void Game::LoadLevel(pchar name_level)
+World *Game::CreateWorld(pchar name, void *cookie)
 {
-    uint time = UCOUNT_MS;
+    int *num_world = (int *)cookie;
+
+    GameWorld::Create(*num_world, name);
+
+    GameWorld::Set(*num_world);
+
+    return GameWorld::Current();
+}
+
+
+void Game::LoadLevel(int num_world, pchar name_level)
+{
+//    uint time = UCOUNT_MS;
 
     if (!TheCameraRTS)
     {
         new CameraRTS();
     }
 
-    TheWorldMgr->LoadWorld("world");
+    TheWorldMgr->SetWorld(nullptr);
+
+    TheWorldMgr->LoadWorld("world", false, &num_world);
 
     Sun::Init();
 
-    TheLevel = new Level2150{ RESOURCE_PATH("Levels/") + name_level };
+    GameWorld::Current()->level = new Level2150{ RESOURCE_PATH("Levels/") + name_level };
 
-    CreateLandscape();
+    CreateLandscape(num_world);
 
     CreateGameObjects();
 
     World *world = TheWorldMgr->GetWorld();
 
     {
-        world->GetRootNode()->AppendNewSubnode(new WorldGizmo(Landscape::GetSize().x, 0.1f));
+        world->GetRootNode()->AppendNewSubnode(new WorldGizmo(LANDSCAPE->GetSize().x, 0.1f));
 
         float ambient = 0.5f;
 
@@ -89,7 +116,7 @@ void Game::LoadLevel(pchar name_level)
 
     TheInputMgr->SetEscapeCallback(&EscapeCallback, this);
 
-    LOG_WRITE("Time load game %f sec", (float)(UCOUNT_MS - time) / 1e3f);
+//    LOG_WRITE("Time load game %f sec", (float)(UCOUNT_MS - time) / 1e3f);
 }
 
 
@@ -117,26 +144,18 @@ void Game::EscapeCallback(void *)
 }
 
 
-void Game::CreateLandscape()
+void Game::CreateLandscape(int num_world)
 {
-    uint time = UCOUNT_MS;
-
-    //    Earth2150::Unzipper::UnzipAllWD(RESOURCE_PATH("WDFiles/"));
-
     PoolTextures::Construct();
 
     {
-        if (Earth2150::Reader::ReadLand(*TheLevel))
+        if (Earth2150::Reader::ReadLand(*GameWorld::Current()->level))
         {
-            Landscape::Create(*TheLevel);
+            Landscape::Create(*GameWorld::Current()->level, GameWorld::Current());
 
-            TheLevel->ReadObjects();
+            GameWorld::Current()->level->ReadObjects();
         }
     }
-
-    LOG_WRITE("Time create landscape %f sec", (float)(UCOUNT_MS - time) / 1e3f);
-
-//    CreateAllModels();
 }
 
 
@@ -146,7 +165,7 @@ void Game::CreateGameObjects()
 
     int counter = 0;
 
-    for (LObject &obj : TheLevel->objects.objects)
+    for (LObject &obj : GameWorld::Current()->level->objects.objects)
     {
         obj.jobCreateObject.ExecuteJob();
 
@@ -159,37 +178,33 @@ void Game::CreateGameObjects()
 
     time = UCOUNT_MS - time;
 
-    LOG_WRITE("Time find entities %f sec", TheParameter->time_find_us / 1e6f);
+//    LOG_WRITE("Time find entities %f sec", TheParameter->time_find_us / 1e6f);
 
-    LOG_WRITE("%d objects for %d ms, %f ms/obj", counter, time, (float)time / (counter + 1));
+//    LOG_WRITE("%d objects for %d ms, %f ms/obj", counter, time, (float)time / (counter + 1));
 }
 
 
 void Game::Update()
 {
-    TheCampaign->Update();
+    if (TheCampaign)
+    {
+        TheCampaign->Update();
+    }
+
+    if (TheMission)
+    {
+        TheMission->Update();
+    }
+
+    GameWorld::UpdateAll();
 }
 
 
 void Game::LoadBase(int num_world, int id_mission, int id_owner)
 {
-    LOG_WRITE("\"%s\" num_world=%d id_mission=%d id_owner=%d", __FUNCTION__, num_world, id_owner, id_owner);
-
-    /*
-        Базы загружаются в один и тот же мир.
-        1-я база на высоте 0
-        2-я база на высоте 100
-        3-я база на высоте 200
-
-        Игровой уровень находится в том же самом мире. Его высота - 300
-    */
-
     const Mission *mission = Mission::Get(id_mission);
 
-    static bool first = true;
-    if (first)
-    {
-        first = false;
-        LoadLevel(SU::RemoveQuotes(mission->file_level));
-    }
+    LoadLevel(num_world, SU::RemoveQuotes(mission->file_level));
+
+    GameWorld::Set(GamePlayer::GetLocalPlayer()->GetRace());
 }

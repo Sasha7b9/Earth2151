@@ -14,5 +14,15 @@ struct TypeMaterial
 
 namespace Materials
 {
-    MaterialObject *Create(TypeMaterial::E, const ColorRGBA &);
+    MaterialObject *Create(TypeMaterial::E type, const ColorRGBA &color)
+    {
+        MaterialObject *material = new MaterialObject();
+
+        if (type == TypeMaterial::Diffuse)
+        {
+            material->AddAttribute(new DiffuseAttribute(color));
+        }
+
+        return material;
+    }
 }

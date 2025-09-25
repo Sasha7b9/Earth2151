@@ -44,14 +44,14 @@ void System::DisplayLastError(pchar file, int line)
         buffer[strlen(buffer) - 1] = '\0';
     }
 
-    LOG_ERROR(buffer);
+    LOG_ERROR_HI(buffer);
 
     LocalFree(lpMsgBuf);
     LocalFree(lpDisplayBuf);
 
 #else
 
-    LOG_ERROR("error %d in line %s : %d", errno, file, line);
+    LOG_ERROR_HI("error %d in line %s : %d", errno, file, line);
 
 #endif
 }

@@ -2,8 +2,8 @@
 #include "stdafx.h"
 #include "Objects/Objects.h"
 #include "Graphics/Primitives.h"
-#include "Earth2150/Parameters/Models/Passive.h"
-#include "Earth2150/Files/Model2150.h"
+#include "Game/Parameters/Models/Passive.h"
+#include "Game/Files/Model2150.h"
 
 
 GenericObject::~GenericObject()

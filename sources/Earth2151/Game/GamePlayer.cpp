@@ -30,3 +30,19 @@ void GamePlayer::Destroy()
 
     players.clear();
 }
+
+
+GamePlayer *GamePlayer::GetLocalPlayer()
+{
+    for (auto player : players)
+    {
+        if (player.second->type == PlayerType::Local)
+        {
+            return player.second;
+        }
+    }
+
+    static GamePlayer null{ -1, Race::Count, PlayerType::Count, "" };
+
+    return &null;
+}

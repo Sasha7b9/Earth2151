@@ -1,19 +1,17 @@
 ﻿// 2025/01/10 20:58:55 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
 #include "Objects/Task.h"
+#include "Objects/Units/Units.h"
 
 
 // Элементарное задание для юнита. Например, переместиться из одной точки в другую
-
-
-class Unit;
 
 
 class UnitTask : public Task
 {
 public:
 
-    UnitTask(Unit *_controller, void (*_funcOnDestroy)()) : Task(),
+    UnitTask(GUnit *_controller, void (*_funcOnDestroy)()) : Task(),
         controller(_controller), funcOnDestroy(_funcOnDestroy) { }
     virtual ~UnitTask()
     {
@@ -27,7 +25,7 @@ public:
 
 protected:
 
-    Unit *controller = nullptr;
+    GUnit *controller = nullptr;
 
     void (*funcOnDestroy)();
 };
@@ -37,8 +35,8 @@ class MoveTask : public UnitTask
 {
 public:
 
-    MoveTask(Unit *, const Point2D &to, void (*_funcOnDestroy)());
-    MoveTask(Unit *, pchar target_node_name, void (*_funcOnDestroy)());
+    MoveTask(GUnit *, const Point2D &to, void (*_funcOnDestroy)());
+    MoveTask(GUnit *, pchar target_node_name, void (*_funcOnDestroy)());
     virtual ~MoveTask() override { }
 
     virtual void Update() override;

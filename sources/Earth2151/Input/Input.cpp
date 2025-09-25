@@ -3,6 +3,7 @@
 #include "Input.h"
 #include "Mouse.h"
 #include "GameWorld.h"
+#include "Game/Game.h"
 
 
 bool Input::keyCtlr = false;
@@ -25,6 +26,10 @@ void Input::Init()
     TheInputMgr->AddAction(new KeyboardAction(TypeAction::F1));
     TheInputMgr->AddAction(new KeyboardAction(TypeAction::F2));
     TheInputMgr->AddAction(new KeyboardAction(TypeAction::Ctrl));
+    TheInputMgr->AddAction(new KeyboardAction(TypeAction::Key1));
+    TheInputMgr->AddAction(new KeyboardAction(TypeAction::Key2));
+    TheInputMgr->AddAction(new KeyboardAction(TypeAction::Key3));
+    TheInputMgr->AddAction(new KeyboardAction(TypeAction::Key4));
 
     TheInputMgr->AddAction(new MouseButtonAction(TypeAction::MouseLeft));
     TheInputMgr->AddAction(new MouseButtonAction(TypeAction::MouseMiddle));
@@ -39,6 +44,22 @@ void KeyboardAction::HandleEngage()
     {
     case TypeAction::Ctrl:
         Input::keyCtlr = true;
+        break;
+
+    case TypeAction::Key1:
+        GameWorld::Set(Race::UCS);
+        break;
+
+    case TypeAction::Key2:
+        GameWorld::Set(Race::ED);
+        break;
+
+    case TypeAction::Key3:
+        GameWorld::Set(Race::LC);
+        break;
+
+    case TypeAction::Key4:
+        GameWorld::Set(0);                  // В этом мире происходит игра
         break;
     }
 }

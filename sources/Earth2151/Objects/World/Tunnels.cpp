@@ -5,144 +5,7 @@
 #include "Graphics/Primitives.h"
 
 
-namespace Tunnels
-{
-    // Описывает элементарный треугольник для построения геометрической сетки
-    struct Triangle
-    {
-        Triangle(const Point3D p[3], const Point2D tex[3])
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                ver[i] = p[i];
-            }
-
-            Vector3D vec01 = p[0] - p[1]; //-V525
-            Vector3D vec02 = p[0] - p[2];
-            Vector3D vec12 = p[1] - p[2];
-
-            norm[0] = Cross(vec01, vec02);
-            norm[1] = Cross(vec12, -vec01);
-            norm[2] = Cross(-vec02, -vec12);
-
-            for (int i = 0; i < 3; i++)
-            {
-                textcoord[i] = tex[i];
-            }
-        }
-
-        Point3D  ver[3];
-        Vector3D norm[3];
-        Point2D  textcoord[3];
-    };
-
-    struct Cell
-    {
-        Array<Triangle> triangles;
-        uint8 tunnel;
-    };
-
-    struct Tuns
-    {
-        Array<Array<Cell>> rows;
-
-        void SetTunnel(int x, int y, uint8 tunnel)
-        {
-            if (y >= 0)
-            {
-                rows[y][x].tunnel = tunnel;
-            }
-        }
-
-        void SetSize(int width, int height)
-        {
-            rows.SetArrayElementCount(height);
-
-            for (int i = 0; i < rows.GetArrayElementCount(); i++)
-            {
-                rows[i].SetArrayElementCount(width);
-            }
-        }
-
-        int GetNumRows() const
-        {
-            return rows.GetArrayElementCount();
-        }
-
-        int GetNumColumns() const
-        {
-            return rows[0].GetArrayElementCount();
-        }
-
-        uint8 Get(int x, int y) const
-        {
-            return rows[y][x].tunnel;
-        }
-
-        void CreateTriangleMesh();
-
-        const Array<Triangle> &GetTriangles(int x, int y)
-        {
-            return rows[y][x].triangles;
-        }
-
-        void AddPlaneH(int x, int y, float hA, float hB, float hC, float hD);
-
-        void AddPlaneV(int x, int y, const Point2D &p1, const Point2D &p2, float h);
-
-        void AppendTriangle_LRLX_UUDY(int x, int y, const Point3D &, const Point2D tex[3], bool append);
-
-        void AppendTriangle_RRLX_UDDY(int x, int y, const Point3D &, const Point2D tex[3], bool append);
-
-        void AppendTriangle(int x, int y, const Point3D p[3], const Point2D tex[3]);
-
-        void AppendTriangle(int x, int y, const Triangle &triang)
-        {
-            rows[y][x].triangles.AppendArrayElement(triang);
-        }
-
-        void Destroy()
-        {
-            for (int i = 0; i < rows.GetArrayElementCount(); i++)
-            {
-                rows[i].PurgeArray();
-            }
-
-            rows.PurgeArray();
-        }
-    };
-
-    static Tuns tunnels;
-
-    static void CreateGeometry();
-
-    static void CreateGeometrySpheres();
-
-    static void AppendTriangles(GeometrySurface *, const Array<Triangle> &);
-
-    static float LeftX(int x)
-    {
-        return float(x) - 0.5f;
-    }
-
-    static float UpY(int y)
-    {
-        return float(y) + 0.5f;
-    }
-
-    static float DownY(int y)
-    {
-        return float(y) - 0.5f;
-    }
-
-    static float RightX(int x)
-    {
-        return float(x) + 0.5f;
-    }
-}
-
-
-void Tunnels::ReadTunnels(HeapBuffer &lnd, File &file_txt, int width, int height)
+Tunnels::Tunnels(HeapBuffer &lnd, File &file_txt, int width, int height) : tunnels(this)
 {
     /*
         1-й октет :             2-й октет - варианты :
@@ -225,7 +88,7 @@ void Tunnels::ReadTunnels(HeapBuffer &lnd, File &file_txt, int width, int height
 }
 
 
-void Tunnels::Destroy()
+Tunnels::~Tunnels()
 {
     tunnels.Destroy();
 }
@@ -243,10 +106,10 @@ void Tunnels::Tuns::CreateTriangleMesh()
             {
                 AddPlaneH(x, y, h, h, h, h);
 
-                float upY = UpY(y);
-                float downY = DownY(y);
-                float rightX = RightX(x);
-                float leftX = LeftX(x);
+                float upY = t->UpY(y);
+                float downY = t->DownY(y);
+                float rightX = t->RightX(x);
+                float leftX = t->LeftX(x);
 
                 if (y < GetNumRows() - 1 && Get(x, y + 1) == 0x40)
                 {
@@ -421,9 +284,9 @@ void Tunnels::Tuns::AppendTriangle_LRLX_UUDY(int x, int y, const Point3D &p, con
     {
         const Point3D points[3] =
         {
-            { LeftX(x), UpY(y), p[0] },
-            { LeftX(x), DownY(y), p[2] },
-            { RightX(x), UpY(y), p[1] }
+            { t->LeftX(x),  t->UpY(y),   p[0] },
+            { t->LeftX(x),  t->DownY(y), p[2] },
+            { t->RightX(x), t->UpY(y),   p[1] }
         };
 
         AppendTriangle(x, y, points, tex);
@@ -437,9 +300,9 @@ void Tunnels::Tuns::AppendTriangle_RRLX_UDDY(int x, int y, const Point3D &p, con
     {
         const Point3D points[3] =
         {
-            { RightX(x), UpY(y), p[0] },
-            { LeftX(x), DownY(y), p[2] },
-            { RightX(x), DownY(y), p[1] }
+            { t->RightX(x), t->UpY(y),   p[0] },
+            { t->LeftX(x),  t->DownY(y), p[2] },
+            { t->RightX(x), t->DownY(y), p[1] }
         };
 
         AppendTriangle(x, y, points, tex);

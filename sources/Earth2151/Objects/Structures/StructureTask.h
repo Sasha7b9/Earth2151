@@ -27,7 +27,7 @@ public:
 
     virtual void Update() override;
 
-    void SetLastUnit(Unit *unit)
+    void SetLastUnit(GUnit *unit)
     {
         last_unit = unit;
         state = UnitIsCreated;
@@ -55,5 +55,5 @@ private:
 
     Point3D move_to;                // Сюда посылать подразделения после происзводства
 
-    Unit *last_unit = nullptr;    // Последний произведённый юнит
+    GUnit *last_unit = nullptr;    // Последний произведённый юнит
 };

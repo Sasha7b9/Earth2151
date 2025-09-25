@@ -1,11 +1,10 @@
 ﻿// 2025/01/10 20:59:06 (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #include "stdafx.h"
-#include "Objects/Units/UnitTask.h"
 #include "GameWorld.h"
-#include "Objects/Units/Units.h"
+#include "Objects/Units/UnitTask.h"
 
 
-MoveTask::MoveTask(Unit *_controller, const Point2D &to, void (*_funcOnDestroy)()) :
+MoveTask::MoveTask(GUnit *_controller, const Point2D &to, void (*_funcOnDestroy)()) :
     UnitTask(_controller, _funcOnDestroy),
     pos_target(to)
 {
@@ -15,7 +14,7 @@ MoveTask::MoveTask(Unit *_controller, const Point2D &to, void (*_funcOnDestroy)(
 }
 
 
-MoveTask::MoveTask(Unit *_controller, pchar _target_node_name, void (*_funcOnDestroy)()) :
+MoveTask::MoveTask(GUnit *_controller, pchar _target_node_name, void (*_funcOnDestroy)()) :
     UnitTask(_controller, _funcOnDestroy),
     target_node_name(_target_node_name),
     pos_target(Point3D::zero)

@@ -1,4 +1,4 @@
-// (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
+﻿// (c) Aleksandr Shevchenko e-mail : Sasha7b9@tut.by
 #pragma once
 #include "Interface/Controls/Button.h"
 
@@ -46,8 +46,11 @@ struct TypeCampaign
 
     static pchar Name();
 
-    // � ���� ����� �������� ��������
+    // В этом файле хранится кампания
     static String<> FileCampaign();
+
+    // В этом файле хранится обучающая миссия
+    static String<> FileTutorial();
 
 private:
 
@@ -74,7 +77,7 @@ private:
 };
 
 
-struct TypeGame : public GameSetting
+struct NameGame : public GameSetting
 {
     enum E
     {
@@ -84,7 +87,7 @@ struct TypeGame : public GameSetting
         Count
     };
 
-    TypeGame() : GameSetting("type_game") { }
+    NameGame() : GameSetting("type_game") { }
 
     void Set(E);
     bool IsEftBP()

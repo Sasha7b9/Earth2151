@@ -34,8 +34,6 @@ void EnterGameWindow::PreprocessWidget()
     BTN_BACK->SetObserver(&btnBackObserver);
     BTN_QUIT->SetObserver(&btnOuitObserver);
 
-//    BTN_NEW->HideWidget();
-    BTN_TUTORIAL->HideWidget();
     BTN_LOAD->HideWidget();
     BTN_VIDEO->HideWidget();
 
@@ -67,6 +65,7 @@ void EnterGameWindow::HandleButtonEvent(Widget *widget, const WidgetEventData *e
     {
         if (widget == BTN_NEW)
         {
+            TypeGame::Set(TypeGame::Campaign);
             TheInterfaceMgr->RemoveWidget(TheEnterGameWindow);
             ApplicationMode::Set(ApplicationMode::Game);
             new Game();
@@ -77,8 +76,10 @@ void EnterGameWindow::HandleButtonEvent(Widget *widget, const WidgetEventData *e
         }
         else if (widget == BTN_TUTORIAL)
         {
-//            TheInterfaceMgr->RemoveWidget(TheEnterGameWindow);
-//            TheGame->LoadLevel("!BaseED");
+            TypeGame::Set(TypeGame::Tutorial);
+            TheInterfaceMgr->RemoveWidget(TheEnterGameWindow);
+            ApplicationMode::Set(ApplicationMode::Game);
+            new Game();
         }
         else if (widget == BTN_VIDEO)
         {

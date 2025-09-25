@@ -4,9 +4,9 @@
 #include "Utils/StringUtils.h"
 
 
-#define CHECK_ON_VALID_STRING   if (!isValid) { LOG_ERROR("Configuration file is not valid"); return nullptr; }
-#define CHECK_ON_VALID_INT      if (!isValid) { LOG_ERROR("Configuration file is not valid"); return -1; }
-#define CHECK_ON_VALID_BOOL     if (!isValid) { LOG_ERROR("Configuration file is not valid"); return false; }
+#define CHECK_ON_VALID_STRING   if (!isValid) { LOG_ERROR_HI("Configuration file is not valid"); return nullptr; }
+#define CHECK_ON_VALID_INT      if (!isValid) { LOG_ERROR_HI("Configuration file is not valid"); return -1; }
+#define CHECK_ON_VALID_BOOL     if (!isValid) { LOG_ERROR_HI("Configuration file is not valid"); return false; }
 
 
 bool FileJSON::Load(const std::string &_full_path)
@@ -18,7 +18,7 @@ bool FileJSON::Load(const std::string &_full_path)
     File file;
     if(file.OpenFile(full_path.c_str()) != kFileOkay)
     {
-        LOG_ERROR("Can't load configuration file \"%s\"", full_path.c_str());
+        LOG_ERROR_HI("Can't load configuration file \"%s\"", full_path.c_str());
 
         return false;
     }
@@ -33,7 +33,7 @@ bool FileJSON::Load(const std::string &_full_path)
 
     if (document->HasParseError())
     {
-        LOG_ERROR("Can't parse configuration file \"%s\". Error %d, offset %u",
+        LOG_ERROR_HI("Can't parse configuration file \"%s\". Error %d, offset %u",
             full_path.c_str(), document->GetParseError(), document->GetErrorOffset());
 
         isValid = false;
@@ -64,7 +64,7 @@ int FileJSON::GetIntValue(pchar key)
         return it->value.GetInt();
     }
 
-    LOG_ERROR("Can't find value for \"%s\"", key);
+    LOG_ERROR_HI("Can't find value for \"%s\"", key);
 
     return -1;
 }
@@ -80,7 +80,7 @@ std::vector<float> FileJSON::GetVector3(pchar key, const std::vector<float> &def
 
     if (words.GetArrayElementCount() != 3)
     {
-        LOG_ERROR("Bad vector for key \"%s\"", key);
+        LOG_ERROR_HI("Bad vector for key \"%s\"", key);
 
         return def;
     }
@@ -107,7 +107,7 @@ bool FileJSON::GetBoolValue(pchar key)
         return it->value.GetInt() != 0;
     }
 
-    LOG_ERROR("Can't find value for \"%s\"", key);
+    LOG_ERROR_HI("Can't find value for \"%s\"", key);
 
     return false;
 }
@@ -132,7 +132,7 @@ int FileJSON::GetIntValue(pchar key1, pchar key2)
         }
     }
 
-    LOG_ERROR("Can't find value for \"%s\" \"%s\"", key1, key2);
+    LOG_ERROR_HI("Can't find value for \"%s\" \"%s\"", key1, key2);
 
     return -1;
 }
@@ -149,7 +149,7 @@ pchar FileJSON::GetStringValue(pchar key)
         return it->value.GetString();
     }
 
-    LOG_ERROR("Can't find value for \"%s\" key in file \"%s\"", key, full_path.c_str());
+    LOG_ERROR_HI("Can't find value for \"%s\" key in file \"%s\"", key, full_path.c_str());
 
     return "";
 }
@@ -174,7 +174,7 @@ pchar FileJSON::GetStringValue(pchar key1, pchar key2)
         }
     }
 
-    LOG_ERROR("Can't find value for \"%s\" \"%s\"", key1, key2);
+    LOG_ERROR_HI("Can't find value for \"%s\" \"%s\"", key1, key2);
 
     return "";
 }
@@ -204,7 +204,7 @@ pchar FileJSON::GetStringValue(pchar key1, pchar key2, pchar key3)
         }
     }
 
-    LOG_ERROR("Can't find value for \"%s\" \"%s\" \"%s\"", key1, key2, key3);
+    LOG_ERROR_HI("Can't find value for \"%s\" \"%s\" \"%s\"", key1, key2, key3);
 
     return "";
 }
@@ -216,7 +216,7 @@ bool FileJSON::GetVectorStrings(pchar key, Array<String<>> &strings)
 
     if (!isValid)
     {
-        LOG_ERROR("Configuration file is not valid");
+        LOG_ERROR_HI("Configuration file is not valid");
         return false;
     }
 
