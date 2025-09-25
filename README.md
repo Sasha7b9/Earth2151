@@ -8,20 +8,12 @@
 
 https://youtu.be/7nU8G8XS1fY
 
-You can download the latest version application from here :  https://github.com/Sasha7b9/Earth2151/releases/  
-You can download the archive with resources from here :  https://github.com/Sasha7b9/Earth2151/releases/download/0.1.4/Data014.zip  
+You can download the latest version application from here :  https://github.com/Sasha7b9/Earth2151/releases/download/0.1.4/Earth2151_014.zip
 
     Settings (file conf/Earth2151_config.cfg):
   displayFull - fullscreen - 0/1  
   displayHeight  
   displayWidth
-  
-  Download the archive with resources from https://github.com/Sasha7b9/Earth2151/releases/download/0.1.0/Data.zip or unzip the files *.wd from the original game using the program "https://github.com/Arkezar/EarthTool" to the appropriate catalogs:  
-  "Data/Earth2150" for Escape from the Blue Planet,  
-  "Data/Earth2150-MP" for The Moon Project,  
-  "Data/Earth2150-LS" for Lost Souls.
-  You can select the desired directory for work in the "Settings"-"Game" menu.  
-    NOTE. Levels created in one game may become unreadable if placed in another game's directory.
   
     To load a level, follow these steps:  
   1. Click to "Viewer".  
