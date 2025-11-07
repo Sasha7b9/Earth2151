@@ -1,5 +1,5 @@
 cd ../../ThirdParty/wxWidgets
 rmdir generated /s /q
 cd ../../scripts/ThirdParty/
-cmake.exe ..\..\ThirdParty\wxWidgets\CMakeLists.txt -B..\..\generated\wxWidgets -G "Visual Studio 17 2022" -A Win32 -DwxBUILD_SHARED=ON -DwxBUILD_USE_STATIC_RUNTIME=ON
+cmake.exe ..\..\ThirdParty\wxWidgets\CMakeLists.txt -B..\..\generated\wxWidgets -G "Visual Studio 17 2022" -A Win32 -DwxBUILD_SHARED=ON -DwxBUILD_USE_STATIC_RUNTIME=ON -DwxBUILD_SAMPLES=OFF
 call build.bat
